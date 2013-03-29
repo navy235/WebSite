@@ -1,0 +1,179 @@
+﻿
+html .k-upload {
+  display: inline-block;
+}
+
+* + html .k-upload {
+  width: 120px;
+}
+
+div.k-grid-header, div.k-grid-footer {
+  padding-right: 17px !important;
+}
+
+
+.k-window {
+  padding-top: 0;
+  background-color: #fff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  overflow: hidden;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  transform: none !important;
+}
+
+.k-window-titlebar.k-header {
+  position: static;
+  font-size: 14px;
+  line-height: 27px;
+  font-family: '宋体';
+  font-weight: bold;
+  background: none;
+  padding: 8px 15px 0 15px;
+  background: none;
+  border: none;
+  height: auto;
+  width: auto;
+  margin-top: 0px;
+  box-sizing: border-box;
+}
+
+.k-window-titlebar .k-window-title {
+  position: static;
+}
+
+.k-window-content.k-content {
+  padding: 15px;
+}
+
+.k-window-footer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  text-align: right;
+}
+
+.k-window-checklist {
+  vertical-align: middle;
+}
+
+.k-window-checklist-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 0px;
+}
+
+.k-window-checklist label {
+  display: inline-block;
+  width: 130px;
+  text-align: left;
+  padding-right: 0;
+  margin-bottom: 5px;
+}
+
+  .k-window-checklist label input {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    display: inline-block;
+    position: relative;
+    top: -1px;
+  }
+
+.k-valid-text {
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.k-valid-dropdownlist {
+  right: 0px;
+  top: 0px;
+}
+
+.k-upload-button {
+  background: url(images/uploadbtn.png) no-repeat !important;
+  border: none !important;
+  height: 27px;
+}
+
+  .k-upload-button span {
+    visibility: hidden;
+  }
+
+
+/***UploadImgList***/
+.img-box-list {
+  overflow: hidden;
+  margin-left: 105px;
+}
+
+.img-list-box {
+  float: left;
+  padding: 5px;
+  position: relative;
+  border: 1px solid #bbb;
+  margin: 10px 10px 0 0;
+  display: none;
+}
+
+  .img-list-box img {
+    width: 120px;
+    height: 100px;
+  }
+
+  .img-list-box .img-list-box-close {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    height: 16px;
+    width: 16px;
+    background: #fff;
+    display: block;
+    cursor: pointer;
+  }
+
+  .img-list-box .img-list-box-bar {
+    position: absolute;
+    width: 100%;
+    height: 25px;
+    background: #000;
+    opacity: 0.7;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+  }
+
+    .img-list-box .img-list-box-bar .img-list-box-sorter-right {
+      display: block;
+      position: absolute;
+      right: 5px;
+      height: 16px;
+      width: 16px;
+      top: 5px;
+      cursor: pointer;
+    }
+
+
+    .img-list-box .img-list-box-bar .img-list-box-sorter-left {
+      display: block;
+      position: absolute;
+      left: 5px;
+      height: 16px;
+      width: 16px;
+      top: 5px;
+      cursor: pointer;
+    }

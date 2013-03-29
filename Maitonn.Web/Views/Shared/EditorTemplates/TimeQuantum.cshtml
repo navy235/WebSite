@@ -1,0 +1,97 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+    string CascadeBack = ViewData.ModelMetadata.AdditionalValues["CascadeBack"].ToString();
+    List<SelectListItem> renderList = new List<SelectListItem>();
+    for (int i = 0; i < 48; i++)
+    {
+        renderList.Add(new SelectListItem()
+        {
+            Text = ((i * 30) / 60).ToString().Length == 1 ? "0" + ((i * 30) / 60) + ((i % 2 == 0) ? ":00" : ":30") : ((i * 30) / 60).ToString() + ((i % 2 == 0) ? ":00" : ":30"),
+            Value = (i * 30).ToString()
+        });
+    }
+    var startList = renderList.Select(x => new SelectListItem()
+    {
+        Selected = string.IsNullOrEmpty(Model) ? false : Model.Split('|')[0] == x.Value,
+        Text = x.Text,
+        Value = x.Value
+    });
+
+    var endList = renderList.Select(x => new SelectListItem()
+    {
+        Selected = string.IsNullOrEmpty(Model) ? false : Model.Split('|')[1] == x.Value,
+        Text = x.Text,
+        Value = x.Value
+    });
+    
+}
+<div class="form-timequantum">
+    @(Html.Kendo().DropDownList().Name(name + "_start")
+    .OptionLabel("开始时间")
+    .BindTo(startList)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Events(events => events.Change(name + ".startChecking")))
+
+    @(Html.Kendo().DropDownList().Name(name + "_end")
+    .OptionLabel("结束时间")
+    .BindTo(endList)
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Events(events => events.Change(name + ".endChecking")))
+</div>
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        startid:'@(name + "_start")',
+        endid:'@(name + "_end")',
+        cascadeBackid:'@CascadeBack',
+        startChecking:function(e){
+            var self=@name;
+            var startValue=$('#'+self.startid).val();
+            if($('#'+self.id).val()===''){
+                $('#'+self.id).val(startValue+'|');
+            }else{
+                var values=$('#'+self.id).val().split('|');
+                values[0]=startValue;
+                $('#'+self.id).val(values.join('|'));
+                var isCheck=true;
+                $.each(values,function(index,item){
+                    if(item===''){
+                        isCheck=false;
+                    }
+                })
+                if(isCheck){
+                    $('#'+self.id).parents('form').validate().element('#'+self.id);
+                    $('#'+self.id).parents('form').validate().element('#'+self.cascadeBackid);
+                }
+            }
+        },
+        endChecking:function(e){
+            var self=@name;
+            var endValue=$('#'+self.endid).val();
+            if($('#'+self.id).val()===''){
+                $('#'+self.id).val(endValue+'|');
+            }else{
+                var values=$('#'+self.id).val().split('|');
+                values[1]=endValue;
+                $('#'+self.id).val(values.join('|'));
+                var isCheck=true;
+                $.each(values,function(index,item){
+                    if(item===''){
+                        isCheck=false;
+                    }
+                })
+                if(isCheck){
+                    $('#'+self.id).parents('form').validate().element('#'+self.id);
+                    $('#'+self.id).parents('form').validate().element('#'+self.cascadeBackid);
+                }
+            }
+        }
+    }
+
+</script>

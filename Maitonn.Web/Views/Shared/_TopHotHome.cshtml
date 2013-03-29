@@ -1,0 +1,107 @@
+﻿@model  TopHotViewModel
+
+<article class="top-hot  clearfix">
+    <div class="top-hot-left">
+        <ul class="top-hot-left-category">
+            @for (int i = 0; i < Model.TopHotListMenu.Items.Count; i++)
+            {
+                var item = Model.TopHotListMenu.Items[i];
+                <li class="child@(i) @((i == (Model.TopHotListMenu.Items.Count - 1)) ? "last" : "") clearfix">
+                    <h3>
+                        <a href="@item.Category.Url" class="top-hot-left-icon" hidefocus="true"></a>
+                        <a class="top-hot-left-link" href="@item.Category.Url">@item.Category.Name</a>
+                        <em style="display: none;">@item.Category.Name</em>
+                    </h3>
+                    <div class="top-hot-left-sub">
+                        @foreach (var childItem in item.ChildCategories)
+                        { 
+                            <span><a href="@childItem.Url">@childItem.Name</a></span>
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="top-hot-right cleafix">
+        <section class="slider-box">
+            <ul class="slider-list">
+
+                @for (var i = 0; i < Model.SliderBox.Items.Count; i++)
+                {
+                    var slider = Model.SliderBox.Items[i];
+                    <li style="@((i == 0) ? "opacity:1; z-index:10" : "opacity: 0; z-index: 9")" style="opacity: 0; z-index: 9"><a target="_blank" href="@slider.Url">
+                        <img title="" alt="" src="@slider.ImgUrl" width="710" height="280" border="0"></a></li>
+                }
+            </ul>
+            <div class="slider-page" style="z-index: 11">
+                <div class="slider-page-box">
+                    <div class="slider-page-list">
+                        @for (int i = 1; i <= Model.SliderBox.Items.Count; i++)
+                        {
+                            <a href="#" @((i == 1) ? "class=active" : "")>@(i)</a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <script type="text/javascript">
+            $(function() {
+                $('slider-box').slider();
+            });
+        </script>
+        <section class="slider-tab-box clearfix">
+            <ul class="slider-tab-top clearfix">
+
+                @for (int i = 0; i < Model.SliderTabBox.Tabs.Count; i++)
+                {
+                    var item = Model.SliderTabBox.Tabs[i];
+                    <li class="slider-tab-child@(i) @(i == 0 ? "active" : "") " rel="#slidGoods@(i)">@item.Name</li>
+                }
+
+            </ul>
+            @for (int i = 0; i < Model.SliderTabBox.Tabs.Count; i++)
+            {
+                <div class="slider-tab-container" id="slidGoods@(i)" @(i == 0 ? "" : "style=display:none")>
+                    <a class="slider-tab-left-handler" href="javascript:;"></a>
+                    <a class="slider-tab-right-handler" href="javascript:;"></a>
+                    <div class="slider-tab-content">
+                        <div class="slider-tab-scroll">
+                            <div class="slider-tab-viewbox clearfix">
+
+                                @foreach (var product in Model.SliderTabBox.Tabs[i].Items)
+                                {
+                                    <div class="slider-tab-item">
+                                        <a href="/product/@(product.ID).html" target="_blank" class="slider-tab-item-img" >
+                                            <img width="150" height="150" border="0" src="@product.ImgUrl" alt="@product.Name">
+                                            <span class="slider-tab-item-img-icon icon0"></span>
+                                        </a>
+                                        <p class="slider-tab-item-title">
+                                            <a target="_blank" title="@product.Name" href="/product/@(product.ID).html">@product.Name
+                                                @*&nbsp;<span class="c_ba2636">赠红色经典礼盒一个</span>*@
+                                            </a>
+                                        </p>
+                                        <p class="slider-tab-item-delete-price">
+                                            @product.Province - @product.City
+                                        </p>
+                                        <p class="slider-tab-item-price">
+                                            <strong>¥@product.Price 万元/年</strong>
+                                            @*  <span title="红色经典礼盒一个">赠</span>*@
+                                        </p>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </section>
+        <script type="text/javascript">
+            $(function() {
+                $('.slider-tab-box').tab();
+                $('.slider-tab-box').sliderbox();
+            })
+        </script>
+    </div>
+</article>

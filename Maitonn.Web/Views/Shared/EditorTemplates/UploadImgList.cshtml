@@ -1,0 +1,189 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var uploadIndex = ViewData.ModelMetadata.AdditionalValues["UploadImgList"].ToString();
+    var maxLength = ViewData.ModelMetadata.AdditionalValues["UploadImgListMaxLength"].ToString();
+
+}
+
+
+@(Html.Kendo().Upload()
+    .Name("listattachments" + uploadIndex)
+    .Multiple(true)
+    .Async(a => a
+            .Save("UploadListSave" + uploadIndex, "AjaxService")
+            .Remove("UpLoadRemove", "AjaxService")
+            .AutoUpload(true)
+        )
+            .Events(events => events
+                .Error(name + ".onError")
+                .Success(name + ".onSuccess")
+                .Upload(name + ".onUpload")
+                .Select(name + ".onSelect")
+            )
+
+    )
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+
+<div class="img-box-list" id="@Html.Raw(name + "_imgbox")">
+</div>
+
+<div class="img-list-box" id="@(name + "_template")">
+    <a class="img-list-box-close" title="删除"><span class="k-icon k-i-close"></span></a>
+    <img class="@(name + "_img")"  />
+    <div class="img-list-box-bar">
+        <a class="img-list-box-sorter img-list-box-sorter-right" title="右移" data-direction="right"><span class="k-icon k-i-arrow-e" data-direction="right"></span></a>
+        <a class="img-list-box-sorter img-list-box-sorter-left" title="左移" data-direction="left"><span class="k-icon k-i-arrow-w" data-direction="left"></span></a>
+    </div>
+    <input type="hidden" name="@(name + "_imgurl")" />
+</div>
+
+
+
+<script type="text/javascript">
+
+    var @name={
+        id:'@name',
+        maxlength:@maxLength,
+        binding:function(){
+            var self=@name;
+            var _imgurl='@(String.IsNullOrEmpty(Model) ? "" : Model)';
+            if(_imgurl!==''){
+                for(var i=0;i<_imgurl.split(',').length;i++){
+                    var template=$('#'+'@(name + "_template")').clone();
+                    $("#"+self.id+"_imgbox")
+                        .append(template.find('[name="@(name + "_imgurl")"]')
+                        .val(_imgurl.split(',')[i])
+                        .end()
+                        .find('.@(name + "_img")')
+                        .attr('src',_imgurl.split(',')[i])
+                        .end()
+                        .show()
+                        );
+                }
+                $("#"+self.id+"_imgbox").find('.img-list-box-close').on('click',self.deleteImg);
+                $("#"+self.id+"_imgbox").find('.img-list-box-sorter').on('click',self.sorter);
+                $("#"+self.id).val(_imgurl);
+            }
+        },
+        onError:function(e){
+        
+        },
+        onSuccess:function(e){
+            var self=@name;
+            var resData = e.response ;
+            var $input=$('#'+self.id);
+            if (resData.err === ''&&resData.status==='upload') {
+                var template=$('#'+'@(name + "_template")').clone();
+                $("#"+self.id+"_imgbox")
+                      .append(template
+                      .find('[name="@(name + "_imgurl")"]')
+                        .val(resData.imgurl_120)
+                        .end()
+                        .find('.@(name + "_img")')
+                        .attr('src',resData.imgurl_120)
+                        .end()
+                        .show()
+                );
+                $("#"+self.id+"_imgbox").find('.img-list-box-close').off('click');
+                $("#"+self.id+"_imgbox").find('.img-list-box-sorter').off('click');
+                $("#"+self.id+"_imgbox").find('.img-list-box-close').on('click',self.deleteImg);
+                $("#"+self.id+"_imgbox").find('.img-list-box-sorter').on('click',self.sorter);
+                var inputVal=$input.val()===''?'':$input.val()+',';
+                inputVal+=resData.imgurl_120;
+                $input.val(inputVal);
+                self.validate();
+                self.hideUploadSuccess();
+            }
+            else {
+                if(resData.err===''&&resData.status==='remove'){
+                    return ;
+                }else{
+                    alert(resData.err);
+                }
+            }
+        },
+        onUpload:function(e){
+            var files = e.files;
+            $.each(files, function () {
+                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension) == -1) {
+                    alert("请上传.gif.jpg.jpeg.bmp.png的图片文件！")
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        },
+        onSelect:function(e){
+            var files = e.files;
+            var self=@name;
+            var $input=$('#'+self.id);
+            var hasLength=$input.val()===''?0:$input.val().split(',').length;
+            if((e.files.length+hasLength)>self.maxlength){
+                alert("最多上传"+self.maxlength
+                    +"张图片!当前已经上传"
+                    +hasLength+"张");
+                e.preventDefault();
+                return false;
+            }
+
+        },
+        deleteImg:function(e){
+            var self=@name;
+            var $target=$(e.target);
+            var $imgbox=$target.parents('.img-list-box');
+            var index=$imgbox.index();
+            var inputVals=$('#'+self.id).val().split(',');
+            inputVals.splice(index,1);
+            $('#'+self.id).val(inputVals.join(','));
+            $imgbox.remove();
+            self.validate();
+            
+        },
+        sorter:function(e){
+            var self=@name;
+            var $target=$(e.target);
+            var direction=$target.data('direction');
+            var $imgboxlist=$("#"+self.id+"_imgbox");
+            var $imgbox=$target.parents('.img-list-box');
+            var index=$imgbox.index();
+            var $imgboxs=$("#"+self.id+"_imgbox").find('.img-list-box');
+            var length=$imgboxs.size();
+            if((direction==='right'&&index===length-1)||(direction==='left'&&index===0)){
+                return false;
+            }else{
+                if(direction==='right'){
+                    $imgbox.insertAfter($imgboxs.eq(index+1));
+                }else if(direction==='left'){
+                    $imgbox.insertBefore($imgboxs.eq(index-1));
+                }
+                self.sortValue();
+            }
+        },
+        sortValue:function(){
+            var self=@name;
+            var $imgboxlist=$("#"+self.id+"_imgbox");
+            var $imgInputs=$imgboxlist.find('[name="'+self.id+'_imgurl"]');
+            var inputVals=$.map($imgInputs,function(item){
+                return $(item).val();
+            })
+            $('#'+self.id).val(inputVals.join(','));
+        },
+        hideUploadSuccess:function(){
+            var self=@name;
+            $('#'+self.id).parent().find('.k-success').parents('li').hide();
+            if($('#'+self.id).parent().find('.k-loading').length===0){
+                $('#'+self.id).parent().find('.k-upload-files').hide();
+            }else{
+                $('#'+self.id).parent().find('.k-upload-files').show();
+            }
+        },
+        validate:function(){
+            var self=@name;
+            $('#'+self.id).parents('form:first').validate().element('#'+self.id);
+        }
+    }
+    $(function(){
+        @Html.Raw(name + ".binding();")
+    })
+</script>

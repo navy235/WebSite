@@ -1,0 +1,40 @@
+﻿@model ContactModel
+@{
+    ViewBag.Title = "联系方式";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+
+            @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",请填写真实的联系方式，方便大家联系您。", false, AlertType.info.ToString())
+
+            @if (ViewBag.Error != null)
+            { 
+                   @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+            }
+            <div class="personal-form personal-form-contact mt40">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-warning ">
+                            &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</article>

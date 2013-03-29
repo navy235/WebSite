@@ -1,0 +1,168 @@
+﻿@using StackExchange.Profiling
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/base")
+    @Styles.Render("~/Content/kendo/2012.3.1114/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!--This bundle was moved by the Kendo UI VS Extensions for compatibility reasons-->
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+</head>
+<body class="admin">
+    @{
+        var DashModel = (DashBoardViewModel)ViewBag.DashModel;
+        
+    }
+    <div class="admin-container">
+        <div class="admin-top">
+            <div class="admin-top-logo">
+                <img src="~/Content/images/logo.gif" alt="logo" width="59" height="64" border="0">
+            </div>
+            <div class="admin-top-title">@DashModel.Name</div>
+            <div class="admin-top-info">
+                <span class="admin-top-group" style="margin-right: 50px; color: #fff;">@DashModel.GroupName：<b>@DashModel.NickName</b> 您好，欢迎登陆使用！</span>
+                <span class="admin-top-version" style="margin-right: 50px; color: #fff;">当前版本：@DashModel.Version</span>
+                <a class="admin-top-link" href="@Url.Action("Index", "dashboard")">后台首页</a>
+                <a class="admin-top-link"  href="@Url.Action("logout", "login")">安全退出</a>
+            </div>
+        </div>
+        <div class="admin-main">
+            @(Html.Kendo().Splitter()
+        .Name("main")
+
+        .Panes(panes =>
+        {
+            panes.Add()
+                .Size("130px")
+                .Content(
+                    @<text>
+            @RendLeftMenu()
+            </text>
+                );
+
+            panes.Add()
+
+            .Content(
+                @<text>
+            @RenderBody()
+
+            <div id="loading" style="display: none;">
+                <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
+            </div>
+            <iframe id="content" name="content" width="100%" height="100%" style="display: none; margin: 0; padding: 0" frameborder="0"></iframe>
+            </text>
+            );
+
+        })
+    )
+
+
+        </div>
+        <div class="admin-bottom">
+            <div class="admin-bottom-msg">建议使用 IE8 以上版本或其它主流浏览器，分辨率 1024x768 或更高。 | Copyright © 2005-2015 www.dotaeye.com All Rights Reserved.</div>
+        </div>
+    </div>
+
+    @helper RendLeftMenu()
+{
+        @(Html.Kendo().PanelBar()
+    .Name("leftmenu")
+    .ExpandMode(PanelBarExpandMode.Single)
+    .Events(events => events.Select("LeftMenu.onSelect"))
+    .Items(panelbar =>
+    {
+
+        panelbar.Add().Text("权限设置")
+            .Expanded(true)
+            .Items(items =>
+            {
+                items.Add().Text("权限管理").Action("Index", "Permission").LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("角色管理").Action("Index", "Roles").LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("用户群组管理")
+                    .Action("Index", "Group")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("部门管理").Action("Index", "Department")
+                    .LinkHtmlAttributes(new { target = "content" });
+            });
+
+        panelbar.Add().Text("用户管理")
+            .Items(items =>
+            {
+                items.Add().Text("用户列表").Action("Index", "Member")
+                    .LinkHtmlAttributes(new { target = "content" });
+            });
+
+        panelbar.Add().Text("数据字典管理")
+            .Items(items =>
+            {
+                items.Add().Text("区域属性").Action("Index", "AreaAtt")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("地区列表").Action("Index", "Areas")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("户外类型").Action("Index", "OutDoorMediaCate")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("公司业务类型").Action("Index", "CompanyBussiness")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("公司注册资金").Action("Index", "CompanyFund")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("公司规模").Action("Index", "CompanyScale")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("媒体表现形式").Action("Index", "FormatCate")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("媒体所有权").Action("Index", "OwnerCate")
+                    .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("媒体购买周期").Action("Index", "PeriodCate")
+                 .LinkHtmlAttributes(new { target = "content" });
+            });
+
+        panelbar.Add().Text("企业信息审核")
+           .Items(items =>
+           {
+               items.Add().Text("企业认证审核").Action("index", "companyverify")
+                    .LinkHtmlAttributes(new { target = "content" });
+               items.Add().Text("已审核企业").Action("authed", "companyverify")
+                   .LinkHtmlAttributes(new { target = "content" });
+
+           });
+
+        panelbar.Add().Text("户外信息管理")
+            .Items(items =>
+            {
+                items.Add().Text("户外信息审核").Action("index", "outdoorverify")
+                      .LinkHtmlAttributes(new { target = "content" });
+                items.Add().Text("审核通过信息").Action("authed", "outdoorverify")
+                    .LinkHtmlAttributes(new { target = "content" });
+            });
+    })
+)
+    }
+
+    <script type="text/javascript">
+        var LeftMenu = {
+            onSelect: function(e) {
+                var $link = $(e.item);
+                if (!$link.find('ul').length > 0) {
+                    $('#loading').show();
+                    $('#content').hide();
+                    $('#dashboard').hide();
+                }
+            }
+        };
+        $(function() {
+            $('#content').load(function() {
+                $('#loading').hide();
+                $(this).show();
+            })
+        })
+    </script>
+
+    @RenderSection("scripts", required: false)
+    @MiniProfiler.RenderIncludes(position: RenderPosition.Left, showTrivial: false, showTimeWithChildren: false)
+</body>
+</html>

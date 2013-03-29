@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8404C3A7-9F29-4C74-9913-165BAE8C86DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Maitonn.Core</RootNamespace>
+    <AssemblyName>Maitonn.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleMinifyInlineJsCss">
+      <HintPath>..\packages\BundleMinifyInlineJsCss.1.0.1\lib\40\BundleMinifyInlineJsCss.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attribute\CascadeRequireAttribute.cs" />
+    <Compile Include="Attribute\CheckAreaAttribute.cs" />
+    <Compile Include="Attribute\CheckContactAttribute.cs" />
+    <Compile Include="Attribute\CheckMaxLengthAttribute.cs" />
+    <Compile Include="Attribute\DateGreaterThanAttribute.cs" />
+    <Compile Include="Attribute\HintAttribute.cs" />
+    <Compile Include="Attribute\HintClassAttribute.cs" />
+    <Compile Include="Attribute\HintLabelAttribute.cs" />
+    <Compile Include="Attribute\HintSeparateTitleAttribute.cs" />
+    <Compile Include="Attribute\RequireWithAttribute.cs" />
+    <Compile Include="Attribute\StringCheckLengthAttribute.cs" />
+    <Compile Include="Attribute\TimeQuantumAttribute.cs" />
+    <Compile Include="Attribute\ValueGreaterThanAttribute.cs" />
+    <Compile Include="BadWords\BadWordValidator.cs" />
+    <Compile Include="Checking\CheckHelper.cs" />
+    <Compile Include="Cookie\CookieHelper.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="Enum\MemberActionType.cs" />
+    <Compile Include="Error\ErrorType.cs" />
+    <Compile Include="Files\FileHelper.cs" />
+    <Compile Include="Filters\AjaxOnlyAttribute.cs" />
+    <Compile Include="Filters\GenerateStaticAttribute.cs" />
+    <Compile Include="Filters\GzipCompressJsAndReplaceWhiteSpaceAttribute.cs" />
+    <Compile Include="Filters\MvcOutputCacheAttribute.cs" />
+    <Compile Include="Filters\SkipGzipCompressJsAndReplaceWhiteSpaceAttribute.cs" />
+    <Compile Include="Http\HttpHelper.cs" />
+    <Compile Include="Mail\MailHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UIHelper.cs" />
+    <Compile Include="ValidateCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

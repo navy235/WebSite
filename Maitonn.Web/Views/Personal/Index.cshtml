@@ -1,0 +1,43 @@
+﻿@model  Member
+@{
+    ViewBag.Title = "我的帐号";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+
+            @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",填写真实的资料更方便大家了解你。", false, AlertType.info.ToString())
+
+            <ul class="personal-body-list">
+                <li>登录名：<a href="http://home.zhubajie.com/6200334">@Model.Email</a></li>
+                <li>昵称：<a href="http://home.zhubajie.com/6200334">@Model.NickName</a></li>
+                @*  <li class="list-status"><span>我的余额：￥ 6 元</span><a href="http://task.zhubajie.com/payorder/order">充值</a><a href="http://u.zhubajie.com/pay/activeyjf" target="_blank">管理</a></li>*@
+            </ul>
+
+            <p class="personal-body-tips mt10">你在猪八戒网还是黑户哦！作为一个有身份的人，没有身份认证怎么行! <a href="http://yan.zhubajie.com/certification/index-from-t5" target="_blank">马上认证身份&gt;</a></p>
+            <div class="personal-body-bind">
+                <dl class="clearfix">
+                    <dt class="bind-mobile"></dt>
+                    <dd class="bind-desc"><span class="ok">手机绑定</span>已绑定手机号码：186*****942</dd>
+                    <dd class="bind-btn"><a href="/cert/mobile-action-change">修改手机号码</a></dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt class="bind-email"></dt>
+                    <dd class="bind-desc"><span class="ok">邮箱绑定</span>已绑定邮箱：564*****@@qq.com</dd>
+                    <dd class="bind-btn"><a href="/cert/email-action-change">修改邮箱</a></dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+</article>

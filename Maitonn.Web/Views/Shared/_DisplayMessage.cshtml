@@ -1,0 +1,20 @@
+﻿@{
+    var serviceResult = (ServiceResult)TempData["Service_Result"] ?? null;
+}
+
+@if (serviceResult != null)
+{
+    @ViewHelpers.Alert(serviceResult.Message, serviceResult.Success)
+}
+<script type="text/javascript">
+    $(function() {
+        $('.displaymessage').fadeOut(3000);
+        $("body").ajaxError(function(e, request) {
+            if (request.status == 403) {
+                var res = $.parseJSON(request.responseText);
+                //alert(res.Error);
+                window.location = res.LogOnUrl;
+            }
+        });
+    });
+</script>

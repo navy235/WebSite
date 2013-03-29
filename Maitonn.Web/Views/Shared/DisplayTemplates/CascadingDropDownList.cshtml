@@ -1,0 +1,41 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+
+    List<string> DropdownListKeys = new List<string>();
+
+    if (ViewData.ModelMetadata.AdditionalValues.ContainsKey("CascadingDropDownList"))
+    {
+        DropdownListKeys = ViewData.ModelMetadata.AdditionalValues["CascadingDropDownList"].ToString().Split('|').ToList();
+        DropdownListKeys.Add(name);
+    }
+    
+}
+
+@foreach (var s in DropdownListKeys)
+{ 
+    <span id="@(name + "_" + s)">
+        <img src="~/Content/images/min-loading.gif" /></span>
+}
+
+<script type="text/javascript">
+    $(function() {
+        @for (int i = 0; i < DropdownListKeys.Count; i++)
+        {
+            var _selectValue = string.IsNullOrEmpty(Model) ? "" : Model.Substring(0, (i + 1) * 3);
+            var _dname = DropdownListKeys[i];
+           <text>
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action(name + "Name", "AjaxService")',
+            data: 'key=@_selectValue',
+            success: function(res) {
+                $('#@(name + "_" + _dname)').html(res);
+            }
+        })
+        </text>
+        }
+    })
+</script>
+

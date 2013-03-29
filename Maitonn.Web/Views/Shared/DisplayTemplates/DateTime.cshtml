@@ -1,0 +1,10 @@
+@model  DateTime?
+
+@if (Model.HasValue)
+{ 
+    @Model.Value.ToString("yyyy-MM-dd")
+}
+else
+{
+    @(new DateTime(1900, 1, 1).ToString("yyyy-MM-dd"))
+}

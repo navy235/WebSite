@@ -1,0 +1,12 @@
+@model  double?
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+}
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+
+)
+
+

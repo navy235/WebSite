@@ -1,0 +1,68 @@
+﻿@model ProfileModel
+@{
+    ViewBag.Title = "邮箱绑定";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            @if (!ViewBag.Actived)
+            {
+
+                if (ViewBag.BeforeSend != null)
+                { 
+                @ViewHelpers.Alert("发送成功！",
+                    "绑定邮件已经发送到您的邮箱，请在" + ConfigSetting.ActiveEmailTimeDiffHour + "小时内进行绑定", false, AlertType.success.ToString())
+                    
+                }
+                else
+                {
+
+                    if (ViewBag.HasSendEmail)
+                    { 
+                @ViewHelpers.Alert("错误信息：",
+                    CookieHelper.NickName + "，您所使用的邮箱刚获取过绑定邮件，请到您的邮箱收取邮件, 或过" + ConfigSetting.GetBindEmailTimeDiffMin + "分钟再试", false, AlertType.error.ToString())
+                    }
+                    else
+                    {
+                @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",点击下面按钮获取邮件进行绑定。", false, AlertType.info.ToString())
+                    }
+                }
+                    
+                <div class="personal-form mt20">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-field c_gray">
+                            <button type="submit" class="btn btn-warning ">
+                                获取绑定邮件</button>
+                        </div>
+                    }
+                </div>
+            
+            }
+            else
+            {
+                @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",您的邮箱" + CookieHelper.Email + "已经绑定成功。", false, AlertType.info.ToString())
+                <div class="personal-body-bind">
+                    <dl class="clearfix">
+                        <dt class="bind-email"></dt>
+                        <dd class="bind-desc"><span class="ok">邮箱绑定</span>已绑定邮箱：@CookieHelper.Email</dd>
+                    </dl>
+                </div>
+            
+            }
+        </div>
+
+    </div>
+</article>

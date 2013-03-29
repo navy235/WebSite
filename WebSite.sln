@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maitonn.Core", "Maitonn.Core\Maitonn.Core.csproj", "{8404C3A7-9F29-4C74-9913-165BAE8C86DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maitonn.Web", "Maitonn.Web\Maitonn.Web.csproj", "{346307AB-54EC-4FD2-B188-E5505F7F1B13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maitonn.Web.Tests", "Maitonn.Web.Tests\Maitonn.Web.Tests.csproj", "{2F283BA4-85AE-442A-A652-CFA63A592B93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8404C3A7-9F29-4C74-9913-165BAE8C86DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8404C3A7-9F29-4C74-9913-165BAE8C86DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8404C3A7-9F29-4C74-9913-165BAE8C86DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8404C3A7-9F29-4C74-9913-165BAE8C86DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{346307AB-54EC-4FD2-B188-E5505F7F1B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{346307AB-54EC-4FD2-B188-E5505F7F1B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{346307AB-54EC-4FD2-B188-E5505F7F1B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{346307AB-54EC-4FD2-B188-E5505F7F1B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F283BA4-85AE-442A-A652-CFA63A592B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F283BA4-85AE-442A-A652-CFA63A592B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F283BA4-85AE-442A-A652-CFA63A592B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F283BA4-85AE-442A-A652-CFA63A592B93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+@model  decimal?
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+}
+
+@(Html.Kendo().CurrencyTextBoxFor(m => m)
+      .Min(0)
+)
+
+

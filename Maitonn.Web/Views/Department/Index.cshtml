@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "部门信息管理";
+}
+@(Html.Kendo().Grid<Department>()
+    .Name("DepartmentsList")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Name);
+        columns.Bound(c => c.Description);
+        columns.Bound(c => c.Leader);
+        columns.Command(command => command.Destroy()).Title("删除").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create();
+        toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Batch(true)
+        .ServerOperation(false)
+        .Model(model => model.Id(c => c.DepartmentID))
+        .Create("Editing_Create", "Department")
+        .Read("Editing_Read", "Department")
+        .Update("Editing_Update", "Department")
+        .Destroy("Editing_Destroy", "Department")
+    )
+)

@@ -1,0 +1,119 @@
+﻿<div class="nav-body nav-top">
+    <div class="nav-title">
+        <em></em>
+        <p class="nav-account"><a href="@Url.Action("Index", "Personal")">我的账号</a></p>
+        <i></i>
+    </div>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-profile">个人资料</p>
+        <i></i>
+    </div>
+    <ul class="menu-profile" style="display: none;">
+        <li class="item-baseinfo  ">
+            <p><a href="@Url.Action("BaseInfo", "Personal")">基本信息</a></p>
+        </li>
+        <li class="item-avtar  ">
+            <p><a href="@Url.Action("Avtar", "Personal")">设置头像</a></p>
+        </li>
+        <li class="item-contact ">
+            <p><a href="@Url.Action("Contact", "Personal")">联系方式</a></p>
+        </li>
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-bound">账号绑定</p>
+        <i></i>
+    </div>
+    <ul class="menu-bound" style="display: none;">
+        <li class="item-mobile ">
+            <p><a href="http://u.zhubajie.com/cert/mobile">手机绑定</a></p>
+        </li>
+        <li class="item-email ">
+            <p><a href="@Url.Action("BindEmail", "Personal")">邮箱绑定</a></p>
+        </li>
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-auth">帐号认证</p>
+        <i></i>
+    </div>
+    <ul class="menu-auth" style="display: none;">
+        <li class="item-realname">
+            <p><a href="http://u.zhubajie.com/cert/mobile">实名认证</a></p>
+        </li>
+        <li class="item-company ">
+            <p><a href="@Url.Action("Index", "Company")">企业认证</a></p>
+        </li>
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-security">账号安全</p>
+        <i></i>
+    </div>
+    <ul class="menu-security" style="display: none;">
+        <li class="item-changepwd ">
+            <p><a href="@Url.Action("ChangePwd", "Personal")">修改登录密码</a></p>
+        </li>
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-outdoor">户外信息管理</p>
+        <i></i>
+    </div>
+    <ul class="menu-outdoor" style="display: none;">
+        <li class="item-outdoor-list ">
+            <p><a href="@Url.Action("index", "outdoor")">显示中信息</a></p>
+        </li>
+        <li class="item-outdoor-notshow ">
+            <p><a href="@Url.Action("notshow", "outdoor")">未显示信息</a></p>
+        </li>
+        <li class="item-outdoor-preverify ">
+            <p><a href="@Url.Action("preverify", "outdoor")">待审核信息</a></p>
+        </li>
+        <li class="item-outdoor-verifyfailed ">
+            <p><a href="@Url.Action("verifyfailed", "outdoor")">审核失败信息</a></p>
+        </li>
+        <li class="item-outdoor-delete ">
+            <p><a href="@Url.Action("delete", "outdoor")">已删除信息</a></p>
+        </li>
+        <li class="item-outdoor-publish ">
+            <p><a href="@Url.Action("add", "outdoor")">发布户外信息</a></p>
+        </li>
+        <li class="item-outdoor-top ">
+            <p><a href="http://u.zhubajie.com/changepass/index">户外置顶管理</a></p>
+        </li>
+
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-pay"><a href="http://u.zhubajie.com/pay">支付账户管理</a></p>
+        <i></i>
+    </div>
+</div>
+@Html.Partial("_DisplayMessage")
+<script type="text/javascript">
+    $(function () {
+
+        var currentMenuItem = '@ViewBag.MenuItem';
+        $('.nav-title').click(function () {
+            var $navitem = $(this).children('p');
+            if (!$navitem.children('a')[0]) {
+                var menuClass = 'menu-' + $navitem.attr('class').replace('nav-', '');
+                $('.nav-body').find('ul:not(".' + menuClass + '")').hide();
+                $('.' + menuClass).show();
+                $('.nav-current').removeClass('nav-current');
+                $('.' + menuClass).prev('div').addClass('nav-current');
+
+            }
+        })
+        if ($('.nav-' + currentMenuItem)[0]) {
+            $('.nav-' + currentMenuItem).parent().addClass('nav-current');
+        } else {
+
+            $('.item-' + currentMenuItem).addClass('current').parents('ul').show();
+            $('.item-' + currentMenuItem).parents('ul').prev('div').addClass('nav-current');
+        }
+    })
+
+</script>

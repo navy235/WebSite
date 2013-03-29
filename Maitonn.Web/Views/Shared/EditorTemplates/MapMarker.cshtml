@@ -1,0 +1,214 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+    var iconUrl = Url.Content("~/Content/mapicon.gif");
+}
+
+<style type="text/css">
+    .map-container {
+        width: 670px;
+        height: 450px;
+        border: 1px solid gray;
+    }
+
+    .map-control {
+        position: absolute;
+        display: none;
+        top: 0px;
+        right: 0px;
+        z-index: 200;
+        opacity: 0.7;
+        background: #050505;
+        width: 100%;
+        text-align: right;
+        padding: 3px 0px;
+    }
+
+    .map-control-content {
+        padding-right: 10px;
+    }
+
+    .map-keywords {
+        width: 250px;
+    }
+
+    .map-marker-btn {
+        height: 30px;
+    }
+
+    .map-marker-icon {
+        background-position: -46px 0;
+        background-image: url('/Content/mapicon.gif');
+    }
+</style>
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+@Html.Kendo().Window().Name(name + "_window").Title("请标注" + displayname).Content(
+    @<text>
+<div id="@(name + "_container")" class="map-container">
+</div>
+</text>
+).Events(events => events.Open(name + ".windowOpen")).Draggable(true).Width(700).Height(500).Modal(true).Visible(false)
+<button type="button" id="@Html.Raw(name + "_select")" class="k-button" ><span class="k-icon k-add"></span>标记位置</button>
+
+
+<div id="@(name + "_mapcontrol")" class="map-control">
+    <div class="map-control-content">
+        <span class="k-textbox k-space-right map-keywords">
+            <input type="text" id="@(name + "_keywords")" class="k-textbox ">
+            <a href="javascript:void(0)" id="@(name + "_search")" class="k-icon k-i-search map-search-btn">&nbsp;</a>
+        </span>
+        <a class="k-button k-button-icontext map-marker-btn" id="@(name + "_marker")"><span class="k-icon map-marker-icon"></span>标记</a>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        selectId:'@(name + "_select")',
+        conatinerId:'@(name + "_container")',
+        windowId:'@(name + "_window")',
+        templateId:'@(name + "_template")',
+        keywordsId:'@(name + "_keywords")',
+        searchId:'@(name + "_search")',
+        markerId:'@(name + "_marker")',
+        iconUrl:'@iconUrl',
+        lng:'@(String.IsNullOrEmpty(Model) ? string.Empty : Model.Split('|')[0])',
+        lat:'@(String.IsNullOrEmpty(Model) ? string.Empty : Model.Split('|')[1])',
+        load:function(path,callback){
+            var script = document.createElement("script");
+            script.src = "http://api.map.baidu.com/api?v=1.2&callback=@(name + ".binding")";
+            document.body.appendChild(script);
+        },
+        binding:function(){
+            var self=@name;
+            var point=new BMap.Point(116.404, 39.915);
+            if(self.lng!==''&&self.lng!=='0'){
+                point=new BMap.Point(new Number(self.lng),new Number(self.lat));
+            }
+            self.map=new BMap.Map("@(name + "_container")");
+            self.map.centerAndZoom(point, 12);
+            self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+            self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+            self.map.addControl(new BMap.OverviewMapControl());  
+            self.map.enableScrollWheelZoom();//添加缩略地图控件
+            self.local=new BMap.LocalSearch(self.map, self.options);
+            self.bindingControl();
+            $("#"+self.selectId).on('click',self.mapShow);
+            $('#'+self.markerId).on('click',self.mapMarker);
+            $('#'+self.keywordsId).on('keydown',self.seachkeydown);
+            $('#'+self.searchId).on('click',self.seach);
+            $('#'+self.keywordsId).val('长沙');
+
+        },
+        mapShow:function(){
+            var self=@name;
+            $("#"+self.windowId).data("kendoWindow").center().open();
+            if(self.lng===''||self.lng==='0'){
+                self.seach();
+            }else{
+                //var point=new BMap.Point(new Number(self.lng),new Number(self.lat));
+                //self.map.panTo(point);
+                //self.map.setCenter(point)
+                //self.addMarker(point);
+            }
+        },
+        windowOpen:function(){
+            var self=@name;
+            setTimeout(function(){
+                var point=new BMap.Point(new Number(self.lng),new Number(self.lat));
+                //self.map.panTo(point);
+                self.map.setCenter(point)
+                self.addMarker(point);
+            },500)
+        },
+        bindingControl:function(){
+            var self=@name;
+            var controlId='@(name + "_mapcontrol")';
+            $("#"+self.conatinerId).append($('#'+controlId).show());
+        },
+        options:{
+            onSearchComplete: function (results) {
+                var self=@name;
+                if (self.local.getStatus() == BMAP_STATUS_SUCCESS) {
+                    // 判断状态是否正确   
+                    var s = [];
+                    self.map.clearOverlays();
+                    for (var i = 0; i < results.getCurrentNumPois(); i++) {
+                        var x = results.getPoi(i).lng;
+                        var y = results.getPoi(i).lat;
+                        s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
+                        if (i == 0) {
+                            self.map.setCenter(results.getPoi(i).point);
+                            self.addMarker(results.getPoi(i).point);
+                        }
+                    }
+                }
+                else {
+                    alert('没有搜索到该地！');
+                }
+            }
+        },
+        infoOptions: {
+            width: 100,     // 信息窗口宽度   
+            height: 50,     // 信息窗口高度  
+            title: "提示："  // 信息窗口标题   
+        },
+        infoWinContent:"请移动此图标到您需要标记的位置<br/>点击图标即可标记!",
+        keywords:"长沙",
+        seachkeydown:function(e){
+            var self=@name;
+            if (e.keyCode === 13) {
+                self.seach();
+            }
+        },
+        seach:function(e){
+            var self=@name;
+            self.keywords = $("#"+self.keywordsId).val();
+            if(self.keywords===''){
+                return;
+            }
+            self.local.search( self.keywords);
+        },
+        addMarker:function(point){
+            var self=@name;
+            var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
+                offset: new BMap.Size(0, 0),
+                imageOffset: new BMap.Size(0, 0 - 10 * 25)
+            });
+            var marker = new BMap.Marker(point, { icon: myIcon });
+            this.map.addOverlay(marker);
+            marker.enableDragging();
+            var infoWindow = new BMap.InfoWindow(this.infoWinContent, this.infoOpts);  // 创建信息窗口对象   
+  
+            marker.addEventListener("mouseover", function () {
+                if(!this.firstOpen){
+                    this.firstOpen=true;
+                    this.openInfoWindow(infoWindow);      // 打开信息窗口 
+                }
+            })
+            marker.addEventListener("click", function (e) {
+                if (confirm("确认选择该坐标？")) {
+                    $('#'+self.id).val(e.point.lng+'|'+e.point.lat);
+                    $('#'+self.id).parents('form:first').validate().element('#'+self.id);
+                    $("#"+self.windowId).data("kendoWindow").close();
+                }
+            });
+            return marker;
+        },
+        mapMarker:function() {
+            var self=@name;
+            self.map.clearOverlays();
+            self.addMarker(self.map.getCenter());
+        }
+
+    }
+    $(function(){
+        @Html.Raw(name + ".load();")
+    })
+
+
+</script>

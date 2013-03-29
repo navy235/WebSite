@@ -1,0 +1,151 @@
+﻿.admin-container {
+  position: relative;
+  height: 100%;
+}
+
+.admin-content {
+  height: 100%;
+}
+
+.admin-top {
+  position: absolute;
+  top: 0px;
+  height: 57px;
+  width: 100%;
+  background: url(images/index-header.gif) repeat-x;
+}
+
+
+.admin-main {
+  position: absolute;
+  top: 57px;
+  bottom: 25px;
+  width: 100%;
+}
+
+
+.admin-bottom {
+  position: absolute;
+  bottom: 0px;
+  height: 25px;
+  width: 100%;
+  background: #274152 url(images/index-footer.gif) repeat-x;
+}
+
+.admin-bottom-msg {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  height: 25px;
+  line-height: 25px;
+  font-size: 8pt;
+  font-weight: bold;
+  color: #ABCAD3;
+}
+
+.admin-top-logo {
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  width: 59px;
+  height: 64px;
+}
+
+.admin-top-title {
+  position: absolute;
+  top: 0px;
+  left: 64px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 24px;
+  color: #ffffff;
+  font-family: "微软雅黑","宋体","Arial";
+  text-shadow: 0px 1px #5F8718;
+}
+
+.admin-top-info {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  height: 25px;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.admin-top-group,
+.admin-top-version {
+  margin-right: 50px;
+  color: #fff;
+}
+
+.admin-top-link {
+  margin-right: 10px;
+  color: #fff !important;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+a.admin-top-link, a.admin-top-link:visited, a.admin-top-link:hover {
+  color: #fff;
+}
+
+#main {
+  height: 100%;
+}
+
+#leftmenu {
+  border: none;
+  background-color: none;
+}
+
+
+a {
+  color: #2e2e2e;
+  text-decoration: none;
+}
+
+  a:link, a:visited {
+    color: #2e2e2e;
+    text-decoration: none;
+  }
+
+#loading {
+  height: auto;
+  text-align: center;
+  padding-top: 200px;
+}
+
+#verifyLoading {
+  height: auto;
+  text-align: center;
+  padding-top: 200px;
+}
+
+.form-block {
+}
+
+.form-block-title {
+  margin: 0 0 20px 0;
+  padding: 0;
+  clear: both;
+  overflow: hidden;
+  background: #336699;
+}
+
+  .form-block-title h5 {
+    margin: 0;
+    padding: 11px 0 11px 10px;
+    float: left;
+    border: none;
+    color: #ffffff;
+    clear: both;
+    overflow: hidden;
+    font-weight: bold;
+  }
+
+.form-block-content {
+  margin: 0;
+  padding: 0 20px 10px 20px;
+  clear: both;
+  overflow: hidden;
+}

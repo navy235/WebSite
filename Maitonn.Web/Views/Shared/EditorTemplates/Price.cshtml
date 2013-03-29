@@ -1,0 +1,14 @@
+@model  decimal?
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId("");
+    var valuesRange = ViewData.ModelMetadata.AdditionalValues["Price"].ToString().Split(',');
+    var minValue = Convert.ToDecimal(valuesRange[0]);
+    var maxValue = Convert.ToDecimal(valuesRange[1]);
+    var Unit = ViewData.ModelMetadata.AdditionalValues["PriceUnit"].ToString();
+}
+
+@(Html.Kendo().CurrencyTextBoxFor(m => m)
+      .Min(minValue).Max(maxValue)
+)<span class="price-unit">@Unit</span>
+
+

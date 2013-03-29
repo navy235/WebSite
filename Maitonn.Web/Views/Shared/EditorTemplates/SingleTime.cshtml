@@ -1,0 +1,33 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+}
+@(Html.Kendo().TimePicker()
+            .Name(name + "_timepicker")
+            .Events(e =>
+            {
+                e.Change(name + ".change");
+            })
+    )
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        binding:function(){
+            var self=@name;
+            var value='@model ';
+            $('#'+self.id+"_timepicker").val(value);
+        },
+        change:function(e){
+            var self=@name;
+            var timepicker=$('#'+self.id+"_timepicker").data("kendoTimePicker");
+            $('#'+self.id).val($('#'+self.id+"_timepicker").val());
+            $('#'+self.id).parents('form:first').validate().element('#'+self.id);
+        }
+    }
+        $(function(){
+            @(name + ".binding();")
+        })
+</script>

@@ -1,0 +1,560 @@
+﻿﻿body {
+  font-size: 12px;
+  font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+  color: #232323;
+  background-color: #fff;
+}
+
+
+header, footer, nav, section {
+  display: block;
+}
+
+.container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+  border: 1px solid #ddd;
+  padding: 0 1.4em 1.4em 1.4em;
+  margin: 0 0 1.5em 0;
+}
+
+legend {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+textarea {
+  min-height: 125px;
+}
+
+.editor-label {
+  margin: 1em 0 0 0;
+}
+
+.editor-field {
+  margin: 0.5em 0 0 0;
+}
+
+.form-step {
+  float: left;
+  margin-left: 15px;
+}
+
+  .form-step li {
+    float: left;
+    margin-left: 1px;
+    color: #b5b5b5;
+  }
+
+    .form-step li.cur {
+      color: #333;
+    }
+
+    .form-step li i {
+      display: block;
+      background-color: #eee;
+      width: 150px;
+      height: 8px;
+      overflow: hidden;
+      margin: 5px 0 15px 0;
+    }
+
+    .form-step li.pass i {
+      background-color: #ffd05e;
+    }
+
+    .form-step li.cur i {
+      background-color: #ff9c00;
+    }
+
+.form-timequantum {
+  display: inline-block;
+  width: 350px;
+  vertical-align: middle;
+}
+
+
+
+  .form-timequantum .k-dropdown {
+    width: 125px;
+  }
+
+.form-title {
+  color: #333;
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 14px;
+  font-weight: bold;
+  padding-bottom: 4px;
+  margin: 15px 0 20px 0;
+}
+
+  .form-title span {
+    color: #999;
+    font-weight: normal;
+    font-size: 12px;
+  }
+
+    .form-title span b {
+      color: #F00;
+      margin: 0px 5px;
+      font-weight: normal;
+    }
+
+
+.form-field {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+
+  .form-field label {
+    display: inline-block;
+    font-size: 12px;
+    width: 105px;
+    margin-bottom: 5px;
+    text-align: right;
+  }
+
+  .form-field .form-field-lable-required:before {
+    content: "*";
+    color: red;
+    margin: 0px 5px;
+    font-weight: bold;
+  }
+
+  .form-field .text-box {
+    width: 250px;
+  }
+
+  .form-field .checklist {
+    display: inline-block;
+    width: 350px;
+    vertical-align: middle;
+  }
+
+  .form-field label.checkbox {
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+    padding-right: 0;
+  }
+
+    .form-field label.checkbox input {
+      width: 13px;
+      height: 13px;
+      padding: 0;
+      margin: 0;
+      vertical-align: bottom;
+      position: relative;
+      top: -1px;
+      *overflow: hidden;
+    }
+
+  .form-field .radiolist {
+    display: inline-block;
+    width: 350px;
+    vertical-align: middle;
+  }
+
+  .form-field label.radio {
+    display: inline-block;
+    width: 60px;
+    text-align: left;
+    padding-right: 0;
+  }
+
+    .form-field label.radio input {
+      width: 13px;
+      height: 13px;
+      padding: 0;
+      margin: 0;
+      vertical-align: bottom;
+      position: relative;
+      top: -3px;
+    }
+
+  .form-field textarea {
+    font-size: 1em;
+    height: 125px;
+    padding-top: 5px;
+  }
+
+.form-field-submit {
+  margin-left: 107px;
+}
+
+.form-field-cascade {
+  display: none;
+}
+
+.form-field-city .k-dropdown {
+  width: 125px;
+}
+
+.form-field-avtar .img-box {
+  display: inline-block;
+}
+
+  .form-field-avtar .img-box img {
+    width: 198px;
+    height: 198px;
+  }
+
+.form-field-avtar .k-upload {
+  margin-left: 107px;
+  margin-top: 5px;
+  display: block;
+}
+
+.form-areas {
+  display: inline-block;
+  width: 350px;
+  vertical-align: middle;
+}
+
+
+.form-field-validatecode input[type="text"] {
+  width: 120px;
+}
+
+.form-field-validatecode img {
+  height: 29px;
+  vertical-align: middle;
+}
+
+/* flyout Text */
+
+.field-hint-message,
+.field-validation-error {
+  font-size: 1em;
+  left: 460px;
+  line-height: 1.2em;
+  padding: 5px;
+  position: absolute;
+  top: 0px;
+  z-index: 550;
+  padding-left: 22px;
+}
+
+.field-hint-message {
+  background-color: #eff7fa;
+  border: solid 1px #52a4ca;
+  display: none;
+  background: url(images/hint_16.png) 3px 4px no-repeat;
+  z-index: 551;
+}
+
+
+.field-validation-error {
+  background-color: #fbe3e4;
+  border: solid 1px #c13a3f;
+  display: block;
+  background: url(images/error_16.png) 3px 4px no-repeat;
+}
+
+.form-field input:focus ~ .field-hint-message {
+  display: block;
+}
+
+.form-field input:focus ~ .field-validation-error {
+  display: none;
+}
+
+.form-field textarea:focus ~ .field-hint-message {
+  display: block;
+}
+
+.form-field textarea:focus ~ .field-validation-error {
+  display: none;
+}
+
+.field-prompt-message {
+  display: block;
+  margin-left: 105px;
+  color: #999;
+}
+
+.form-field-hide label {
+  display: none;
+}
+
+.form a.cancel {
+  font-size: 1.25em;
+}
+
+.form input:focus {
+  outline: none;
+}
+
+.form img {
+  display: block;
+  margin: 15px 0;
+}
+
+.validation-summary-errors,
+.field-validation-error {
+  color: #c13a3f;
+}
+
+.validation-summary-errors {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.PoliteCaptcha.editor-field .field-validation-error {
+  position: static;
+  width: 300px;
+}
+
+/* To fix alignment of generated reCAPTCHA table */
+
+.PoliteCaptcha.editor-field table {
+  margin-left: -3px !important;
+}
+
+/* Errors */
+
+.error-content {
+  margin-top: 80px;
+}
+
+.error-show-code {
+  background-image: url(Images/errorPage.png);
+  background-repeat: no-repeat;
+  height: 125px;
+  left: 0;
+  position: fixed;
+  text-indent: -9999px;
+  top: 0;
+  width: 220px;
+}
+
+
+/* Display */
+.display-container {
+}
+
+.display-item {
+  margin: 10px 0 0 0;
+  line-height: 20px;
+  position: relative;
+}
+
+
+.display-label {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 12px;
+  width: 105px;
+  text-align: right;
+}
+
+.display-field {
+  margin-left: 5px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.display-title {
+  color: #333;
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 14px;
+  font-weight: bold;
+  padding-bottom: 4px;
+  margin: 15px 0 20px 0;
+}
+
+.display-required .display-label:before {
+  content: "*";
+  color: red;
+  margin: 0px 5px;
+  font-weight: bold;
+}
+
+.display-item-hide .display-label {
+  display: none;
+}
+
+.display-label:after {
+  content: " : ";
+  margin: 0px 5px;
+  font-weight: bold;
+}
+
+.display-item .img-box-list {
+  margin-left: 0px;
+}
+
+.display-item .map-container {
+  width: 250px;
+  height: 150px;
+}
+
+
+/***admin-item***/
+.table-list-img {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #bbb;
+  padding: 3px;
+  margin: 2px;
+}
+
+.filed-auction {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.form-auctioncalendar {
+  padding: 10px 0 10px 0;
+  margin: 0 0 10px 0;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.form-auctioncalendar-tips {
+  height: 60px;
+  text-align: right;
+}
+
+  .form-auctioncalendar-tips span {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+
+    .form-auctioncalendar-tips span em {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      background-color: #f67615;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+      .form-auctioncalendar-tips span em.nosale {
+        background-color: #c7c7c7;
+      }
+
+
+
+.form-auctioncalendar-year {
+  width: 72px;
+  float: left;
+  height: 74px;
+  overflow: hidden;
+}
+
+  .form-auctioncalendar-year p {
+    width: 100%;
+    float: left;
+    height: 12px;
+    line-height: 12px;
+    padding: 0;
+    color: #262626;
+    font-weight: bold;
+    margin-bottom: 49px;
+    text-align: center;
+  }
+
+.form-auctioncalendar-month {
+  width: 720px;
+  float: left;
+  height: 95px;
+}
+
+  .form-auctioncalendar-month ul {
+    width: 100%;
+    float: left;
+    height: 64px;
+  }
+
+  .form-auctioncalendar-month li {
+    font-size: 7px;
+    height: 7px;
+    width: 100%;
+    float: left;
+    background-color: #f67615;
+    position: relative;
+  }
+
+    .form-auctioncalendar-month li span {
+      font-size: 12px;
+      float: left;
+      height: 7px;
+      background-color: #c7c7c7;
+      position: absolute;
+    }
+
+    .form-auctioncalendar-month li.form-auctioncalendar-list {
+      width: 100%;
+      float: left;
+      height: 60px;
+      background: none;
+      z-index: -1;
+    }
+
+      .form-auctioncalendar-month li.form-auctioncalendar-list ul {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        float: left;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+        .form-auctioncalendar-month li.form-auctioncalendar-list ul li {
+          font-size: 12px;
+          width: 59px;
+          float: left;
+          height: 60px;
+          border-right: 1px dashed #c7c7c7;
+          line-height: 60px;
+          background: none;
+          text-align: center;
+          color: #c0c0c0;
+          font-weight: bold;
+        }
+
+          .form-auctioncalendar-month li.form-auctioncalendar-list ul li.last {
+            border-right: none;
+            width: 60px;
+          }
+
+    .form-auctioncalendar-month li strong.form-auctioncalendar-left {
+      position: absolute;
+      left: -20px;
+    }
+
+    .form-auctioncalendar-month li strong.form-auctioncalendar-right {
+      position: absolute;
+      right: -20px;
+      color: #F67615;
+      top: 7px;
+      line-height: 16px;
+      z-index: 50;
+    }
+
+    .form-auctioncalendar-month li strong {
+      height: 26px;
+      line-height: 26px;
+      top: -25px;
+      display: block;
+      width: 50px;
+      color: #901482;
+      font-size: 14px;
+      position: absolute;
+      font-size: 12px;
+    }
+
+.field-auction-error {
+  left: 500px;
+  top: 5px;
+}

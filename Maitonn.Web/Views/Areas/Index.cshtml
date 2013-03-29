@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "城市信息管理";
+}
+
+@(Html.Kendo().Grid<Area>()
+    .Name("AreasList")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.CateName);
+        columns.Bound(c => c.ID);
+        columns.Bound(c => c.OrderIndex);
+        columns.ForeignKey(c => c.PID, (SelectList)ViewBag.PID);
+        columns.Command(command => command.Destroy()).Title("删除").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create();
+        toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Sortable()
+    .Groupable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Batch(true)
+        .PageSize(20)
+        .Model(model => model.Id(c => c.ID))
+        .Create("Editing_Create", "Areas")
+        .Read("Editing_Read", "Areas")
+        .Update("Editing_Update", "Areas")
+        .Destroy("Editing_Destroy", "Areas")
+    )
+)

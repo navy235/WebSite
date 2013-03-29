@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "已删除户外信息列表";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+
+            @if (ViewBag.Error != null)
+            { 
+                @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+            }
+            <div class="personal-form mt20">
+
+                @(Html.Kendo().Grid<OutDoorListItem>()
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(c => c.MediaID).Title("媒体ID")
+                            .Sortable(false)
+                            .ClientTemplate("<input type='checkbox' name='ID_check' id='#=MediaID#_check'  class='chkbx' value='#=MediaID#' />")
+                            .HeaderTemplate("<div style='text-align:center'><input type='checkbox' id='checkAll' onclick='Grid.checkAll(this)' title='全选'/></div>")
+                            .Width(40).HtmlAttributes(new { style = "text-align:center" });
+                        columns.Bound(c => c.FocusImg).ClientTemplate("<img class='table-list-img' src='#=FocusImg#' alt='#=Name#' />").Width(76).Sortable(false);
+                        columns.Bound(c => c.Name);
+                        columns.Bound(c => c.AddTime).Format("{0:yyyy-MM-dd}").Width(100).Title("添加时间");
+                        columns.Template(@<text></text>)
+                .ClientTemplate(@"<a class='k-button k-button-icontext ' href='"
+                + Url.Action("edit", "outdoor") + "/#=MediaID#'><span class='k-icon k-edit'></span>编辑并重审</a>").Title("编辑").Width(120);
+
+                    })
+
+                    .Pageable()
+                    .Sortable()
+                    .Scrollable()
+                   .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(20)
+                        .Model(model => model.Id(c => c.MediaID))
+                        .Read(read => read.Action("outdoor_delete", "outdoor"))
+                     )
+                     .HtmlAttributes(new { style = "height:500px;" })
+                    )
+
+                <script type="text/javascript">
+                    var Grid = {
+                        id: 'Grid',
+                        checkAll: function(ele) {
+                            var self = Grid;
+                            var state = $(ele).is(':checked');
+                            $('[name="ID_check"]').attr('checked', state);
+                        }
+                    }
+
+                </script>
+            </div>
+        </div>
+
+    </div>
+</article>

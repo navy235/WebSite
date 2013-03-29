@@ -1,0 +1,17 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+
+    double width = string.IsNullOrEmpty(Model) ? 0.0F : Convert.ToSingle(Model.Split('|')[0]);
+    double height = string.IsNullOrEmpty(Model) ? 0.0F : Convert.ToSingle(Model.Split('|')[1]);
+    int areacount = string.IsNullOrEmpty(Model) ? 1 : Convert.ToInt32(Model.Split('|')[2]);
+
+    var allAreas = (width * height * areacount).ToString("F1");
+
+}
+<div class="display-areas">
+    @width m * @height m * @areacount 面=<span>@allAreas </span>平方米
+</div>
+
+

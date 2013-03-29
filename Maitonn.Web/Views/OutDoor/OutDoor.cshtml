@@ -1,0 +1,332 @@
+﻿@model  OutDoor
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutOutDoor.cshtml";
+}
+
+<div class="details-wrap">
+    <div class="details-info-wrap">
+        <!--Img-Box-Start--->
+        @Html.Partial("~/Views/Shared/_Details_ImgBox.cshtml", (IEnumerable<ImageBox>)ViewBag.ImgBoxs)
+        <!--Img-Box-End----->
+        <dl class="details-info-content">
+            <dt>@Model.Name</dt>
+            <dd>市场价：<span class="details-info-item details-info-price"><del>¥@Model.Price /年</del></span></dd>
+            <dd>售&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="details-info-item details-info-price-current"><strong>¥<b>¥@Model.Price</b></strong></span></dd>
+            <dd>评&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="details-info-item">100% 好评度</span></dd>
+            <dd>运&nbsp;&nbsp;&nbsp;&nbsp;费：<span class="details-info-item"><b class="icon_y">免</b>全场购物免运费</span></dd>
+            <dd class="details-buy-box">数&nbsp;&nbsp;&nbsp;&nbsp;量：
+            <span class="details-info-item">
+                <form action="/order/confirm.html" method="post">
+                    <em><a href="javascript:;" class="details-buy-number  details-buy-number-reduce details-buy-number-disabled">－</a>
+                        <input type="text" value="1" name="goods[0].tempBuyAmount" class="details-buy-number-text">
+                        <a href="javascript:;" class="details-buy-number  details-buy-number-add">＋</a>
+                        <span class=" details-buy-storage ">库存充足</span></em>
+                    <em class="pt20">
+                        <a href="#Core.buyNow" class="details-buy-btn">立即购买</a>
+                        <a href="javascript:;" class="details-buy-add-car" onclick="Core.addToCart('showImgBox','http://img4.126.net/health/product/20130121/hc6yq7kc10013_430_430.jpg',2167);">加入购物车</a>
+                        <a href="#Core.addGoodsToMyFav:2167">收藏</a>&nbsp;
+                        <span classs="details-buy-fav">(人气0)</span>
+                    </em>
+                    <input type="hidden" name="goods[0].selected" value="1">
+                    <input type="hidden" name="goods[0].goodsId" value="2167">
+                    <input type="hidden" name="goods[0].tempCurrentPrice" value="299">
+                    <input type="hidden" name="goods[0].tempGoodsActivityType" value="">
+                    <input type="hidden" name="goods[0].innerSource" _name="innerSource" value="DETAIL">
+                    <input type="hidden" name="s" value="2">
+                </form>
+            </span>
+            </dd>
+            <dd class="clearfix">送积分：
+                <span class="details-info-item" style="width: 200px;">单件送 
+                    <strong class="c_green">299</strong> 积分
+                </span>
+                <!-- Baidu Button BEGIN -->
+
+                <!-- Baidu Button END -->
+            </dd>
+        </dl>
+    </div>
+    <div class="details-bottom-wrap clearfix">
+        <div class="details-bottom-left">
+            <div class="gray-box">
+                <h4>相关功效</h4>
+                <ul class="gray-view clearfix">
+                    <li><a href="/products/3-21.html" target="_blank" title="补肾健体">补肾健体</a></li>
+                    <li><a href="/products/3-23.html" target="_blank" title="性腺养护">性腺养护</a></li>
+                    <li><a href="/products/3-24.html" target="_blank" title="健身塑肌">健身塑肌</a></li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>同类其他品牌</h4>
+                <ul class="gray-view clearfix">
+                    <li><a href="/brand/110-22.html" target="_blank" title="澳罗拉">澳罗拉</a></li>
+                    <li><a href="/brand/67-22.html" target="_blank" title="GNC健安喜">GNC健安喜</a></li>
+                    <li><a href="/brand/63-22.html" target="_blank" title="自然之宝">自然之宝</a></li>
+                    <li><a href="/brand/105-22.html" target="_blank" title="AURINDA澳琳达">AURINDA澳琳达</a></li>
+                    <li><a href="/brand/68-22.html" target="_blank" title="Cheerer喜瑞">Cheerer喜瑞</a></li>
+                    <li><a href="/brand/62-22.html" target="_blank" title="汤臣倍健">汤臣倍健</a></li>
+                    <li><a href="/brand/90-22.html" target="_blank" title="同仁堂">同仁堂</a></li>
+                    <li><a href="/brand/64-22.html" target="_blank" title="K-Lex康力士">K-Lex康力士</a></li>
+                    <li><a href="/brand/109-22.html" target="_blank" title="十一坊">十一坊</a></li>
+                    <li><a href="/brand/106-22.html" target="_blank" title="美澳健">美澳健</a></li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>浏览该商品的用户最终购买了</h4>
+                <ul class="list-gray-view">
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix list-gray-last">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>浏览了此商品的用户还购买了</h4>
+                <ul class="list-gray-view">
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix list-gray-last">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="gray-box mt10" style="visibility: hidden">
+                <h3><strong>浏览历史</strong></h3>
+                <ul></ul>
+            </div>
+        </div>
+        <div class="details-right">
+            <div class="details-nav">
+                <span class="active  details-goods">产品详情</span>
+                <span class="details-pack">包装服务</span>
+                <span class="details-rating">用户评价
+                    <em>(<b class="details-comment  v1 v0">1</b>)</em>
+                </span>
+            </div>
+            <div class="goods">
+                <ul class="goods-params">
+                    <li class="">户外类别：<span>@Model.OutDoorMediaCate.CateName</span></li>
+                    <li class="">原&nbsp;&nbsp;产&nbsp;&nbsp;地：<span>@Model.Area.CateName</span></li>
+                    <li class="">规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：<span>@Model.Wdith 米*@Model.Height 米*@Model.TotalFaces 面</span></li>
+                    <li class="">保&nbsp;&nbsp;质&nbsp;&nbsp;期：<span>@Model.Owner.Deadline.ToString("yyyy-MM-dd")</span></li>
+                    <li class="">贮藏方式：<span>阴凉干燥处</span></li>
+                    <li>蓝帽编号：<span>营养膳食补充剂（非食健字）</span></li>
+
+                    <li class="goods-params-long">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：
+                        <span>此商品由<b title="北京葡乐安贸易有限公司">网易合作商</b>提供，并负责配送及开具发票,@Model.Description</span></li>
+                </ul>
+                <h3 class="goods-head goods-summary">商品概述</h3>
+                <ul class="goods-summary-list">
+                    <li>适用人群：
+                        <span>成人</span>
+
+                    </li>
+                    <li class="line"></li>
+                    <li>服用方法：
+                        <span>均为随餐服用</span>
+
+                    </li>
+                    <li>服&nbsp;&nbsp;用&nbsp;&nbsp;量：
+                        <span>绿蔬提取物营养片每日1次，1次1片；小蓟复合提取物营养胶囊每日1次，每次2粒</span>
+
+                    </li>
+                    <li class="line"></li>
+                    <li>禁&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;忌：
+                        <span class="afterFix">无</span>
+                    </li>
+                    <li>注意事项：
+                        <span class="afterFix">无</span>
+                    </li>
+                </ul>
+                <h3 class="goods-head goods-intro">商品介绍</h3>
+                @foreach (var img in Model.MediaImg.ImgUrls.Split(','))
+                { 
+                    <div class="tc" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                        <img src="@img">
+                    </div>
+                }
+            </div>
+            <div class="goods-pack" style="display: none">
+                <h3 class="goods-head goods-packing">包装</h3>
+                <div class="tc" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                    <img src="http://img3.126.net/health/images/product/packingBg.jpg">
+                </div>
+                <div class="goods-desc">所有纸箱、塑料袋等标有“网易保健品”的外包装均由网易保健品为您免费提供，我们会根据您所购商品的具体尺寸提供相应的完整包装，保证您所购商品在投递的过程中完好无损。</div>
+                <h3 class="goods-head goods-service">服务</h3>
+                <div class="tc" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                    <img src="http://img3.126.net/health/images/product/seviceBg.jpg">
+                </div>
+                <div class="goods-desc">
+                    网易保健品向您保证所售商品均为正品，我们旨在用线上的细心服务为您带来超越线下的购物体验和同质商品。网易保健品为您提供全场包邮的服务，所有商品均由我们合作的物流公司代为投递，为保证物流质量和速度，我们已经与国内的多家知名物流公司建立合作，保证您所购买的商品顺利投递到您的手中。
+    但由于保健品自身的特殊性，根据国家相关法律规定，一经售出非质量问题概不退换货。如确有质量问题，我们会免费为您退换货。退换货有效期为七天，请您尽快确认，逾期恕不退换。
+                </div>
+                <div class="goods-desc">注：网易保健品会保证所售商品信息的及时有效，但不排除厂家在没有任何提前通知的情况下更改产品包装、产地或者一些附件，如遇修改产生的用户收到货物与网易保健品图片、产地、说明不完全一致，请您谅解。但我们能确保为原厂正品，并与当前市场同一商品的主流新品一致。</div>
+            </div>
+            <div class="goods-rating">
+                <h3 class="goods-head goods-comment">用户评价</h3>
+                <ul class="goods-rate goods-rateinfo clearfix">
+                    <li class="first">
+                        <p class="c_ba2636">100<em>%</em></p>
+                        <p class="c_888">好评度</p>
+                    </li>
+                    <li class="second">
+                        <span>
+                            <label for="goodRate">
+                                好评（<em class="commentCount v1">1</em>）
+                                <em class="progress-bar "><b style="width: 200px"></b></em>
+                                <em class="progress-bar-num">100%</em>
+                            </label>
+                        </span>
+                        <br>
+                        <br>
+                        <span>
+                            <label for="badRate">
+                                差评（<em class="commentCount v0">0</em>）
+                                <em class="progress-bar"><b style="width: 0px"></b></em>
+                                <em class="progress-bar-num">0%</em>
+                            </label>
+                        </span>
+                    </li>
+                    <li class="last">
+                        <span>我买过此商品</span><br>
+                        <a class="btn btn-success" href="#Core.giveOneWord:2167">我要评论</a>
+                    </li>
+                </ul>
+                <ul class="goods-rate goods-ratenav clearfix">
+                    <li class="active"><span>全部（<em class="commentCount v0 v1">1</em>）</span></li>
+                    <li><span>好评（<em class="commentCount v1">1</em>）</span></li>
+                    <li><span>差评（<em class="commentCount v0">0</em>）</span></li>
+                    <li class="last">
+                        <input type="checkbox" id="isHasC" checked="checked">&nbsp;&nbsp;<label for="isHasC">只显示有内容的评价</label></li>
+                </ul>
+                <ul class="goods-comment-list">
+                    <li class="">
+                        <span class="goods-comment-left">
+                            <b class="goods-comment-grade"></b>
+                            <strong>好评</strong>
+                            <em>3***8</em>
+                        </span>
+                        <span class="goods-comment-right">准备春节带回家给老公吃的，春节聚会太多了。。。
+                            <em>发表于 2013-01-06 10:03:09</em></span>
+                    </li>
+                </ul>
+                <div class="list-page">
+                    <div id="list-page-nav">
+                        <div class="list-page-split" id="pageBox">
+                            <span class="prev">上一页<i></i></span>
+                            <span>1</span>
+                            <span class="next">下一页<i></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

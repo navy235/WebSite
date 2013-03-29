@@ -1,0 +1,76 @@
+﻿@model  string
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+
+    Dictionary<string, List<SelectListItem>> renderList = new Dictionary<string, List<SelectListItem>>();
+    renderList = (Dictionary<string, List<SelectListItem>>)ViewData["Data_" + name];
+}
+
+
+@Html.Kendo().Window().Name(name + "_window").Title("请选择" + displayname).Content(
+    @<text>
+<div class="k-window-checklist">
+    @{
+        int i = 0;
+        foreach (KeyValuePair<string, List<SelectListItem>> kvp in renderList)
+        {
+        <p class="k-window-checklist-title">@kvp.Key</p>
+            foreach (SelectListItem sli in kvp.Value)
+            {
+        <label for="@(name + "_check" + i.ToString())" data-for="@name" >
+            <input type="checkbox" id="@(name + "_check" + i.ToString())" name="@Html.Raw(name + "_check")" value="@sli.Value" data-text="@sli.Text" checked="@sli.Selected" />
+            @sli.Text</label>
+                i++;
+            }
+
+        }
+    }
+</div>
+<div class="k-window-footer">
+    <button type="button" id="@Html.Raw(name + "_save")" class="k-button" ><span class="k-icon k-i-tick"></span>确认</button>
+</div>
+</text>
+).Draggable(true).Width(600).Height(400).Modal(true).Visible(false)
+
+<input type="text" disabled="disabled" id="@Html.Raw(name + "_text")" title="" />
+
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+<button type="button" id="@Html.Raw(name + "_select")" class="k-button" ><span class="k-icon k-add"></span>选择</button>
+
+<script type="text/javascript">
+
+    var @name={
+        id:'@name',
+        checkid:'@Html.Raw(name + "_check")',
+        textid:'@Html.Raw(name + "_text")',
+        selectid:'@Html.Raw(name + "_select")',
+        windowid:'@Html.Raw(name + "_window")',
+        saveid:'@Html.Raw(name + "_save")',
+        binding:function(){
+            var self=@name;
+            self.setValue();
+            $('#'+self.selectid).on('click',function(){
+                $("#"+self.windowid).data("kendoWindow").center().open();
+            })
+            $('#'+self.saveid).on('click',self.saveData)
+        },
+        saveData:function(){
+            var self=@name;
+            self.setValue();
+            $('#'+self.id).parents('form').validate().element('#'+self.id);
+            $('#'+self.windowid).data("kendoWindow").close();
+        },
+        setValue:function(){
+            var self=@name;
+            var selectText=$.map($('[name="'+self.checkid+'"]:checked'),function(item){ return $(item).data('text')}).join(',');
+            $('#'+self.textid).val(selectText);
+            $('#'+self.textid).attr('title',selectText);
+            var selectValus=$.map($('[name="'+self.checkid+'"]:checked'),function(item){ return $(item).val()}).join(',');
+            $('#'+self.id).val(selectValus);
+        }
+    };
+    $(function(){
+        @Html.Raw(name + ".binding();")
+    });
+</script>

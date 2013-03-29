@@ -1,0 +1,25 @@
+@model  string
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+}
+
+@(Html.TextBoxFor(m => m, new { @class = "k-textbox single-line text-box" })
+)
+
+<a href="javascript:@Html.Raw(name + ".changePic();")" class="vcode" tabindex="-1">
+    <img  id="@Html.Raw(name + "_vcodeImg")" src="@Url.Action("GetValidateCode", "AjaxService")" title="点击换一张">
+    换一张
+</a>
+<script type="text/javascript">
+    var @name = {
+        id:'@name',
+        changePic: function() {
+            var self=@name,
+                vcodeImg=$('#'+self.id+'_vcodeImg');
+            vcodeImg.attr("src", vcodeImg.attr("src") + "?" + Math.random());
+        }
+    }
+</script>
+
+
+

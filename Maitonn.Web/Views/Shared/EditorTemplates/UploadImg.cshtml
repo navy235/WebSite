@@ -1,0 +1,86 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var orgUrl = Url.Content("~/Content/noimages.gif");
+}
+
+<div class="img-box">
+    <img src="@orgUrl" id="@(name + "_img")" />
+</div>
+
+@(Html.Kendo().Upload()
+    .Name("attachments")
+    .Multiple(false)
+    .Async(a => a
+            .Save("UpLoadSave", "AjaxService")
+            .Remove("UpLoadRemove", "AjaxService")
+            .AutoUpload(true)
+        )
+            .Events(events => events
+                .Error(name + ".onError")
+                .Remove(name + ".onRemove")
+                .Success(name + ".onSuccess")
+                .Upload(name + ".onUpload")
+            )
+
+    )
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text", value = orgUrl })
+
+<script type="text/javascript">
+
+    var @name={
+        binding:function(imgurl){
+            var _imgurl='@(String.IsNullOrEmpty(Model) ? orgUrl : Model)';
+            if(imgurl){
+                _imgurl=imgurl;
+            }
+            var imgId='@Html.Raw(name + "_img")';
+            var id='@name';
+            $("#"+imgId).attr("src", _imgurl);
+            $("#"+id).val(_imgurl);
+        },
+        onError:function(e){
+        
+        },
+        onRemove:function(e){
+            var self=@name;
+            var orgUrl='@orgUrl';
+            self.binding(orgUrl);
+            return false;
+        },
+        onSuccess:function(e){
+            var self=@name;
+            var resData = eval("(" + e.response + ")");
+            if (resData.err === ''&&resData.status==='upload') {
+                self.binding(resData.imgurl);
+            }
+            else {
+                if(resData.err===''&&resData.status==='remove'){
+                    return ;
+                }else{
+                    alert(resData.err);
+                }
+            }
+        },
+        onUpload:function(e){
+            var files = e.files;
+            $.each(files, function () {
+                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension) == -1) {
+                    alert("请上传.gif.jpg.jpeg.bmp.png的图片文件！")
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        },
+        getFileInfo:function (e) {
+            return $.map(e.files, function (file) {
+                var info = file.name;
+                return info;
+            }).join(", ");
+        }
+    }
+        $(function(){
+            @Html.Raw(name + ".binding();")
+        })
+</script>

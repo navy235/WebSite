@@ -1,0 +1,35 @@
+﻿@model ProfileModel
+@{
+    ViewBag.Title = "基本信息";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+
+            @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",填写真实的资料更方便大家了解你。", false, AlertType.info.ToString())
+
+            <div class="personal-form mt40">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-warning ">
+                            &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</article>

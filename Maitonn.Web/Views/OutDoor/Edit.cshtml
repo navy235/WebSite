@@ -1,0 +1,45 @@
+﻿@model OutDoorViewModel
+@{
+    ViewBag.Title = "编辑户外信息";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+                <ul class="form-step clearfix">
+                    <li class="cur"><i></i><span>第一步：编辑户外信息</span></li>
+                    <li><i></i><span>第二步：提交后台审核</span></li>
+                    <li><i></i><span>第三步：审核通过发布成功</span></li>
+                </ul>
+            </div>
+
+            @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",编辑的信息将重新提交到待审核,我们将在1小时候内审核您发的信息。", false, AlertType.info.ToString())
+
+            @if (ViewBag.Error != null)
+            { 
+                @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+            }
+            <div class="personal-form mt20">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-warning ">
+                            &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</article>

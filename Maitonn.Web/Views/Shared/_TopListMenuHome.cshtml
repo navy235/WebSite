@@ -1,0 +1,60 @@
+﻿@model TopHotListMenuViewModel
+<nav class="top-menu">
+    <div class="top-menu-tab">
+        <div class="top-menu-category">
+            <h2>
+                <strong>全部商品分类</strong>
+                <span class="top-menu-arrow top-menu-arrow-hover"></span>
+            </h2>
+            <ul class="top-hot-left-category top-hot-left-category2">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+                    <li class="child@(i) @((i == (Model.Items.Count - 1)) ? "last" : "") clearfix">
+                        <h3>
+                            <a href="@item.Category.Url" class="top-hot-left-icon" hidefocus="true"></a>
+                            <a class="top-hot-left-link" href="@item.Category.Url">@item.Category.Name</a>
+                            <em style="display: none;">@item.Category.Name</em>
+                        </h3>
+                        <div class="top-hot-left-sub">
+                            @foreach (var childItem in item.ChildCategories)
+                            { 
+                                <span><a href="@childItem.Url">@childItem.Name</a></span>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <iframe frameborder="0" class="top-menu-frame" scrolling="no" style="height: 451px; display: none;"></iframe>
+        <ul class="top-menu-list">
+            <li class="active"><a href="http://baojian.163.com/">首页</a></li>
+            <li><a href="http://baojian.163.com/brands.html">品牌专区</a></li>
+            <li><a href="/activity.html">特价优惠</a>
+                @*  <span class="top-menu-tips-hot"></span>*@
+            </li>
+        </ul>
+    </div>
+</nav>
+<script type="text/javascript">
+    $(function() {
+        $('.top-menu-category').hover(function() {
+            $(this).find('.top-menu-arrow')
+                .addClass('top-menu-arrow-hover')
+                .end()
+                .find('.top-hot-left-category')
+                .show()
+                .end()
+                .next('top-menu-frame').show();
+        }, function() {
+            $(this).find('.top-menu-arrow')
+               .removeClass('top-menu-arrow-hover')
+               .end()
+               .find('.top-hot-left-category')
+               .hide()
+               .end()
+               .next('top-menu-frame').hide();
+        })
+    })
+
+</script>

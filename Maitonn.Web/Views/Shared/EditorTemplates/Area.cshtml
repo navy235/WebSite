@@ -1,0 +1,53 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+
+    double width = string.IsNullOrEmpty(Model) ? 0.0F : Convert.ToSingle(Model.Split('|')[0]);
+    double height = string.IsNullOrEmpty(Model) ? 0.0F : Convert.ToSingle(Model.Split('|')[1]);
+    int areacount = string.IsNullOrEmpty(Model) ? 1 : Convert.ToInt32(Model.Split('|')[2]);
+
+    var allAreas = (width * height * areacount).ToString("F1");
+
+}
+<div class="form-areas">
+    宽：@(Html.Kendo().NumericTextBox().Name(name + "_width")
+    .Value(width)
+    .Events(x => x.Spin(name + ".widthChange")
+                 .Change(name + ".widthChange"))
+    .HtmlAttributes(new { style = "width:55px" }))m *
+高：@(Html.Kendo().NumericTextBox().Name(name + "_height")
+ .Value(height)
+    .Events(x => x.Spin(name + ".widthChange")
+                 .Change(name + ".widthChange"))
+.HtmlAttributes(new { style = "width:55px" }))m *
+    @(Html.Kendo().IntegerTextBox().Name(name + "_areacount")
+    .Value(areacount)
+        .Events(x => x.Spin(name + ".widthChange")
+                 .Change(name + ".widthChange"))
+                 .Min(1)
+    .HtmlAttributes(new { style = "width:50px" }))面
+    =<span id="@(name + "_area")">@allAreas</span>平方米
+</div>
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        widthid:'@(name + "_width")',
+        heightid:'@(name + "_height")',
+        areacountid:'@(name + "_areacount")',
+        areaid:'@(name + "_area")',
+        widthChange:function(e){
+            var self=@name;
+            var width=$('#'+self.widthid).val();
+            var height=$('#'+self.heightid).val();
+            var areacount=$('#'+self.areacountid).val();
+            var result=parseFloat(width*height*areacount).toFixed(1);
+            $('#'+self.areaid).text(result);
+            $('#'+self.id).val(width+'|'+height+'|'+areacount);
+            $('#'+self.id).parents('form').validate().element('#'+self.id);
+        }
+    }
+
+</script>

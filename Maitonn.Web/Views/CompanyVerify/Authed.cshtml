@@ -1,0 +1,80 @@
+﻿
+@model IEnumerable<CompanyVerifyViewModel>
+
+@{
+    ViewBag.Title = "企业信息审核列表";
+}
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.CompanyID).Title("媒体ID")
+                         .Sortable(false)
+                         .Filterable(false)
+                         .ClientTemplate("<input type='checkbox' name='ID_check' id='#=CompanyID#_check'  class='chkbx' value='#=CompanyID#' />")
+                         .HeaderTemplate("<div style='text-align:center'><input type='checkbox' id='checkAll' onclick='Grid.checkAll(this)' title='全选'/></div>")
+                         .Width(40).HtmlAttributes(new { style = "text-align:center" });
+
+        columns.Bound(p => p.Name).Width(150);
+        columns.Bound(p => p.Description).Width(200);
+        columns.Bound(p => p.Contact).Width(200);
+        columns.Bound(p => p.LinkMan).Width(100);
+        columns.ForeignKey(p => p.Status, new SelectList((List<SelectListItem>)ViewBag.CompanyStatus, "value", "text")).Width(80);
+        columns.Bound(p => p.AddTime).Format("{0:yyyy-MM-dd}").Width(80);
+        columns.Bound(p => p.LastTime).Format("{0:yyyy-MM-dd}").Width(80);
+        columns.Command(command => command.Custom("查看详情").Click("Grid.showDetails")).Title("操作");
+
+    })
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("Company_ReadAuthed", "CompanyVerify"))
+    )
+)
+
+@(Html.Kendo().Window().Name("Details")
+    .Title("查看详情")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(700)
+    .Height(500)
+    .Scrollable(true)
+    .Content(@<text>
+<div id="verifyLoading">
+    <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
+</div>
+<iframe id="verifyContent" name="verifycontent" width="100%" height="100%" style="display: none;" marginwidth="0" marginheight="0" frameborder="0" src=""></iframe>
+</text>)
+)
+
+<script type="text/javascript">
+    var Grid = {
+        id: 'Grid',
+        checkAll: function(ele) {
+            var self = Grid;
+            var state = $(ele).is(':checked');
+            $('[name="ID_check"]').attr('checked', state);
+        },
+        showDetails: function(e) {
+            e.preventDefault();
+            $('#verifyContent').hide();
+            $('#verifyLoading').show();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("Details", "CompanyVerify")';
+            $('#verifyContent').attr('src', url + '/' + dataItem.CompanyID);
+            var wnd = $("#Details").data("kendoWindow").center().open();
+        }
+    };
+    $(function() {
+        $('#verifyContent').load(function() {
+            $('#verifyLoading').hide();
+            $(this).show();
+        })
+    })
+</script>

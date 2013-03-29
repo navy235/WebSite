@@ -1,0 +1,15 @@
+﻿@model OpenLoginStatus
+@{
+    ViewBag.Title = "QQ";
+}
+
+
+@if (Model.Success)
+{ 
+    <p>@Model.OpenId</p>
+}
+else
+{
+    <h3>@Model.Error</h3>
+    <div>@Model.Message</div>
+}

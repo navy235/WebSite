@@ -1,0 +1,138 @@
+﻿
+
+
+@model  IEnumerable<CompanyVerifyViewModel>
+
+@{
+    ViewBag.Title = "企业信息审核列表";
+}
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.CompanyID).Title("媒体ID")
+                         .Sortable(false)
+                         .Filterable(false)
+                         .ClientTemplate("<input type='checkbox' name='ID_check' id='#=CompanyID#_check'  class='chkbx' value='#=CompanyID#' />")
+                         .HeaderTemplate("<div style='text-align:center'><input type='checkbox' id='checkAll' onclick='Grid.checkAll(this)' title='全选'/></div>")
+                         .Width(40).HtmlAttributes(new { style = "text-align:center" });
+
+        columns.Bound(p => p.Name).Width(150);
+        columns.Bound(p => p.Description).Width(200);
+        columns.Bound(p => p.Contact).Width(200);
+        columns.Bound(p => p.LinkMan).Width(100);
+        columns.ForeignKey(p => p.Status, new SelectList((List<SelectListItem>)ViewBag.CompanyStatus, "value", "text")).Width(80);
+        columns.Bound(p => p.AddTime).Format("{0:yyyy-MM-dd}").Width(80);
+        columns.Bound(p => p.LastTime).Format("{0:yyyy-MM-dd}").Width(80);
+        columns.Command(command => command.Custom("查看详情").Click("Grid.showDetails")).Title("操作");
+
+    })
+        .ToolBar(config =>
+        {
+            config.Custom().Text("批量通过").HtmlAttributes(new { onclick = "Grid.verifyPassAll(this);", href = "javascript:void(0);" });
+
+            config.Custom().Text("批量不通过").HtmlAttributes(new { onclick = "Grid.verifyFailedAll(this);", href = "javascript:void(0);" });
+
+        })
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("company_read", "companyverify"))
+    )
+)
+
+@(Html.Kendo().Window().Name("Details")
+    .Title("查看详情")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(700)
+    .Height(500)
+    .Scrollable(true)
+    .Content(@<text>
+<div id="verifyLoading">
+    <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
+</div>
+<iframe id="verifyContent" name="verifycontent" width="100%" height="100%" style="display: none;" marginwidth="0" marginheight="0" frameborder="0" src=""></iframe>
+</text>)
+)
+
+<script type="text/javascript">
+    var Grid = {
+        id: 'Grid',
+        checkAll: function(ele) {
+            var self = Grid;
+            var state = $(ele).is(':checked');
+            $('[name="ID_check"]').attr('checked', state);
+        },
+        getCheckIds: function() {
+            return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
+        },
+        showDetails: function(e) {
+            e.preventDefault();
+            $('#verifyContent').hide();
+            $('#verifyLoading').show();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var url = '@Url.Action("details", "companyverify")';
+            $('#verifyContent').attr('src', url + '/' + dataItem.CompanyID);
+            var wnd = $("#Details").data("kendoWindow").center().open();
+        },
+        addSpinner: function(element) {
+            var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
+            $(element).addClass('disabled');
+        },
+        removeSpinner: function(element) {
+            $(element).find('.ajax-working').remove();
+            $(element).removeClass('disabled');
+        },
+        verifyCompany: function(element, url, Ids) {
+            if ($(element).hasClass('disabled'))
+                return false;
+            var self = Grid;
+            if (Ids) {
+                self.addSpinner(element);
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: { ids: Ids },
+                    success: function(res) {
+                        if (res) {
+                            var grid = $("#Grid").data("kendoGrid");
+                            grid.dataSource.read();
+                            grid.refresh();
+                        }
+                    },
+                    complete: function() {
+                        self.removeSpinner(element);
+                    }
+                })
+            } else {
+                alert('请选择要审核的公司');
+                return false;
+            }
+        },
+        verifyFailedAll: function(element) {
+            var self = Grid;
+            var url = '@Url.Action("VerifyFailed", "Grid")';
+            var Ids = self.getCheckIds();
+            self.verify(element, url, Ids);
+        },
+        verifyPassAll: function(element) {
+            var self = Grid;
+            var url = '@Url.Action("VerifyPass", "Grid")';
+            var Ids = self.getCheckIds();
+            self.verify(element, url, Ids);
+        }
+    };
+    $(function() {
+        $('#verifyContent').load(function() {
+            $('#verifyLoading').hide();
+            $(this).show();
+        })
+    })
+</script>

@@ -1,0 +1,153 @@
+﻿@model MainHotViewModel
+<article class="main">
+    <div class="main-hot clearfix">
+        <div class="main-hot-left">
+            <ul class="clearfix">
+                @foreach (var item in Model.MainHotLeftLinks.Items)
+                { 
+                    <li><a href="@item.Url" target="_blank">@item.Name</a></li>
+                }
+            </ul>
+            <div class="main-hot-left-box">
+                @for (int i = 1; i <= Model.MainHotLeftBox.Items.Count; i++)
+                {
+                    var item = Model.MainHotLeftBox.Items[i - 1];
+                    <a class="hot-img@(i)" href="@item.Url" target="_blank">
+                        <img src="@item.ImgUrl" border="0"></a>
+                }
+
+            </div>
+        </div>
+        <ol class="main-hot-right">
+            @for (var i = 0; i < Model.MainHotRightLinks.Items.Count; i++)
+            {
+                var item = Model.MainHotRightLinks.Items[i];
+                <li @((i == Model.MainHotRightLinks.Items.Count - 1) ? " class=last " : "")><a href="@item.Url" target="_blank">
+                    <img src="@item.ImgUrl" border="0" width="110" height="60" alt="@item.Name" title="@item.Name"></a></li>
+            }
+            <li class="more"><a href="/brands.html" target="_blank">更多品牌&gt;&gt;</a></li>
+        </ol>
+    </div>
+    <div class="main-hot-link clearfix">
+
+        @foreach (var item in Model.MainHotLinks.Items)
+        {
+            <dl class=" clearfix">
+                <dt>
+                    <img  src="@item.Category.ImgUrl" border="0" width="66" height="86"></dt>
+                <dd>
+                    @for (int i = 0; i < item.ChildCategories.Count; i++)
+                    {
+                        var childItem = item.ChildCategories[i];
+                        
+                        <span class="link@(i)">
+                            <a href="@childItem.Url" target="_blank" class="highLight@(i % 2)">@childItem.Name</a>
+                        </span>
+                    }
+                </dd>
+            </dl>
+        }
+    </div>
+
+    @for (int i = 0; i < Model.MainGallery.Items.Count; i++)
+    {
+
+        var galleryContainer = Model.MainGallery.Items[i];
+        var gallerySuggestItem = galleryContainer.SuggestItem;
+        var galleryTabs = galleryContainer.Items;
+        <div class="main-gallery main-gallery@(i)">
+            <dl class="main-gallery-head clearfix">
+                <dt class="main-gallery-title@(i)"><a target="_blank" href="@galleryContainer.Category.Url" hidefocus="true">@galleryContainer.Category.Name</a></dt>
+                <dd class="clearfix">
+                    <ul class="main-gallery-sub clearfix">
+                        @for (var j = 0; j < galleryTabs.Count; j++)
+                        {
+                            var gallery = galleryTabs[j];
+                            <li class="li@(j) @(j == 0 ? "active" : "")" rel="#subType@(i + "_" + j)">@gallery.Name</li>
+                        }
+                    </ul>
+                    <div class="main-gallery-more">
+                        <a target="_blank" href="@galleryContainer.Category.Url">更多@(galleryContainer.Category.Name)&nbsp;&gt;&gt;</a>
+                    </div>
+                </dd>
+            </dl>
+            <div class="main-gallery-container clearfix">
+                <div class="main-gallery-item main-gallery-item-first">
+                    <a href="/product/@(gallerySuggestItem.ID).html" target="_blank" class="main-gallery-item-img">
+                        <img width="150" height="150" border="0" src="@gallerySuggestItem.ImgUrl" alt="@gallerySuggestItem.Name" title="@gallerySuggestItem.Name">
+                        <span class="active-flag active-flag2"></span></a>
+                    <p class="main-gallery-item-title">@gallerySuggestItem.Name</p>
+                    <p class="main-gallery-item-desc"><a target="_blank" title="@gallerySuggestItem.Name" href="/product/@(gallerySuggestItem.ID).html">@gallerySuggestItem.Name</a></p>
+                    <p class="main-gallery-item-price">
+                        @gallerySuggestItem.Province - @gallerySuggestItem.City
+                        @*<del>¥@gallerySuggestItem.Price</del>*@
+                        <span class="fs14">¥<strong class="price">@gallerySuggestItem.Price</strong>万元/年</span>
+                    </p>
+                </div>
+                @for (var j = 0; j < galleryTabs.Count; j++)
+                {
+                    var gallery = galleryTabs[j];
+                    var gallerylist = gallery.Items;
+                    var gallerytop = gallery.TopItems;
+                    <div id="subType@(i + "_" + j)" class="main-gallery-tab clearfix">
+                        <div class="main-gallery-view clearfix">
+                            @foreach (var item in gallerylist)
+                            {
+                                <div class="main-gallery-item">
+                                    <a href="/product/@(item.ID).html" target="_blank" class="main-gallery-item-img">
+                                        <img width="150" height="150" border="0" src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
+                                        <span class="main-gallery-item-icon act-icon01"></span>
+                                    </a>
+                                    <p class="main-gallery-item-title">@item.Name</p>
+                                    <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="/product/1132.html">@item.Name</a></p>
+                                    <p class="main-gallery-item-price clearfix">
+                                        @item.Province - @item.City
+                                        <span class="fs14">¥<strong class="price">@item.Price</strong>万元/年</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        <div class="main-gallery-top">
+                            <h4>top热销榜</h4>
+                            <ol>
+                                @for (var k = 0; k < gallerytop.Count; k++)
+                                {
+                                    var gallerytopitem = gallerytop[k];
+                                    <li @((k == gallerytop.Count - 1) ? "class=\"main-gallery-top-last\"" : "")>
+                                        <dl class="main-gallery-top-@(k == 0 ? "open" : "close") clearfix">
+                                            <dt><em>@(k + 1)</em></dt>
+                                            <dd>
+                                                <p class="main-gallery-item-desc clearfix">
+                                                    <a href="/product/@(gallerytopitem.ID).html" target="_blank" class="aimg">
+                                                        <img width="60" height="60" border="0" src="@gallerytopitem.ImgUrl"  alt="@gallerytopitem.Name" title="@gallerytopitem.Name"></a>
+                                                    <a class="main-gallery-item-atitle" target="_blank" title="@gallerytopitem.Name" href="/product/@(gallerytopitem.ID).html">@gallerytopitem.Name</a>
+                                                </p>
+                                                <p class="main-gallery-item-price">
+                                                    <strong>¥@(gallerytopitem.Price)<b>万年/年</b></strong>&nbsp;&nbsp;
+                                                    <span class="main-gallery-item-act-lable" title="@gallerytopitem.Name">赠</span>
+                                                </p>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    }
+
+</article>
+<script type="text/javascript">
+    $(function() {
+        $('.main-gallery-sub').tab({
+            listClass: 'main-gallery-sub',
+            containerClass: 'main-gallery-tab'
+        });
+        $('.main-gallery-top').hoverlist();
+    })
+
+</script>

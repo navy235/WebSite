@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "会员信息管理";
+}
+@(Html.Kendo().Grid<Member>()
+    .Name("MembersList")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.MemberID);
+        columns.Bound(c => c.Email);
+        columns.Bound(c => c.NickName);
+        columns.Bound(c => c.AddIP);
+        columns.Bound(c => c.AddTime).Format("{0:yyyy.MM.dd hh:mm:ss}");
+        columns.Bound(c => c.LastIP);
+        columns.Bound(c => c.LastTime).Format("{0:yyyy.MM.dd hh:mm:ss}");
+        columns.Bound(c => c.LoginCount);
+        columns.Template(@<text></text>)
+.ClientTemplate(@"<a class='k-button k-button-icontext ' href='"
++ Url.Action("Edit", "Member") + "/#=MemberID#'><span class='k-icon k-edit'></span>编辑</a>").Title("编辑").Width(120);
+    })
+      .ToolBar(toolbar =>
+    {
+        toolbar.Custom().Text("添加用户").Action("Create", "Member");
+
+    })
+    .Pageable()
+    .Sortable()
+    .Groupable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(120)
+        .Model(model => model.Id(c => c.MemberID))
+        .Read("Editing_Read", "Member")
+    )
+)

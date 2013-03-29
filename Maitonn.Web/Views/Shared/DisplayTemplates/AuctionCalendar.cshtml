@@ -1,0 +1,109 @@
+
+@model  int
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+    var CurrenYear = DateTime.Now.Year;
+    var NexYear = DateTime.Now.Year + 1;
+    var MaxData = new DateTime(NexYear, 12, 30);
+}
+
+
+<div class="form-auctioncalendar clearfix">
+    <div class="form-auctioncalendar-tips">
+        <span><em></em>可售</span><span><em class="nosale"></em>不可售</span>
+    </div>
+    <div class="form-auctioncalendar-year">
+        <p>@CurrenYear</p>
+        <p>@NexYear</p>
+    </div>
+    <div class="form-auctioncalendar-month">
+        <ul>
+            <li class="form-auctioncalendar-top">
+                @*   <span style="width: 258px; left: 120px; cursor: pointer" onclick="delSchedule(48)" title="2013年03月19日-2013年08月30日不可售，点击可删除">
+                    <strong class="form-auctioncalendar-left">03/19</strong>
+                    <strong class="form-auctioncalendar-right">08/30</strong>
+                </span>*@
+            </li>
+            <li class="form-auctioncalendar-list">
+                <ul>
+                    <li>1月</li>
+                    <li>2月</li>
+                    <li>3月</li>
+                    <li>4月</li>
+                    <li>5月</li>
+                    <li>6月</li>
+                    <li>7月</li>
+                    <li>8月</li>
+                    <li>9月</li>
+                    <li>10月</li>
+                    <li>11月</li>
+                    <li class="last">12月</li>
+                </ul>
+            </li>
+            <li class="form-auctioncalendar-bottom"></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        mediaId:@Model ,
+        graphAuction:function(auctionitem){
+            var self=@name;
+            var $container=$('.form-auctioncalendar-top');
+            if(!auctionitem.Top){
+                $container=$('.form-auctioncalendar-bottom');
+            }
+            var $auction=$('<span></span>')
+               .css({
+                   width:(auctionitem.Width/3.65)+'%',
+                   left:(auctionitem.Left/3.65)+'%',
+                   cursor:'pointer'
+               }).attr('title',auctionitem.StartTime+' 至 '+auctionitem.EndTime+'日不可售')
+            .attr('data-mediaid',auctionitem.MediaID)
+            .attr('data-id',auctionitem.ID)
+         
+    
+            var $auction_left=$('<strong></strong>').addClass('form-auctioncalendar-left').html(auctionitem.StartDate);
+            var $auction_right=$('<strong></strong>').addClass('form-auctioncalendar-right').html(auctionitem.EndDate);
+            if(auctionitem.HasTwo){
+                if(auctionitem.ShowLeft){
+                    $auction_left.appendTo($auction);
+                    $auction.css({
+                        right:0,
+                        width:'initial'
+                    });
+                }else{
+                    $auction_right.appendTo($auction);
+                }
+            }else{
+                $auction_left.appendTo($auction);
+                $auction_right.appendTo($auction);
+            }
+            $container.append($auction);
+
+        },
+        binding:function(){
+            var self=@name;
+            $.ajax({
+                type:'GET',
+                url:'@Url.Action("GetAuctionCalendar", "outdoor")',
+                data:{
+                    id:self.mediaId
+                },
+                success:function(res){
+                    if(res.length>0){
+                        $.each(res,function(index,item){
+                            self.graphAuction(item);
+                        })
+                    }
+                }
+            })
+        }
+    }
+    $(function(){
+        @(name + ".binding();")
+    })
+
+</script>

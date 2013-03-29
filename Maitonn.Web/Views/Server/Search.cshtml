@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+@ViewBag.Count
+
+
+<input type="text" id="q" name="q" class="k-text" />
+<button type="button" class="btn btn-success" id="search">Search</button>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $("#search").click(function () {
+                window.location.href = "?q=" + $("#q").val();
+            })
+        })
+    </script>
+}

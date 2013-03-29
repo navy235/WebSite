@@ -1,0 +1,7 @@
+@model  int?
+
+@(Html.Kendo().IntegerTextBoxFor(m => m)
+  
+      .Min(int.MinValue)
+      .Max(int.MaxValue)
+)

@@ -1,0 +1,65 @@
+﻿@model RegisterModel
+@{
+    ViewBag.Title = "注册";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<div class="register">
+    <div class="main">
+        <div class="sub">
+            <h6>
+                <span>注册新浪地产网帐号</span></h6>
+        </div>
+        <div class="content">
+            <div class="n_form">
+                <div class="notice_tips mb10 ml60">
+                    <em class="s_icon i_point"></em>
+                    欢迎您！@Model.NickName，完善下您的信息，以后您也可以使用该邮箱和密码来登录了。
+                </div>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-success mr20">
+                            同意服务协议，提交注册</button>已有账号？<a href="/?tourl=">请登录</a>
+                    </div>
+                    <div class="form-field form-field-submit">
+                        <a href="http://dichan.sina.com.cn/help/service.htm" target="_blank">查看《地产网网站服务条款》</a>
+                        <div class="clearfix height20"></div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="content-right">
+            @* <h4>注册成为新浪地产用户：</h4>
+            <ul class="dot_list">
+                <li>速览每日最新最热房地产行业资讯</li>
+                <li>参与房地产全产业链商务交易</li>
+                <li>畅享<em class="c_red">800000份</em>报告资源下载</li>
+                <li>查询国内最权威市场数据</li>
+                <li>与<em class="c_red">1600000名</em>职业房地产人互动交流</li>
+                <li>被近千名驻站行业猎头关注</li>
+            </ul>*@
+            <h4 class="tit">使用合作账号登录</h4>
+            <ul class="sign-item">
+                <li><a href="@Url.Action("Sina", "Login")">
+                    <img src="~/Content/images/zh-sina.jpg" alt="新浪微博账号"></a></li>
+                <li><a href="@Url.Action("QQ", "Login")">
+                    <img src="~/Content/images/zh-qq.jpg" alt="QQ账号"></a></li>
+                <li><a href="@Url.Action("Taobao", "Login")">
+                    <img src="~/Content/images/zh-tb.jpg" alt="淘宝网账号"></a></li>
+                <li><a href="@Url.Action("Douban", "Login")">
+                    <img src="~/Content/images/zh-db.jpg" alt="豆瓣账号"></a></li>
+                <li><a href="@Url.Action("Renren", "Login")">
+                    <img src="~/Content/images/zh-rr.jpg" alt="人人网账号"></a></li>
+            </ul>
+            <p class="in-login">已有账号，立即登录</p>
+            <p class="login-sub-btn">
+                <a href="@Url.Action("Index", "Login")" class="btn  mt10 ">&nbsp;&nbsp;登&nbsp;&nbsp;录&nbsp;&nbsp;</a>
+            </p>
+
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>

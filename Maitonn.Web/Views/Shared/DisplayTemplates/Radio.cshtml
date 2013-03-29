@@ -1,0 +1,24 @@
+@model  bool
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId("");
+    List<string> renderRadioList = new List<string>();
+    if (ViewData.ModelMetadata.AdditionalValues.ContainsKey("Radio"))
+    {
+        renderRadioList = ViewData.ModelMetadata.AdditionalValues["Radio"].ToString().Split(',').ToList();
+
+    }
+}
+
+<div class="radiolist">
+    @if (Model)
+    { 
+        @renderRadioList[1]
+    }
+    else
+    {
+        @renderRadioList[0]
+    }
+</div>
+
+

@@ -1,0 +1,15 @@
+﻿@model  string
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+    List<SelectListItem> renderList = new List<SelectListItem>();
+    renderList = (List<SelectListItem>)ViewData[name];
+}
+
+@for (int i = 0; i < renderList.Count; i++)
+{
+    if (renderList[i].Selected)
+    {
+    <span>@renderList[i].Text</span>
+    }
+}

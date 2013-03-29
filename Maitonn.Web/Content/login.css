@@ -1,0 +1,495 @@
+﻿body {
+  font: 12px Arial,sans-serif;
+  color: #333;
+}
+
+a {
+  color: #7E7E7E;
+  text-decoration: none;
+}
+
+  a:link, a:visited {
+    color: #7E7E7E;
+  }
+
+
+.container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  line-height: 18px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+  .header a.leftlogo {
+    display: block;
+    width: 142px;
+    height: 34px;
+    float: left;
+    background: url(images/mixr.gif) 0 -51px;
+  }
+
+    .header a.leftlogo em {
+      display: none;
+    }
+
+
+  .header a.rightlogo {
+    display: block;
+    float: right;
+    height: 18px;
+    background: url(images/mixr.gif) 0px -25px no-repeat;
+    color: #FF6600;
+    margin-left: 10px;
+    padding-left: 30px;
+  }
+
+
+span.cut {
+  background: url(images/mixr.gif) 0px 3px no-repeat;
+  display: block;
+  width: 1px;
+  height: 18px;
+}
+
+.logincontent {
+  line-height: 18px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: url(images/login-img.jpg) 10px 15px no-repeat;
+}
+
+.loginpart {
+  width: 360px;
+  float: right;
+  margin-right: 10px;
+  background: #f3f3f3;
+  padding: 5px 0;
+}
+
+.register {
+  background: #f3f3f3;
+  padding: 5px 0;
+}
+
+  .register a {
+    color: #003593;
+  }
+
+    .register a:hover {
+      color: #cc0000;
+    }
+
+  .register .content {
+    padding-top: 15px;
+    padding-bottom: 50px;
+    width: 600px;
+    float: left;
+  }
+
+  .register .n_form {
+    line-height: 25px;
+    display: inline-block;
+  }
+
+  .register .content-right {
+    width: 300px;
+    float: right;
+    border-left: 1px solid #e1e1e1;
+    padding-left: 30px;
+    margin-top: 15px;
+    height: 370px;
+  }
+
+    .register .content-right h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .register .content-right .title {
+      font-size: 18px;
+      font-weight: normal;
+      margin-bottom: 20px;
+      line-height: 25px;
+      font-family: "微软雅黑";
+    }
+
+    .register .content-right .sign-item {
+    }
+
+      .register .content-right .sign-item li {
+        margin-top: 8px;
+      }
+
+    .register .content-right .in-login {
+      margin-top: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+
+.getpassword {
+  margin: 50px 0 100px 230px;
+  display: inline-block;
+  zoom: 1;
+}
+
+  .getpassword h2 {
+    font-size: 14px;
+    margin: 20px 0 10px 0;
+    font-weight: 900;
+  }
+
+  .getpassword .password-tips {
+    font-weight: normal;
+    font-size: 12px;
+    margin-top: 10px;
+    line-height: 22px;
+  }
+
+
+
+
+.password-step {
+  border-bottom: 3px solid #fcf2e8;
+  margin-bottom: 10px;
+  width: 422px;
+}
+
+  .password-step ul {
+    border: 1px solid #fcdfa9;
+    height: 32px;
+  }
+
+  .password-step li {
+    margin: 0px;
+    width: 95px;
+    display: inline;
+    height: 32px;
+    float: left;
+    overflow: hidden;
+    padding-left: 10px;
+  }
+
+    .password-step li.a {
+      background: #fffeee url(images/stepbg.gif) right -32px no-repeat;
+    }
+
+    .password-step li.b {
+      background: #fff url(images/stepbg.gif) right 0 no-repeat;
+    }
+
+    .password-step li.f {
+      background: #fff url(images/stepbg.gif) right -64px no-repeat;
+    }
+
+    .password-step li.e {
+      background: #fffeee;
+    }
+
+    .password-step li b {
+      font: 24px Georgia;
+      display: inline-block;
+      height: 32px;
+      line-height: 25px;
+      color: #ccc;
+    }
+
+    .password-step li em {
+      display: inline-block;
+      height: 32px;
+      vertical-align: top;
+      padding-top: 3px;
+      line-height: 25px;
+      margin-left: 6px;
+      color: #555;
+      font-style: normal;
+      font-weight: 400;
+    }
+
+  .password-step .point em {
+    color: #d95505;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+.bigmail {
+  background: url(images/mixr.gif) -332px -509px;
+  width: 93px;
+  height: 92px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+}
+
+.bigcancel {
+  background: url(images/mixr.gif) -425px -509px;
+  width: 75px;
+  height: 92px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+}
+
+.dot_list li {
+  background: url(images/mixr.gif) -143px -263px no-repeat;
+  text-indent: 13px;
+  line-height: 24px;
+}
+
+.main {
+  margin: 0 5px;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+}
+
+.sub {
+  background: #fff url(images/btn.gif) 0px -191px;
+  height: 49px;
+}
+
+  .sub h6 {
+    background: url(images/btn.gif) 0px -111px no-repeat;
+    margin: 0 0 0 20px;
+    padding: 0 0 0 15px;
+    height: 49px;
+  }
+
+  .sub span {
+    font-size: 18px;
+    font-family: "Microsoft YaHei",verdana;
+    font-weight: normal;
+    line-height: 45px;
+    _line-height: 48px;
+  }
+
+.login_form {
+  margin: 15px 0 20px 5px;
+  _margin-top: 10px;
+  line-height: 25px;
+}
+
+.form_tips {
+  margin-left: 32px;
+  width: 250px;
+  color: #ff6600;
+  margin-bottom: 10px;
+}
+
+.notice_tips {
+  border: 1px solid #FCDFA9;
+  background: #fffeee;
+  padding: 5px 8px 8px 8px;
+  display: inline-block;
+}
+
+.s_icon {
+  background: url(images/mixr.gif);
+  background-repeat: no-repeat;
+  width: 18px;
+  height: 14px;
+  line-height: 14px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+}
+
+.i_point {
+  background-position: -199px -193px;
+}
+
+.field-hint-message {
+  display: block;
+  color: #b7b7b7;
+}
+
+.form-field {
+  margin: 0 0 10px 0;
+}
+
+  .form-field label.form-field-lable-required {
+    width: 70px;
+    text-align: right;
+    float: left;
+    line-height: 25px;
+    display: inline-block;
+  }
+
+  .form-field label.remember {
+  }
+
+input.single-line {
+  border: 1px solid #c6c6c6;
+  height: 18px;
+  line-height: 18px;
+  padding: 4px;
+  outline: none;
+  width: 198px;
+}
+
+input.input-validation-error {
+  border: 1px solid #ff8700;
+  background: #FFFCEF;
+  color: #333;
+}
+
+input.text-box-password {
+  width: 132px;
+  margin-right: 10px;
+}
+
+.form-field-submit,
+.form-field-login,
+.form-field-remember {
+  margin-left: 70px;
+}
+
+
+
+.form-field-validatecode input.single-line {
+  width: 42px;
+  font: bold 14px Verdana;
+}
+
+.form-field .vcode {
+  outline: none;
+}
+
+  .form-field .vcode img {
+    width: 52px;
+    height: 26px;
+    margin: 0 10px;
+  }
+
+
+
+span.field-validation-error {
+  color: #ff6600;
+  display: block;
+  margin: 6px 0 0 70px;
+  height: 14px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+  padding: 0 0 0 16px;
+  line-height: 14px;
+  background: url(images/mixr.gif);
+  background-repeat: no-repeat;
+  background-position: -80px -333px;
+}
+
+
+.register .form-field label.form-field-lable-required {
+  width: 130px;
+}
+
+  .register .form-field label.form-field-lable-required:after {
+    content: "*";
+    width: 5px;
+    padding-right: 5px;
+    font: 12px simsun;
+    color: #ff6600;
+    display: inline-block;
+    margin: 0px;
+  }
+
+.register .form-field-submit,
+.register .field-hint-message {
+  margin-left: 130px;
+}
+
+.register span.field-validation-error {
+  margin-left: 5px;
+}
+
+.register .getpassword .form-field-lable-required {
+  display: none;
+}
+
+.register .getpassword .form-field {
+  margin-top: 10px;
+  margin-left: 0px;
+}
+
+.register .resetpassword label.form-field-lable-required {
+  display: inline-block;
+  width: 85px;
+}
+
+.register .resetpassword .form-field {
+  margin-top: 10px;
+  margin-left: 0px;
+}
+
+.register .resetpassword input.text-box-password {
+  width: 198px;
+}
+
+.register .resetpassword .form-field-submit {
+  margin-left: 85px;
+}
+
+.register a.btn-warning {
+  color: #ffffff;
+}
+
+  .register a.btn-warning:hover {
+    color: #ffffff;
+  }
+
+.other-login {
+}
+
+  .other-login li {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+    padding-top: 15px;
+  }
+
+    .other-login li a {
+      display: block;
+      width: 32px;
+      height: 32px;
+      background: url(images/login-img.png) no-repeat;
+      _background: url(images/login-img.gif) no-repeat;
+    }
+
+      .other-login li a.qq {
+        background-position: 0 -64px;
+      }
+
+      .other-login li a.sina {
+        background-position: 0 -128px;
+      }
+
+      .other-login li a.douban {
+        background-position: 0 -96px;
+      }
+
+      .other-login li a.renren {
+        background-position: 0 -32px;
+      }
+
+      .other-login li a.taobao {
+        background-position: 0 0;
+      }
+
+.footer {
+  border-top: 1px solid #e6e6e6;
+  text-align: center;
+  padding: 10px 0 10px 0;
+  line-height: 24px;
+  color: #7E7E7E;
+  width: 100%;
+  margin: 20px 0 0 0;
+}

@@ -1,0 +1,39 @@
+﻿@model ChangePasswordModel
+@{
+    ViewBag.Title = "修改登录密码";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+
+            @ViewHelpers.Alert("安全提醒：", "请妥善保管密码！dotaeye.com工作人员不会以任何理由向您索取密码。", false, AlertType.info.ToString())
+
+            @if (ViewBag.Error != null)
+            { 
+                @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+            }
+            <div class="personal-form personal-form-contact mt40">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-warning ">
+                            &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</article>

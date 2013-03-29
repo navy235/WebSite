@@ -1,0 +1,21 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+}
+
+<span id="@name">
+    <img src="~/Content/images/min-loading.gif" /></span>
+
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery.ajax({
+            type: 'GET',
+            url: '@Url.Action(name + "Name", "AjaxService")',
+            data: 'key=@model ',
+            success: function(res) {
+                $('#@name').html(res);
+            }
+        })
+    })
+</script>

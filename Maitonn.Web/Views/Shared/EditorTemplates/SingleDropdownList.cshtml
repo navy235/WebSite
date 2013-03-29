@@ -1,0 +1,24 @@
+@model  int
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+}
+
+@(Html.Kendo().DropDownListFor(m => m)
+          .OptionLabel("ÇëÑ¡Ôñ" + displayname)
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action(name, "AjaxService");
+              });
+          })
+          )
+<script type="text/javascript">
+    jQuery(function () {
+        jQuery('#@name').removeAttr('disabled').removeAttr('style').attr('tabindex', -1).addClass('k-valid-text').addClass('k-valid-dropdownlist');
+    })
+</script>

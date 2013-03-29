@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "用户群组管理";
+}
+@(Html.Kendo().Grid<Group>()
+    .Name("GroupsList")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.GroupID);
+        columns.Bound(c => c.Name);
+        columns.Bound(c => c.Description);
+        columns.Template(@<text></text>)
+.ClientTemplate(@"<a class='k-button k-button-icontext ' href='"
++ Url.Action("Edit", "Group") + "/#=GroupID#'><span class='k-icon k-edit'></span>编辑</a>").Title("编辑").Width(120);
+        columns.Command(command =>
+        {
+            command.Destroy();
+        }).Title("删除").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Custom().Text("添加群组").Action("Create", "Group");
+        toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .HtmlAttributes(new { style = "height:500px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Batch(true)
+        .PageSize(100)
+        .Model(model => model.Id(c => c.GroupID))
+        .Read("Editing_Read", "Group")
+        .Update("Editing_Update", "Group")
+        .Destroy("Editing_Destroy", "Group")
+    )
+)

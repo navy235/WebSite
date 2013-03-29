@@ -1,0 +1,64 @@
+﻿@functions
+{
+    bool ShouldShow(ModelMetadata metadata)
+    {
+        return metadata.ShowForEdit
+            && metadata.ModelType != typeof(System.Data.EntityState)
+            && !metadata.IsComplexType
+            && !ViewData.TemplateInfo.Visited(metadata);
+    }
+}
+
+@if (Model == null)
+{
+    @ViewData.ModelMetadata.NullDisplayText
+}
+else if (ViewData.TemplateInfo.TemplateDepth > 1)
+{ 
+    @ViewData.ModelMetadata.SimpleDisplayText
+}
+else
+{
+    foreach (var prop in ViewData.ModelMetadata.Properties.Where(pm => ShouldShow(pm)))
+    {
+        if (prop.HideSurroundingHtml)
+        { 
+    @Html.Display(prop.PropertyName)
+        }
+        else
+        {
+            var className = String.Empty;
+            var HintClass = string.Empty;
+            var HintSeparateTitle = string.Empty;
+            if (ViewData.ModelState[prop.PropertyName] != null && ViewData.ModelState[prop.PropertyName].Errors != null && ViewData.ModelState[prop.PropertyName].Errors.Count > 0)
+            {
+                className = "invalid";
+            }
+            if (prop.AdditionalValues.ContainsKey("HintClass"))
+            {
+                HintClass = "display-item-" + prop.AdditionalValues["HintClass"].ToString();
+            }
+            if (prop.AdditionalValues.ContainsKey("HintSeparateTitle"))
+            {
+                HintSeparateTitle = prop.AdditionalValues["HintSeparateTitle"].ToString();
+    <text>
+
+    <div class="display-title">
+        @HintSeparateTitle
+    </div>
+
+    </text>
+            }
+            
+    <div class="display-item @if (prop.IsRequired)
+                             {<text> display-required </text>} @if (!string.IsNullOrEmpty(HintClass))
+                                                               {<text> @HintClass </text>}  ">
+        @if (!string.IsNullOrEmpty(prop.GetDisplayName()))
+        { 
+            <div class="display-label">@prop.GetDisplayName()</div>
+        }
+        <div class="display-field">@Html.Display(prop.PropertyName)</div>
+    </div>
+        }
+    }
+}

@@ -1,0 +1,229 @@
+@model  int
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    List<string> DropdownListKeys = new List<string>();
+    if (ViewData.ModelMetadata.AdditionalValues.ContainsKey("CascadingDropDownList"))
+    {
+        DropdownListKeys = ViewData.ModelMetadata.AdditionalValues["CascadingDropDownList"].ToString().Split('|').ToList();
+        DropdownListKeys.Add(name);
+    }
+}
+
+@for (int i = 0; i < DropdownListKeys.Count; i++)
+{
+    string dname = string.Empty;
+    if (i == DropdownListKeys.Count - 1)
+    {
+        dname = DropdownListKeys[i];
+    }
+    else
+    {
+        dname = name + "_" + DropdownListKeys[i];
+    }
+    if (i == 0)
+    {
+    @(Html.Kendo().DropDownList()
+          .Name(dname)
+          .OptionLabel("ÇëÑ¡Ôñ")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action(name, "AjaxService", new { key = DropdownListKeys[i] });
+
+              });
+          }).Events(e =>
+          {
+              e.DataBound(name + ".init" + dname).Change(name + ".change" + dname);
+          })
+    )
+    }
+    else
+    {
+        string privousName = name + "_" + DropdownListKeys[i - 1];
+        string fname = name + ".filter" + privousName;
+        if (i == DropdownListKeys.Count - 1)
+        {
+    @(Html.Kendo().DropDownListFor(m => m)
+          .OptionLabel("ÇëÑ¡Ôñ")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action(name, "AjaxService")
+                      .Data(fname);
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(false)
+          .AutoBind(false)
+          .CascadeFrom(privousName)
+          .Events(e =>
+          {
+              e.Change(name + ".change" + dname);
+          })
+    )
+        }
+        else
+        {
+    @(Html.Kendo().DropDownList()
+          .Name(dname)
+          .OptionLabel("ÇëÑ¡Ôñ")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action(name, "AjaxService")
+                      .Data(fname);
+              })
+              .ServerFiltering(true);
+          })
+          .Enable(false)
+          .AutoBind(false)
+          .CascadeFrom(privousName)
+        .Events(e =>
+          {
+              e.DataBound(name + ".init" + dname).Change(name + ".change" + dname);
+          })
+    )
+        }
+    }
+}
+<script type="text/javascript">
+
+    var @name={
+        id:'@name',
+        binding:function(){
+            var self=@name;
+            $('#'+self.id).removeAttr('disabled')
+                .removeAttr('style')
+                .attr('tabindex',-1)
+                .addClass('k-valid-text')
+                .addClass('k-valid-dropdownlist');
+        },
+        getValues:function(){
+            var d=$.Deferred();
+            var value=@Model;
+            var result=[];
+            if(value===0){
+                @for (int i = 0; i < DropdownListKeys.Count; i++)
+                {
+                     <text>
+                result.push(0);
+                </text>
+                }
+                d.resolve(result);
+            }else{
+
+                $.ajax({
+                    type:'GET',
+                    url:'@Url.Action("get_" + name, "ajaxservice")',
+                    data:'value='+@Model,
+                    success:function(res){
+                        d.resolve(res);
+                    }
+                })
+            }
+            return d.promise();
+        },
+        @for (int i = 0; i < DropdownListKeys.Count; i++)
+        {
+            string _dname = string.Empty;
+            string _privousName = string.Empty;
+            string _nextName = string.Empty;
+            string _nextValue = string.Empty;
+            string _DropdownListKey = string.Empty;
+            if (i < DropdownListKeys.Count - 1)
+            {
+                if (i + 1 == DropdownListKeys.Count - 1)
+                {
+                    _nextName = name;
+                }
+                else
+                {
+                    _nextName = name + "_" + DropdownListKeys[i + 1];
+                }
+            }
+            if (i == DropdownListKeys.Count - 1)
+            {
+                _dname = DropdownListKeys[i];
+            }
+            else
+            {
+                _dname = name + "_" + DropdownListKeys[i];
+            }
+            if (i > 0)
+            {
+                _privousName = name + "_" + DropdownListKeys[i - 1];
+            }
+
+            _DropdownListKey = DropdownListKeys[i];
+
+        
+             <text>
+
+        initilazied@_dname:false,    
+        init@_dname:function(transpose){
+            var self=@name;
+            var index=@(i);
+            self.getValues().done(function(values){
+                var selectValues=values[index];
+                if(!self.initilazied@_dname){
+                    if(transpose){
+                        if(selectValues===0){
+                            $('#@name').removeAttr('disabled')
+                               .removeAttr('style')
+                               .attr('tabindex',-1)
+                               .addClass('k-valid-text')
+                               .addClass('k-valid-dropdownlist');
+                            return;
+                        }
+                    }
+                    $('#@_dname').data("kendoDropDownList").value(selectValues);
+                    self.initilazied@_dname=true;
+          
+                    @if (i < DropdownListKeys.Count - 1)
+                    {
+                    <text>
+                    self.init@(_nextName)(true);
+                    $('#@_nextName').data("kendoDropDownList").enable();
+                </text>
+                    }
+                }
+            });
+        },
+        change@_dname:function(){
+            var self=@name;
+            $('#'+self.id).removeAttr('disabled');
+        },
+    </text>
+
+                    if (i > 0)
+                    {
+            <text>
+        filter@_privousName:function(){
+            return{
+                pid:$('#@_privousName').val(),
+                key:'@_DropdownListKey'
+            }
+        },
+        </text>
+                    }
+        }
+        forIE7: { }
+    }
+    $(function(){
+        @Html.Raw(name + ".binding();")
+    })
+
+</script>
+
+
+

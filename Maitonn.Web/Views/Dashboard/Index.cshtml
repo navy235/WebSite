@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "运营管理系统";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="admin-content" id="dashboard">
+    <div class="form-block">
+        <div class="form-block-title">
+            <h5>@ViewBag.Title</h5>
+        </div>
+        <div class="form-block-content">
+
+            <div class="alert alert-block alert-info">
+                <h4>您的角色:</h4>
+                <i>@Model.GroupName</i>
+            </div>
+
+
+            <div class="alert alert-block alert-info">
+                <h4>登录情况!</h4>
+                <i>登录总数：</i>@Model.LoginCount 次<br>
+                <i>本次登录IP：</i>@Model.CurrentIP<br>
+                <i>本次登录时间：</i>@Model.CurrentTime<br>
+                <i>上次登录IP：</i>@Model.LastIP<br>
+                <i>上次登录时间：</i>@Model.LastTime
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+}
+
+<div class="img-box-list" id="@Html.Raw(name + "_imgbox")">
+</div>
+
+<div class="img-list-box" id="@(name + "_template")">
+    <a class="@(name + "_link")" >
+        <img class="@(name + "_img")"  /></a>
+</div>
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        binding:function(){
+            var self=@name;
+            var _imgurl='@(String.IsNullOrEmpty(Model) ? "" : Model)';
+            if(_imgurl!==''){
+                for(var i=0;i<_imgurl.split(',').length;i++){
+                    var template=$('#'+'@(name + "_template")').clone();
+                    $("#"+self.id+"_imgbox")
+                        .append(template.find('.@(name + "_img")')
+                        .attr('src',_imgurl.split(',')[i]).end()
+                        .find('.@(name + "_link")').attr('href',_imgurl.split(',')[i]).end()
+                        .show()
+                        );
+                }
+            }
+        }
+    }
+    $(function(){
+        @Html.Raw(name + ".binding();")
+    })
+</script>

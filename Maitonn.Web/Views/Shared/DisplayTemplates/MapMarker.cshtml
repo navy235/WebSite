@@ -1,0 +1,71 @@
+@model  string
+
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+    var iconUrl = Url.Content("~/Content/mapicon.gif");
+}
+
+<style type="text/css">
+    .map-container {
+        width: 670px;
+        height: 450px;
+        border: 1px solid gray;
+    }
+    .map-marker-icon {
+        background-position: -46px 0;
+        background-image: url('/Content/mapicon.gif');
+    }
+</style>
+
+<div id="@(name + "_container")" class="map-container">
+</div>
+
+
+
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+   
+        conatinerId:'@(name + "_container")',
+  
+        lng:'@(String.IsNullOrEmpty(Model) ? string.Empty : Model.Split('|')[0])',
+        lat:'@(String.IsNullOrEmpty(Model) ? string.Empty : Model.Split('|')[1])',
+        load:function(path,callback){
+            var script = document.createElement("script");
+            script.src = "http://api.map.baidu.com/api?v=1.2&callback=@(name + ".binding")";
+            document.body.appendChild(script);
+        },
+        binding:function(){
+            var self=@name;
+            var point=new BMap.Point(116.404, 39.915);
+            if(self.lng!==''&&self.lng!=='0'){
+                point=new BMap.Point(new Number(self.lng),new Number(self.lat));
+            }
+            self.map=new BMap.Map("@(name + "_container")");
+            self.map.centerAndZoom(point, 12);
+            //self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+            //self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+            //self.map.addControl(new BMap.OverviewMapControl());  
+            //self.map.enableScrollWheelZoom();//添加缩略地图控件
+            self.addMarker(point);
+        },
+        addMarker:function(point){
+            var self=@name;
+            var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
+                offset: new BMap.Size(0, 0),
+                imageOffset: new BMap.Size(0, 0 - 10 * 25)
+            });
+            var marker = new BMap.Marker(point, { icon: myIcon });
+            this.map.addOverlay(marker);
+            marker.enableDragging();
+            return marker;
+        }
+    }
+        $(function(){
+            @Html.Raw(name + ".load();")
+        })
+
+
+</script>

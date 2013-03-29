@@ -1,0 +1,42 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+    List<SelectListItem> renderList = new List<SelectListItem>();
+    renderList = (List<SelectListItem>)ViewData["Data_" + name];
+}
+<div class="checklist">
+    @for (int i = 0; i < renderList.Count; i++)
+    { 
+        <label for="@(name + i.ToString())" class="checkbox" >
+            <input type="checkbox" id="@(name + i.ToString())" name="@(name + "_check")" value="@renderList[i].Value" checked="@renderList[i].Selected" />
+            @renderList[i].Text
+        </label>
+    }
+</div>
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        checkid:'@(name + "_check")',
+        inited:false,
+        binding:function(){
+            var self=@name;
+            self.setValue();
+            $('[name="'+self.checkid+'"]').on('click',self.setValue);
+            self.inited=true;
+        },
+        setValue:function(){
+            var self=@name;
+            var selectValus=$.map($('[name="'+self.checkid+'"]:checked'),function(item){ return $(item).val()}).join(',');
+            $('#'+self.id).val(selectValus);
+            if(self.inited){
+                $('#'+self.id).parents('form').validate().element('#'+self.id);
+            }
+        }
+    }
+    $(function(){
+        @Html.Raw(name + ".binding();")
+    })
+</script>
