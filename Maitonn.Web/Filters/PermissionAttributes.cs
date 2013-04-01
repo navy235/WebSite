@@ -25,9 +25,9 @@ namespace Maitonn.Web
             base.AuthorizeCore(httpContext);
             if (CookieHelper.IsLogin)
             {
-                //int groupID = Convert.ToInt32(CookieHelper.GroupID);
-                //string controller = httpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
-                //string action = httpContext.Request.RequestContext.RouteData.Values["action"].ToString();
+                int groupID = Convert.ToInt32(CookieHelper.GroupID);
+                string controller = httpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
+                string action = httpContext.Request.RequestContext.RouteData.Values["action"].ToString();
                 ////var query = from permissions in db.Permissions
                 ////            join role_permissions in db.Role_Permissions on permissions.ID equals role_permissions.PermissionID
                 ////            join group_roles in db.Group_Roles on role_permissions.RoleID equals group_roles.RoleID
@@ -39,20 +39,20 @@ namespace Maitonn.Web
                 ////                permissions.Action
                 ////            };
 
-                //var query = DB_Service.Set<Group>()
-                //    .Include(x => x.Roles)
-                //    .Where(g =>
-                //        (g.Roles.Any(r =>
-                //            r.Permissions.Count(p =>
-                //                p.Controller.Equals(controller, StringComparison.OrdinalIgnoreCase)
-                //                &&
-                //                (p.Action.Equals(action, StringComparison.OrdinalIgnoreCase) || p.Action.Equals("controller", StringComparison.OrdinalIgnoreCase))) > 0))
-                //        && g.GroupID == groupID);
-                //if (query.Count() > 0)
-                //{
-                //    hasPermission = true;
-                //}
-                hasPermission = true;
+                var query = DB_Service.Set<Group>()
+                    .Include(x => x.Roles)
+                    .Where(g =>
+                        (g.Roles.Any(r =>
+                            r.Permissions.Count(p =>
+                                p.Controller.Equals(controller, StringComparison.OrdinalIgnoreCase)
+                                &&
+                                (p.Action.Equals(action, StringComparison.OrdinalIgnoreCase) || p.Action.Equals("controller", StringComparison.OrdinalIgnoreCase))) > 0))
+                        && g.GroupID == groupID);
+                if (query.Count() > 0)
+                {
+                    hasPermission = true;
+                }
+              
             }
             return hasPermission;
         }

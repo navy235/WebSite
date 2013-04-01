@@ -14,6 +14,9 @@ namespace Maitonn.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 
+
+
+
             routes.MapRoute(
                name: "defaultlist",
                url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}",
@@ -31,6 +34,8 @@ namespace Maitonn.Web
                }
             );
 
+
+
             routes.MapRoute(
                name: "list",
                url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}",
@@ -45,8 +50,14 @@ namespace Maitonn.Web
                    formatcode = 0,
                    ownercode = 0,
                    periodcode = 0
-               }
+               },
+              constraints: new
+              {
+                  province = new ProvinceConstraint()
+              }
             );
+
+
 
             routes.MapRoute(
               name: "defaulthome",
@@ -62,6 +73,21 @@ namespace Maitonn.Web
                   province = new ProvinceConstraint()
               }
            );
+
+            routes.MapRoute(
+                 name: "changeprovince",
+                 url: "change/{province}",
+                 defaults: new
+                 {
+                     controller = " ChangeProvince",
+                     action = "Index",
+                     province = UrlParameter.Optional
+                 },
+                 constraints: new
+                 {
+                     province = new ProvinceConstraint()
+                 }
+            );
 
             routes.MapRoute(
                 name: "default",

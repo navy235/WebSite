@@ -1,4 +1,5 @@
-﻿<div class="nav-body nav-top">
+﻿
+<div class="nav-body nav-top">
     <div class="nav-title">
         <em></em>
         <p class="nav-account"><a href="@Url.Action("Index", "Personal")">我的账号</a></p>
@@ -93,10 +94,10 @@
 </div>
 @Html.Partial("_DisplayMessage")
 <script type="text/javascript">
-    $(function () {
+    $(function() {
 
         var currentMenuItem = '@ViewBag.MenuItem';
-        $('.nav-title').click(function () {
+        $('.nav-title').click(function() {
             var $navitem = $(this).children('p');
             if (!$navitem.children('a')[0]) {
                 var menuClass = 'menu-' + $navitem.attr('class').replace('nav-', '');

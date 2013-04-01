@@ -25,12 +25,12 @@ namespace Maitonn.Core
         /// <param name="pwd">密码</param>
         /// <param name="cookiedate">记住</param>
         public static void LoginCookieSave(string uid,
-            string email, 
-            string nickName, 
-            string avtarUrl, 
-            string groupID, 
+            string email,
+            string nickName,
+            string avtarUrl,
+            string groupID,
             string Status,
-            string pwd, 
+            string pwd,
             string remember)
         {
 
@@ -64,6 +64,30 @@ namespace Maitonn.Core
             //WinLoginTraceCookieSave(uid);
         }
 
+        /// <summary>
+        /// 设置省份cookie
+        /// </summary>
+        /// <param name="province"></param>
+        public static void SetProvinceCookie(string province)
+        {
+            System.Web.HttpCookie cookie = new System.Web.HttpCookie(ConfigurationManager.AppSettings["ProvinceName"]);
+            cookie.Values.Add("province", CheckHelper.Escape(province));
+            cookie.Expires = DateTime.Now.AddDays(7);
+            cookie.Domain = ConfigurationManager.AppSettings["LocalDomain"];
+            HttpContext.Current.Response.AppendHeader("P3P: CP", "CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR");
+            HttpContext.Current.Response.AppendCookie(cookie);
+        }
+
+        /// <summary>
+        /// 清除常驻的COOKIE
+        /// </summary>
+        public static void ClearProvinceCookie()
+        {
+            System.Web.HttpCookie cookie = new System.Web.HttpCookie(ConfigurationManager.AppSettings["ProvinceName"]);
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            cookie.Domain = ConfigurationManager.AppSettings["LocalDomain"];
+            HttpContext.Current.Response.Cookies.Add(cookie);
+        }
 
 
         /// <summary>
@@ -172,6 +196,20 @@ namespace Maitonn.Core
                 {
                     return false;
                 }
+            }
+        }
+
+        public static string Province
+        {
+            get
+            {
+                var province = CheckHelper.UnEscape(GetCookie(ConfigurationManager.AppSettings["ProvinceName"], "province"));
+                if (string.IsNullOrEmpty(province))
+                {
+                    SetProvinceCookie("quanguo");
+                    province = "quanguo";
+                }
+                return province;
             }
         }
     }

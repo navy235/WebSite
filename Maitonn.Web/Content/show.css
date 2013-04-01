@@ -3779,6 +3779,26 @@ goods-pack .goods-desc {
     text-decoration: none;
   }
 
+
+.province-item {
+  display: inline-block;
+  margin: 10px 10px;
+}
+
+  .province-item a {
+    display: inline-block;
+    border: 1px solid #dddddd;
+    padding: 10px 20px;
+  }
+
+
+    .province-item.selected a,
+    .province-item a:hover {
+      background: #d90000;
+      color: #fff;
+    }
+
+
 .footer {
   margin: 20px 0 0;
   background-color: #F7F7F7;

@@ -203,7 +203,9 @@
     <Compile Include="Controllers\Admin\PermissionController.cs" />
     <Compile Include="Controllers\Admin\RolesController.cs" />
     <Compile Include="Controllers\AjaxServiceController.cs" />
+    <Compile Include="Controllers\ChangeProvinceController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DesignController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListController.cs" />
@@ -332,6 +334,10 @@
     <Content Include="Content\images\bind-email.jpg" />
     <Content Include="Content\images\bind-mobile.jpg" />
     <Content Include="Content\images\btn.gif" />
+    <Content Include="Content\images\companybtn.png" />
+    <Content Include="Content\images\companysprites.png" />
+    <Content Include="Content\images\company\2012313113027638.JPG" />
+    <Content Include="Content\images\company\2012313113027654.jpg" />
     <Content Include="Content\images\consult.gif" />
     <Content Include="Content\images\cusp.png" />
     <Content Include="Content\images\error_16.png" />
@@ -362,6 +368,7 @@
     <Content Include="Content\images\login-img.png" />
     <Content Include="Content\images\logo.gif" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\companybg.png" />
     <Content Include="Content\images\min-loading.gif" />
     <Content Include="Content\images\mixr.gif" />
     <Content Include="Content\images\personal.gif" />
@@ -747,6 +754,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\company.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Code\ViewHelpers.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
@@ -1333,7 +1341,7 @@
     <Content Include="Views\Shared\_Bread.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_NoScript.cshtml" />
-    <Content Include="Views\Shared\_TopHead.cshtml" />
+    <Content Include="Views\Shared\_TopHeadHome.cshtml" />
     <Content Include="Views\Shared\_TopListMenu.cshtml" />
     <Content Include="Views\Shared\_TopNav.cshtml" />
     <Content Include="Views\Shared\_LayoutHome.cshtml" />
@@ -1342,6 +1350,14 @@
     <Content Include="Views\Shared\_TopHotHome.cshtml" />
     <Content Include="Views\Shared\_ListMainHome.cshtml" />
     <Content Include="Views\Shared\_TopListMenuHome.cshtml" />
+    <Content Include="Views\Design\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutCompany.cshtml" />
+    <Content Include="Views\Shared\_CompanyFooter.cshtml" />
+    <Content Include="Views\Shared\_TopHead.cshtml" />
+    <Content Include="Views\Home\City.cshtml" />
+    <Content Include="Views\List\Menu.cshtml" />
+    <Content Include="Views\Shared\_BreadHome.cshtml" />
+    <Content Include="Views\Shared\_FooterHome.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

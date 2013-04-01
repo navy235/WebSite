@@ -5,29 +5,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/company")
     @Styles.Render("~/Content/kendo/2012.3.1114/css")
     @Scripts.Render("~/bundles/modernizr")
     <!--This bundle was moved by the Kendo UI VS Extensions for compatibility reasons-->
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/jquery.min.js")"></script>
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/cultures/kendo.culture.zh-CHS.min.js")"></script>
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
-        kendo.culture("zh-CHS");
-    </script>
+
 </head>
 <body>
     @Html.Partial("_NoScript")
     @Html.Partial("_TopNav")
-    @Html.Action("city", "home", new { province = CookieHelper.Province })
-    @Html.Action("menu", "list", new { province = CookieHelper.Province })
-    @Html.Partial("_BreadHome")
     @RenderBody()
-    @Html.Partial("_Footer")
+    @Html.Partial("_CompanyFooter")
     @RenderSection("scripts", required: false)
-    @MiniProfiler.RenderIncludes(position: RenderPosition.Left, showTrivial: false, showTimeWithChildren: false)
 
+    @*  @MiniProfiler.RenderIncludes(position: RenderPosition.Right, showTrivial: false, showTimeWithChildren: false)*@
 </body>
 </html>

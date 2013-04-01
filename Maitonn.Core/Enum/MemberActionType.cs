@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Maitonn.Core
 {
@@ -14,10 +15,24 @@ namespace Maitonn.Core
         {
             return (int)((ProvinceName)Enum.Parse(typeof(ProvinceName), Province, true));
         }
+
+        public static List<SelectListItem> GetProvinceList(string Province)
+        {
+            var _ProvinceList = new List<SelectListItem>();
+            _ProvinceList = (from ProvinceName e in Enum.GetValues(typeof(ProvinceName))
+                             select new SelectListItem()
+                             {
+                                 Text = UIHelper.ProvinceList.Single(x => x.Value == e.ToString()).Text,
+                                 Value = e.ToString(),
+                                 Selected = e.ToString() == Province
+                             }).ToList();
+            return _ProvinceList;
+        }
     }
 
     public enum ProvinceName
     {
+        quanguo = 35,
         beijing = 1,
         shanghai = 2,
         tianjing = 3,
@@ -51,8 +66,8 @@ namespace Maitonn.Core
         xinjiang = 31,
         xianggang = 32,
         aomen = 33,
-        taiwan = 34,
-        quanguo = 35
+        taiwan = 34
+
     }
 
     public enum MemberStatus

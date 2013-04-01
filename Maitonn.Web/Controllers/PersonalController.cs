@@ -23,20 +23,20 @@ namespace Maitonn.Web
 
         //
         // GET: /Register/
-        private IUnitOfWork DB_Service;
+        private IAreaService areaService;
         private IMemberService memberService;
         private IEmailService emailService;
         private IMember_ActionService member_ActionService;
         private IAreaAttService areaAttService;
         private IOutDoorService outDoorService;
-        public PersonalController(IUnitOfWork _DB_Service
+        public PersonalController(IAreaService _areaService
             , IMemberService _memberService
             , IEmailService _emailService
             , IMember_ActionService _member_ActionService
             , IAreaAttService _areaAttService
             , IOutDoorService _outDoorService)
         {
-            DB_Service = _DB_Service;
+            areaService = _areaService;
             memberService = _memberService;
             emailService = _emailService;
             member_ActionService = _member_ActionService;
@@ -340,7 +340,19 @@ namespace Maitonn.Web
         }
 
 
+        private ProvinceViewModel GetProvince(string province)
+        {
+            int provinceId = EnumHelper.GetProvinceValue(province);
 
+            return new ProvinceViewModel()
+            {
+                Name = areaService.Find(provinceId).CateName,
+                Url = Url.Action("index", "home", new
+                {
+                    province = province
+                })
+            };
+        }
 
 
     }

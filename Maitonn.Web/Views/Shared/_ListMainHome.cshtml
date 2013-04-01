@@ -33,7 +33,7 @@
             {
                 var item = Model.ListMenu.Items[i];
                 <dt class="clearfix">
-                    <a class="list-category@(i)" href="/products/1.html">@item.Category.Name</a>
+                    <a class="list-category@(i)" href="@item.Category.Url">@item.Category.Name</a>
                     <span class="list-category-arrow" @(!item.Category.Selected ? "" : "style=display:none") ></span></dt>
                 <dd @(item.Category.Selected ? "" : "style=display:none")>
                     @foreach (var childItem in item.ChildCategories)
@@ -77,7 +77,7 @@
         </div>
         <div class="list-gray-box ">
             <h4>@Model.SuggestList.Name</h4>
-            <ul class="list-gray-view list-gray-view-good">
+            <ul class="list-gray-view ">
 
                 @for (var i = 0; i < Model.SuggestList.Items.Count; i++)
                 {

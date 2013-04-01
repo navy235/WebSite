@@ -1,10 +1,15 @@
-﻿<h1 class="hide">广知网，网络媒体我知道</h1>
+﻿@{
+    Layout = null;
+}
+
+@model  ProvinceViewModel
+<h1 class="hide">广知网，网络媒体我知道</h1>
 <header class="top-head">
     <div class="top-head-wrap">
         <div class="top-head-logo">
             <h1>
-                <a hidefocus="true" title="广知网" class="top-head-link" href="http://www.dotaeye.com"></a>
-                全国
+                <a hidefocus="true" title="广知网" class="top-head-link" href="@Model.Url"></a>
+                @Model.Name
             </h1>
             <div class="top-head-city">
                 <a href="javascript:;" class="top-head-changcity">[切换省份]</a>
@@ -26,3 +31,37 @@
 
     </div>
 </header>
+
+@{
+    var ProvinceList = EnumHelper.GetProvinceList(CookieHelper.Province);
+}
+@(Html.Kendo().Window().Name("ChangeProvince")
+    .Title("切换城市")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(700)
+    .Height(500)
+    .Scrollable(true)
+    .Content(@<text>
+<div class="province-list">
+    @foreach (var province in ProvinceList)
+    {
+        <div class="province-item  @(province.Selected ? "selected" : "")" >
+            @Html.ActionLink(province.Text, "index", "changeprovince", new { province = province.Value }, new { })
+        </div>
+    }
+</div>
+</text>)
+)
+
+<script type="text/javascript">
+    $(function() {
+        $('.top-head-city').find('a').click(function() {
+            var provincewindow = $('#ChangeProvince').data("kendoWindow");
+            provincewindow.center().open();
+        })
+    })
+</script>
+
+

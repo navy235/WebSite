@@ -59,7 +59,7 @@ namespace Maitonn.Web
 
 
         public ActionResult Index(string province = "quanguo", int city = 0,
-            int mediacode = 0,
+            int mediacode = 441,
             int childmediacode = 0,
             int formatcode = 0,
             int ownercode = 0,
@@ -87,10 +87,65 @@ namespace Maitonn.Web
             model.SuggestList = GetSuggestList();
             model.CompanyList = GetCompanyList();
             model.Search = GetSearch(searchTrem);
-            model.Province = GetProvince(province);
+            model.Province = province;
 
             return View(model);
         }
+
+        [ChildActionOnly]
+        public ActionResult Menu(string province = "quanguo")
+        {
+            if (!CookieHelper.Province.Equals(province, StringComparison.CurrentCultureIgnoreCase))
+            {
+                CookieHelper.SetProvinceCookie(province);
+            }
+            TopHotListMenuViewModel model = GetMenu(province);
+            return View(model);
+        }
+
+        private TopHotListMenuViewModel GetMenu(string province)
+        {
+            TopHotListMenuViewModel model = new TopHotListMenuViewModel();
+
+            var category = outDoorMediaCateService.IncludeGetALL().ToList();
+
+            foreach (var item in category)
+            {
+                CategoryListViewModel clvm = new CategoryListViewModel();
+
+                //父类导航
+                CategoryViewModel cvm = new CategoryViewModel()
+                {
+                    CID = item.ID.ToString(),
+                    Name = item.CateName,
+                    Url = Url.Action("index", new
+                    {
+                        province = province,
+                        mediacode = item.ID
+                    })
+                };
+                clvm.Category = cvm;
+                //子类导航
+                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Select(x => new CategoryViewModel
+                {
+                    CID = x.ID.ToString(),
+                    Name = x.CateName,
+
+                    Url = Url.Action("index", new
+                    {
+                        province = province,
+
+                        mediacode = item.ID,
+                        childmediacode = x.ID
+                    })
+                }).ToList();
+                clvm.ChildCategories = ChildCategories;
+                model.Items.Add(clvm);
+            }
+            return model;
+
+        }
+
 
         /// <summary>
         /// 获取左边导航链接
@@ -485,21 +540,6 @@ namespace Maitonn.Web
             model.items.Add(clvm);
 
             return model;
-        }
-
-
-        private ProvinceViewModel GetProvince(string province)
-        {
-            int provinceId = EnumHelper.GetProvinceValue(province);
-
-            return new ProvinceViewModel()
-            {
-                Name = areaService.Find(provinceId).CateName,
-                Url = Url.Action("index", "home", new
-                {
-                    province = province
-                })
-            };
         }
 
     }

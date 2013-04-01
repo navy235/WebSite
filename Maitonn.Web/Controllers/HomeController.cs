@@ -73,8 +73,20 @@ namespace Maitonn.Web
             model.MainHot.MainHotLinks = GetHotLinks();
             model.MainHot.MainGallery = GetMainGallery();
 
-            model.Province = GetProvince(province);
+            model.Province = province;
 
+            return View(model);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult City(string province = "quanguo")
+        {
+            if (!CookieHelper.Province.Equals(province, StringComparison.CurrentCultureIgnoreCase))
+            {
+                CookieHelper.SetProvinceCookie(province);
+            }
+            ProvinceViewModel model = GetProvince(province);
             return View(model);
         }
 
@@ -444,7 +456,7 @@ namespace Maitonn.Web
 
             return new ProvinceViewModel()
             {
-                Name = areaService.Find(provinceId).CateName,
+                Name = UIHelper.ProvinceList.Single(x => x.Value == province).Text,
                 Url = Url.Action("index", "home", new
                   {
                       province = province

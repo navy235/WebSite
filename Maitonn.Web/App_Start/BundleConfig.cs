@@ -50,6 +50,15 @@ namespace Maitonn.Web
                         "~/Content/kendohelper.css",
                         "~/Content/bootstrap.css"));
 
+
+            bundles.Add(new StyleBundle("~/Content/company").Include(
+                        "~/Content/163.base.css",
+                        "~/Content/show.css",
+                        "~/Content/site.css",
+                        "~/Content/company.css",
+                        "~/Content/kendohelper.css",
+                        "~/Content/bootstrap.css"));
+
             bundles.Add(new StyleBundle("~/Content/base").Include(
                       "~/Content/163.base.css",
                       "~/Content/163.admin.css",

@@ -13,7 +13,7 @@ namespace Maitonn.Web
 
         public MainHotViewModel MainHot { get; set; }
 
-        public ProvinceViewModel Province { get; set; }
+        public string Province { get; set; }
 
     }
 
@@ -21,7 +21,7 @@ namespace Maitonn.Web
 
     public class ListViewModel
     {
-        public ProvinceViewModel Province { get; set; }
+        public string Province { get; set; }
 
         public BraedViewModel Braed { get; set; }
 

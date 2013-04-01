@@ -1,0 +1,330 @@
+﻿.top-nav-wrap {
+  width: 960px;
+}
+
+.company-brand {
+  width: 960px;
+  margin: 0 auto 10px;
+}
+
+  .company-brand img {
+    width: 960px;
+    height: 200px;
+  }
+
+.company-nav {
+  background: url(images/companybg.png) no-repeat 0 -90px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  overflow: hidden;
+  width: 940px;
+  margin: 0 auto;
+}
+
+
+  .company-nav li {
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 10px;
+  }
+
+    .company-nav li a, .company-nav li a:visited {
+      color: #FFF;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+      .company-nav li a.selected {
+        display: block;
+        background: url(images/companybtn.png) no-repeat 0 0;
+        height: 38px;
+        padding: 0 0 0 10px;
+        margin-top: 4px;
+        color: #7d0000;
+        cursor: pointer;
+        width: auto!important;
+        width: 90px;
+        text-align: center;
+      }
+
+        .company-nav li a.selected span {
+          display: block;
+          background: url(images/companybtn.png) no-repeat right 0;
+          line-height: 35px;
+          padding: 0 10px 0 0;
+          color: #681414;
+        }
+
+.bread-container {
+  overflow: hidden;
+  border-bottom: 1px solid #dddddd;
+}
+
+.company-bread {
+  width: 960px;
+  margin: 5px auto 0;
+  height: 35px;
+  line-height: 34px;
+  color: #888;
+  position: relative;
+  font-family: '宋体';
+}
+
+  .company-bread span,
+  .company-bread a,
+  .company-bread strong {
+    color: #333;
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+
+a.company-bread-home {
+  display: inline-block;
+  background: url(images/icons.png) 0 -46px no-repeat;
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin: 8px 15px 0 0;
+}
+
+.company-container {
+  width: 960px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.company-left {
+  width: 730px;
+  display: inline;
+  float: left;
+}
+
+.company-right {
+  width: 209px;
+  float: right;
+  _display: inline;
+  padding-left: 20px;
+  border-left: 1px solid #dddddd;
+}
+
+.company-box {
+  color: #323232;
+  overflow: hidden;
+}
+
+  .company-box .box-title {
+    height: 31px;
+    line-height: 31px;
+    overflow: hidden;
+    padding: 13px 0 7px;
+  }
+
+    .company-box .box-title h2 {
+      float: left;
+      _display: inline;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: "微软雅黑E\8F6F\96C5\9ED1", "宋体B8B\4F53", sans-serif;
+    }
+
+    .company-box .box-title span {
+      float: right;
+      _display: inline;
+      color: #888888;
+    }
+
+      .company-box .box-title span a {
+        float: right;
+        _display: inline;
+        padding-right: 14px;
+        background: url(images/companysprites.png) no-repeat;
+        background-position: right -131px;
+      }
+
+  .company-box .box-content {
+    width: 228px;
+    border-top: 0;
+    padding: 5px;
+    overflow: hidden;
+  }
+
+    .company-box .box-content li {
+      background: url(images/companysprites.png) no-repeat;
+      background-position: 0 -110px;
+      font-size: 12px;
+      height: 25px;
+      line-height: 24px;
+      padding-left: 10px;
+      overflow: hidden;
+    }
+
+    .company-box .box-content .category-parent {
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 25px;
+      height: 25px;
+      overflow: hidden;
+      padding-bottom: 3px;
+    }
+
+.separate-line {
+  height: 0;
+  display: block;
+  clear: both;
+  overflow: hidden;
+  border-top: 1px solid #dddddd;
+  width: 229px;
+  margin-left: -19px;
+}
+
+.company-intro {
+  overflow: hidden;
+}
+
+.intro-head {
+  float: left;
+  width: 630px;
+  height: 30px;
+  overflow: hidden;
+  margin: 0px;
+  _display: inline;
+}
+
+.head-left {
+  float: left;
+}
+
+  .head-left h1 {
+    color: #000000;
+    font-size: 18px;
+    font-family: '黑体';
+  }
+
+.head-right {
+  float: right;
+  display: inline;
+}
+
+.intro-main {
+  overflow: hidden;
+  float: left;
+}
+
+.intro-logo {
+  float: left;
+  width: 92px;
+  height: 92px;
+  margin: 16px 0px 0px 0px;
+  _display: inline;
+}
+
+.intro-desc {
+  float: left;
+  width: 610px;
+  margin: 16px 0px 0px 15px;
+  line-height: 20px;
+  _display: inline;
+}
+
+.company-source {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.source-list {
+  margin: 10px 0px;
+}
+
+.source-title {
+  position: relative;
+  border-bottom: 1px solid #dddddd;
+}
+
+  .source-title .title-left h3 {
+    color: #000000;
+    font-size: 18px;
+    font-family: '黑体';
+    padding: 10px 0;
+  }
+
+  .source-title .title-right {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+  }
+
+.source-item {
+  padding-left: 8px;
+  padding-bottom: 10px;
+  margin-left: 5px;
+  border-bottom: 1px dotted #dddddd;
+  margin-top: 10px;
+}
+
+  .source-item .item-img {
+    float: left;
+    _display: inline;
+    width: 120px;
+    height: 120px;
+    margin-top: 6px;
+  }
+
+    .source-item .item-img img {
+      width: 120px;
+      height: 120px;
+    }
+
+  .source-item .item-title {
+    float: left;
+    _display: inline;
+    width: 580px;
+    margin: 6px 0px 0px 10px;
+  }
+
+  .source-item .item-desc {
+    float: left;
+    _display: inline;
+    width: 580px;
+    height: 70px;
+    overflow: hidden;
+    margin: 6px 0px 0px 10px;
+  }
+
+  .source-item .item-category {
+    float: left;
+    _display: inline;
+    width: 580px;
+    margin: 6px 0px 0px 10px;
+  }
+
+
+  .source-item .item-title a {
+    color: #053594;
+  }
+
+  .source-item .item-name {
+    margin-right: 10px;
+  }
+
+  .source-item .item-title span {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .source-item span.item-time {
+    font-weight: normal;
+    font-size: 12px;
+    color: #999999;
+    margin-left: 10px;
+  }
+
+.category-main {
+  font-weight: bold;
+}
+
+.list-page-split {
+  padding-bottom: 10px;
+}
