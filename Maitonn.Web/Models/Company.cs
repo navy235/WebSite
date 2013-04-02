@@ -10,6 +10,7 @@ namespace Maitonn.Web
         public Company()
         {
             this.Employees = new HashSet<Member>();
+            this.CompanyCredentialsImg = new HashSet<CompanyCredentialsImg>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -66,7 +67,7 @@ namespace Maitonn.Web
         [MaxLength(50)]
         public string AddIP { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         [MaxLength(500)]
@@ -90,6 +91,12 @@ namespace Maitonn.Web
         public virtual CompanyImg CompanyImg { get; set; }
 
         public virtual LinkManImg LinkManImg { get; set; }
+
+        public virtual CompanyBannerImg CompanyBannerImg { get; set; }
+
+        public virtual CompanyLogoImg CompanyLogoImg { get; set; }
+
+        public virtual ICollection<CompanyCredentialsImg> CompanyCredentialsImg { get; set; }
 
 
 

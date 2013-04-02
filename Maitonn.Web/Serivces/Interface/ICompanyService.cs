@@ -9,6 +9,8 @@ namespace Maitonn.Web
     {
         Company Create(CompanyReg model);
 
+        Company Update(CompanyReg model);
+
         Company Find(int MemberID);
 
         Company FindByCompanyID(int CompanyID);
@@ -16,6 +18,16 @@ namespace Maitonn.Web
         Company IncludeFindByCompanyID(int CompanyID);
 
         Company IncludeFind(int MemberID);
+
+        CompanyLogo GetCompanyLogo(int MemberID);
+
+        CompanyBanner GetCompanyBanner(int MemberID);
+
+        ServiceResult SaveCompanyLogo(int MemberID, CompanyLogo logo);
+
+        ServiceResult SaveCompanyBanner(int MemberID, CompanyBanner banner);
+
+        IEnumerable<CompanyCredentials> GetCompanyCredentials(int MemberID);
 
         IQueryable<CompanyVerifyViewModel> GetVerifyList();
 

@@ -57,11 +57,11 @@ namespace Maitonn.Web
 
         void SaveMemberContact(int MemberID, ContactModel model);
 
-
-
         bool HasGetPasswordActionInLimitTime(GetPasswordModel model, int limitMin, int memberAction);
 
         Member FindDescriptionMemberInLimitTime(string description, int limitHours, out bool isFound);
+
+        bool ChangeStatus(IEnumerable<int> MemberIds, MemberStatus MemberStatus);
 
     }
 }

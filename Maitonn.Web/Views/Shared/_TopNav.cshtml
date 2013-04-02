@@ -1,10 +1,20 @@
 ﻿<nav class="top-nav">
     <div class="top-nav-wrap">
-        <div class="top-nav-left">欢迎来到网易保健品！<a href="javascript:void(0);" onclick="easyNav.login()">请登录</a> <a href="http://reg.163.com/reg/reg.jsp?product=baojian&amp;url=http%3A%2F%2Fbaojian.163.com%2F%3Ffrom%3Dreg&amp;loginurl=http%3A%2F%2Fbaojian.163.com%2F%3Ffrom%3Dreg%26isShowLogin%3D1">免费注册</a></div>
+        <div class="top-nav-left">欢迎来到广知网！<a href="@Url.Action("index", "login")" >请登录</a> <a href=""@Url.Action("index", "register")"">免费注册</a></div>
         <ul class="top-nav-right">
-            <li><a href="http://baojian.163.com/personal/index.html">个人中心</a>&nbsp;&nbsp;|</li>
-            <li class="spcart"><a href="http://baojian.163.com/cart.html" target="_blank">购物车</a>&nbsp;&nbsp;<strong class="c_ba2636">0</strong>&nbsp;&nbsp;|</li>
-            <li><a href="http://baojian.163.com/personal/my_order.html" target="_blank" rel="nofollow">我的订单</a>&nbsp;&nbsp;</li>
+            <li><a href="@Url.Action("index", "home", new { province = CookieHelper.Province })">广知网首页</a>&nbsp;&nbsp;|</li>
+            @* <li><a href="@Url.Action("index", "personal")">我的广知网</a>&nbsp;&nbsp;|</li>*@
+            <li>
+                <div class="dropdown-box top-nav-dropdown-menu ">
+                    <a class="top-nav-holder" target="_blank" href="@Url.Action("index", "personal")" rel="nofollow">我的广知网<i></i></a><b class="holderline">|</b>
+                    <div class="dropdown-menu dropdown-menu-personal">
+                        <i class="line"></i>
+                        <a class="clearfix" target="_blank" href="@Url.Action("add", "outdoor")" rel="nofollow"><span>发布信息</span></a>
+                        <a class="clearfix" target="_blank" href="@Url.Action("index", "personal")" rel="nofollow"><span>管理中心</span></a>
+                        <a class="clearfix" target="_blank" href="@Url.Action("index", "company")" rel="nofollow"><span>企业入驻</span></a>
+                    </div>
+                </div>
+            </li>
             <li>
                 <div class="dropdown-box top-nav-dropdown-menu ">
                     <a class="top-nav-holder" target="_blank" href="http://t.163.com/baojian_163" rel="nofollow">关注微博<i></i></a><b class="holderline">|</b>

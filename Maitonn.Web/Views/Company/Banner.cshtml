@@ -1,0 +1,60 @@
+﻿@model  CompanyBanner
+@{
+    ViewBag.Title = "企业Banner";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            @if (ViewBag.UserStatus < (int)MemberStatus.CompanyFailed)
+            {
+                @ViewHelpers.Alert("友情提醒：", CookieHelper.NickName + ",请先进行企业认证.", Html.ActionLink("马上进行企业认证", "index", "company")
+               , false, AlertType.info.ToString())
+            }
+            else
+            {
+                @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",请上传企业Banner,方便大家了解你的企业。", false, AlertType.info.ToString())
+                if (ViewBag.Error != null)
+                { 
+                @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+                }
+                <div class="personal-form personal-form-avtar personal-form-banner">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-field">
+                            @Html.LabelFor(x => x.BannerUrl, new { @class = "form-field-lable-required" })
+                            @Html.EditorFor(x => x.BannerUrl)
+                            @Html.ValidationMessageFor(x => x.BannerUrl)
+                        </div>
+
+                        <div class="form-field form-field-submit c_gray">
+                            <button type="submit" class="btn btn-warning ">
+                                &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                        </div>
+                    }
+                </div>
+                <div class="personal-avtar-tips mt10">
+                    <ul>
+                        <li>· 请上传您的品牌Banner</li>
+                        <li>· 请勿在形象标示上留有任何联系方式的信息</li>
+                        <li>· 支持JPG格式，图片大小不超过5MB</li>
+                        <li>· 请保证图片质量，分辨率至少为960*200</li>
+                        <li class="personal-avtar-tips-desc mt15">· 上传遇到问题，请联系客服：400-188-6666</li>
+                    </ul>
+                </div>
+            }
+        </div>
+
+    </div>
+</article>

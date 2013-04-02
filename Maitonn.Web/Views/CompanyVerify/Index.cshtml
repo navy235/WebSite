@@ -1,7 +1,4 @@
-﻿
-
-
-@model  IEnumerable<CompanyVerifyViewModel>
+﻿@model  IEnumerable<CompanyVerifyViewModel>
 
 @{
     ViewBag.Title = "企业信息审核列表";
@@ -20,7 +17,7 @@
                          .Width(40).HtmlAttributes(new { style = "text-align:center" });
 
         columns.Bound(p => p.Name).Width(150);
-        columns.Bound(p => p.Description).Width(200);
+
         columns.Bound(p => p.Contact).Width(200);
         columns.Bound(p => p.LinkMan).Width(100);
         columns.ForeignKey(p => p.Status, new SelectList((List<SelectListItem>)ViewBag.CompanyStatus, "value", "text")).Width(80);
@@ -90,7 +87,7 @@
             $(element).find('.ajax-working').remove();
             $(element).removeClass('disabled');
         },
-        verifyCompany: function(element, url, Ids) {
+        verify: function(element, url, Ids) {
             if ($(element).hasClass('disabled'))
                 return false;
             var self = Grid;
@@ -118,13 +115,13 @@
         },
         verifyFailedAll: function(element) {
             var self = Grid;
-            var url = '@Url.Action("VerifyFailed", "Grid")';
+            var url = '@Url.Action("verifyfailed", "companyverify")';
             var Ids = self.getCheckIds();
             self.verify(element, url, Ids);
         },
         verifyPassAll: function(element) {
             var self = Grid;
-            var url = '@Url.Action("VerifyPass", "Grid")';
+            var url = '@Url.Action("verifypass", "companyverify")';
             var Ids = self.getCheckIds();
             self.verify(element, url, Ids);
         }

@@ -18,7 +18,7 @@
                          .Width(40).HtmlAttributes(new { style = "text-align:center" });
 
         columns.Bound(p => p.Name).Width(150);
-        columns.Bound(p => p.Description).Width(200);
+   
         columns.Bound(p => p.Contact).Width(200);
         columns.Bound(p => p.LinkMan).Width(100);
         columns.ForeignKey(p => p.Status, new SelectList((List<SelectListItem>)ViewBag.CompanyStatus, "value", "text")).Width(80);

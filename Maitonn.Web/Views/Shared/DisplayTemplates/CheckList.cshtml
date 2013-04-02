@@ -11,7 +11,7 @@
         jQuery.ajax({
             type: 'GET',
             url: '@Url.Action(name + "Name", "AjaxService")',
-            data: 'key=@model ',
+            data: 'key=@Model',
             success: function(res) {
                 $('#@name').html(res.join(','));
             }

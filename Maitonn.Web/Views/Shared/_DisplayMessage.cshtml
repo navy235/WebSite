@@ -8,7 +8,7 @@
 }
 <script type="text/javascript">
     $(function() {
-        $('.displaymessage').fadeOut(3000);
+        $('.displaymessage').fadeOut(5000);
         $("body").ajaxError(function(e, request) {
             if (request.status == 403) {
                 var res = $.parseJSON(request.responseText);

@@ -74,8 +74,9 @@ namespace Maitonn.Core
     {
         Registered = 1,
         EmailActived = 2,
-        CompanyApply = 3,
-        CompanyAuth = 4
+        CompanyFailed = 3,
+        CompanyApply =4,
+        CompanyAuth = 5
     }
 
     public enum MemberActionType

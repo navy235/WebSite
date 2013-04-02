@@ -157,7 +157,7 @@ namespace Maitonn.Web
         [HintClass("uploadlist")]
         [AdditionalMetadata("UploadImgList", "")]
         [AdditionalMetadata("UploadImgListMaxLength", "6")]
-        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不小于5M")]
+        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不超过5M")]
         public string MediaImg { get; set; }
 
         [HintSeparateTitle("规格所有权信息")]
@@ -173,7 +173,7 @@ namespace Maitonn.Web
         [HintClass("uploadlist")]
         [AdditionalMetadata("UploadImgList", "3")]
         [AdditionalMetadata("UploadImgListMaxLength", "6")]
-        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不小于5M")]
+        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不超过5M")]
         public string CredentialsImg { get; set; }
 
 

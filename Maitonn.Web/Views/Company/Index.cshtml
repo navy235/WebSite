@@ -29,6 +29,14 @@
                         <li><i></i><span>第三步：提交后台审核</span></li>
                         <li><i></i><span>第四步：审核通过认证成功</span></li>
                     }
+                    else if (ViewBag.UserStatus == (int)MemberStatus.CompanyFailed)
+                    { 
+                        
+                        <li class="pass"><i></i><span>第一步：邮箱绑定</span></li>
+                        <li class="cur"><i></i><span>第二步：填写企业信息</span></li>
+                        <li><i></i><span>第三步：提交后台审核</span></li>
+                        <li><i></i><span>第四步：审核通过认证成功</span></li>
+                    }
                     else if (ViewBag.UserStatus == (int)MemberStatus.CompanyApply)
                     { 
                         <li class="pass"><i></i><span>第一步：邮箱绑定</span></li>
@@ -72,6 +80,28 @@
                     }
                 </div>
             }
+            else if (ViewBag.UserStatus == (int)MemberStatus.CompanyFailed)
+            {
+                @ViewHelpers.Alert("友情提醒：",
+                CookieHelper.NickName + ",您好，您上次填写的企业资料审核没有通过，请认真填写真实企业资料,我们将在1小时候内审核您发的信息。", false, AlertType.error.ToString())
+
+                if (ViewBag.Error != null)
+                { 
+                @ViewHelpers.Alert("错误信息：",
+                ViewBag.Error, false, AlertType.error.ToString())
+                }
+                <div class="personal-form mt20">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.EditorForModel()
+                        <div class="form-field form-field-submit c_gray">
+                            <button type="submit" class="btn btn-warning ">
+                                &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                        </div>
+                    }
+                </div>
+            }
             else if (ViewBag.UserStatus == (int)MemberStatus.CompanyApply)
             {
                 @ViewHelpers.Alert("友情提醒：",
@@ -84,7 +114,7 @@
             else if (ViewBag.UserStatus == (int)MemberStatus.CompanyAuth)
             {
                 @ViewHelpers.Alert("友情提醒：",
-                CookieHelper.NickName + ",您的企业信息正在审核中。我们将尽快审核您的企业信息", false, AlertType.info.ToString())
+                CookieHelper.NickName + ",您的企业信息认证成功！", false, AlertType.info.ToString())
                 <div class="dispaly-container">
                     @Html.DisplayForModel()
                 </div>

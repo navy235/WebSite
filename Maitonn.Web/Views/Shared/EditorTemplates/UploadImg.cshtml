@@ -30,12 +30,13 @@
 <script type="text/javascript">
 
     var @name={
+        id:'@name',
         binding:function(imgurl){
             var _imgurl='@(String.IsNullOrEmpty(Model) ? orgUrl : Model)';
             if(imgurl){
                 _imgurl=imgurl;
             }
-            var imgId='@Html.Raw(name + "_img")';
+            var imgId='@(name + "_img")';
             var id='@name';
             $("#"+imgId).attr("src", _imgurl);
             $("#"+id).val(_imgurl);
@@ -51,9 +52,10 @@
         },
         onSuccess:function(e){
             var self=@name;
-            var resData = eval("(" + e.response + ")");
+            var resData = e.response;
             if (resData.err === ''&&resData.status==='upload') {
                 self.binding(resData.imgurl);
+                self.hideUploadSuccess();
             }
             else {
                 if(resData.err===''&&resData.status==='remove'){
@@ -66,12 +68,21 @@
         onUpload:function(e){
             var files = e.files;
             $.each(files, function () {
-                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension) == -1) {
+                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension.toLowerCase()) == -1) {
                     alert("请上传.gif.jpg.jpeg.bmp.png的图片文件！")
                     e.preventDefault();
                     return false;
                 }
             });
+        },
+        hideUploadSuccess:function(){
+            var self=@name;
+            $('#'+self.id).parent('.form-field').find('.k-success').parents('li').hide();
+            if($('#'+self.id).parent('.form-field').find('.k-loading').length===0){
+                $('#'+self.id).parent('.form-field').find('.k-upload-files').hide();
+            }else{
+                $('#'+self.id).parent('.form-field').find('.k-upload-files').show();
+            }
         },
         getFileInfo:function (e) {
             return $.map(e.files, function (file) {
@@ -80,7 +91,7 @@
             }).join(", ");
         }
     }
-        $(function(){
-            @Html.Raw(name + ".binding();")
-        })
+    $(function(){
+        @(name + ".binding();")
+    })
 </script>

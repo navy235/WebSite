@@ -12,6 +12,8 @@ namespace Maitonn.Web
     {
         public static string Default_AvtarUrl { get; set; }
 
+        public static string Default_LogoUrl { get; set; }
+
         public static string GetPasswordEmailTimeDiffMin { get; set; }
 
         public static string ResetPasswordTimeDiffHour { get; set; }
@@ -23,6 +25,7 @@ namespace Maitonn.Web
         static ConfigSetting()
         {
             Default_AvtarUrl = ConfigurationManager.AppSettings["Default_AvtarUrl"];
+            Default_LogoUrl = ConfigurationManager.AppSettings["Default_LogoUrl"];
             GetPasswordEmailTimeDiffMin = ConfigurationManager.AppSettings["GetPasswordEmailTimeDiffMin"];
             ResetPasswordTimeDiffHour = ConfigurationManager.AppSettings["ResetPasswordTimeDiffHour"];
             GetBindEmailTimeDiffMin = ConfigurationManager.AppSettings["GetBindEmailTimeDiffMin"];

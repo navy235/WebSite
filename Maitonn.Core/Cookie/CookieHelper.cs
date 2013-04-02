@@ -46,11 +46,11 @@ namespace Maitonn.Core
             switch (remember)
             {
                 case "1":
-                    cookie.Expires = DateTime.Now.AddDays(7); break;
+                    cookie.Expires = DateTime.Now.AddDays(1); break;
                 case "2":
-                    cookie.Expires = DateTime.Now.AddDays(30); break;
+                    cookie.Expires = DateTime.Now.AddDays(2); break;
                 case "3":
-                    cookie.Expires = DateTime.Now.AddYears(2); break;
+                    cookie.Expires = DateTime.Now.AddYears(1); break;
             }
 
             cookie.Domain = ConfigurationManager.AppSettings["LocalDomain"];

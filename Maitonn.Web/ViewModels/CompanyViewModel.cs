@@ -19,8 +19,8 @@ namespace Maitonn.Web
         [Display(Name = "公司名称")]
         [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "公司名称含有非法字符.")]
         //[Remote("NickNameExists", "AjaxService", ErrorMessage = "该公司名称含有非法字符或已经注册")]
-        [StringCheckLength(7, 25)]
-        [Hint("请输入7-25位公司名称，英文、数字或中文均可（中文占2个字符）。")]
+        [StringCheckLength(7, 50)]
+        [Hint("请输入7-50位公司名称，英文、数字或中文均可（中文占2个字符）。")]
         public string Name { get; set; }
 
 
@@ -51,16 +51,17 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入公司简介.")]
         [Display(Name = "公司简介")]
         [DataType(DataType.MultilineText)]
-        [StringCheckLength(10, 500)]
-        [Hint("请输入10-500位公司简介，（中文占2个字符）。")]
+        [StringCheckLength(10, 2000)]
+        [Hint("请输入10-2000位公司简介，（中文占2个字符）。")]
+        [HintClass("textarea")]
         public string Description { get; set; }
 
 
         [HintSeparateTitle("联系方式")]
         [Required(ErrorMessage = "请输入公司联系地址")]
         [Display(Name = "联系地址")]
-        [StringLength(25, ErrorMessage = "请输入{2}-{1}位公司联系地址", MinimumLength = 7)]
-        [Hint("公司联系地址7-25个字，不允许填写电话和特殊符号.")]
+        [StringCheckLength(7, 50)]
+        [Hint("公司联系地址7-50个字，英文、数字或中文均可（中文占2个字符），不允许填写电话和特殊符号.")]
         public string Address { get; set; }
 
 
@@ -113,14 +114,24 @@ namespace Maitonn.Web
         public string MSN { get; set; }
 
 
+
         [HintSeparateTitle("认证信息")]
+        [Required(ErrorMessage = "请上传企业LOGO.")]
+        [Display(Name = "企业LOGO")]
+        [UIHint("UploadImgEdit")]
+        [HintClass("uploadlogo")]
+        [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [HintLabel("请上传不小于200X200像素的图片,图片文件大小不超过5M")]
+        public string Logo { get; set; }
+
+
         [Required(ErrorMessage = "请上传企业营业执照.")]
         [Display(Name = "企业执照")]
         [UIHint("UploadImgList")]
         [HintClass("uploadlist")]
         [AdditionalMetadata("UploadImgList", "")]
         [AdditionalMetadata("UploadImgListMaxLength", "6")]
-        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不小于5M")]
+        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不超过5M")]
         public string CompanyImg { get; set; }
 
 
@@ -130,7 +141,7 @@ namespace Maitonn.Web
         [HintClass("uploadlist")]
         [AdditionalMetadata("UploadImgList", "2")]
         [AdditionalMetadata("UploadImgListMaxLength", "6")]
-        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不小于5M")]
+        [HintLabel("请上传1-6张不小于800X600像素的图片,图片文件大小不超过5M")]
         public string LinManImg { get; set; }
 
 
@@ -163,5 +174,48 @@ namespace Maitonn.Web
         [Display(Name = "最后时间")]
         public DateTime LastTime { get; set; }
 
+    }
+
+
+
+    public class CompanyLogo
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int CompanyID { get; set; }
+
+
+        [Required(ErrorMessage = "请上传企业LOGO")]
+        [Display(Name = "企业LOGO")]
+        [UIHint("UploadImgEdit")]
+        [AdditionalMetadata("UploadImgEdit", "200|200")]
+        public string LogoUrl { get; set; }
+    }
+
+    public class CompanyBanner
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int CompanyID { get; set; }
+
+
+        [Required(ErrorMessage = "请上传企业Banner")]
+        [Display(Name = "企业Banner")]
+        [UIHint("UploadImg")]
+        public string BannerUrl { get; set; }
+    }
+
+    public class CompanyCredentials
+    {
+
+        [Required(ErrorMessage = "请输入证书名称")]
+        [Display(Name = "证书名称")]
+        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "公司名称含有非法字符.")]
+        [StringCheckLength(7, 20)]
+        [Hint("请输入7-20位公司名称，英文、数字或中文均可（中文占2个字符）。")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "请上传企业证书")]
+        [Display(Name = "企业证书")]
+        [UIHint("UploadImg")]
+        public string Url { get; set; }
     }
 }

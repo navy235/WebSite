@@ -107,7 +107,7 @@
         onUpload:function(e){
             var files = e.files;
             $.each(files, function () {
-                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension) == -1) {
+                if (".gif.jpg.jpeg.bmp.png".indexOf(this.extension.toLowerCase()) == -1) {
                     alert("请上传.gif.jpg.jpeg.bmp.png的图片文件！")
                     e.preventDefault();
                     return false;

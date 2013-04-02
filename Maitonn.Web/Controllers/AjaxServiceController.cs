@@ -161,6 +161,20 @@ namespace Maitonn.Web
             return Content(outDoorMediaCateService.Find(key).CateName);
         }
 
+        public ActionResult Get_MeidaCode(int value)
+        {
+            var selectValues = new List<int>();
+            var item = outDoorMediaCateService.Find(value);
+            selectValues.Add(item.ID);
+            if (item.PID.HasValue)
+            {
+                selectValues.Add(item.PID.Value);
+            }
+            selectValues.Reverse();
+            return Json(selectValues, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult PeriodCode()
         {
             var renderRadioList = Utilities.GetSelectListData(periodCateService.GetALL().Where(x => x.PID.Equals(null)).ToList(),

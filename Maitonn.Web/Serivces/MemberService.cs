@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using Maitonn.Core;
 
 namespace Maitonn.Web
@@ -338,6 +340,24 @@ namespace Maitonn.Web
         {
             DB_Service.SetProxyCreationEnabledFlase();
             return DB_Service.Set<Member>();
+        }
+
+
+        public bool ChangeStatus(IEnumerable<int> MemberIds, MemberStatus MemberStatus)
+        {
+            var result = true;
+            try
+            {
+                var MemberStatusValue = (int)MemberStatus;
+                DB_Service.Set<Member>().Where(x => MemberIds.Contains(x.MemberID)).ToList().ForEach(x => x.Status = MemberStatusValue);
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result = false;
+            }
+            return result;
+
         }
     }
 }

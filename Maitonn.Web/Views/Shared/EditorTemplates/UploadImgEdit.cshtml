@@ -2,15 +2,16 @@
 
 @{
     var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
-    var orgUrl = Url.Content("~/Content/avtar/avtar_default.jpg");
-
-    var targetWidth = ViewData.ModelMetadata.AdditionalValues["UploadImgEdit"].ToString();
+    var orgUrl = Url.Content("~/Content/noimages.gif");
+    var targetWidth = ViewData.ModelMetadata.AdditionalValues["UploadImgEdit"].ToString().Split('|')[0];
+    var targetHeight = ViewData.ModelMetadata.AdditionalValues["UploadImgEdit"].ToString().Split('|')[1];
+ 
 }
 
-<div class="img-box">
+<div class="img-box ">
     <img src="@orgUrl" id="@(name + "_img")" />
 </div>
-
+<br />
 @(Html.Kendo().Upload()
     .Name("editattachments")
     .Multiple(false)
@@ -163,11 +164,11 @@
             $('#'+cropId).Jcrop({
                 bgFade:true,
                 bgOpacity: .3,
-                aspectRatio: 1,
+                aspectRatio: @(Convert.ToInt32(targetWidth) / Convert.ToInt32(targetHeight)),
                 boxWidth: 450,
                 boxHeight: 400,
-                minSize:[200,200],
-                setSelect: [ 0, 0, @targetWidth, @targetWidth ],
+                minSize:[ @targetWidth, @targetHeight],
+                setSelect: [ 0, 0, @targetWidth, @targetHeight ],
                 onChange: self.onCropChange,
                 onSelect: self.onCropChange
             },function() {

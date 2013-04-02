@@ -217,6 +217,20 @@ textarea {
   vertical-align: middle;
 }
 
+.form-field-uploadlogo .img-box {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+  .form-field-uploadlogo .img-box img {
+    width: 200px;
+    height: 200px;
+  }
+
+
+.form-field-uploadlogo .k-upload {
+  margin-left: 103px;
+}
 
 .form-field-validatecode input[type="text"] {
   width: 120px;
@@ -358,6 +372,15 @@ textarea {
   margin-left: 5px;
   vertical-align: middle;
   display: inline-block;
+}
+
+.display-item-textarea .display-field {
+  width: 650px;
+}
+
+.display-item-uploadlogo .display-field .img-box img {
+  width: 200px;
+  height: 200px;
 }
 
 .display-title {
