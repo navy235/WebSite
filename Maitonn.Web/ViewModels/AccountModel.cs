@@ -25,7 +25,7 @@ namespace Maitonn.Web
 
         [Required(ErrorMessage = "请输入昵称")]
         [Display(Name = "昵称：")]
-        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
         [Remote("NickNameExists", "AjaxService", ErrorMessage = "该昵称含有非法字符或已经注册")]
         [StringCheckLength(4, 14)]
         [Hint("请输入4-14位昵称，英文、数字或中文均可（中文占2个字符）。")]
@@ -96,7 +96,7 @@ namespace Maitonn.Web
 
         [Required(ErrorMessage = "请输入昵称")]
         [Display(Name = "昵称：")]
-        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
         [Remote("NickNameExistsNotMe", "AjaxService", ErrorMessage = "该昵称含有非法字符或已经注册")]
         [StringCheckLength(4, 14)]
         [Hint("请输入4-14位昵称，英文、数字或中文均可（中文占2个字符）。")]
@@ -255,7 +255,7 @@ namespace Maitonn.Web
 
         [Required(ErrorMessage = "请输入昵称")]
         [Display(Name = "昵称：")]
-        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "昵称含有非法字符.")]
         [Remote("NickNameExists", "AjaxService", ErrorMessage = "该昵称含有非法字符或已经注册")]
         [StringCheckLength(4, 14)]
         [Hint("请输入4-14位昵称，英文、数字或中文均可（中文占2个字符）。")]

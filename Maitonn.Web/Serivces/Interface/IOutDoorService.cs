@@ -27,6 +27,8 @@ namespace Maitonn.Web
 
         IQueryable<OutDoor> GetOutDoorByMember(int MemberID);
 
+
+
         IQueryable<OutDoorListItem> GetMemberOutDoor(int MemberID, OutDoorStatus OutDoorStatus, bool includeUpLevel = false);
 
         IQueryable<OutDoorListItem> GetVerifyList(OutDoorStatus OutDoorStatus, bool includeUpLevel = false);

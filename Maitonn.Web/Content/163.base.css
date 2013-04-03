@@ -346,11 +346,8 @@ a {
 }
 
 
-  a:link, a:visited {
-    color: #252525;
-  }
-
   a:hover, a:active {
     color: #cc1b1b;
     text-decoration: underline;
   }
+

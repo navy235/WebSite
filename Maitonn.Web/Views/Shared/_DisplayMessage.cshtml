@@ -6,6 +6,16 @@
 {
     @ViewHelpers.Alert(serviceResult.Message, serviceResult.Success)
 }
+
+<div class="alert jsmessage ">
+    <div class="image">
+        <img src="~/Content/images/icon/success.png"  />
+    </div>
+    <div class="text">
+        <span class="jsmessage-text" ></span>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(function() {
         $('.displaymessage').fadeOut(5000);

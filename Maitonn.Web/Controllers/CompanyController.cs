@@ -291,7 +291,7 @@ namespace Maitonn.Web
             int MemberID = Convert.ToInt32(CookieHelper.UID);
             var UserStatus = Convert.ToInt32(CookieHelper.Status);
             ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-banner";
+            ViewBag.MenuItem = "company-credentials";
             if (UserStatus < (int)MemberStatus.CompanyFailed)
             {
                 return View(new List<CompanyCredentials>());
@@ -305,6 +305,113 @@ namespace Maitonn.Web
                 }
                 return View(companyCredentials);
             }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCredentials(int ID)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            ServiceResult result = new ServiceResult();
+            result = companyService.DeleteCompanyCredentials(MemberID, ID);
+            result.Message = "删除证书" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+        }
+
+        public ActionResult AddCredentials()
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-credentials";
+            return View(new CompanyCredentials());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddCredentials(CompanyCredentials model)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-credentials";
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+
+                var memberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.SaveCompanyCredentials(memberID, model);
+
+                result.Message = "添加证书" + (result.Success ? "成功！" : "失败！");
+                TempData["Service_Result"] = result;
+                if (result.Success)
+                {
+                    return RedirectToAction("Credentials");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            return View(model);
+        }
+
+        public ActionResult EditCredentials(int ID)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-credentials";
+            var credentials = companyService.GetCompanyCredentials(MemberID, ID);
+            if (credentials == null)
+            {
+                return Content("<script>alert('非法操作！');window.history.go(-1);</script>");
+            }
+            var model = new CompanyCredentials()
+            {
+                ID = credentials.ID,
+                Name = credentials.Title,
+                Url = credentials.ImgUrl
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCredentials(CompanyCredentials model)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-credentials";
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+
+                var memberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.UpdateCompanyCredentials(memberID, model);
+
+                result.Message = "编辑证书" + (result.Success ? "成功！" : "失败！");
+                TempData["Service_Result"] = result;
+                if (result.Success)
+                {
+                    return RedirectToAction("Credentials");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            return View(model);
         }
     }
 }

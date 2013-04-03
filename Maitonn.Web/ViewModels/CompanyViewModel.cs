@@ -10,6 +10,7 @@ namespace Maitonn.Web
     using System.Web;
     using System.Globalization;
     using System.Web.Mvc;
+    using PagedList;
     using Maitonn.Core;
     public class CompanyReg
     {
@@ -17,7 +18,7 @@ namespace Maitonn.Web
         [HintSeparateTitle("基本信息")]
         [Required(ErrorMessage = "请输入公司名称")]
         [Display(Name = "公司名称")]
-        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "公司名称含有非法字符.")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "公司名称含有非法字符.")]
         //[Remote("NickNameExists", "AjaxService", ErrorMessage = "该公司名称含有非法字符或已经注册")]
         [StringCheckLength(7, 50)]
         [Hint("请输入7-50位公司名称，英文、数字或中文均可（中文占2个字符）。")]
@@ -208,14 +209,166 @@ namespace Maitonn.Web
 
         [Required(ErrorMessage = "请输入证书名称")]
         [Display(Name = "证书名称")]
-        [RegularExpression(@"^[\u4e00-\u9fa5A|Za-z|0-9|_]+$", ErrorMessage = "公司名称含有非法字符.")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "证书名称含有非法字符.")]
         [StringCheckLength(7, 20)]
-        [Hint("请输入7-20位公司名称，英文、数字或中文均可（中文占2个字符）。")]
+        [Hint("请输入7-20位证书名称，英文、数字或中文均可（中文占2个字符）。")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "请上传企业证书")]
         [Display(Name = "企业证书")]
         [UIHint("UploadImg")]
         public string Url { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
     }
+
+
+    public class CompanyShopIndexViewModel
+    {
+        public CompanyShopIndexViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public IPagedList<CompanyProductViewModel> CompanyProduct { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopIntroViewModel
+    {
+        public CompanyShopIntroViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopSourceViewModel
+    {
+        public CompanyShopSourceViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public IPagedList<CompanyProductViewModel> CompanyProduct { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyCategoryViewModel
+    {
+
+        public CompanyCategoryViewModel()
+        {
+            this.Childrens = new List<CompanyCategoryViewModel>();
+        }
+
+        public string Name { get; set; }
+
+        public bool IsParent { get; set; }
+
+        public int ID { get; set; }
+
+        public int Count { get; set; }
+
+        public List<CompanyCategoryViewModel> Childrens { get; set; }
+    }
+
+
+    public class CompanyProductViewModel
+    {
+
+        public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string ImgUrl { get; set; }
+
+        public string Url { get; set; }
+
+        public string ParentMediaCateName { get; set; }
+
+        public int ParentMediaCateCode { get; set; }
+
+        public string MediaCateName { get; set; }
+
+        public int MediaCateCode { get; set; }
+
+        public string OwnerCateName { get; set; }
+
+        public decimal Price { get; set; }
+
+        public DateTime Addtime { get; set; }
+
+    }
+
+    public class CompanyLinksViewModel
+    {
+        public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string ImgUrl { get; set; }
+
+        public string Url { get; set; }
+    }
+
 }

@@ -83,20 +83,22 @@ namespace Maitonn.Web
                  }
             );
 
+
             routes.MapRoute(
-                name: "biz",
-                url: "biz/{id}",
-                defaults: new
-                {
-                    controller = "Shop",
-                    action = "Index",
-                    id = UrlParameter.Optional
-                },
-                constraints: new
-                {
-                    id = @"\d+"
-                }
-           );
+             name: "biz",
+             url: "biz/{id}/{action}/{category}",
+             defaults: new
+             {
+                 controller = "Shop",
+                 action = "Index",
+                 id = UrlParameter.Optional,
+                 category = UrlParameter.Optional
+             },
+             constraints: new
+             {
+                 id = @"\d+"
+             }
+        );
 
             routes.MapRoute(
                 name: "default",

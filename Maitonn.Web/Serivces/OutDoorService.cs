@@ -209,6 +209,11 @@ namespace Maitonn.Web
         {
             return DB_Service.Set<OutDoor>()
                 .Include(x => x.MediaImg)
+                .Include(x => x.Area)
+                .Include(x => x.Area.PCategory)
+                .Include(x => x.OutDoorMediaCate)
+                .Include(x => x.OutDoorMediaCate.PCategory)
+                .Include(x => x.OwnerCate)
                 .Include(x => x.CredentialsImg)
                 .Include(x => x.AreaAtt)
                 .FirstOrDefault(x => x.MediaID == MediaID);
@@ -305,7 +310,15 @@ namespace Maitonn.Web
 
         public IQueryable<OutDoor> GetOutDoorByMember(int MemberID)
         {
-            return DB_Service.Set<OutDoor>().Where(x => x.MemberID == MemberID);
+            return DB_Service.Set<OutDoor>()
+              .Include(x => x.MediaImg)
+              .Include(x => x.Area)
+              .Include(x => x.Area.PCategory)
+              .Include(x => x.OutDoorMediaCate)
+              .Include(x => x.OutDoorMediaCate.PCategory)
+              .Include(x => x.OwnerCate)
+              .Include(x => x.CredentialsImg)
+              .Include(x => x.AreaAtt).Where(x => x.MemberID == MemberID);
         }
 
         public IQueryable<OutDoorListItem> GetMemberOutDoor(int MemberID, OutDoorStatus OutDoorStatus, bool includeUpLevel = false)

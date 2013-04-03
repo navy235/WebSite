@@ -19,6 +19,8 @@ namespace Maitonn.Web
 
         Company IncludeFind(int MemberID);
 
+        CompanyCredentialsImg GetCompanyCredentials(int MemberID, int CredentialsID);
+
         CompanyLogo GetCompanyLogo(int MemberID);
 
         CompanyBanner GetCompanyBanner(int MemberID);
@@ -26,6 +28,12 @@ namespace Maitonn.Web
         ServiceResult SaveCompanyLogo(int MemberID, CompanyLogo logo);
 
         ServiceResult SaveCompanyBanner(int MemberID, CompanyBanner banner);
+
+        ServiceResult SaveCompanyCredentials(int MemberID, CompanyCredentials credentials);
+
+        ServiceResult UpdateCompanyCredentials(int MemberID, CompanyCredentials credentials);
+
+        ServiceResult DeleteCompanyCredentials(int MemberID, int CredentialsID);
 
         IEnumerable<CompanyCredentials> GetCompanyCredentials(int MemberID);
 

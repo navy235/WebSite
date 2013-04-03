@@ -62,6 +62,7 @@
                         .PageSize(20)
                         .Model(model => model.Id(c => c.MediaID))
                         .Read(read => read.Action("OutDoor_Read", "outdoor"))
+                        
                      )
                      .HtmlAttributes(new { style = "height:500px;" })
                     )

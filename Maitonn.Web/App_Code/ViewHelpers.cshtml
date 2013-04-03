@@ -31,6 +31,7 @@
     </div>
 }
 
+
 @helper Alert(string title, string message, MvcHtmlString Link, bool close = false, string type = null)
 {
     <div class="alert @if (!string.IsNullOrEmpty(type)) { <text>alert-@type</text> }">

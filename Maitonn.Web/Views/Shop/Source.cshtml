@@ -1,0 +1,145 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model CompanyShopSourceViewModel
+@{
+    ViewBag.Title = Model.Name + "-公司资源";
+    Layout = "~/Views/Shared/_LayoutCompany.cshtml";
+}
+<div class="company-brand">
+    <img src="@Model.Banner" />
+</div>
+<nav class="company-nav clearfix">
+    <ul>
+        <li><a href="@Url.Action("index", new { id = Model.MemberID })" ><span>公司首页</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("intro", new { id = Model.MemberID })"><span>公司简介</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("source", new { id = Model.MemberID })" class="selected"><span>广告资源</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("notice", new { id = Model.MemberID })"><span>公司公告</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("contact", new { id = Model.MemberID })"><span>联系方式</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("credentials", new { id = Model.MemberID })"><span>相关证书</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("credentials", new { id = Model.MemberID })"><span>评论留言</span></a></li>
+    </ul>
+</nav>
+
+<div class="bread-container">
+    <div class="company-bread">
+        <a class="company-bread-home" href="@Url.Action("index", "home", new { province = CookieHelper.Province })"></a>&gt;
+        <a href="@Url.Action("index", new { id = Model.MemberID })">@Model.Name</a>&gt;
+        @if (ViewBag.CategoryName != null)
+        { 
+            <text>
+            <a href="@Url.Action("source", new { id = Model.MemberID })">公司资源</a>&gt;
+            <strong>@ViewBag.CategoryName</strong>
+            </text>
+        }
+        else
+        {
+            <strong>公司资源</strong>
+        }
+    </div>
+</div>
+
+<div class="company-container clearfix">
+    <div class="company-left">
+
+        <div class="company-source" style="margin-top: 0">
+            <div class="source-title">
+                <div class="title-left">
+                    <h3>@(Model.Name)全部广告资源@(ViewBag.CategoryName != null ? "-" + ViewBag.CategoryName : "")</h3>
+                </div>
+                <div class="title-right">共<a href="@Url.Action("source", new { id = Model.MemberID })" target="_blank"> <strong class="c_red">@Model.SourceCount</strong> </a>个</div>
+            </div>
+            <div class="source-list">
+
+                @foreach (var item in Model.CompanyProduct)
+                { 
+                    <div class="source-item clearfix">
+                        <div class="item-img">
+                            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank">
+                                <img src="@item.ImgUrl" title="@item.Name"></a>
+                        </div>
+                        <div class="item-title">
+                            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="item-name">
+                                <span>@item.Name</span>
+                            </a>
+
+                            <span class="item-time">@item.Addtime.ToString("yyyy-MM-dd")</span>
+                        </div>
+                        <div class="item-desc">
+                            @(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)
+                            [<a href="@Url.Action("index", "show", new { id = item.ID })" class="c_red" target="_blank">详细</a>]<br>
+                        </div>
+                        <div class="item-category">
+                            <a href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode })" target="_blank" class="category-main"><span>@item.ParentMediaCateName</span></a>
+                            <a href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode, childmediacode = item.MediaCateCode })" target="_blank" class="category-child">@item.MediaCateName</a>　@item.OwnerCateName
+                            价格：<span class="z_fzk">@item.Price 万元/年</span>
+                        </div>
+                    </div>
+                }
+
+                @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("source", new { page = page, c = ViewBag.Category, cc = ViewBag.ChildCategory }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+            </div>
+        </div>
+    </div>
+    <div class="company-right">
+        <div class="company-category company-box">
+            <div class="box-title">
+                <h2>广告资源分类</h2>
+                <span>
+                    <a href="@Url.Action("source", new { id = Model.MemberID })">查看全部</a></span>
+            </div>
+            <div class="box-content">
+                @foreach (var item in Model.CompanyCategory)
+                {
+                    <div class="category-parent"><a href="@Url.Action("source", new { id = Model.MemberID, c = item.ID })">@item.Name</a></div>
+                    <div class="category-list">
+                        <ul>
+                            @foreach (var childitem in item.Childrens)
+                            {
+                                <li><a href="@Url.Action("source", new { id = Model.MemberID, c = item.ID, cc = childitem.ID })">@childitem.Name</a> (@childitem.Count)</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <span class="separate-line"></span>
+        <div class="company-box">
+            <div class="box-title">
+                <h2>其他相关资源</h2>
+            </div>
+            <div class="box-content">
+                <ul>
+                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
+                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
+                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
+                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
+                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
+                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
+                </ul>
+            </div>
+        </div>
+        <span class="separate-line"></span>
+        <div class="company-box">
+            <div class="box-title">
+                <h2>浏览该资源的还浏览过</h2>
+            </div>
+            <div class="box-content">
+                <ul>
+                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
+                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
+                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
+                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
+                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
+                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

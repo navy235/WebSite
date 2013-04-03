@@ -292,9 +292,76 @@ namespace Maitonn.Web
             return company.CompanyCredentialsImg.Select(x => new CompanyCredentials()
             {
                 Url = x.ImgUrl,
-                Name = x.Title
+                Name = x.Title,
+                ID = x.ID
             });
 
+        }
+
+        public ServiceResult SaveCompanyCredentials(int MemberID, CompanyCredentials credentials)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = IncludeFind(MemberID);
+                DB_Service.Attach<Company>(company);
+                CompanyCredentialsImg cimg = new CompanyCredentialsImg()
+                {
+                    ImgUrl = credentials.Url,
+                    MemberID = MemberID,
+                    Title = credentials.Name
+                };
+                company.CompanyCredentialsImg.Add(cimg);
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+
+        public ServiceResult UpdateCompanyCredentials(int MemberID, CompanyCredentials credentials)
+        {
+
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var companyCredentials = GetCompanyCredentials(MemberID, credentials.ID);
+                DB_Service.Attach<CompanyCredentialsImg>(companyCredentials);
+                companyCredentials.ImgUrl = credentials.Url;
+                companyCredentials.Title = credentials.Name;
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+
+        public CompanyCredentialsImg GetCompanyCredentials(int MemberID, int CredentialsID)
+        {
+            return DB_Service.Set<CompanyCredentialsImg>().Single(x => x.MemberID == MemberID && x.ID == CredentialsID);
+        }
+
+
+        public ServiceResult DeleteCompanyCredentials(int MemberID, int CredentialsID)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var model = GetCompanyCredentials(MemberID, CredentialsID);
+                DB_Service.Remove<CompanyCredentialsImg>(model);
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
         }
     }
 }

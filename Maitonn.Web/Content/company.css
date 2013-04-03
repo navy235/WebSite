@@ -185,8 +185,6 @@ a.company-bread-home {
 }
 
 .intro-head {
-  float: left;
-  width: 630px;
   height: 30px;
   overflow: hidden;
   margin: 0px;
@@ -205,8 +203,15 @@ a.company-bread-home {
 
 .head-right {
   float: right;
+  text-align: right;
   display: inline;
+  margin-right: 20px;
 }
+
+  .head-right img {
+    margin-left: 5px;
+    cursor: pointer;
+  }
 
 .intro-main {
   overflow: hidden;
@@ -217,14 +222,17 @@ a.company-bread-home {
   float: left;
   width: 92px;
   height: 92px;
-  margin: 16px 0px 0px 0px;
+  margin: 0px 16px 0px 0px;
   _display: inline;
 }
 
+  .intro-logo img {
+    width: 92px;
+    height: 92px;
+  }
+
 .intro-desc {
-  float: left;
-  width: 610px;
-  margin: 16px 0px 0px 15px;
+  margin: 16px 16px 0px 0px;
   line-height: 20px;
   _display: inline;
 }

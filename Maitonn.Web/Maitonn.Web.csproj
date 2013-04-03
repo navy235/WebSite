@@ -82,6 +82,12 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.2.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="RouteDebugger">
       <HintPath>..\packages\routedebugger.2.1.4.0\lib\net40\RouteDebugger.dll</HintPath>
     </Reference>
@@ -358,6 +364,8 @@
     <Content Include="Content\images\companysprites.png" />
     <Content Include="Content\images\company\2012313113027638.JPG" />
     <Content Include="Content\images\company\2012313113027654.jpg" />
+    <Content Include="Content\images\company\companyauth.jpg" />
+    <Content Include="Content\images\company\companyvip.jpg" />
     <Content Include="Content\images\consult.gif" />
     <Content Include="Content\images\cusp.png" />
     <Content Include="Content\images\error_16.png" />
@@ -545,6 +553,7 @@
     <Content Include="Content\login.css" />
     <Content Include="Content\mapicon.gif" />
     <Content Include="Content\noimages.gif" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\show.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\smooth\css\colors\blue.css" />
@@ -1384,6 +1393,10 @@
     <Content Include="Views\Company\BaseInfo.cshtml" />
     <Content Include="Views\Company\Banner.cshtml" />
     <Content Include="Views\Company\Credentials.cshtml" />
+    <Content Include="Views\Company\AddCredentials.cshtml" />
+    <Content Include="Views\Company\EditCredentials.cshtml" />
+    <Content Include="Views\Shop\Intro.cshtml" />
+    <Content Include="Views\Shop\Source.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">
