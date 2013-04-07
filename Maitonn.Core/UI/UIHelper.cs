@@ -15,7 +15,12 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> CompanyStatusList { get; set; }
 
+        public static List<SelectListItem> CompanyNoticeStatusList { get; set; }
+
+        public static List<SelectListItem> CompanyMessageStatusList { get; set; }
+
         public static List<SelectListItem> OutDoorStatusList { get; set; }
+
 
         public static List<SelectListItem> ProvinceList { get; set; }
 
@@ -24,6 +29,8 @@ namespace Maitonn.Core
             singleStone = new UIHelper();
             InitSexList();
             InitCompanyStatusList();
+            InitCompanyNoticeStatusList();
+            InitCompanyMessageStatusList();
             InitOutDoorStatusList();
             InitProvinceList();
 
@@ -41,6 +48,24 @@ namespace Maitonn.Core
             CompanyStatusList.Add(new SelectListItem() { Text = "待审核", Value = ((int)CompanyStatus.CompanyApply).ToString() });
             CompanyStatusList.Add(new SelectListItem() { Text = "审核通过", Value = ((int)CompanyStatus.CompanyAuth).ToString() });
         }
+
+        private static void InitCompanyNoticeStatusList()
+        {
+            CompanyNoticeStatusList = new List<SelectListItem>();
+            CompanyNoticeStatusList.Add(new SelectListItem() { Text = "已删除", Value = ((int)CompanyNoticeStatus.Delete).ToString() });
+            CompanyNoticeStatusList.Add(new SelectListItem() { Text = "未显示", Value = ((int)CompanyNoticeStatus.NotShow).ToString() });
+            CompanyNoticeStatusList.Add(new SelectListItem() { Text = "显示中", Value = ((int)CompanyNoticeStatus.ShowOnLine).ToString() });
+        }
+
+
+        private static void InitCompanyMessageStatusList()
+        {
+            CompanyMessageStatusList = new List<SelectListItem>();
+            CompanyMessageStatusList.Add(new SelectListItem() { Text = "已删除", Value = ((int)CompanyMessageStatus.Delete).ToString() });
+            CompanyMessageStatusList.Add(new SelectListItem() { Text = "未显示", Value = ((int)CompanyMessageStatus.NotShow).ToString() });
+            CompanyMessageStatusList.Add(new SelectListItem() { Text = "显示中", Value = ((int)CompanyMessageStatus.ShowOnLine).ToString() });
+        }
+
 
         private static void InitOutDoorStatusList()
         {
@@ -126,6 +151,34 @@ namespace Maitonn.Core
                 }
             }
             return dy;
+        }
+
+
+        public static string GetImgUrl(string imgUrl, ImgUrlType urlType)
+        {
+            string url = imgUrl;
+            string imgPreUrl = imgUrl.Substring(0, imgUrl.LastIndexOf('.'));
+            string imgExtesion = imgUrl.Substring(imgUrl.LastIndexOf('.'));
+            switch (urlType)
+            {
+                case ImgUrlType.Orginal:
+                    break;
+                case ImgUrlType.Small:
+                    url = imgPreUrl + "_small" + imgExtesion;
+                    break;
+                case ImgUrlType.Img120:
+                    url = imgPreUrl + "_120" + imgExtesion;
+                    break;
+                case ImgUrlType.Img430:
+                    url = imgPreUrl + "_430" + imgExtesion;
+                    break;
+                case ImgUrlType.Img800:
+                    url = imgPreUrl + "_800" + imgExtesion;
+                    break;
+                default:
+                    break;
+            }
+            return url;
         }
 
     }

@@ -11,6 +11,8 @@ namespace Maitonn.Web
         {
             this.Employees = new HashSet<Member>();
             this.CompanyCredentialsImg = new HashSet<CompanyCredentialsImg>();
+            this.CompanyNotice = new HashSet<CompanyNotice>();
+            this.CompanyMessage = new HashSet<CompanyMessage>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -98,8 +100,9 @@ namespace Maitonn.Web
 
         public virtual ICollection<CompanyCredentialsImg> CompanyCredentialsImg { get; set; }
 
+        public virtual ICollection<CompanyMessage> CompanyMessage { get; set; }
 
-
+        public virtual ICollection<CompanyNotice> CompanyNotice { get; set; }
 
     }
 }

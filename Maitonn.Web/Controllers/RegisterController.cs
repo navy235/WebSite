@@ -43,7 +43,7 @@ namespace Maitonn.Web
                 {
                     Member mb = memberService.Create(model);
                     memberService.SetLoginCookie(mb);
-                    return Redirect(Url.Action("Regok"));
+                    return Redirect(Url.Action("index","personal"));
 
                 }
                 catch (Exception ex)
@@ -88,7 +88,7 @@ namespace Maitonn.Web
                 {
                     Member mb = memberService.Create(model);
                     memberService.SetLoginCookie(mb);
-                    return Redirect(Url.Action("Regok"));
+                    return Redirect(Url.Action("index", "personal"));
 
                 }
                 catch (Exception ex)

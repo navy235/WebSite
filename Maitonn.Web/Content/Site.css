@@ -393,12 +393,7 @@ textarea {
   margin: 15px 0 20px 0;
 }
 
-.display-required .display-label:before {
-  content: "*";
-  color: red;
-  margin: 0px 5px;
-  font-weight: bold;
-}
+
 
 .display-item-hide .display-label {
   display: none;
@@ -581,4 +576,16 @@ textarea {
 .field-auction-error {
   left: 500px;
   top: 5px;
+}
+
+#loading {
+  height: auto;
+  text-align: center;
+  padding-top: 200px;
+}
+
+#verifyLoading {
+  height: auto;
+  text-align: center;
+  padding-top: 200px;
 }

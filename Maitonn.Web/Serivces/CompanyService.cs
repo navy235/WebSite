@@ -266,7 +266,7 @@ namespace Maitonn.Web
             ServiceResult result = new ServiceResult();
             try
             {
-                var company = IncludeFind(MemberID);
+                var company = DB_Service.Set<Company>().Include(x => x.CompanyBannerImg).Single(x => x.MemberID == MemberID);
                 DB_Service.Attach<Company>(company);
                 if (company.CompanyBannerImg == null)
                 {
@@ -303,7 +303,7 @@ namespace Maitonn.Web
             ServiceResult result = new ServiceResult();
             try
             {
-                var company = IncludeFind(MemberID);
+                var company = DB_Service.Set<Company>().Include(x => x.CompanyCredentialsImg).Single(x => x.MemberID == MemberID);
                 DB_Service.Attach<Company>(company);
                 CompanyCredentialsImg cimg = new CompanyCredentialsImg()
                 {
@@ -328,7 +328,7 @@ namespace Maitonn.Web
             ServiceResult result = new ServiceResult();
             try
             {
-                var companyCredentials = GetCompanyCredentials(MemberID, credentials.ID);
+                var companyCredentials = GetCompanyCredentialsSingle(credentials.ID);
                 DB_Service.Attach<CompanyCredentialsImg>(companyCredentials);
                 companyCredentials.ImgUrl = credentials.Url;
                 companyCredentials.Title = credentials.Name;
@@ -342,9 +342,9 @@ namespace Maitonn.Web
         }
 
 
-        public CompanyCredentialsImg GetCompanyCredentials(int MemberID, int CredentialsID)
+        public CompanyCredentialsImg GetCompanyCredentialsSingle(int CredentialsID)
         {
-            return DB_Service.Set<CompanyCredentialsImg>().Single(x => x.MemberID == MemberID && x.ID == CredentialsID);
+            return DB_Service.Set<CompanyCredentialsImg>().Single(x => x.ID == CredentialsID);
         }
 
 
@@ -353,7 +353,7 @@ namespace Maitonn.Web
             ServiceResult result = new ServiceResult();
             try
             {
-                var model = GetCompanyCredentials(MemberID, CredentialsID);
+                var model = GetCompanyCredentialsSingle(CredentialsID);
                 DB_Service.Remove<CompanyCredentialsImg>(model);
                 DB_Service.Commit();
             }
@@ -362,6 +362,176 @@ namespace Maitonn.Web
                 result.AddServiceError(Utilities.GetInnerMostException(ex));
             }
             return result;
+        }
+
+
+        public IEnumerable<CompanyNoticeViewModel> GetCompanyNoticeList(int MemberID, CompanyNoticeStatus CompanyNoticeStatus, bool inCludeUpLevel = false)
+        {
+            var NoticeStatus = (int)CompanyNoticeStatus;
+            var company = DB_Service.Set<Company>()
+                .Include(x => x.CompanyNotice).Where(x => x.MemberID == MemberID).First();
+
+            var query = company.CompanyNotice.AsQueryable();
+            if (inCludeUpLevel)
+            {
+                query = query.Where(x => x.Status >= NoticeStatus);
+            }
+            else
+            {
+                query = query.Where(x => x.Status == NoticeStatus);
+            }
+            return query.Select(x => new CompanyNoticeViewModel()
+             {
+                 ID = x.ID,
+                 AddTime = x.AddTime,
+                 Content = x.Content,
+                 Name = x.Title,
+                 Status = x.Status
+             });
+
+        }
+
+        public IEnumerable<CompanyMessageViewModel> GetCompanyMessageList(int MemberID, CompanyMessageStatus CompanyMessageStatus, bool inCludeUpLevel = false)
+        {
+            var MessageStatus = (int)CompanyMessageStatus;
+            var company = DB_Service.Set<Company>()
+                .Include(x => x.CompanyMessage).Where(x => x.MemberID == MemberID).First();
+
+            var query = company.CompanyMessage.AsQueryable();
+            if (inCludeUpLevel)
+            {
+                query = query.Where(x => x.Status >= MessageStatus);
+            }
+            else
+            {
+                query = query.Where(x => x.Status == MessageStatus);
+            }
+
+            return query.Select(x => new CompanyMessageViewModel()
+            {
+                ID = x.ID,
+                AddTime = x.AddTime,
+                Content = x.Content,
+                Name = x.Title,
+                Status = x.Status
+            });
+        }
+
+
+        public ServiceResult ChangeCompanyNoticeStatus(string Ids, CompanyNoticeStatus CompanyNoticeStatus)
+        {
+
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var IdsArray = Ids.Split(',').Select(x => Convert.ToInt32(x));
+                var StatusValue = (int)CompanyNoticeStatus;
+                DB_Service.Set<CompanyNotice>().Where(x => IdsArray.Contains(x.ID)).ToList().ForEach(x => x.Status = StatusValue);
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+
+        }
+
+        public ServiceResult ChangeCompanyMessageStatus(string Ids, CompanyMessageStatus CompanyMessageStatus)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var IdsArray = Ids.Split(',').Select(x => Convert.ToInt32(x));
+                var StatusValue = (int)CompanyMessageStatus;
+                DB_Service.Set<CompanyMessage>().Where(x => IdsArray.Contains(x.ID)).ToList().ForEach(x => x.Status = StatusValue);
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+
+        public ServiceResult AddCompanyNotice(int MemberID, AddCompanyNoticeViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = DB_Service.Set<Company>().Include(x => x.CompanyNotice).Single(x => x.MemberID == MemberID);
+                DB_Service.Attach<Company>(company);
+                CompanyNotice cn = new CompanyNotice()
+                {
+                    MemberID = MemberID,
+                    AddTime = DateTime.Now,
+                    Content = model.Content,
+                    Title = model.Name,
+                    Status = (int)CompanyNoticeStatus.ShowOnLine
+                };
+                company.CompanyNotice.Add(cn);
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+        public ServiceResult EditCompanyNotice(int MemberID, AddCompanyNoticeViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var notice = GetCompanyNotice(model.ID);
+                DB_Service.Attach<CompanyNotice>(notice);
+                notice.Title = model.Name;
+                notice.Content = model.Content;
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+        public ServiceResult AddCompanyMessage(int MemberID, int AddMemberID, AddCompanyMessageViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = DB_Service.Set<Company>().Include(x => x.CompanyMessage).Single(x => x.MemberID == MemberID);
+                DB_Service.Attach<Company>(company);
+                CompanyMessage cm = new CompanyMessage()
+                {
+                    MemberID = AddMemberID,
+                    AddTime = DateTime.Now,
+                    Content = model.Content,
+                    Title = model.Name,
+                    Status = (int)CompanyMessageStatus.NotShow
+                };
+                company.CompanyMessage.Add(cm);
+                DB_Service.Commit();
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+        public CompanyNotice GetCompanyNotice(int NoticeID)
+        {
+            return DB_Service.Set<CompanyNotice>().Single(x => x.ID == NoticeID);
+        }
+
+
+        public CompanyMessage GetCompanyMessage(int MessageID)
+        {
+            return DB_Service.Set<CompanyMessage>().Single(x => x.ID == MessageID);
         }
     }
 }

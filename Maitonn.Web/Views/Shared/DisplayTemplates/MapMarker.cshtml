@@ -12,6 +12,7 @@
         height: 450px;
         border: 1px solid gray;
     }
+
     .map-marker-icon {
         background-position: -46px 0;
         background-image: url('/Content/mapicon.gif');
@@ -45,10 +46,10 @@
             }
             self.map=new BMap.Map("@(name + "_container")");
             self.map.centerAndZoom(point, 12);
-            //self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
-            //self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
-            //self.map.addControl(new BMap.OverviewMapControl());  
-            //self.map.enableScrollWheelZoom();//添加缩略地图控件
+            self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+            self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+            self.map.addControl(new BMap.OverviewMapControl());  
+            self.map.enableScrollWheelZoom();//添加缩略地图控件
             self.addMarker(point);
         },
         addMarker:function(point){

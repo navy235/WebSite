@@ -19,7 +19,11 @@ namespace Maitonn.Web
 
         Company IncludeFind(int MemberID);
 
-        CompanyCredentialsImg GetCompanyCredentials(int MemberID, int CredentialsID);
+        CompanyCredentialsImg GetCompanyCredentialsSingle(int CredentialsID);
+
+        CompanyNotice GetCompanyNotice(int NoticeID);
+
+        CompanyMessage GetCompanyMessage(int MessageID);
 
         CompanyLogo GetCompanyLogo(int MemberID);
 
@@ -37,10 +41,25 @@ namespace Maitonn.Web
 
         IEnumerable<CompanyCredentials> GetCompanyCredentials(int MemberID);
 
+        IEnumerable<CompanyNoticeViewModel> GetCompanyNoticeList(int MemberID, CompanyNoticeStatus CompanyNoticeStatus, bool inCludeUpLevel = false);
+
+        IEnumerable<CompanyMessageViewModel> GetCompanyMessageList(int MemberID, CompanyMessageStatus CompanyMessageStatus, bool inCludeUpLevel = false);
+
         IQueryable<CompanyVerifyViewModel> GetVerifyList();
 
         IQueryable<CompanyVerifyViewModel> GetVerifyList(CompanyStatus CompanyStatus);
 
         bool ChangeStatus(string CompangIds, CompanyStatus CompanyStatus);
+
+        ServiceResult ChangeCompanyNoticeStatus(string Ids, CompanyNoticeStatus CompanyNoticeStatus);
+
+        ServiceResult ChangeCompanyMessageStatus(string Ids, CompanyMessageStatus CompanyMessageStatus);
+
+        ServiceResult AddCompanyNotice(int MemberID, AddCompanyNoticeViewModel model);
+
+        ServiceResult EditCompanyNotice(int MemberID, AddCompanyNoticeViewModel model);
+
+        ServiceResult AddCompanyMessage(int MemberID, int AddMemberID, AddCompanyMessageViewModel model);
+
     }
 }

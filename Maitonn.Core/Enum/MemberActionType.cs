@@ -75,7 +75,7 @@ namespace Maitonn.Core
         Registered = 1,
         EmailActived = 2,
         CompanyFailed = 3,
-        CompanyApply =4,
+        CompanyApply = 4,
         CompanyAuth = 5
     }
 
@@ -131,5 +131,29 @@ namespace Maitonn.Core
         TodaySuggest = 2,
         WeekHot = 3,
         NewProduct = 4
+    }
+
+
+    public enum ImgUrlType
+    {
+        Orginal = 1,
+        Small = 2,
+        Img120 = 3,
+        Img430 = 4,
+        Img800 = 5
+    }
+
+    public enum CompanyNoticeStatus
+    {
+        Delete = 0,
+        NotShow = 1,
+        ShowOnLine = 2
+    }
+
+    public enum CompanyMessageStatus
+    {
+        Delete = 0,
+        NotShow = 1,
+        ShowOnLine = 2
     }
 }

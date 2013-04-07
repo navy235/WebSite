@@ -1,0 +1,128 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model CompanyShopMessageViewModel
+@{
+    ViewBag.Title = Model.Name + "-公司首页";
+    Layout = "~/Views/Shared/_LayoutCompany.cshtml";
+}
+<div class="company-brand">
+    <img src="@Model.Banner" />
+</div>
+<nav class="company-nav clearfix">
+    <ul>
+        <li><a href="@Url.Action("index", new { id = Model.MemberID })" ><span>公司首页</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("intro", new { id = Model.MemberID })"><span>公司简介</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("source", new { id = Model.MemberID })"><span>广告资源</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("notice", new { id = Model.MemberID })"><span>公司公告</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("contact", new { id = Model.MemberID })"><span>联系方式</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("credentials", new { id = Model.MemberID })"><span>相关证书</span></a></li>
+        <li>| </li>
+        <li><a href="@Url.Action("message", new { id = Model.MemberID })" class="selected"><span>留言联系</span></a></li>
+    </ul>
+</nav>
+
+<div class="bread-container">
+    <div class="company-bread">
+        <a class="company-bread-home" href="@Url.Action("index", "home", new { province = CookieHelper.Province })"></a>&gt;
+    <a href="@Url.Action("index", new { id = Model.MemberID })">@Model.Name</a>&gt;
+    <strong>留言联系</strong>
+    </div>
+</div>
+
+<div class="company-container clearfix">
+    <div class="company-left">
+        <div class="company-intro clearfix">
+            <div class="intro-head clearfix">
+                <div class="head-left">
+                    <h1>@Model.Name</h1>
+                </div>
+                <div class="head-right">
+                    <img src="~/Content/images/company/companyauth.jpg" title="企业通过验证" />
+                    <img src="~/Content/images/company/companyvip.jpg" title="广知网VIP" />
+                </div>
+            </div>
+            <div class="intro-main clearfix">
+
+                <div class="intro-desc">
+                    <div class="intro-logo">
+                        <img src="@Model.Logo" />
+                    </div>
+                    @(Model.Description.Length > 200 ? Model.Description.Substring(0, 200) + "..." : Model.Description)[<a href="@Url.Action("intro", new { id = Model.MemberID })" class="z_f2">详细</a>]
+            <br />
+                    <strong>公司地址</strong>：@Model.Addresss
+                </div>
+            </div>
+        </div>
+        <div class="company-source">
+            <div class="source-title">
+                <div class="title-left">
+                    <h3>@CookieHelper.NickName 你好！请在下面填写留言信息 </h3>
+                </div>
+            </div>
+            <div class="source-list">
+                @Html.Partial("_Message", new AddCompanyMessageViewModel())
+            </div>
+        </div>
+    </div>
+    <div class="company-right">
+        <div class="company-category company-box">
+            <div class="box-title">
+                <h2>广告资源分类</h2>
+                <span>
+                    <a href="@Url.Action("source", new { id = Model.MemberID })">查看全部</a></span>
+            </div>
+            <div class="box-content">
+                @foreach (var item in Model.CompanyCategory)
+                {
+                    <div class="category-parent"><a href="@Url.Action("source", new { id = Model.MemberID, c = item.ID })">@item.Name</a></div>
+                    <div class="category-list">
+                        <ul>
+                            @foreach (var childitem in item.Childrens)
+                            {
+                                <li><a href="@Url.Action("source", new { id = Model.MemberID, c = item.ID, cc = childitem.ID })">@childitem.Name</a> (@childitem.Count)</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <span class="separate-line"></span>
+        <div class="company-box">
+            <div class="box-title">
+                <h2>其他相关资源</h2>
+            </div>
+            <div class="box-content">
+                <ul>
+                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
+                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
+                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
+                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
+                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
+                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
+                </ul>
+            </div>
+        </div>
+        <span class="separate-line"></span>
+        <div class="company-box">
+            <div class="box-title">
+                <h2>浏览该资源的还浏览过</h2>
+            </div>
+            <div class="box-content">
+                <ul>
+                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
+                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
+                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
+                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
+                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
+                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

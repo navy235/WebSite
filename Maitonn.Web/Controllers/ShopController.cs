@@ -133,6 +133,162 @@ namespace Maitonn.Web
             return View(model);
         }
 
+
+        public ActionResult Notice(int id, int page = 1)
+        {
+            CompanyShopNoticeViewModel model = new CompanyShopNoticeViewModel();
+            var company = companyService.IncludeFind(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            model.MemberID = id;
+            model.Name = company.Name;
+            model.Description = company.Description;
+            model.Logo = company.CompanyLogoImg.ImgUrls;
+            model.Banner = company.CompanyBannerImg.ImgUrls;
+            model.Addresss = company.Address;
+            model.CompanyCategory = GetCompanyCategory(id);
+            model.CompanyNotice = GetCompanyNotice(id, page);
+            model.SourceCount = model.CompanyNotice.TotalItemCount;
+            return View(model);
+        }
+
+        public ActionResult ViewNotice(int id, int noticeId)
+        {
+            CompanyShopViewNoticeViewModel model = new CompanyShopViewNoticeViewModel();
+            var company = companyService.IncludeFind(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            model.MemberID = id;
+            model.Name = company.Name;
+            model.Description = company.Description;
+            model.Logo = company.CompanyLogoImg.ImgUrls;
+            model.Banner = company.CompanyBannerImg.ImgUrls;
+            model.Addresss = company.Address;
+            model.CompanyCategory = GetCompanyCategory(id);
+            var notice = companyService.GetCompanyNotice(noticeId);
+            if (notice == null)
+            {
+                return HttpNotFound();
+            }
+
+            model.CompanyNotice = new CompanyNoticeViewModel()
+            {
+                ID = notice.ID,
+                Content = notice.Content,
+                AddTime = notice.AddTime,
+                Name = notice.Title
+            };
+
+            return View(model);
+        }
+
+
+        public ActionResult Contact(int id)
+        {
+
+            CompanyShopContactViewModel model = new CompanyShopContactViewModel();
+            var company = companyService.IncludeFind(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            model.MemberID = id;
+            model.Name = company.Name;
+            model.Description = company.Description;
+            model.Logo = company.CompanyLogoImg.ImgUrls;
+            model.Banner = company.CompanyBannerImg.ImgUrls;
+            model.Addresss = company.Address;
+            model.CompanyCategory = GetCompanyCategory(id);
+
+            model.CompanyContact = new CompanyContactViewModel()
+            {
+                Address = company.Address,
+                Fax = company.Fax,
+                LinkMan = company.LinkMan,
+                Mobile = company.Mobile,
+                MSN = company.MSN,
+                Phone = company.Phone,
+                Position = company.Lat + "|" + company.Lng,
+                QQ = company.QQ
+            };
+            return View(model);
+
+        }
+
+        public ActionResult Credentials(int id, int page = 1)
+        {
+            CompanyShopCredentialsViewModel model = new CompanyShopCredentialsViewModel();
+            var company = companyService.IncludeFind(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            model.MemberID = id;
+            model.Name = company.Name;
+            model.Description = company.Description;
+            model.Logo = company.CompanyLogoImg.ImgUrls;
+            model.Banner = company.CompanyBannerImg.ImgUrls;
+            model.Addresss = company.Address;
+            model.CompanyCategory = GetCompanyCategory(id);
+            model.CompanyCredentials = GetCompanyCredentials(id, page);
+            model.SourceCount = model.CompanyCredentials.TotalItemCount;
+
+            return View(model);
+
+        }
+
+        [BaseAuthorize]
+        public ActionResult Message(int id)
+        {
+            CompanyShopMessageViewModel model = new CompanyShopMessageViewModel();
+
+            var company = companyService.IncludeFind(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            model.MemberID = id;
+            model.Name = company.Name;
+            model.Description = company.Description;
+            model.Logo = company.CompanyLogoImg.ImgUrls;
+            model.Banner = company.CompanyBannerImg.ImgUrls;
+            model.Addresss = company.Address;
+            model.CompanyCategory = GetCompanyCategory(id);
+            return View(model);
+        }
+        [BaseAuthorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Message(int id, AddCompanyMessageViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+                var memberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.AddCompanyMessage(id, memberID, model);
+                result.Message = "留言" + (result.Success ? "成功！" : "失败！");
+                TempData["Service_Result"] = result;
+                if (result.Success)
+                {
+                    return RedirectToAction("index");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            return View(model);
+        }
+
         private List<CompanyCategoryViewModel> GetCompanyCategory(int MemberID)
         {
             var query = (from outdoor in outDoorService.GetOutDoorByMember(MemberID)
@@ -202,7 +358,7 @@ namespace Maitonn.Web
 
               }).OrderByDescending(x => x.Addtime);
 
-            const int pageSize = 20;
+            const int pageSize = 10;
             var result = query.ToPagedList<CompanyProductViewModel>(page, pageSize);
 
             if (result.PageNumber != 1 && page > result.PageCount)
@@ -240,7 +396,7 @@ namespace Maitonn.Web
                  Addtime = x.LastTime
              }).OrderByDescending(x => x.Addtime);
 
-            const int pageSize = 20;
+            const int pageSize = 10;
             var result = newquery.ToPagedList<CompanyProductViewModel>(page, pageSize);
 
             if (result.PageNumber != 1 && page > result.PageCount)
@@ -249,5 +405,42 @@ namespace Maitonn.Web
             return result;
         }
 
+
+        private IPagedList<CompanyCredentialsViewModel> GetCompanyCredentials(int MemberID, int page)
+        {
+            var query = companyService.GetCompanyCredentials(MemberID).Select(x => new CompanyCredentialsViewModel()
+            {
+                ID = x.ID,
+                ImgUrl = x.Url,
+                Name = x.Name
+
+            }).OrderByDescending(x => x.ID);
+            const int pageSize = 10;
+            var result = query.ToPagedList<CompanyCredentialsViewModel>(page, pageSize);
+
+            if (result.PageNumber != 1 && page > result.PageCount)
+                return null;
+
+            return result;
+        }
+
+        private IPagedList<CompanyNoticeViewModel> GetCompanyNotice(int MemberID, int page)
+        {
+            var query = companyService.GetCompanyNoticeList(MemberID, CompanyNoticeStatus.ShowOnLine, true).Select(x => new CompanyNoticeViewModel()
+            {
+                ID = x.ID,
+                Name = x.Name,
+                Content = x.Content,
+                AddTime = x.AddTime
+
+            }).OrderByDescending(x => x.ID);
+            const int pageSize = 10;
+            var result = query.ToPagedList<CompanyNoticeViewModel>(page, pageSize);
+            if (result.PageNumber != 1 && page > result.PageCount)
+                return null;
+            return result;
+
+        }
     }
+
 }

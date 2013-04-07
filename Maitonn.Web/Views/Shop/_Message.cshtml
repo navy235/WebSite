@@ -1,0 +1,11 @@
+﻿@model AddCompanyMessageViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.EditorForModel()
+    <div class="form-field form-field-submit c_gray">
+        <button type="submit" class="btn btn-warning ">
+            &nbsp;&nbsp;提&nbsp;&nbsp;交&nbsp;&nbsp;</button>
+    </div>
+}

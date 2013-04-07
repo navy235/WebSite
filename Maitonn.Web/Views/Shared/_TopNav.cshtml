@@ -1,6 +1,22 @@
 ﻿<nav class="top-nav">
     <div class="top-nav-wrap">
-        <div class="top-nav-left">欢迎来到广知网！<a href="@Url.Action("index", "login")" >请登录</a> <a href=""@Url.Action("index", "register")"">免费注册</a></div>
+        <div class="top-nav-left">
+
+            @if (!CookieHelper.IsLogin)
+            {  
+                <text>
+                欢迎来到广知网！
+                <a href="@Url.Action("index", "login")" >请登录</a> <a href=""@Url.Action("index", "register")"">免费注册</a>
+                </text>
+            }
+            else
+            {
+                <text>
+                @CookieHelper.NickName,您好,欢迎来到广知网！
+                <a href="@Url.Action("logout", "login", new { returnUrl = Request.Url.ToString() })" >安全退出</a>
+                </text>
+            }
+        </div>
         <ul class="top-nav-right">
             <li><a href="@Url.Action("index", "home", new { province = CookieHelper.Province })">广知网首页</a>&nbsp;&nbsp;|</li>
             @* <li><a href="@Url.Action("index", "personal")">我的广知网</a>&nbsp;&nbsp;|</li>*@

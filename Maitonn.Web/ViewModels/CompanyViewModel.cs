@@ -309,6 +309,181 @@ namespace Maitonn.Web
         public List<CompanyLinksViewModel> CompanyLinks { get; set; }
     }
 
+    public class CompanyShopNoticeViewModel
+    {
+        public CompanyShopNoticeViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public IPagedList<CompanyNoticeViewModel> CompanyNotice { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopViewNoticeViewModel
+    {
+        public CompanyShopViewNoticeViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public CompanyNoticeViewModel CompanyNotice { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopContactViewModel
+    {
+        public CompanyShopContactViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public CompanyContactViewModel CompanyContact { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopCredentialsViewModel
+    {
+        public CompanyShopCredentialsViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public IPagedList<CompanyCredentialsViewModel> CompanyCredentials { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyShopMessageViewModel
+    {
+        public CompanyShopMessageViewModel()
+        {
+            this.CompanyCategory = new List<CompanyCategoryViewModel>();
+            this.CompanyLinks = new List<CompanyLinksViewModel>();
+        }
+
+        public int MemberID { get; set; }
+
+        public string Name { get; set; }
+
+        public string Logo { get; set; }
+
+        public string Banner { get; set; }
+
+        public string Description { get; set; }
+
+        public string Addresss { get; set; }
+
+        public int SourceCount { get; set; }
+
+        public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
+
+        public List<CompanyLinksViewModel> CompanyLinks { get; set; }
+    }
+
+    public class CompanyContactViewModel
+    {
+
+        [Display(Name = "联系地址", Order = 0)]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "请输入联系人")]
+        [Display(Name = "联系人", Order = 1)]
+        public string LinkMan { get; set; }
+
+
+        [Display(Name = "手机号码", Order = 2)]
+        public string Mobile { get; set; }
+
+        [Display(Name = "电话号码", Order = 3)]
+        public string Phone { get; set; }
+
+
+        [Display(Name = "传真", Order = 4)]
+        public string Fax { get; set; }
+
+        [Display(Name = "QQ号码", Order = 5)]
+        public string QQ { get; set; }
+
+        [Display(Name = "MSN", Order = 6)]
+        public string MSN { get; set; }
+
+        [Display(Name = "地图位置", Order = 7)]
+        [UIHint("MapMarker")]
+        public string Position { get; set; }
+
+    }
+
     public class CompanyCategoryViewModel
     {
 
@@ -327,7 +502,6 @@ namespace Maitonn.Web
 
         public List<CompanyCategoryViewModel> Childrens { get; set; }
     }
-
 
     public class CompanyProductViewModel
     {
@@ -356,6 +530,158 @@ namespace Maitonn.Web
 
         public DateTime Addtime { get; set; }
 
+    }
+
+    public class CompanyCredentialsViewModel
+    {
+
+        public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string ImgUrl { get; set; }
+
+        public DateTime Addtime { get; set; }
+
+    }
+
+    public class CompanyNoticeViewModel
+    {
+
+        public int ID { get; set; }
+
+        [Display(Name = "标题")]
+        public string Name { get; set; }
+
+
+        [Display(Name = "内容")]
+        public string Content { get; set; }
+
+
+        [Display(Name = "状态")]
+        public int Status { get; set; }
+
+
+        [Display(Name = "添加时间")]
+        public DateTime AddTime { get; set; }
+
+    }
+
+    public class AddCompanyNoticeViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
+
+        [Required(ErrorMessage = "请输入公告标题")]
+        [Display(Name = "公告标题")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "公告标题含有非法字符.")]
+        [StringCheckLength(7, 50)]
+        [Hint("请输入7-50位公告标题，英文、数字或中文均可（中文占2个字符）。")]
+        public string Name { get; set; }
+
+
+        [Required(ErrorMessage = "请输入公告内容")]
+        [Display(Name = "公告内容")]
+        [DataType(DataType.MultilineText)]
+        [StringCheckLength(10, 2000)]
+        [Hint("请输入10-2000位公告内容，（中文占2个字符）。")]
+        [HintClass("textarea")]
+        public string Content { get; set; }
+    }
+
+
+
+
+    public class CompanyMessageViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
+
+
+        [Display(Name = "标题")]
+        public string Name { get; set; }
+
+
+        [Display(Name = "内容")]
+        public string Content { get; set; }
+
+
+        [Display(Name = "状态")]
+        public int Status { get; set; }
+
+
+        [Display(Name = "添加时间")]
+        public DateTime AddTime { get; set; }
+
+    }
+
+    public class CompanyMessageDetailsViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
+
+
+        [Display(Name = "标题")]
+        public string Name { get; set; }
+
+
+        [Display(Name = "内容")]
+        [HintClass("textarea")]
+        public string Content { get; set; }
+
+
+        [Display(Name = "状态")]
+        [HiddenInput(DisplayValue = false)]
+        public int Status { get; set; }
+
+        [HintSeparateTitle("联系人信息")]
+        [Display(Name = "留言人")]
+        public string NickName { get; set; }
+
+        [Display(Name = "手机")]
+        public string Phone { get; set; }
+
+        [Display(Name = "QQ")]
+        public string QQ { get; set; }
+
+        [Display(Name = "MSN")]
+        public string MSN { get; set; }
+
+        [Display(Name = "留言时间")]
+        public DateTime AddTime { get; set; }
+
+
+
+
+    }
+
+    public class AddCompanyMessageViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
+
+        [Required(ErrorMessage = "请输入留言标题")]
+        [Display(Name = "留言标题")]
+        [RegularExpression(@"^[\u4e00-\u9fa5|A-Za-z|0-9|_]+$", ErrorMessage = "留言标题含有非法字符.")]
+        [StringCheckLength(7, 50)]
+        [Hint("请输入7-50位公告标题，英文、数字或中文均可（中文占2个字符）。")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "请输入留言标题")]
+        [Display(Name = "留言标题")]
+        [DataType(DataType.MultilineText)]
+        [StringCheckLength(10, 2000)]
+        [Hint("请输入10-2000位公告内容，（中文占2个字符）。")]
+        [HintClass("textarea")]
+        public string Content { get; set; }
+
+        [Required(ErrorMessage = "请输入验证码")]
+        [Display(Name = "验证码：")]
+        [StringLength(4, ErrorMessage = "长度为4位", MinimumLength = 4)]
+        [Remote("ValidateVCode", "AjaxService", ErrorMessage = "验证码错误")]
+        [UIHint("ValidateVCode")]
+        [HintClass("validatecode")]
+        public string Vcode { get; set; }
     }
 
     public class CompanyLinksViewModel

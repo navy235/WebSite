@@ -260,7 +260,7 @@ a.company-bread-home {
 
   .source-title .title-right {
     position: absolute;
-    right: 5px;
+    right: 16px;
     top: 10px;
   }
 
@@ -335,4 +335,48 @@ a.company-bread-home {
 
 .list-page-split {
   padding-bottom: 10px;
+}
+
+.company-contact {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.company-contact-title h3 {
+  color: #000000;
+  font-size: 18px;
+  font-family: '黑体';
+}
+
+.company-contact .display-label {
+  width: 70px;
+}
+
+.company-contact .display-item .map-container {
+  width: 600px;
+  height: 450px;
+}
+
+.notice-content {
+  margin: 20px 16px 0 0;
+  line-height: 22px;
+}
+
+.source-list .form-field label {
+  width: 85px;
+}
+
+.source-list .form-field-submit {
+  margin-left: 87px;
+}
+
+.form-field .vcode img {
+  width: 52px;
+  height: 26px;
+  margin: 0 10px;
+}
+
+.form-field-validatecode input.single-line {
+  width: 62px;
+  font-weight: bold;
 }

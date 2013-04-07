@@ -248,6 +248,18 @@
     <Compile Include="Migrations\201304020901312_AlterCompanyBannber.Designer.cs">
       <DependentUpon>201304020901312_AlterCompanyBannber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304070533555_AddCompanyMessageAndNotice.cs" />
+    <Compile Include="Migrations\201304070533555_AddCompanyMessageAndNotice.Designer.cs">
+      <DependentUpon>201304070533555_AddCompanyMessageAndNotice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304070542590_AlterCompanyMessage.cs" />
+    <Compile Include="Migrations\201304070542590_AlterCompanyMessage.Designer.cs">
+      <DependentUpon>201304070542590_AlterCompanyMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304070559107_AlterCompanyNotice.cs" />
+    <Compile Include="Migrations\201304070559107_AlterCompanyNotice.Designer.cs">
+      <DependentUpon>201304070559107_AlterCompanyNotice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -287,6 +299,8 @@
     <Compile Include="Models\CompanyCredentialsImg.cs" />
     <Compile Include="Models\PkImgBase.cs" />
     <Compile Include="Models\CompanyBannerImg.cs" />
+    <Compile Include="Models\CompanyNotice.cs" />
+    <Compile Include="Models\CompanyMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serivces\AreaAttService.cs" />
     <Compile Include="Serivces\AreaService.cs" />
@@ -1397,6 +1411,18 @@
     <Content Include="Views\Company\EditCredentials.cshtml" />
     <Content Include="Views\Shop\Intro.cshtml" />
     <Content Include="Views\Shop\Source.cshtml" />
+    <Content Include="Views\Shop\Contact.cshtml" />
+    <Content Include="Views\Shop\_Display.cshtml" />
+    <Content Include="Views\Shop\Credentials.cshtml" />
+    <Content Include="Views\Company\Notice.cshtml" />
+    <Content Include="Views\Company\AddNotice.cshtml" />
+    <Content Include="Views\Company\EditNotice.cshtml" />
+    <Content Include="Views\Shop\Notice.cshtml" />
+    <Content Include="Views\Shop\ViewNotice.cshtml" />
+    <Content Include="Views\Shop\Message.cshtml" />
+    <Content Include="Views\Shop\_Message.cshtml" />
+    <Content Include="Views\Company\Message.cshtml" />
+    <Content Include="Views\Company\MessageDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">
@@ -1407,6 +1433,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304020901312_AlterCompanyBannber.resx">
       <DependentUpon>201304020901312_AlterCompanyBannber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304070533555_AddCompanyMessageAndNotice.resx">
+      <DependentUpon>201304070533555_AddCompanyMessageAndNotice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304070542590_AlterCompanyMessage.resx">
+      <DependentUpon>201304070542590_AlterCompanyMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304070559107_AlterCompanyNotice.resx">
+      <DependentUpon>201304070559107_AlterCompanyNotice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

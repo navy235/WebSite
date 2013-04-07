@@ -107,6 +107,13 @@ namespace Maitonn.Web
               .HasMany(o => o.CompanyCredentialsImg)
               .WithRequired(m => m.Company);
 
+            modelBuilder.Entity<Company>()
+            .HasMany(o => o.CompanyMessage)
+            .WithRequired(m => m.Company);
+
+            modelBuilder.Entity<Company>()
+        .HasMany(o => o.CompanyNotice)
+        .WithRequired(m => m.Company);
 
             modelBuilder.Entity<Permissions>()
                 .HasRequired(p => p.Department).WithMany(d => d.Permissions).HasForeignKey(p => p.DepartmentID);

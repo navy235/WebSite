@@ -78,10 +78,17 @@ namespace Maitonn.Web
             }
         }
 
-        public ActionResult LogOut()
+        public ActionResult LogOut(string returnUrl = null)
         {
             CookieHelper.ClearCookie();
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return RedirectToAction("index", "home");
+            }
+            else
+            {
+                return Redirect(returnUrl);
+            }
         }
 
 

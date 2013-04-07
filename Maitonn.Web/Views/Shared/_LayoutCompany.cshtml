@@ -20,8 +20,8 @@
     @Html.Partial("_TopNav")
     @RenderBody()
     @Html.Partial("_CompanyFooter")
+    @Html.Partial("_DisplayMessage")
     @RenderSection("scripts", required: false)
-
     @MiniProfiler.RenderIncludes(position: RenderPosition.Right, showTrivial: false, showTimeWithChildren: false)
 </body>
 </html>

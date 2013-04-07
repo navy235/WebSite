@@ -285,7 +285,7 @@ namespace Maitonn.Web
         }
 
 
-
+        #region 企业证书
         public ActionResult Credentials()
         {
             int MemberID = Convert.ToInt32(CookieHelper.UID);
@@ -366,7 +366,7 @@ namespace Maitonn.Web
             var UserStatus = Convert.ToInt32(CookieHelper.Status);
             ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
-            var credentials = companyService.GetCompanyCredentials(MemberID, ID);
+            var credentials = companyService.GetCompanyCredentialsSingle(ID);
             if (credentials == null)
             {
                 return Content("<script>alert('非法操作！');window.history.go(-1);</script>");
@@ -413,5 +413,209 @@ namespace Maitonn.Web
             }
             return View(model);
         }
+
+        #endregion
+
+        #region 企业公告
+
+        public ActionResult Notice()
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-notice";
+            ViewBag.CompanyNoticeStatus = UIHelper.CompanyNoticeStatusList;
+            return View();
+        }
+
+        public ActionResult AddNotice()
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-addnotice";
+            return View(new AddCompanyNoticeViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddNotice(AddCompanyNoticeViewModel model)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-addnotice";
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+
+                var memberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.AddCompanyNotice(memberID, model);
+
+                result.Message = "添加企业公告" + (result.Success ? "成功！" : "失败！");
+                TempData["Service_Result"] = result;
+                if (result.Success)
+                {
+                    return RedirectToAction("Notice");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            return View(model);
+        }
+
+        public ActionResult EditNotice(int id)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-addnotice";
+            var notice = companyService.GetCompanyNotice(id);
+            if (notice == null)
+            {
+                return Content("<script>alert('非法操作！');window.history.go(-1);</script>");
+            }
+            var model = new AddCompanyNoticeViewModel()
+            {
+                ID = notice.ID,
+                Name = notice.Title,
+                Content = notice.Content
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditNotice(AddCompanyNoticeViewModel model)
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-addnotice";
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+                var memberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.EditCompanyNotice(memberID, model);
+                result.Message = "编辑企业公告" + (result.Success ? "成功！" : "失败！");
+                TempData["Service_Result"] = result;
+                if (result.Success)
+                {
+                    return RedirectToAction("Notice");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            return View(model);
+        }
+
+        public ActionResult Notice_Read([DataSourceRequest] DataSourceRequest request)
+        {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            var model = companyService.GetCompanyNoticeList(memberID, CompanyNoticeStatus.NotShow, true);
+            return Json(model.ToDataSourceResult(request));
+        }
+
+        [HttpPost]
+        public ActionResult NoticeNotShow(string ids)
+        {
+            var result = companyService.ChangeCompanyNoticeStatus(ids,
+               CompanyNoticeStatus.NotShow);
+            result.Message = "设置未显示" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult NoticeShow(string ids)
+        {
+            var result = companyService.ChangeCompanyNoticeStatus(ids,
+             CompanyNoticeStatus.ShowOnLine);
+            result.Message = "设置显示" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+
+        }
+
+        [HttpPost]
+        public ActionResult NoticeDelete(string ids)
+        {
+            var result = companyService.ChangeCompanyNoticeStatus(ids,
+            CompanyNoticeStatus.Delete);
+            result.Message = "删除公告" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+        }
+
+        #endregion
+
+        #region 企业留言
+
+        public ActionResult Message()
+        {
+            int MemberID = Convert.ToInt32(CookieHelper.UID);
+            var UserStatus = Convert.ToInt32(CookieHelper.Status);
+            ViewBag.UserStatus = UserStatus;
+            ViewBag.MenuItem = "company-message";
+
+            return View();
+        }
+
+        public ActionResult Message_Read([DataSourceRequest] DataSourceRequest request)
+        {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            var model = companyService.GetCompanyMessageList(memberID, CompanyMessageStatus.NotShow, true);
+            return Json(model.ToDataSourceResult(request));
+        }
+
+        [HttpPost]
+        public ActionResult MessageDelete(string ids)
+        {
+            var result = companyService.ChangeCompanyMessageStatus(ids,
+            CompanyMessageStatus.Delete);
+            result.Message = "删除留言" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+        }
+
+        public ActionResult MessageDetails(int ID)
+        {
+            var Details = companyService.GetCompanyMessage(ID);
+            if (Details == null)
+            {
+                return HttpNotFound();
+            }
+            var member = memberService.FindMemberWithProfile(Details.MemberID);
+            if (member.Member_Profile == null)
+            {
+                member.Member_Profile = new Member_Profile();
+            }
+            return View(new CompanyMessageDetailsViewModel()
+            {
+                ID = Details.ID,
+                AddTime = Details.AddTime,
+                Content = Details.Content,
+                MSN = member.Member_Profile.MSN,
+                Name = Details.Title,
+                NickName = member.NickName,
+                Phone = member.Member_Profile.Phone,
+                QQ = member.Member_Profile.QQ
+            });
+
+
+        }
+
+        #endregion
+
     }
 }
