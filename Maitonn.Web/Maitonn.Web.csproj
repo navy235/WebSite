@@ -1423,6 +1423,10 @@
     <Content Include="Views\Shop\_Message.cshtml" />
     <Content Include="Views\Company\Message.cshtml" />
     <Content Include="Views\Company\MessageDetails.cshtml" />
+    <Content Include="Views\Shared\_DetailsNav.cshtml" />
+    <Content Include="Views\Shared\_DetailsMain.cshtml" />
+    <Content Include="Views\Show\_DisplayAuctionCalendar.cshtml" />
+    <Content Include="Views\Show\_DisplayMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">

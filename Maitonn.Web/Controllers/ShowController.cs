@@ -59,5 +59,163 @@ namespace Maitonn.Web
         }
 
 
+        public ActionResult Index(int id)
+        {
+            var outdoor = outDoorService.IncludeFind(id);
+            if (outdoor == null)
+            {
+                return HttpNotFound();
+            }
+            ShowViewModel model = new ShowViewModel();
+
+            model.Braed = GetBread(CookieHelper.Province, outdoor);
+            model.ListMenu = GetListMenu();
+            model.Item = outdoor;
+            model.MediaID = id;
+            return View(model);
+        }
+        /// <summary>
+        /// 获取左边导航链接
+        /// </summary>
+        /// <param name="searchTrem">搜索条件集合</param>
+        /// <returns></returns>
+        private TopHotListMenuViewModel GetListMenu()
+        {
+            TopHotListMenuViewModel model = new TopHotListMenuViewModel();
+            var category = outDoorMediaCateService.IncludeGetALL().ToList();
+            foreach (var item in category)
+            {
+                CategoryListViewModel clvm = new CategoryListViewModel();
+
+                //父类导航
+                CategoryViewModel cvm = new CategoryViewModel()
+                {
+                    CID = item.ID.ToString(),
+                    Name = item.CateName,
+                    Url = Url.Action("index", "list", new
+                    {
+                        province = CookieHelper.Province,
+
+                        mediacode = item.ID
+                    })
+                };
+                clvm.Category = cvm;
+                //子类导航
+                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Select(x => new CategoryViewModel
+                {
+                    CID = x.ID.ToString(),
+                    Name = x.CateName,
+
+                    Url = Url.Action("index", "list", new
+                    {
+                        province = CookieHelper.Province,
+                        mediacode = item.ID,
+                        childmediacode = x.ID
+                    })
+                }).ToList();
+                clvm.ChildCategories = ChildCategories;
+                model.Items.Add(clvm);
+            }
+            return model;
+        }
+
+
+        private BraedViewModel GetBread(string province, OutDoor outdoor)
+        {
+            BraedViewModel model = new BraedViewModel();
+
+            CategoryViewModel breaditem = new CategoryViewModel()
+            {
+                Url = Url.Action("index", "home", new
+                {
+                    province = province
+                })
+            };
+            model.Items.Add(breaditem);
+
+            breaditem = new CategoryViewModel()
+            {
+                Url = Url.Action("index", "list", new
+                {
+                    province = province,
+                    mediacode = outdoor.OutDoorMediaCate.PCategory.ID,
+
+                }),
+                Name = outdoor.OutDoorMediaCate.PCategory.CateName
+            };
+
+            model.Items.Add(breaditem);
+
+            breaditem = new CategoryViewModel()
+            {
+                Url = Url.Action("index", "list", new
+                {
+                    province = province,
+                    mediacode = outdoor.OutDoorMediaCate.PCategory.ID,
+                    childmediacode = outdoor.OutDoorMediaCate.ID
+
+                }),
+                Name = outdoor.OutDoorMediaCate.CateName
+            };
+
+            model.Items.Add(breaditem);
+
+            breaditem = new CategoryViewModel()
+           {
+               Name = outdoor.Name
+           };
+
+            model.Items.Add(breaditem);
+            return model;
+        }
+
+        private ListProductViewModel GetHotList()
+        {
+            ListProductViewModel model = new ListProductViewModel();
+            model.Name = "热门资源";
+            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(8).ToList();
+            model.Items = product.Select(x => new ProductViewModel()
+            {
+                ID = x.MediaID,
+                ImgUrl = x.FocusImg,
+                Name = x.Name,
+                Price = x.Price,
+                City = x.City,
+                Province = x.Province
+            }).ToList();
+            return model;
+        }
+
+        private ListProductViewModel GetSuggestList()
+        {
+            ListProductViewModel model = new ListProductViewModel();
+            model.Name = "推荐资源";
+            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(6).ToList();
+            model.Items = product.Select(x => new ProductViewModel()
+            {
+                ID = x.MediaID,
+                ImgUrl = x.FocusImg,
+                Name = x.Name,
+                Price = x.Price,
+                City = x.City,
+                Province = x.Province
+            }).ToList();
+            return model;
+        }
+
+        private ListLinksViewModel GetCompanyList()
+        {
+            ListLinksViewModel model = new ListLinksViewModel();
+            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList();
+            model.Items = product.Select(x => new CategoryViewModel()
+            {
+                CID = x.MediaID.ToString(),
+                ImgUrl = x.FocusImg,
+                Name = x.Name,
+                Url = Url.Action("index", "list", new { mediacode = x.MediaCode })
+            }).ToList();
+            return model;
+        }
+
     }
 }

@@ -79,7 +79,7 @@ namespace Maitonn.Web
 
             MediaImg media = new MediaImg()
             {
-                FocusImgUrl = model.MediaImg.Split(',')[0],
+                FocusImgUrl = UIHelper.GetImgUrl(model.MediaImg.Split(',')[0], ImgUrlType.Img120),
                 ImgUrls = model.MediaImg,
                 MemberID = MemberID
             };
@@ -92,7 +92,7 @@ namespace Maitonn.Web
 
             CredentialsImg credent = new CredentialsImg()
             {
-                FocusImgUrl = model.CredentialsImg.Split(',')[0],
+                FocusImgUrl = UIHelper.GetImgUrl(model.CredentialsImg.Split(',')[0], ImgUrlType.Img120),
                 ImgUrls = model.CredentialsImg,
                 MemberID = MemberID
             };
@@ -164,10 +164,10 @@ namespace Maitonn.Web
                 }
             }
             od.MediaImg.ImgUrls = model.MediaImg;
-            od.MediaImg.FocusImgUrl = model.MediaImg.Split(',')[0];
+            od.MediaImg.FocusImgUrl = UIHelper.GetImgUrl(model.MediaImg.Split(',')[0], ImgUrlType.Img120);
 
             od.CredentialsImg.ImgUrls = model.CredentialsImg;
-            od.CredentialsImg.FocusImgUrl = model.CredentialsImg.Split(',')[0];
+            od.CredentialsImg.FocusImgUrl = UIHelper.GetImgUrl(model.CredentialsImg.Split(',')[0], ImgUrlType.Img120);
             var AreaAttArray = model.AreaAtt.Split(',').Select(x => Convert.ToInt32(x)).ToList();
             if (AreaAttArray.Count == 0)
             {
@@ -216,7 +216,7 @@ namespace Maitonn.Web
                 .Include(x => x.OwnerCate)
                 .Include(x => x.CredentialsImg)
                 .Include(x => x.AreaAtt)
-                .FirstOrDefault(x => x.MediaID == MediaID);
+                .SingleOrDefault(x => x.MediaID == MediaID);
         }
 
         public OutDoor IncludeAuctionFind(int MediaID)
@@ -226,7 +226,7 @@ namespace Maitonn.Web
                 .Include(x => x.MapImg)
                 .Include(x => x.AreaAtt)
                 .Include(x => x.AuctionCalendar)
-                .FirstOrDefault(x => x.MediaID == MediaID);
+                .SingleOrDefault(x => x.MediaID == MediaID);
         }
 
         public bool HasOutDoorByMember(int MediaID)

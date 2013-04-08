@@ -172,10 +172,7 @@ namespace Maitonn.Web
                 try
                 {
                     AreaAttArray = model.AreaAtt.Split(',').Select(x => Convert.ToInt32(x)).ToList();
-                    for (var i = 0; i < 100; i++)
-                    {
-                        outDoorService.Create(model);
-                    }
+                    outDoorService.Create(model);
                     result.Message = "添加户外成功！";
                     TempData["Service_Result"] = result;
                     return RedirectToAction("preverify");

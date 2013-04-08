@@ -21,6 +21,7 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> OutDoorStatusList { get; set; }
 
+        public static List<SelectListItem> TimeList { get; set; }
 
         public static List<SelectListItem> ProvinceList { get; set; }
 
@@ -33,6 +34,7 @@ namespace Maitonn.Core
             InitCompanyMessageStatusList();
             InitOutDoorStatusList();
             InitProvinceList();
+            InitTimeList();
 
         }
         private static void InitSexList()
@@ -121,6 +123,25 @@ namespace Maitonn.Core
 
         }
 
+        public static void InitTimeList()
+        {
+            TimeList = new List<SelectListItem>();
+            for (int i = 0; i < 48; i++)
+            {
+                TimeList.Add(new SelectListItem()
+                {
+                    Text = ((i * 30) / 60).ToString().Length == 1 ? "0" + ((i * 30) / 60) + ((i % 2 == 0) ? ":00" : ":30") : ((i * 30) / 60).ToString() + ((i % 2 == 0) ? ":00" : ":30"),
+                    Value = (i * 30).ToString()
+                });
+            }
+        }
+
+        public static string GetTime(string timeValue)
+        {
+            return TimeList.Single(x => x.Value.Equals(timeValue, StringComparison.CurrentCultureIgnoreCase)).Text;
+        }
+
+
         public static List<SelectListItem> getDictionary(string key)
         {
             List<SelectListItem> dy = new List<SelectListItem>();
@@ -180,6 +201,8 @@ namespace Maitonn.Core
             }
             return url;
         }
+
+
 
     }
 }

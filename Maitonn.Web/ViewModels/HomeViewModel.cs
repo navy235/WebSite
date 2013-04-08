@@ -36,6 +36,35 @@ namespace Maitonn.Web
         public ListSearchViewModel Search { get; set; }
     }
 
+    public class ShowViewModel
+    {
+        public string Province { get; set; }
+
+
+        public BraedViewModel Braed { get; set; }
+
+        public TopHotListMenuViewModel ListMenu { get; set; }
+
+        public ListProductViewModel HotList { get; set; }
+
+        public ListProductViewModel SuggestList { get; set; }
+
+        public ListLinksViewModel CompanyList { get; set; }
+
+        public ListSearchViewModel Search { get; set; }
+
+        public OutDoor Item { get; set; }
+
+        [UIHint("AuctionCalendar")]
+        public int MediaID { get; set; }
+
+
+    }
+
+
+
+
+
     public class BraedViewModel
     {
         public BraedViewModel()

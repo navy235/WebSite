@@ -256,6 +256,31 @@ namespace Maitonn.Web
 
     }
 
+
+    public class ShowOutDoorSetAuctionCalendarViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int MediaID { get; set; }
+
+
+        [Display(Name = "媒体排期：")]
+        [HintClass("hide")]
+        [UIHint("AuctionCalendar")]
+        public int AuctionCalendar { get; set; }
+    }
+
+    public class ShowOutDoorMapViewModel
+    {
+        [HiddenInput(DisplayValue = false)]
+        public int MediaID { get; set; }
+
+        [Display(Name = "地图坐标")]
+        [HintClass("position")]
+        [UIHint("MapMarker")]
+        public string Position { get; set; }
+
+    }
+
     public class AuctionCalendarViewModel
     {
 

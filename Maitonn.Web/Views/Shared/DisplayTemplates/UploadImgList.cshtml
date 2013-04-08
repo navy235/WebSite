@@ -23,12 +23,37 @@
                     var template=$('#'+'@(name + "_template")').clone();
                     $("#"+self.id+"_imgbox")
                         .append(template.find('.@(name + "_img")')
-                        .attr('src',_imgurl.split(',')[i]).end()
+                        .attr('src',self.getImgUrl(_imgurl.split(',')[i],120)).end()
                         .find('.@(name + "_link")').attr('href',_imgurl.split(',')[i]).end()
                         .show()
                         );
                 }
             }
+        },
+        getImgUrl:function(imgUrl,size){
+            var url = imgUrl;
+            var imgPreUrl = imgUrl.substring(0, imgUrl.lastIndexOf('.'));
+            var imgExtesion = imgUrl.substring(imgUrl.lastIndexOf('.'));
+            if(size===undefined){
+                size=0;
+            }
+            switch (size)
+            {
+                case 0:
+                    break;
+                case 120:
+                    url = imgPreUrl + "_120" + imgExtesion;
+                    break;
+                case 430:
+                    url = imgPreUrl + "_430" + imgExtesion;
+                    break;
+                case 800:
+                    url = imgPreUrl + "_800" + imgExtesion;
+                    break;
+                default:
+                    break;
+            }
+            return url;
         }
     }
     $(function(){

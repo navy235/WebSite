@@ -3,15 +3,8 @@
 @{
     string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
     string CascadeBack = ViewData.ModelMetadata.AdditionalValues["CascadeBack"].ToString();
-    List<SelectListItem> renderList = new List<SelectListItem>();
-    for (int i = 0; i < 48; i++)
-    {
-        renderList.Add(new SelectListItem()
-        {
-            Text = ((i * 30) / 60).ToString().Length == 1 ? "0" + ((i * 30) / 60) + ((i % 2 == 0) ? ":00" : ":30") : ((i * 30) / 60).ToString() + ((i % 2 == 0) ? ":00" : ":30"),
-            Value = (i * 30).ToString()
-        });
-    }
+    List<SelectListItem> renderList = UIHelper.TimeList;
+
     var startList = renderList.Select(x => new SelectListItem()
     {
         Selected = string.IsNullOrEmpty(Model) ? false : Model.Split('|')[0] == x.Value,

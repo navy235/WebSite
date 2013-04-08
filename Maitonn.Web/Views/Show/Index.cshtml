@@ -1,5 +1,10 @@
-﻿@{
+﻿@model ShowViewModel
+@{
     ViewBag.Title = "网易保健品-有态度的保健品商城,进口保健食品,国内可信赖品牌";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
+@Html.Action("city", "home", new { province = CookieHelper.Province })
 
+@Html.Partial("_DetailsNav", Model.ListMenu)
+
+@Html.Partial("_DetailsMain", Model)

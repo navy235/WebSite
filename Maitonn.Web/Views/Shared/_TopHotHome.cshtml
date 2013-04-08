@@ -72,12 +72,12 @@
                                 @foreach (var product in Model.SliderTabBox.Tabs[i].Items)
                                 {
                                     <div class="slider-tab-item">
-                                        <a href="/product/@(product.ID).html" target="_blank" class="slider-tab-item-img" >
+                                        <a href="@Url.Action("index", "show", new { id = product.ID })" target="_blank" class="slider-tab-item-img" >
                                             <img width="150" height="150" border="0" src="@product.ImgUrl" alt="@product.Name">
                                             <span class="slider-tab-item-img-icon icon0"></span>
                                         </a>
                                         <p class="slider-tab-item-title">
-                                            <a target="_blank" title="@product.Name" href="/product/@(product.ID).html">@product.Name
+                                            <a target="_blank" title="@product.Name" href="@Url.Action("index", "show", new { id = product.ID })">@product.Name
                                                 @*&nbsp;<span class="c_ba2636">赠红色经典礼盒一个</span>*@
                                             </a>
                                         </p>

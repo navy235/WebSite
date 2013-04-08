@@ -588,6 +588,8 @@ a.top-head-changcity {
     text-decoration: none;
     display: block;
     padding: 0 0 0 20px;
+    -webkit-box-shadow: 0 -4px 10px 0 #222;
+    box-shadow: 0 -4px 10px 0 #222;
   }
 
 .top-menu-frame {
@@ -2738,6 +2740,11 @@ a.top-head-changcity {
       background: url(images/loading_50.gif) no-repeat center center white;
     }
 
+      .details-info-list li a img {
+        height: 70px;
+        width: 70px;
+      }
+
       .details-info-list .active a,
       .details-info-list li a:hover {
         border-color: #94B902;
@@ -3016,8 +3023,7 @@ a.top-head-changcity {
 }
 
 .details-nav {
-  border-bottom: #000 2px solid;
-  position: absolute;
+  border-bottom: #a30000 2px solid;
   width: 710px;
 }
 
@@ -3040,10 +3046,10 @@ a.top-head-changcity {
   }
 
   .details-nav .active {
-    background: #619200;
-    background: -webkit-gradient(linear,0 0,0 bottom,from(#7BA400),to(#000));
-    background: -moz-linear-gradient(#7BA400,#000);
-    -pie-background: linear-gradient(#7ba400,#000);
+    background: #a30000;
+    background: -webkit-gradient(linear,0 0,0 bottom,from(#d99999),to(#a30000));
+    background: -moz-linear-gradient(#d99999,#a30000);
+    -pie-background: linear-gradient(#d99999,#a30000);
     border: none 0;
     padding: 1px 1px 0;
     color: white;
@@ -3066,7 +3072,7 @@ a.top-head-changcity {
   border: #E8E8E8 1px solid;
   padding: 10px;
   overflow: hidden;
-  margin-top: 47px;
+  margin-top: 10px;
   position: relative;
 }
 
@@ -3948,4 +3954,48 @@ goods-pack .goods-desc {
   .footer-about .footer-copyright {
     display: inline-block;
     margin-left: 20px;
+  }
+
+
+.details-wrap .display-item {
+  margin-top: -50px;
+}
+
+.details-wrap .form-auctioncalendar {
+  margin: 0;
+}
+
+.details-wrap .form-auctioncalendar-tips {
+  height: 40px;
+}
+
+.details-wrap .form-auctioncalendar-year {
+  width: 32px;
+}
+
+.details-wrap .form-auctioncalendar-month {
+  width: 380px;
+}
+
+  .details-wrap .form-auctioncalendar-month li.form-auctioncalendar-list ul li {
+    width: 31px;
+    border-right: none;
+  }
+
+    .details-wrap .form-auctioncalendar-month li.form-auctioncalendar-list ul li.last {
+      border-right: none;
+      width: 31px;
+    }
+
+.display-item-position .display-label {
+  display: none;
+}
+
+.details-wrap .display-item-position {
+  margin-top: 30px;
+}
+
+  .details-wrap .display-item-position .map-container {
+    width: 703px;
+    height: 600px;
   }
