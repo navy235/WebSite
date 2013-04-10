@@ -1427,6 +1427,7 @@
     <Content Include="Views\Shared\_DetailsMain.cshtml" />
     <Content Include="Views\Show\_DisplayAuctionCalendar.cshtml" />
     <Content Include="Views\Show\_DisplayMap.cshtml" />
+    <Content Include="Views\List\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">

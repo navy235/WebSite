@@ -406,5 +406,30 @@ namespace Maitonn.Web
             }).First();
         }
 
+
+
+        public IQueryable<OutDoor> GetList(OutDoorStatus OutDoorStatus, bool includeUpLevel = false)
+        {
+            int OutDoorStatusValue = (int)OutDoorStatus;
+            var query = DB_Service.Set<OutDoor>()
+               .Include(x => x.MediaImg)
+               .Include(x => x.Area)
+               .Include(x => x.Area.PCategory)
+               .Include(x => x.OutDoorMediaCate)
+               .Include(x => x.OutDoorMediaCate.PCategory)
+               .Include(x => x.OwnerCate)
+               .Include(x => x.CredentialsImg)
+               .Include(x => x.AreaAtt);
+            if (includeUpLevel)
+            {
+                query = query.Where(x => x.Status >= OutDoorStatusValue);
+            }
+            else
+            {
+                query = query.Where(x => x.Status == OutDoorStatusValue);
+            }
+            return query;
+
+        }
     }
 }

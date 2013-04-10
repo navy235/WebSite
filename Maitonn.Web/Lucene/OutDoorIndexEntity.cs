@@ -6,9 +6,25 @@ namespace Maitonn.Web
     {
         public int MediaID { get; set; }
 
-        public string CityName { get; set; }
+        public int Province { get; set; }
 
-        public string PCityName { get; set; }
+        public int City { get; set; }
+
+        public int MediaCode { get; set; }
+
+        public int PMediaCode { get; set; }
+
+        public int FormatCode { get; set; }
+
+        public int PeriodCode { get; set; }
+
+        public int OwnerCode { get; set; }
+
+        public int Status { get; set; }
+
+        public string ProvinceName { get; set; }
+
+        public string CityName { get; set; }
 
         public string MediaCateName { get; set; }
 
@@ -26,6 +42,7 @@ namespace Maitonn.Web
 
         public string AreaAtt { get; set; }
 
+        public string ImgUrl { get; set; }
 
         public int Hit { get; set; }
 

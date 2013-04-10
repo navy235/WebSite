@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using PagedList;
+using PagedList.Mvc;
 
 namespace Maitonn.Web
 {
@@ -34,6 +36,10 @@ namespace Maitonn.Web
         public ListLinksViewModel CompanyList { get; set; }
 
         public ListSearchViewModel Search { get; set; }
+
+        public IPagedList<ListSearchProductViewModel> Result { get; set; }
+
+
     }
 
     public class ShowViewModel
@@ -96,7 +102,55 @@ namespace Maitonn.Web
         public int OwnerCode { get; set; }
 
         public int PeriodCode { get; set; }
+
+        public int Page { get; set; }
+
+        public string Query { get; set; }
+
     }
+
+
+    public class ListSearchProductViewModel
+    {
+        public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public string ImgUrl { get; set; }
+
+        public string ProvinceName { get; set; }
+
+        public int ProvinceCode { get; set; }
+
+        public string CityName { get; set; }
+
+        public int CityCode { get; set; }
+
+        public string ParentMediaCateName { get; set; }
+
+        public int ParentMediaCateCode { get; set; }
+
+        public string MediaCateName { get; set; }
+
+        public int MediaCateCode { get; set; }
+
+        public string OwnerCateName { get; set; }
+
+        public string PeriodCateName { get; set; }
+
+        public string FormatCateName { get; set; }
+
+        public decimal Price { get; set; }
+
+        public decimal Width { get; set; }
+
+        public decimal Height { get; set; }
+
+        public int TotalFaces { get; set; }
+
+        public DateTime Addtime { get; set; }
+    }
+
 
 
 

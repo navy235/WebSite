@@ -928,7 +928,7 @@ a.top-head-changcity {
       .slider-page .slider-page-list a.active:visited,
       .slider-page .slider-page-list a.active:hover,
       .slider-page .slider-page-list a.active:active {
-        background-color: #000;
+        background-color: #d90000;
         color: #fefefe;
         text-decoration: none;
       }
@@ -2200,11 +2200,11 @@ a.top-head-changcity {
 .list-filter-sort {
   position: relative;
   float: left;
-  height: 24px;
+  height: 30px;
   width: 24px;
-  line-height: 24px;
+  line-height: 30px;
   border: #bcbcbc 1px solid;
-  padding: 0 20px 0 4px;
+  padding: 0 15px 0 8px;
   background: url(images/productBg.png) -104px -208px no-repeat;
   color: #333;
 }
@@ -2233,17 +2233,17 @@ a.top-head-changcity {
 }
 
 .list-filter-down {
-  background-position: -104px -208px;
+  background-position: -104px -206px;
 }
 
 .list-filter-up {
-  background-position: -154px -209px;
+  background-position: -154px -206px;
 }
 
 .list-filter-price {
   background: url(images/productBg.png)no-repeat;
-  background-position: -115px -182px;
-  height: 24px;
+  background-position: -115px -179px;
+  height: 30px;
   border: #bcbcbc 1px solid;
   margin-right: 10px;
   cursor: pointer;
@@ -2257,11 +2257,11 @@ a.top-head-changcity {
 
 .list-filter-price-text {
   display: inline-block;
-  height: 24px;
+  height: 30px;
   text-align: center;
   overflow: hidden;
   width: 67px;
-  line-height: 24px;
+  line-height: 30px;
 }
 
 .list-filter-price-list {
@@ -2301,6 +2301,21 @@ a.top-head-changcity {
       .list-filter-price-list li a:hover {
         background-color: #ededed;
       }
+
+.list-filter-search {
+  float: left;
+}
+
+.list-filter-search-query {
+  height: 28px;
+  line-height: 28px;
+  width: 250px;
+  padding-left: 4px;
+  border: #bcbcbc 1px solid;
+  outline: none;
+}
+
+
 
 .list-filter-page {
   margin-left: 10px;
@@ -2396,7 +2411,7 @@ a.top-head-changcity {
 }
 
   .list-products-item-hover, .list-products-item:hover {
-    border-color: #94b902;
+    border-color: #d90000;
   }
 
 .list-products-item-img {
@@ -3047,9 +3062,9 @@ a.top-head-changcity {
 
   .details-nav .active {
     background: #a30000;
-    background: -webkit-gradient(linear,0 0,0 bottom,from(#d99999),to(#a30000));
-    background: -moz-linear-gradient(#d99999,#a30000);
-    -pie-background: linear-gradient(#d99999,#a30000);
+    background: -webkit-gradient(linear,0 0,0 bottom,from(#d90000),to(#a30000));
+    background: -moz-linear-gradient(#d90000,#a30000);
+    -pie-background: linear-gradient(#d90000,#a30000);
     border: none 0;
     padding: 1px 1px 0;
     color: white;

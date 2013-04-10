@@ -11,6 +11,8 @@ using System.Collections.Specialized;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using Maitonn.Core;
+using PagedList;
+using PagedList.Mvc;
 namespace Maitonn.Web
 {
     public class ListController : Controller
@@ -63,7 +65,9 @@ namespace Maitonn.Web
             int childmediacode = 0,
             int formatcode = 0,
             int ownercode = 0,
-            int periodcode = 0)
+            int periodcode = 0,
+            int page = 1,
+            string query = null)
         {
 
             //搜索条件
@@ -75,7 +79,9 @@ namespace Maitonn.Web
                 ChildMediaCode = childmediacode,
                 FormatCode = formatcode,
                 OwnerCode = ownercode,
-                PeriodCode = periodcode
+                PeriodCode = periodcode,
+                Page = 1,
+                Query = query
             };
             ListViewModel model = new ListViewModel();
 
@@ -88,8 +94,110 @@ namespace Maitonn.Web
             model.CompanyList = GetCompanyList();
             model.Search = GetSearch(searchTrem);
             model.Province = province;
+            model.Result = GetResult(searchTrem);
 
             return View(model);
+        }
+
+        public ActionResult Search(string q = null)
+        {
+            LuceneSearchService Service = new LuceneSearchService();
+
+            var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
+
+            var searchFilter = GetSearchFilter(q, SortProperty.Published, 1);
+
+            int totalHits;
+
+            query = Service.Search(query, searchFilter, out totalHits);
+
+            return View();
+        }
+
+        private SearchFilter GetSearchFilter(string q, SortProperty sortOrder, int page)
+        {
+            var searchFilter = new SearchFilter
+            {
+                SearchTerm = q,
+                Skip = (page - 1) * 15, // pages are 1-based. 
+                Take = 15
+            };
+            searchFilter.SortProperty = sortOrder;
+            return searchFilter;
+        }
+
+        private IPagedList<ListSearchProductViewModel> GetResult(ListSearchItemViewModel searchTrem)
+        {
+            const int PageSize = 15;
+            var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
+            if (!String.IsNullOrEmpty(searchTrem.Province) && searchTrem.Province != "quanguo")
+            {
+                int ProvinceValue = EnumHelper.GetProvinceValue(searchTrem.Province);
+                query = query.Where(x => x.Area.PCategory.ID == ProvinceValue);
+            }
+            if (searchTrem.City != 0)
+            {
+                query = query.Where(x => x.CityCode == searchTrem.City);
+            }
+            if (searchTrem.MediaCode != 0)
+            {
+                query = query.Where(x => x.OutDoorMediaCate.PCategory.ID == searchTrem.MediaCode);
+            }
+            if (searchTrem.ChildMediaCode != 0)
+            {
+                query = query.Where(x => x.MeidaCode == searchTrem.ChildMediaCode);
+            }
+            if (searchTrem.FormatCode != 0)
+            {
+                query = query.Where(x => x.FormatCode == searchTrem.FormatCode);
+            }
+            if (searchTrem.OwnerCode != 0)
+            {
+                query = query.Where(x => x.OwnerCode == searchTrem.OwnerCode);
+            }
+            if (searchTrem.PeriodCode != 0)
+            {
+                query = query.Where(x => x.PeriodCode == searchTrem.PeriodCode);
+            }
+            query = query.OrderByDescending(x => x.LastTime);
+
+            if (!String.IsNullOrEmpty(searchTrem.Query))
+            {
+                LuceneSearchService Service = new LuceneSearchService();
+                var searchFilter = GetSearchFilter(searchTrem.Query, SortProperty.Published, searchTrem.Page);
+                int totalHits;
+                query = Service.Search(query, searchFilter, out totalHits);
+            }
+
+            var newquery = query.Select(x => new ListSearchProductViewModel()
+            {
+                ID = x.MediaID,
+                ImgUrl = x.MediaImg.FocusImgUrl,
+                ProvinceCode = x.Area.PCategory.ID,
+                ProvinceName = x.Area.PCategory.CateName,
+                CityCode = x.Area.ID,
+                CityName = x.Area.CateName,
+                ParentMediaCateCode = x.OutDoorMediaCate.PCategory.ID,
+                ParentMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
+                MediaCateCode = x.OutDoorMediaCate.ID,
+                MediaCateName = x.OutDoorMediaCate.CateName,
+                FormatCateName = x.FormatCate.CateName,
+                Name = x.Name,
+                OwnerCateName = x.OwnerCate.CateName,
+                Price = x.Price,
+                Width = x.Wdith,
+                Height = x.Height,
+                TotalFaces = x.TotalFaces,
+                PeriodCateName = x.PeriodCate.CateName,
+                Addtime = x.LastTime
+            });
+
+            var result = newquery.ToPagedList<ListSearchProductViewModel>(searchTrem.Page, PageSize);
+
+            if (result.PageNumber != 1 && searchTrem.Page > result.PageCount)
+                return null;
+
+            return result;
         }
 
         [ChildActionOnly]

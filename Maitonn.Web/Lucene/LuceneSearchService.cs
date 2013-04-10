@@ -10,7 +10,7 @@ using Lucene.Net.Search.Function;
 using Lucene.Net.China;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Tokenattributes;
-
+using Maitonn.Core;
 namespace Maitonn.Web
 {
 
@@ -23,7 +23,6 @@ namespace Maitonn.Web
 
         public int Take { get; set; }
 
-        public bool IncludePrerelease { get; set; }
 
         public SortProperty SortProperty { get; set; }
 
@@ -133,11 +132,6 @@ namespace Maitonn.Web
 
                 //Query query = parser.Parse(searchFilter.SearchTerm);
 
-                var filterTerm = searchFilter.IncludePrerelease ? "IsLatest" : "IsLatestStable";
-                var termQuery = new TermQuery(new Term(filterTerm, Boolean.TrueString));
-                Filter filter = new QueryWrapperFilter(termQuery);
-
-
                 var results = searcher.Search(query, filter: null, n: numRecords, sort: new Sort(sortField));
 
                 var keys = results.ScoreDocs.Skip(searchFilter.Skip)
@@ -157,11 +151,12 @@ namespace Maitonn.Web
                 return new MatchAllDocsQuery();
             }
 
-            var fields = new[] { "Title", "Description", "MediaCateName", "CityName" };
+            var fields = new[] { "Title", "Description", "AreaAtt", "MediaCateName", "CityName", "ProvinceName", "PMediaCateName", "FormatName", "PeriodName", "OwnerCateName" };
 
             var analyzer = new ChineseAnalyzer();
             //var analyzer = new StandardAnalyzer(LuceneCommon.LuceneVersion);
             var queryParser = new MultiFieldQueryParser(LuceneCommon.LuceneVersion, fields, analyzer);
+
             var query = queryParser.Parse(searchFilter.SearchTerm);
             // All terms in the multi-term query appear in at least one of the fields.
             var conjuctionQuery = new BooleanQuery();
@@ -204,18 +199,28 @@ namespace Maitonn.Web
             //var combinedQuery =
             //    conjuctionQuery.Combine(new Query[] { exactIdQuery, conjuctionQuery });
             //// Create an OR of all the queries that we have
+         
+
 
             var combinedQuery =
                 conjuctionQuery.Combine(new Query[] { exactIdQuery, wildCardIdQuery, conjuctionQuery, disjunctionQuery, wildCardQuery });
 
 
+
+            var statusQuery = new BooleanQuery();
+
+            var minStatus = NumericRangeQuery.NewIntRange("Status", (int)OutDoorStatus.ShowOnline, 99, true, true);
+
+            statusQuery.Add(minStatus, Occur.MUST);
+            statusQuery.Add(combinedQuery, Occur.SHOULD);
+
             if (searchFilter.SortProperty == SortProperty.Hit)
             {
                 // If searching by relevance, boost scores by download count.
                 var downloadCountBooster = new FieldScoreQuery("Hit", FieldScoreQuery.Type.INT);
-                return new CustomScoreQuery(combinedQuery, downloadCountBooster);
+                return new CustomScoreQuery(statusQuery, downloadCountBooster);
             }
-            return combinedQuery;
+            return statusQuery;
         }
 
         private static IEnumerable<string> GetSearchTerms(string searchTerm)

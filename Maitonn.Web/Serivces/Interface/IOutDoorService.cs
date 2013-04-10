@@ -33,6 +33,9 @@ namespace Maitonn.Web
 
         IQueryable<OutDoorListItem> GetVerifyList(OutDoorStatus OutDoorStatus, bool includeUpLevel = false);
 
+
+        IQueryable<OutDoor> GetList(OutDoorStatus OutDoorStatus, bool includeUpLevel = false);
+
         bool ChangeStatus(string Ids, OutDoorStatus OutDoorStatus);
     }
 }

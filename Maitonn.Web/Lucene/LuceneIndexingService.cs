@@ -77,39 +77,48 @@ namespace Maitonn.Web
         protected internal virtual List<OutDoorIndexEntity> GetOutDoors(UnitOfWork context, DateTime? lastIndexTime)
         {
             List<OutDoorIndexEntity> result = new List<OutDoorIndexEntity>();
-            IEnumerable<OutDoor> OutDoors = context.Set<OutDoor>()
+
+            var OutDoors = context.Set<OutDoor>()
                 .Include(x => x.Area)
+                .Include(x => x.Area.PCategory)
+                .Include(x => x.OutDoorMediaCate)
+                .Include(x => x.OutDoorMediaCate.PCategory)
                 .Include(x => x.AreaAtt)
                 .Include(x => x.PeriodCate)
-                .Include(x => x.FormatCate).OrderBy(x => x.AddTime);
+                .Include(x => x.FormatCate)
+                .Include(x => x.MediaImg);
 
-            if (lastIndexTime == null)
+            if (lastIndexTime != null)
             {
-
+                OutDoors = OutDoors.Where(x => x.LastTime > lastIndexTime);
             }
-            else
-            {
-                OutDoors = OutDoors.Where(x => x.AddTime > lastIndexTime);
-
-            }
+            OutDoors = OutDoors.OrderByDescending(x => x.LastTime);
             foreach (var x in OutDoors.ToList())
             {
-
                 OutDoorIndexEntity item = new OutDoorIndexEntity()
                 {
+                    City = x.Area.ID,
+                    FormatCode = x.FormatCode,
+                    ImgUrl = x.MediaImg.FocusImgUrl,
+                    MediaCode = x.MeidaCode,
+                    OwnerCode = x.OwnerCode,
+                    PeriodCode = x.PeriodCode,
+                    PMediaCode = x.OutDoorMediaCate.PCategory.ID,
+                    Province = x.Area.PCategory.ID,
+                    Status = x.Status,
                     MediaID = x.MediaID,
+                    ProvinceName = x.Area.PCategory.CateName,
                     CityName = x.Area.CateName,
-                    PCityName = x.Area.CateName,
                     AreaAtt = String.Join(",", x.AreaAtt.Select(y => y.AttName)),
                     Description = x.Description,
                     FormatName = x.FormatCate.CateName,
                     Hit = x.Hit,
                     MediaCateName = x.OutDoorMediaCate.CateName,
-                    PMediaCateName = x.OutDoorMediaCate.CateName,
-                    OwnerCateName = x.OutDoorMediaCate.CateName,
+                    PMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
+                    OwnerCateName = x.OwnerCate.CateName,
                     PeriodName = x.PeriodCate.CateName,
                     Price = Convert.ToInt32(x.Price),
-                    Published = x.AddTime,
+                    Published = x.LastTime,
                     Title = x.Name
                 };
                 result.Add(item);
@@ -159,7 +168,7 @@ namespace Maitonn.Web
             field.Boost = 0.8f;
             document.Add(field);
 
-            field = new Field("PCityName", OutDoor.PCityName, Field.Store.NO, Field.Index.ANALYZED);
+            field = new Field("ProvinceName", OutDoor.ProvinceName, Field.Store.NO, Field.Index.ANALYZED);
             field.Boost = 0.8f;
             document.Add(field);
 
@@ -183,12 +192,20 @@ namespace Maitonn.Web
             field.Boost = 0.8f;
             document.Add(field);
 
-
             field = new Field("Price", OutDoor.Price.ToString(), Field.Store.NO, Field.Index.ANALYZED);
             field.Boost = 0.8f;
             document.Add(field);
 
-            document.Add(new Field("MediaID", OutDoor.MediaID.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NO));
+            document.Add(new Field("Province", OutDoor.Province.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("City", OutDoor.City.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("MediaCode", OutDoor.MediaCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("PMediaCode", OutDoor.PMediaCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("FormatCode", OutDoor.FormatCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("PeriodCode", OutDoor.PeriodCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("OwnerCode", OutDoor.OwnerCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("Status", OutDoor.Status.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
+
+            document.Add(new Field("MediaID", OutDoor.MediaID.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
             document.Add(new Field("Published", OutDoor.Published.Ticks.ToString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
             document.Add(

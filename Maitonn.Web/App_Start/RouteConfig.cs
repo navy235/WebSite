@@ -16,7 +16,7 @@ namespace Maitonn.Web
 
             routes.MapRoute(
                name: "defaultlist",
-               url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}",
+               url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{page}",
                defaults: new
                {
                    controller = "List",
@@ -27,13 +27,14 @@ namespace Maitonn.Web
                    childmediacode = 0,
                    formatcode = 0,
                    ownercode = 0,
-                   periodcode = 0
+                   periodcode = 0,
+                   page = 1
                }
             );
 
             routes.MapRoute(
                name: "list",
-               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}",
+               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{page}",
                defaults: new
                {
                    controller = "List",
@@ -44,7 +45,8 @@ namespace Maitonn.Web
                    childmediacode = 0,
                    formatcode = 0,
                    ownercode = 0,
-                   periodcode = 0
+                   periodcode = 0,
+                   page = 1
                },
               constraints: new
               {
