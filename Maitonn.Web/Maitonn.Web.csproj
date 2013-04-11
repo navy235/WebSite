@@ -224,6 +224,7 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ShowController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Filters\BaseAuthorizeAttribute.cs" />
     <Compile Include="Filters\PermissionAttributes.cs" />
     <Compile Include="Global.asax.cs">
@@ -231,6 +232,7 @@
     </Compile>
     <Compile Include="Jobs\LuceneIndexingJob.cs" />
     <Compile Include="Jobs\WorkItemCleanupJob.cs" />
+    <Compile Include="Lucene\OutDoorIndexFields.cs" />
     <Compile Include="Lucene\LuceneCommon.cs" />
     <Compile Include="Lucene\LuceneFileSystem.cs" />
     <Compile Include="Lucene\LuceneIndexingService.cs" />
@@ -1428,6 +1430,10 @@
     <Content Include="Views\Show\_DisplayAuctionCalendar.cshtml" />
     <Content Include="Views\Show\_DisplayMap.cshtml" />
     <Content Include="Views\List\Search.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\CreateIndex.cshtml" />
+    <Content Include="Views\Test\SearchIndex.cshtml" />
+    <Content Include="Views\Shared\_MINIPROFILER UPDATED Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">

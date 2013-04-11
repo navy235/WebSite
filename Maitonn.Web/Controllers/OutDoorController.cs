@@ -162,6 +162,8 @@ namespace Maitonn.Web
             ViewBag.MenuItem = "outdoor-publish";
             ServiceResult result = new ServiceResult();
             var AreaAttArray = new List<int>();
+            TempData["Service_Result"] = result;
+
             if (!ModelState.IsValid)
             {
                 result.Message = "请检查表单是否填写完整！";
@@ -174,17 +176,16 @@ namespace Maitonn.Web
                     AreaAttArray = model.AreaAtt.Split(',').Select(x => Convert.ToInt32(x)).ToList();
                     outDoorService.Create(model);
                     result.Message = "添加户外成功！";
-                    TempData["Service_Result"] = result;
                     return RedirectToAction("preverify");
-
                 }
-                catch (Exception ex)
+                catch (DbEntityValidationException ex)
                 {
                     result.Message = Utilities.GetInnerMostException(ex);
                     result.AddServiceError(result.Message);
                 }
 
             }
+
             ViewBag.Data_AreaAtt = areaAttService.GetSelectList(AreaAttArray);
             return View(model);
         }
@@ -212,6 +213,7 @@ namespace Maitonn.Web
             ViewBag.MenuItem = "outdoor-list";
             var AreaAttArray = new List<int>();
             ServiceResult result = new ServiceResult();
+            TempData["Service_Result"] = result;
             if (!ModelState.IsValid)
             {
                 result.Message = "请检查表单是否填写完整！";
@@ -224,7 +226,6 @@ namespace Maitonn.Web
                     AreaAttArray = model.AreaAtt.Split(',').Select(x => Convert.ToInt32(x)).ToList();
                     outDoorService.Update(model);
                     result.Message = "编辑户外成功！";
-                    TempData["Service_Result"] = result;
                     return RedirectToAction("preverify");
                 }
                 catch (Exception ex)
@@ -232,8 +233,8 @@ namespace Maitonn.Web
                     result.Message = Utilities.GetInnerMostException(ex);
                     result.AddServiceError(result.Message);
                 }
-
             }
+    
             ViewBag.Data_AreaAtt = areaAttService.GetSelectList(AreaAttArray);
             return View(model);
         }

@@ -46,7 +46,13 @@ namespace Maitonn.Web
 
         public int Hit { get; set; }
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
+
+        public decimal Width { get; set; }
+
+        public decimal Height { get; set; }
+
+        public int TotalFaces { get; set; }
 
         public DateTime Published { get; set; }
     }

@@ -77,6 +77,9 @@ csx
 
 # Others
 [Oo]bj
+[Uu]pload
+[Ll]ucene
+[Ll]uceneTest
 sql
 TestResults
 [Tt]est[Rr]esult*

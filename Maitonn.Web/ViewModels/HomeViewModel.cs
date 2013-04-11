@@ -37,9 +37,15 @@ namespace Maitonn.Web
 
         public ListSearchViewModel Search { get; set; }
 
-        public IPagedList<ListSearchProductViewModel> Result { get; set; }
+        public ListPageViewModel Result { get; set; }
+    }
 
+    public class ListPageViewModel
+    {
 
+        public List<ListSearchProductViewModel> Items { get; set; }
+
+        public int TotalCount { get; set; }
     }
 
     public class ShowViewModel

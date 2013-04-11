@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using Lucene.Net.Documents;
 using Lucene.Net.Search.Function;
 using Lucene.Net.China;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Tokenattributes;
 using Maitonn.Core;
+using PagedList;
+using PagedList.Mvc;
+
 namespace Maitonn.Web
 {
 
@@ -23,6 +28,7 @@ namespace Maitonn.Web
 
         public int Take { get; set; }
 
+        public int PageSize { get; set; }
 
         public SortProperty SortProperty { get; set; }
 
@@ -38,8 +44,7 @@ namespace Maitonn.Web
     {
         Hit,
         Price,
-        Published,
-        DisplayName
+        Published
     }
 
     public enum SortDirection
@@ -101,6 +106,28 @@ namespace Maitonn.Web
                 .AsQueryable();
         }
 
+        public List<ListSearchProductViewModel> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
+        {
+            if (searchFilter == null)
+            {
+                throw new ArgumentNullException("searchFilter");
+            }
+
+            if (searchFilter.Skip < 0)
+            {
+                throw new ArgumentOutOfRangeException("searchFilter");
+            }
+
+            if (searchFilter.Take < 0)
+            {
+                throw new ArgumentOutOfRangeException("searchFilter");
+            }
+            var searchResults = SearchCore(queryParams, searchFilter, out totalHits);
+
+            return searchResults;
+
+        }
+
         private static OutDoor LookupOutDoor(Dictionary<int, OutDoor> dict, int key)
         {
             OutDoor OutDoor;
@@ -122,26 +149,85 @@ namespace Maitonn.Web
             using (var directory = new LuceneFileSystem(LuceneCommon.IndexDirectory))
             {
                 var searcher = new IndexSearcher(directory, readOnly: true);
-
-
                 var query = ParseQuery(searchFilter);
-
-                //var analyzer = new ChineseAnalyzer();
-
-                //QueryParser parser = new QueryParser(LuceneCommon.LuceneVersion, searchFilter.SearchTerm, analyzer);
-
-                //Query query = parser.Parse(searchFilter.SearchTerm);
-
                 var results = searcher.Search(query, filter: null, n: numRecords, sort: new Sort(sortField));
-
                 var keys = results.ScoreDocs.Skip(searchFilter.Skip)
                     .Select(c => ParseKey(searcher.Doc(c.Doc).Get("MediaID")))
                     .ToList();
-
                 totalHits = results.TotalHits;
                 searcher.Close();
                 return keys;
             }
+        }
+
+        private static List<ListSearchProductViewModel> SearchCore(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
+        {
+            if (!Directory.Exists(LuceneCommon.IndexDirectory))
+            {
+                totalHits = 0;
+                return new List<ListSearchProductViewModel>();
+            }
+
+            SortField sortField = GetSortField(searchFilter);
+
+            int numRecords = searchFilter.Skip + searchFilter.Take;
+
+            using (var directory = new LuceneFileSystem(LuceneCommon.IndexDirectory))
+            {
+                var searcher = new IndexSearcher(directory, readOnly: true);
+
+                var query = ParseQuery(queryParams, searchFilter);
+
+                var results = searcher.Search(query, filter: null, n: numRecords, sort: new Sort(sortField));
+
+                var keys = results.ScoreDocs.Skip(searchFilter.Skip)
+                    .Select(c => PackageFromDoc(searcher.Doc(c.Doc)))
+                    .ToList();
+
+                totalHits = results.TotalHits;
+
+                searcher.Close();
+
+                return keys;
+            }
+        }
+
+        private static ListSearchProductViewModel PackageFromDoc(Document doc)
+        {
+            int Hit = Int32.Parse(doc.Get(OutDoorIndexFields.Hit), CultureInfo.InvariantCulture);
+            int MediaID = Int32.Parse(doc.Get(OutDoorIndexFields.MediaID), CultureInfo.InvariantCulture);
+            int Province = Int32.Parse(doc.Get(OutDoorIndexFields.Province), CultureInfo.InvariantCulture);
+            int City = Int32.Parse(doc.Get(OutDoorIndexFields.City), CultureInfo.InvariantCulture);
+            int FormatCode = Int32.Parse(doc.Get(OutDoorIndexFields.FormatCode), CultureInfo.InvariantCulture);
+            int MediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.MediaCode), CultureInfo.InvariantCulture);
+            int PMediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.PMediaCode), CultureInfo.InvariantCulture);
+            decimal Price = Decimal.Parse(doc.Get(OutDoorIndexFields.Price), CultureInfo.InvariantCulture);
+            decimal Width = Decimal.Parse(doc.Get(OutDoorIndexFields.Width), CultureInfo.InvariantCulture);
+            decimal Height = Decimal.Parse(doc.Get(OutDoorIndexFields.Height), CultureInfo.InvariantCulture);
+            int TotalFaces = Int32.Parse(doc.Get(OutDoorIndexFields.TotalFaces), CultureInfo.InvariantCulture);
+            DateTime AddTime = new DateTime(Int64.Parse(doc.Get("Published"), CultureInfo.InvariantCulture));
+            return new ListSearchProductViewModel
+            {
+                ID = MediaID,
+                ImgUrl = doc.Get(OutDoorIndexFields.ImgUrl),
+                ProvinceCode = Province,
+                ProvinceName = doc.Get(OutDoorIndexFields.ProvinceName),
+                CityCode = City,
+                CityName = doc.Get(OutDoorIndexFields.CityName),
+                ParentMediaCateCode = PMediaCode,
+                ParentMediaCateName = doc.Get(OutDoorIndexFields.PMediaCateName),
+                MediaCateCode = MediaCode,
+                MediaCateName = doc.Get(OutDoorIndexFields.MediaCateName),
+                FormatCateName = doc.Get(OutDoorIndexFields.FormatName),
+                Name = doc.Get(OutDoorIndexFields.Title),
+                OwnerCateName = doc.Get(OutDoorIndexFields.OwnerCateName),
+                Price = Price,
+                Width = Width,
+                Height = Height,
+                TotalFaces = TotalFaces,
+                PeriodCateName = doc.Get(OutDoorIndexFields.PeriodName),
+                Addtime = AddTime
+            };
         }
 
         private static Query ParseQuery(SearchFilter searchFilter)
@@ -195,34 +281,150 @@ namespace Maitonn.Web
                     wildCardQuery.Add(wildCardTermQuery, Occur.SHOULD);
                 }
             }
-
-            //var combinedQuery =
-            //    conjuctionQuery.Combine(new Query[] { exactIdQuery, conjuctionQuery });
-            //// Create an OR of all the queries that we have
-         
-
-
             var combinedQuery =
                 conjuctionQuery.Combine(new Query[] { exactIdQuery, wildCardIdQuery, conjuctionQuery, disjunctionQuery, wildCardQuery });
-
-
-
-            var statusQuery = new BooleanQuery();
-
-            var minStatus = NumericRangeQuery.NewIntRange("Status", (int)OutDoorStatus.ShowOnline, 99, true, true);
-
-            statusQuery.Add(minStatus, Occur.MUST);
-            statusQuery.Add(combinedQuery, Occur.SHOULD);
 
             if (searchFilter.SortProperty == SortProperty.Hit)
             {
                 // If searching by relevance, boost scores by download count.
                 var downloadCountBooster = new FieldScoreQuery("Hit", FieldScoreQuery.Type.INT);
-                return new CustomScoreQuery(statusQuery, downloadCountBooster);
+                return new CustomScoreQuery(combinedQuery, downloadCountBooster);
             }
-            return statusQuery;
+            return combinedQuery;
         }
 
+        private static Query ParseQuery(ListSearchItemViewModel queryParams, SearchFilter searchFilter)
+        {
+            var combineQuery = new BooleanQuery();
+
+            #region 关键字查询构建
+            if (!String.IsNullOrWhiteSpace(searchFilter.SearchTerm))
+            {
+                var fields = new[] { 
+                    OutDoorIndexFields.Title, 
+                    OutDoorIndexFields.Description,
+                    OutDoorIndexFields.AreaAtt,
+                    OutDoorIndexFields.MediaCateName,
+                    OutDoorIndexFields.CityName,
+                    OutDoorIndexFields.ProvinceName,
+                    OutDoorIndexFields.PMediaCateName,
+                    OutDoorIndexFields.FormatName,
+                    OutDoorIndexFields.PeriodName,
+                    OutDoorIndexFields.OwnerCateName
+                };
+                var analyzer = new ChineseAnalyzer();
+                //var analyzer = new StandardAnalyzer(LuceneCommon.LuceneVersion);
+                var queryParser = new MultiFieldQueryParser(LuceneCommon.LuceneVersion, fields, analyzer);
+
+                var query = queryParser.Parse(searchFilter.SearchTerm);
+
+                var conjuctionQuery = new BooleanQuery();
+                conjuctionQuery.Boost = 2.0f;
+
+                var disjunctionQuery = new BooleanQuery();
+                disjunctionQuery.Boost = 0.1f;
+
+                var wildCardQuery = new BooleanQuery();
+                wildCardQuery.Boost = 0.5f;
+
+                var escapedSearchTerm = Escape(searchFilter.SearchTerm);
+
+                var exactIdQuery = new TermQuery(new Term(OutDoorIndexFields.Title, escapedSearchTerm));
+
+                exactIdQuery.Boost = 2.5f;
+
+                var wildCardIdQuery = new WildcardQuery(new Term(OutDoorIndexFields.Title, "*" + escapedSearchTerm + "*"));
+
+                foreach (var term in GetSearchTerms(searchFilter.SearchTerm))
+                {
+                    var termQuery = queryParser.Parse(term);
+                    conjuctionQuery.Add(termQuery, Occur.MUST);
+                    disjunctionQuery.Add(termQuery, Occur.SHOULD);
+
+                    foreach (var field in fields)
+                    {
+                        var wildCardTermQuery = new WildcardQuery(new Term(field, term + "*"));
+                        wildCardTermQuery.Boost = 0.7f;
+                        wildCardQuery.Add(wildCardTermQuery, Occur.SHOULD);
+                    }
+                }
+                //关键查询
+                var keywordsQuery =
+                    conjuctionQuery.Combine(new Query[] { exactIdQuery, wildCardIdQuery, conjuctionQuery, disjunctionQuery, wildCardQuery });
+
+                combineQuery.Add(keywordsQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 审核状态查询构建
+            var verifyStatus = NumericRangeQuery.NewIntRange(OutDoorIndexFields.Status, (int)OutDoorStatus.ShowOnline, 99, true, true);
+            combineQuery.Add(verifyStatus, Occur.MUST);
+            #endregion
+
+
+            #region 省份查询
+            if (!String.IsNullOrEmpty(queryParams.Province) && queryParams.Province != "quanguo")
+            {
+                int ProvinceValue = EnumHelper.GetProvinceValue(queryParams.Province);
+                var provinceQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.Province, ProvinceValue, ProvinceValue, true, true);
+                combineQuery.Add(provinceQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 城市查询
+            if (queryParams.City != 0)
+            {
+                var cityQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.City, queryParams.City, queryParams.City, true, true);
+                combineQuery.Add(cityQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 媒体类别查询
+            if (queryParams.MediaCode != 0)
+            {
+                var mediaCodeQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.PMediaCode,
+                    queryParams.MediaCode, queryParams.MediaCode, true, true);
+                combineQuery.Add(mediaCodeQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 媒体子类别查询
+            if (queryParams.ChildMediaCode != 0)
+            {
+                var ChildMediaCodeQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaCode,
+                    queryParams.ChildMediaCode, queryParams.ChildMediaCode, true, true);
+                combineQuery.Add(ChildMediaCodeQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 媒体表现形式查询
+            if (queryParams.FormatCode != 0)
+            {
+                var FormatCodeCodeQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.FormatCode,
+                    queryParams.FormatCode, queryParams.FormatCode, true, true);
+                combineQuery.Add(FormatCodeCodeQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 媒体所有权查询
+            if (queryParams.OwnerCode != 0)
+            {
+                var OwnerCodeCodeQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.OwnerCode,
+                    queryParams.OwnerCode, queryParams.OwnerCode, true, true);
+                combineQuery.Add(OwnerCodeCodeQuery, Occur.MUST);
+            }
+            #endregion
+
+            #region 媒体购买周期查询
+            if (queryParams.PeriodCode != 0)
+            {
+                var PeriodCodeCodeQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.PeriodCode,
+                    queryParams.PeriodCode, queryParams.PeriodCode, true, true);
+                combineQuery.Add(PeriodCodeCodeQuery, Occur.MUST);
+            }
+            #endregion
+            return combineQuery;
+        }
         private static IEnumerable<string> GetSearchTerms(string searchTerm)
         {
             List<string> result = new List<string>();
@@ -255,8 +457,6 @@ namespace Maitonn.Web
         {
             switch (searchFilter.SortProperty)
             {
-                case SortProperty.DisplayName:
-                    return new SortField("DisplayName", SortField.STRING, reverse: searchFilter.SortDirection == SortDirection.Descending);
                 case SortProperty.Hit:
                     return new SortField("Hit", SortField.INT, reverse: true);
                 case SortProperty.Price:

@@ -153,14 +153,38 @@
                                 </li>
                             }
                         </ul>
-                        @*   <span class="list-right-attr-more" style="">更多</span>
-                    <span class="list-right-attr-little" style="display: none">收起</span>*@
+                        <span class="list-right-attr-more" style="display: none">更多</span>
+                        <span class="list-right-attr-little" style="display: none">收起</span>
                     </div>
                     }
                 }
 
             </div>
         </div>
+        <script type="text/javascript">
+            $(function() {
+
+                $.each($(".list-right-attr-list"), function(index, item) {
+                    if ($(item).height() > 58) {
+                        $(item).height(58);
+                        $(item).next(".list-right-attr-more").show();
+                    }
+                });
+
+                $(".list-right-attr-more").click(function() {
+                    $(this).siblings(".list-right-attr-list").height("auto");
+                    $(this).hide();
+                    $(this).next().show();
+                })
+
+                $(".list-right-attr-little").click(function() {
+                    $(this).siblings(".list-right-attr-list").height(58);
+                    $(this).hide();
+                    $(this).prev().show();
+                })
+            })
+
+        </script>
         <div class="list-filter clearfix">
             <div class="list-filter-top scroll-fixed clearfix">
                 <a hidefocus="true" class="list-filter-sort list-filter-up" href="http://baojian.163.com/products/1-11-0-0-0-0-0-2-0-0-1.html">价格</a>
@@ -194,7 +218,7 @@
                         })
                     })
                 </script>
-                <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@Model.Result.TotalItemCount</strong>&nbsp;条</div>
+                <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@Model.Result.TotalCount</strong>&nbsp;条</div>
             </div>
             <div class="list-filter-bottom clearfix">
                 <div class="list-filter-menu">
@@ -207,7 +231,7 @@
         </div>
         <div class="list-products clearfix">
 
-            @foreach (var item in Model.Result)
+            @foreach (var item in Model.Result.Items)
             {
                 <div class="list-products-item">
                     <a class="list-products-item-img" target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" >

@@ -47,7 +47,7 @@ namespace Maitonn.Web
             od.PeriodCode = model.PeriodCode;
             od.Price = model.Price;
             od.PriceExten = model.PriceExten;
-            od.SeoDes = model.Description;
+            od.SeoDes = model.Description.Length > 250 ? model.Description.Substring(0, 249) : model.Description;
 
             od.SeoTitle = model.Name;
 
@@ -134,7 +134,7 @@ namespace Maitonn.Web
             od.Name = model.Name;
             od.Price = model.Price;
             od.PriceExten = model.PriceExten;
-            od.SeoDes = model.Description;
+            od.SeoDes = model.Description.Length > 250 ? model.Description.Substring(0, 249) : model.Description;
 
             od.SeoTitle = model.Name;
 

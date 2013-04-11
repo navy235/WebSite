@@ -13,6 +13,8 @@ using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.China;
+using Lucene.Net.Search;
+using Lucene.Net.QueryParsers;
 using Ninject;
 using Directory = System.IO.Directory;
 using Maitonn.Core;
@@ -56,11 +58,7 @@ namespace Maitonn.Web
             {
                 _indexWriter.DeleteAll();
                 _indexWriter.Commit();
-
-                // Reset the lastWriteTime to null. This will allow us to get a fresh copy of all the latest \ latest successful OutDoors
                 lastWriteTime = null;
-
-                // Set the index create time to now. This would tell us when we last rebuilt the index.
                 UpdateIndexRefreshTime();
             }
             if (_entitiesContext != null)
@@ -93,6 +91,7 @@ namespace Maitonn.Web
                 OutDoors = OutDoors.Where(x => x.LastTime > lastIndexTime);
             }
             OutDoors = OutDoors.OrderByDescending(x => x.LastTime);
+
             foreach (var x in OutDoors.ToList())
             {
                 OutDoorIndexEntity item = new OutDoorIndexEntity()
@@ -117,9 +116,12 @@ namespace Maitonn.Web
                     PMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
                     OwnerCateName = x.OwnerCate.CateName,
                     PeriodName = x.PeriodCate.CateName,
-                    Price = Convert.ToInt32(x.Price),
+                    Price = x.Price,
                     Published = x.LastTime,
-                    Title = x.Name
+                    Title = x.Name,
+                    Height = x.Height,
+                    TotalFaces = x.TotalFaces,
+                    Width = x.Wdith
                 };
                 result.Add(item);
 
@@ -129,20 +131,14 @@ namespace Maitonn.Web
 
         private static void AddOutDoors(List<OutDoorIndexEntity> OutDoors, bool creatingIndex)
         {
+            //如果不是第一次创建
             if (!creatingIndex)
             {
-                // If this is not the first time we're creating the index, clear any OutDoor registrations for OutDoors we are going to updating.
                 var OutDoorsToDelete = from MediaID in OutDoors.Select(p => p.MediaID).Distinct()
-                                       select new Term("MediaID", MediaID.ToString(CultureInfo.InvariantCulture));
+                                       select NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaID, MediaID, MediaID, true, true);
                 _indexWriter.DeleteDocuments(OutDoorsToDelete.ToArray());
             }
-
-            // As per http://stackoverflow.com/a/3894582. The IndexWriter is CPU bound, so we can try and write multiple OutDoors in parallel.
-            // The IndexWriter is thread safe and is primarily CPU-bound. 
-            foreach (var d in OutDoors)
-            {
-                AddOutDoor(d);
-            }
+            OutDoors.ForEach(x => AddOutDoor(x));
             //Parallel.ForEach(OutDoors, AddOutDoor);
 
             _indexWriter.Commit();
@@ -152,68 +148,64 @@ namespace Maitonn.Web
         {
             var document = new Document();
 
-            var field = new Field("Title", OutDoor.Title, Field.Store.NO, Field.Index.ANALYZED);
+            var field = new Field(OutDoorIndexFields.Title, OutDoor.Title, Field.Store.YES, Field.Index.ANALYZED);
             field.Boost = 2.5f;
             document.Add(field);
 
-            field = new Field("Description", OutDoor.Description, Field.Store.NO, Field.Index.ANALYZED);
+            field = new Field(OutDoorIndexFields.Description, OutDoor.Description, Field.Store.YES, Field.Index.ANALYZED);
             field.Boost = 2.1f;
             document.Add(field);
 
-            field = new Field("AreaAtt", OutDoor.AreaAtt, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.AreaAtt, OutDoor.AreaAtt, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 1.0f;
             document.Add(field);
 
-            field = new Field("CityName", OutDoor.CityName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.CityName, OutDoor.CityName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 1.0f;
             document.Add(field);
 
-            field = new Field("ProvinceName", OutDoor.ProvinceName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.ProvinceName, OutDoor.ProvinceName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 1.0f;
             document.Add(field);
 
-            field = new Field("MediaCateName", OutDoor.MediaCateName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.MediaCateName, OutDoor.MediaCateName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 1.0f;
             document.Add(field);
 
-            field = new Field("PMediaCateName", OutDoor.PMediaCateName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.PMediaCateName, OutDoor.PMediaCateName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 1.0f;
             document.Add(field);
 
-            field = new Field("FormatName", OutDoor.FormatName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.FormatName, OutDoor.FormatName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 0.2f;
             document.Add(field);
 
-            field = new Field("PeriodName", OutDoor.PeriodName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.PeriodName, OutDoor.PeriodName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 0.2f;
             document.Add(field);
 
-            field = new Field("OwnerCateName", OutDoor.OwnerCateName, Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.OwnerCateName, OutDoor.OwnerCateName, Field.Store.YES, Field.Index.ANALYZED);
+            field.Boost = 0.2f;
             document.Add(field);
 
-            field = new Field("Price", OutDoor.Price.ToString(), Field.Store.NO, Field.Index.ANALYZED);
-            field.Boost = 0.8f;
+            field = new Field(OutDoorIndexFields.ImgUrl, OutDoor.ImgUrl, Field.Store.YES, Field.Index.NOT_ANALYZED);
             document.Add(field);
 
-            document.Add(new Field("Province", OutDoor.Province.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("City", OutDoor.City.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("MediaCode", OutDoor.MediaCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("PMediaCode", OutDoor.PMediaCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("FormatCode", OutDoor.FormatCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("PeriodCode", OutDoor.PeriodCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("OwnerCode", OutDoor.OwnerCode.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Status", OutDoor.Status.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-
-            document.Add(new Field("MediaID", OutDoor.MediaID.ToString(CultureInfo.InvariantCulture), Field.Store.YES, Field.Index.NOT_ANALYZED));
-
-            document.Add(new Field("Published", OutDoor.Published.Ticks.ToString(), Field.Store.NO, Field.Index.NOT_ANALYZED));
-            document.Add(
-                new Field("Hit", OutDoor.Hit.ToString(CultureInfo.InvariantCulture), Field.Store.NO, Field.Index.NOT_ANALYZED));
-
-            string displayName = OutDoor.Title;
-
-            document.Add(new Field("DisplayName", displayName.ToLower(CultureInfo.CurrentCulture), Field.Store.NO, Field.Index.NOT_ANALYZED));
+            document.Add(new NumericField(OutDoorIndexFields.Price, Field.Store.YES, true).SetDoubleValue(Convert.ToDouble(OutDoor.Price)));
+            document.Add(new NumericField(OutDoorIndexFields.Width, Field.Store.YES, true).SetDoubleValue(Convert.ToDouble(OutDoor.Width)));
+            document.Add(new NumericField(OutDoorIndexFields.Height, Field.Store.YES, true).SetDoubleValue(Convert.ToDouble(OutDoor.Height)));
+            document.Add(new NumericField(OutDoorIndexFields.TotalFaces, Field.Store.YES, true).SetIntValue(OutDoor.TotalFaces));
+            document.Add(new NumericField(OutDoorIndexFields.Province, Field.Store.YES, true).SetIntValue(OutDoor.Province));
+            document.Add(new NumericField(OutDoorIndexFields.City, Field.Store.YES, true).SetIntValue(OutDoor.City));
+            document.Add(new NumericField(OutDoorIndexFields.MediaCode, Field.Store.YES, true).SetIntValue(OutDoor.MediaCode));
+            document.Add(new NumericField(OutDoorIndexFields.PMediaCode, Field.Store.YES, true).SetIntValue(OutDoor.PMediaCode));
+            document.Add(new NumericField(OutDoorIndexFields.FormatCode, Field.Store.YES, true).SetIntValue(OutDoor.FormatCode));
+            document.Add(new NumericField(OutDoorIndexFields.PeriodCode, Field.Store.YES, true).SetIntValue(OutDoor.PeriodCode));
+            document.Add(new NumericField(OutDoorIndexFields.OwnerCode, Field.Store.YES, true).SetIntValue(OutDoor.OwnerCode));
+            document.Add(new NumericField(OutDoorIndexFields.Status, Field.Store.YES, true).SetIntValue(OutDoor.Status));
+            document.Add(new NumericField(OutDoorIndexFields.MediaID, Field.Store.YES, true).SetIntValue(OutDoor.MediaID));
+            document.Add(new NumericField(OutDoorIndexFields.Hit, Field.Store.YES, true).SetIntValue(OutDoor.Hit));
+            document.Add(new NumericField(OutDoorIndexFields.Published, Field.Store.YES, true).SetLongValue(OutDoor.Published.Ticks));
 
             _indexWriter.AddDocument(document);
         }
@@ -328,5 +320,6 @@ namespace Maitonn.Web
             // Finally return the term in entirety
             yield return term;
         }
+
     }
 }
