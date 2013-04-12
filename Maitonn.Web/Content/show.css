@@ -2222,23 +2222,36 @@ a.top-head-changcity {
   color: #333;
   text-align: center;
   padding: 0 12px;
-  border-color: #000;
+  border-color: #bcbcbc;
+  background: none;
 }
 
 .list-filter-sort.selected {
-  background-position: -104px -359px;
+  background-position: -104px -356px;
   padding: 0 18px 0 6px;
   width: 24px;
-  border-color: #000;
+  border-color: #d90000;
+}
+
+.list-filter-default.selected {
+  padding: 0 12px;
 }
 
 .list-filter-down {
   background-position: -104px -206px;
 }
 
+  .list-filter-down.selected {
+    background-position: -104px -356px;
+  }
+
 .list-filter-up {
   background-position: -154px -206px;
 }
+
+  .list-filter-up.selected {
+    background-position: -154px -356px;
+  }
 
 .list-filter-price {
   background: url(images/productBg.png)no-repeat;
@@ -2268,16 +2281,14 @@ a.top-head-changcity {
   position: absolute;
   display: none;
   background-color: #fff;
-  width: 86px;
+  width: 88px;
   z-index: 31;
-  top: 25px;
-  left: 0;
+  top: 30px;
+  left: -1px;
   overflow: hidden;
-  border: 1px solid #e2e2e2;
+  border: #bcbcbc 1px solid;
   border-top: 0;
   zoom: 1;
-  -webkit-box-shadow: 0 1px 2px 0 #aaa;
-  box-shadow: 0 1px 2px 0 #aaa;
 }
 
   .list-filter-price-list li {
@@ -2298,8 +2309,10 @@ a.top-head-changcity {
       background-color: #fff;
     }
 
-      .list-filter-price-list li a:hover {
-        background-color: #ededed;
+      .list-filter-price-list li a:hover,
+      .list-filter-price-list li a.selected {
+        background-color: #f60;
+        color: #fff;
       }
 
 .list-filter-search {
@@ -2309,13 +2322,19 @@ a.top-head-changcity {
 .list-filter-search-query {
   height: 28px;
   line-height: 28px;
-  width: 250px;
+  width: 220px;
   padding-left: 4px;
   border: #bcbcbc 1px solid;
   outline: none;
 }
 
-
+.list-grayline {
+  font-size: 0;
+  clear: both;
+  line-height: 0;
+  border-bottom: 1px solid #e8e8e8;
+  -webkit-text-size-adjust: none;
+}
 
 .list-filter-page {
   margin-left: 10px;
@@ -2484,8 +2503,11 @@ a.top-head-changcity {
 
 .list-products-item-title {
   color: #666;
-  width: 165px;
   overflow: hidden;
+}
+
+.list-products-item-category {
+  margin-top: 8px;
 }
 
 .list-products-item-car {
@@ -2520,6 +2542,7 @@ a.top-head-changcity {
   overflow: hidden;
   clear: both;
   padding-bottom: 30px;
+  margin-top: 20px;
 }
 
   .list-page-split a,
@@ -2546,6 +2569,13 @@ a.top-head-changcity {
     background-color: #f60;
     border-color: #f60;
   }
+
+    .list-page-split span.dotted {
+      font-size: 18px;
+      color: #333;
+      background-color: #fff;
+      border: none;
+    }
 
     .list-page-split span.prev,
     .list-page-split span.next {
@@ -2775,6 +2805,11 @@ a.top-head-changcity {
   cursor: crosshair;
   background: url(images/loading.gif) no-repeat center center white;
 }
+
+  .details-info-show img {
+    width: 430px;
+    height: 430px;
+  }
 
   .details-info-show b {
     background: rgba(0, 0, 0, 0.3);
@@ -3384,6 +3419,132 @@ goods-pack .goods-desc {
   word-break: break-all;
   word-wrap: break-word;
 }
+
+.goods-feedback-tab {
+  height: 38px;
+  border: 1px solid #e1e1e1;
+  background: #f9f9f9;
+  font: 12px/38px "宋体";
+  background: url(../../images/order/orderRpt_x.png);
+}
+
+  .goods-feedback-tab ul {
+    clear: both;
+    float: left;
+  }
+
+    .goods-feedback-tab ul li {
+      float: left;
+      width: 140px;
+      text-align: center;
+      border-right: 1px solid #e1e1e1;
+      cursor: pointer;
+    }
+
+      .goods-feedback-tab ul li.active {
+        font: bold 12px/38px "宋体";
+        border-top: 2px solid #4b7805;
+        margin: -1px 0 -1px 0;
+        background: #fff;
+        position: relative;
+        z-index: 100;
+      }
+
+.goods-feedback-tips {
+  line-height: 21px;
+}
+
+  .goods-feedback-tips p {
+    background: #fffbeb;
+    border: 1px solid #efdb8b;
+    padding: 15px 18px;
+    margin: 10px 0 0;
+    overflow: hidden;
+    display: block;
+  }
+
+  .goods-feedback-tips span {
+    float: left;
+    height: 62px;
+    overflow: hidden;
+  }
+
+  .goods-feedback-tips .leftspan {
+    border-right: 1px solid #efdb8b;
+    padding: 0 25px 0 0;
+    width: 527px;
+  }
+
+  .goods-feedback-tips .rightspan {
+    padding: 0 0 0 11px;
+    text-align: center;
+    width: 108px;
+  }
+
+.goods-feedback-box {
+  border: 1px solid #e8e8e8;
+  background: #f5f5f5;
+  padding: 15px 20px;
+}
+
+  .goods-feedback-box dl {
+    line-height: 1.8;
+  }
+
+.goods-feedback-product {
+  background-color: #fffbeb;
+  border: #efdb8b 1px solid;
+  padding: 10px 0;
+  margin: 10px auto 0;
+}
+
+.goods-feedback-commbox {
+  border: 1px solid #efdb8b;
+  border-top-width: 0;
+  padding: 15px 0 20px 0;
+}
+
+  .goods-feedback-commbox textarea {
+    resize: none;
+    border: 1px solid #bcbcbc;
+    color: #888;
+    width: 488px;
+    height: 144px;
+    padding: 5px;
+    overflow-y: auto;
+  }
+
+  .goods-feedback-commbox .zxBot {
+    padding: 3px 0 5px;
+    text-align: left;
+  }
+
+.zxBot span {
+  float: right;
+  padding-right: 73px;
+}
+
+.goods-feedback-commbox .zxBot label {
+  width: 265px;
+  color: #333;
+}
+
+  .goods-feedback-commbox .zxBot label input {
+    margin: 0 3px 0 0;
+    vertical-align: text-bottom;
+  }
+
+.goods-feedback-commbox .txtTips {
+  color: #888;
+}
+
+.goods-feedback-commbox .errTips {
+  text-align: right;
+  color: #ba2636;
+  width: 500px;
+  padding-top: 2px;
+}
+
 
 /*************************
  *

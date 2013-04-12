@@ -94,7 +94,13 @@
                     </div>
                 }
 
-                @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                @Html.MaitonnPage(new PagingInfo()
+           {
+               CurrentPage = Model.CompanyProduct.PageNumber,
+               TotalItems = Model.CompanyProduct.TotalItemCount,
+               ItemsPerPage = Model.CompanyProduct.PageSize
+           })
+                @* @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("Index", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
             </div>
         </div>
     </div>

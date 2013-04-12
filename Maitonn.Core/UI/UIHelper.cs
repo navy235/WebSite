@@ -25,6 +25,8 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> ProvinceList { get; set; }
 
+        public static List<SelectListItem> PriceList { get; set; }
+
         static UIHelper()
         {
             singleStone = new UIHelper();
@@ -35,6 +37,7 @@ namespace Maitonn.Core
             InitOutDoorStatusList();
             InitProvinceList();
             InitTimeList();
+            InitPriceList();
 
         }
         private static void InitSexList()
@@ -134,6 +137,17 @@ namespace Maitonn.Core
                     Value = (i * 30).ToString()
                 });
             }
+        }
+
+        private static void InitPriceList()
+        {
+            PriceList = new List<SelectListItem>();
+            PriceList.Add(new SelectListItem() { Text = "价格区间", Value = ((int)PriceListType.Default).ToString() });
+            PriceList.Add(new SelectListItem() { Text = "10万以下", Value = ((int)PriceListType.Price10Lower).ToString() });
+            PriceList.Add(new SelectListItem() { Text = "10~50万元", Value = ((int)PriceListType.Price50Lower).ToString() });
+            PriceList.Add(new SelectListItem() { Text = "50~100万元", Value = ((int)PriceListType.Price100Lower).ToString() });
+            PriceList.Add(new SelectListItem() { Text = "100~200万元", Value = ((int)PriceListType.Price200Lower).ToString() });
+            PriceList.Add(new SelectListItem() { Text = "200万元以上", Value = ((int)PriceListType.PriceMax).ToString() });
         }
 
         public static string GetTime(string timeValue)

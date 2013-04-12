@@ -18,8 +18,6 @@ using PagedList.Mvc;
 
 namespace Maitonn.Web
 {
-
-
     public class SearchFilter
     {
         public string SearchTerm { get; set; }
@@ -42,15 +40,16 @@ namespace Maitonn.Web
 
     public enum SortProperty
     {
-        Hit,
-        Price,
-        Published
+        Published = 0,
+        Hit = 1,
+        Price = 2
     }
 
     public enum SortDirection
     {
-        Ascending,
-        Descending,
+        Descending = 0,
+        Ascending = 1,
+
     }
     public interface ISearchService
     {
@@ -423,6 +422,17 @@ namespace Maitonn.Web
                 combineQuery.Add(PeriodCodeCodeQuery, Occur.MUST);
             }
             #endregion
+
+            #region 媒体价格区间查询
+            if (queryParams.Price != 0)
+            {
+                var rangeValue = EnumHelper.GetPriceValue(queryParams.Price);
+                var PriceQuery = NumericRangeQuery.NewDoubleRange(OutDoorIndexFields.Price,
+                    Convert.ToDouble(rangeValue.Min), Convert.ToDouble(rangeValue.Max), true, true);
+                combineQuery.Add(PriceQuery, Occur.MUST);
+            }
+            #endregion
+
             return combineQuery;
         }
         private static IEnumerable<string> GetSearchTerms(string searchTerm)
@@ -458,11 +468,11 @@ namespace Maitonn.Web
             switch (searchFilter.SortProperty)
             {
                 case SortProperty.Hit:
-                    return new SortField("Hit", SortField.INT, reverse: true);
+                    return new SortField("Hit", SortField.INT, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
                 case SortProperty.Price:
-                    return new SortField("Price", SortField.INT, reverse: true);
+                    return new SortField("Price", SortField.DOUBLE, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
                 case SortProperty.Published:
-                    return new SortField("Published", SortField.LONG, reverse: true);
+                    return new SortField("Published", SortField.LONG, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
             }
             return SortField.FIELD_SCORE;
         }

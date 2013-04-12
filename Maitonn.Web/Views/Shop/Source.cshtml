@@ -82,8 +82,14 @@
                         </div>
                     </div>
                 }
+                @Html.MaitonnPage(new PagingInfo()
+           {
+               CurrentPage = Model.CompanyProduct.PageNumber,
+               TotalItems = Model.CompanyProduct.TotalItemCount,
+               ItemsPerPage = Model.CompanyProduct.PageSize
+           })
 
-                @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("source", new { page = page, c = ViewBag.Category, cc = ViewBag.ChildCategory }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                @*  @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("source", new { page = page, c = ViewBag.Category, cc = ViewBag.ChildCategory }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
             </div>
         </div>
     </div>

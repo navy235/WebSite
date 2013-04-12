@@ -353,7 +353,11 @@ namespace Maitonn.Web
             {
                 var IdsArray = Ids.Split(',').Select(x => Convert.ToInt32(x));
                 var OutDoorStatusValue = (int)OutDoorStatus;
-                DB_Service.Set<OutDoor>().Where(x => IdsArray.Contains(x.MediaID)).ToList().ForEach(x => x.Status = OutDoorStatusValue);
+                DB_Service.Set<OutDoor>().Where(x => IdsArray.Contains(x.MediaID)).ToList().ForEach(x =>
+                {
+                    x.Status = OutDoorStatusValue;
+                    x.LastTime = DateTime.Now;
+                });
                 DB_Service.Commit();
             }
             catch (DbEntityValidationException ex)

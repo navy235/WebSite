@@ -83,7 +83,13 @@
                         </div>
                     </div>
                 }
-                @Html.PagedListPager(Model.CompanyNotice, page => Url.Action("notice", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                @Html.MaitonnPage(new PagingInfo()
+           {
+               CurrentPage = Model.CompanyNotice.PageNumber,
+               TotalItems = Model.CompanyNotice.TotalItemCount,
+               ItemsPerPage = Model.CompanyNotice.PageSize
+           })
+                @*  @Html.PagedListPager(Model.CompanyNotice, page => Url.Action("notice", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
             </div>
         </div>
     </div>
@@ -107,6 +113,7 @@
                         </ul>
                     </div>
                 }
+
             </div>
         </div>
         <span class="separate-line"></span>

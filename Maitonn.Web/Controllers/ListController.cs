@@ -62,11 +62,14 @@ namespace Maitonn.Web
 
 
         public ActionResult Index(string province = "quanguo", int city = 0,
-            int mediacode = 441,
+            int mediacode = 0,
             int childmediacode = 0,
             int formatcode = 0,
             int ownercode = 0,
             int periodcode = 0,
+            int price = 0,
+            int order = 0,
+            int descending = 0,
             int page = 1,
             string query = null)
         {
@@ -81,7 +84,10 @@ namespace Maitonn.Web
                 FormatCode = formatcode,
                 OwnerCode = ownercode,
                 PeriodCode = periodcode,
-                Page = 1,
+                Page = page,
+                Price = price,
+                Order = order,
+                Descending = descending,
                 Query = query
             };
             ListViewModel model = new ListViewModel();
@@ -95,27 +101,104 @@ namespace Maitonn.Web
             model.CompanyList = GetCompanyList();
             model.Search = GetSearch(searchTrem);
             model.Province = province;
+
+            model.PriceListFilter = GetPriceListFilter(searchTrem);
+            model.DefaultOrderUrl = Url.Action("index", new
+            {
+                province = searchTrem.Province,
+                city = searchTrem.City,
+                mediacode = searchTrem.MediaCode,
+                childmediacode = searchTrem.ChildMediaCode,
+                formatcode = searchTrem.FormatCode,
+                ownercode = searchTrem.OwnerCode,
+                periodcode = searchTrem.PeriodCode,
+                price = searchTrem.Price,
+                order = 0,
+                descending = 0,
+                page = searchTrem.Page,
+            });
+
+            model.PriceOrderAscUrl = Url.Action("index", new
+            {
+                province = searchTrem.Province,
+                city = searchTrem.City,
+                mediacode = searchTrem.MediaCode,
+                childmediacode = searchTrem.ChildMediaCode,
+                formatcode = searchTrem.FormatCode,
+                ownercode = searchTrem.OwnerCode,
+                periodcode = searchTrem.PeriodCode,
+                price = searchTrem.Price,
+                order = (int)SortProperty.Price,
+                descending = (int)SortDirection.Ascending,
+                page = searchTrem.Page
+            });
+
+            model.PriceOrderDescUrl = Url.Action("index", new
+            {
+                province = searchTrem.Province,
+                city = searchTrem.City,
+                mediacode = searchTrem.MediaCode,
+                childmediacode = searchTrem.ChildMediaCode,
+                formatcode = searchTrem.FormatCode,
+                ownercode = searchTrem.OwnerCode,
+                periodcode = searchTrem.PeriodCode,
+                price = searchTrem.Price,
+                order = (int)SortProperty.Price,
+                descending = (int)SortDirection.Descending,
+                page = searchTrem.Page
+            });
             model.Result = GetResult(searchTrem);
+
+            if (searchTrem.Order == 0)
+            {
+                model.isSortDefault = true;
+            }
+            else if (searchTrem.Order == (int)SortProperty.Price)
+            {
+                if (searchTrem.Descending == (int)SortDirection.Descending)
+                {
+                    model.isSortPriceDesc = true;
+                }
+                else
+                {
+                    model.isSortPriceAsc = true;
+                }
+            }
 
             return View(model);
         }
 
-        public ActionResult Search(string q = null)
+        private PriceListFilterViewModel GetPriceListFilter(ListSearchItemViewModel searchTrem)
         {
-            LuceneSearchService Service = new LuceneSearchService();
+            PriceListFilterViewModel model = new PriceListFilterViewModel();
 
-            var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
+            model.Name = UIHelper.PriceList.Single(x => x.Value == searchTrem.Price.ToString()).Text;
 
-            var searchFilter = GetSearchFilter(q, SortProperty.Published, 1, 15);
+            model.Items = UIHelper.PriceList.Select(x => new CategoryViewModel()
+            {
+                Name = x.Text,
+                Selected = x.Value == searchTrem.Price.ToString(),
+                Url = Url.Action("index", new
+                {
+                    province = searchTrem.Province,
+                    city = searchTrem.City,
+                    mediacode = searchTrem.MediaCode,
+                    childmediacode = searchTrem.ChildMediaCode,
+                    formatcode = searchTrem.FormatCode,
+                    ownercode = searchTrem.OwnerCode,
+                    periodcode = searchTrem.PeriodCode,
+                    price = Convert.ToInt32(x.Value),
+                    order = 0,
+                    descending = 0,
+                    page = 1,
+                })
 
-            int totalHits;
+            }).ToList();
 
-            query = Service.Search(query, searchFilter, out totalHits);
-
-            return View();
+            return model;
         }
 
-        private SearchFilter GetSearchFilter(string q, SortProperty sortOrder, int page, int pageSize)
+        private SearchFilter GetSearchFilter(string q, int sortOrder, int descending, int page, int pageSize)
         {
             var searchFilter = new SearchFilter
             {
@@ -124,88 +207,20 @@ namespace Maitonn.Web
                 Skip = (page - 1) * pageSize, // pages are 1-based. 
                 Take = pageSize
             };
-            searchFilter.SortProperty = sortOrder;
+            searchFilter.SortProperty = (SortProperty)sortOrder;
+
+            searchFilter.SortDirection = (SortDirection)descending;
+
             return searchFilter;
         }
 
         private ListPageViewModel GetResult(ListSearchItemViewModel searchTrem)
         {
             const int PageSize = 15;
-            //var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
-            //if (!String.IsNullOrEmpty(searchTrem.Province) && searchTrem.Province != "quanguo")
-            //{
-            //    int ProvinceValue = EnumHelper.GetProvinceValue(searchTrem.Province);
-            //    query = query.Where(x => x.Area.PCategory.ID == ProvinceValue);
-            //}
-            //if (searchTrem.City != 0)
-            //{
-            //    query = query.Where(x => x.CityCode == searchTrem.City);
-            //}
-            //if (searchTrem.MediaCode != 0)
-            //{
-            //    query = query.Where(x => x.OutDoorMediaCate.PCategory.ID == searchTrem.MediaCode);
-            //}
-            //if (searchTrem.ChildMediaCode != 0)
-            //{
-            //    query = query.Where(x => x.MeidaCode == searchTrem.ChildMediaCode);
-            //}
-            //if (searchTrem.FormatCode != 0)
-            //{
-            //    query = query.Where(x => x.FormatCode == searchTrem.FormatCode);
-            //}
-            //if (searchTrem.OwnerCode != 0)
-            //{
-            //    query = query.Where(x => x.OwnerCode == searchTrem.OwnerCode);
-            //}
-            //if (searchTrem.PeriodCode != 0)
-            //{
-            //    query = query.Where(x => x.PeriodCode == searchTrem.PeriodCode);
-            //}
-            //query = query.OrderByDescending(x => x.LastTime);
-
-            //if (!String.IsNullOrEmpty(searchTrem.Query))
-            //{
-            //    LuceneSearchService Service = new LuceneSearchService();
-            //    var searchFilter = GetSearchFilter(searchTrem.Query, SortProperty.Published, searchTrem.Page);
-            //    int totalHits;
-            //    using (MiniProfiler.Current.Step("LuceneSearch"))
-            //    {
-            //        query = Service.Search(query, searchFilter, out totalHits);
-            //    }
-            //}
-
-            //var newquery = query.Select(x => new ListSearchProductViewModel()
-            //{
-            //    ID = x.MediaID,
-            //    ImgUrl = x.MediaImg.FocusImgUrl,
-            //    ProvinceCode = x.Area.PCategory.ID,
-            //    ProvinceName = x.Area.PCategory.CateName,
-            //    CityCode = x.Area.ID,
-            //    CityName = x.Area.CateName,
-            //    ParentMediaCateCode = x.OutDoorMediaCate.PCategory.ID,
-            //    ParentMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
-            //    MediaCateCode = x.OutDoorMediaCate.ID,
-            //    MediaCateName = x.OutDoorMediaCate.CateName,
-            //    FormatCateName = x.FormatCate.CateName,
-            //    Name = x.Name,
-            //    OwnerCateName = x.OwnerCate.CateName,
-            //    Price = x.Price,
-            //    Width = x.Wdith,
-            //    Height = x.Height,
-            //    TotalFaces = x.TotalFaces,
-            //    PeriodCateName = x.PeriodCate.CateName,
-            //    Addtime = x.LastTime
-            //});
-
-            //var result = newquery.ToPagedList<ListSearchProductViewModel>(searchTrem.Page, PageSize);
-
-            //if (result.PageNumber != 1 && searchTrem.Page > result.PageCount)
-            //    return null;
-
             var model = new ListPageViewModel();
             var query = new List<ListSearchProductViewModel>();
             LuceneSearchService Service = new LuceneSearchService();
-            var searchFilter = GetSearchFilter(searchTrem.Query, SortProperty.Published, searchTrem.Page, 15);
+            var searchFilter = GetSearchFilter(searchTrem.Query, searchTrem.Order, searchTrem.Descending, searchTrem.Page, PageSize);
             int totalHits;
             using (MiniProfiler.Current.Step("LuceneSearch"))
             {
@@ -214,6 +229,9 @@ namespace Maitonn.Web
             model.Items = query;
 
             model.TotalCount = totalHits;
+            model.CurrentPage = searchTrem.Page;
+            model.PageSize = PageSize;
+            model.Querywords = string.IsNullOrEmpty(searchTrem.Query) ? "" : searchTrem.Query;
 
             return model;
         }

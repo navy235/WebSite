@@ -8,7 +8,11 @@
         {
         <text>
         <a class="nav-bread-home" href="@item.Url"></a>&gt;
-      </text>
+        @if (Model.Braed.Items.Count == 1)
+        {
+<strong>户外资源</strong>
+        }
+        </text>
         }
         else
         {

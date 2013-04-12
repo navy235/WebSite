@@ -16,7 +16,7 @@ namespace Maitonn.Web
 
             routes.MapRoute(
                name: "defaultlist",
-               url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{page}",
+               url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{price}-{order}-{descending}-p_{page}",
                defaults: new
                {
                    controller = "List",
@@ -28,13 +28,29 @@ namespace Maitonn.Web
                    formatcode = 0,
                    ownercode = 0,
                    periodcode = 0,
+                   price = 0,
+                   order = 0,
+                   descending = 0,
                    page = 1
+               },
+               constraints: new
+               {
+                   city = @"\d+",
+                   mediacode = @"\d+",
+                   childmediacode = @"\d+",
+                   formatcode = @"\d+",
+                   ownercode = @"\d+",
+                   periodcode = @"\d+",
+                   price = @"\d+",
+                   order = @"\d+",
+                   descending = @"\d+",
+                   page = @"\d+"
                }
             );
 
             routes.MapRoute(
                name: "list",
-               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{page}",
+               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{price}-{order}-p_{page}",
                defaults: new
                {
                    controller = "List",
@@ -46,12 +62,25 @@ namespace Maitonn.Web
                    formatcode = 0,
                    ownercode = 0,
                    periodcode = 0,
+                   price = 0,
+                   order = 0,
+                   descending = 0,
                    page = 1
                },
-              constraints: new
-              {
-                  province = new ProvinceConstraint()
-              }
+               constraints: new
+               {
+                   province = new ProvinceConstraint(),
+                   city = @"\d+",
+                   mediacode = @"\d+",
+                   childmediacode = @"\d+",
+                   formatcode = @"\d+",
+                   ownercode = @"\d+",
+                   periodcode = @"\d+",
+                   price = @"\d+",
+                   order = @"\d+",
+                   descending = @"\d+",
+                   page = @"\d+"
+               }
             );
 
             routes.MapRoute(

@@ -225,6 +225,7 @@
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ShowController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Filters\BaseAuthorizeAttribute.cs" />
     <Compile Include="Filters\PermissionAttributes.cs" />
     <Compile Include="Global.asax.cs">
@@ -1393,7 +1394,6 @@
     <Content Include="Views\Shared\_MainHome.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Shared\_TopHotHome.cshtml" />
-    <Content Include="Views\Shared\_ListMainHome.cshtml" />
     <Content Include="Views\Shared\_TopListMenuHome.cshtml" />
     <Content Include="Views\Design\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutCompany.cshtml" />

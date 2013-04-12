@@ -45,7 +45,7 @@
                 point=new BMap.Point(new Number(self.lng),new Number(self.lat));
             }
             self.map=new BMap.Map("@(name + "_container")");
-            self.map.centerAndZoom(point, 12);
+            self.map.centerAndZoom(point, 16);
             self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
             self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
             self.map.addControl(new BMap.OverviewMapControl());  

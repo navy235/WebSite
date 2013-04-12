@@ -7,7 +7,17 @@
         </div>
         <ul class="top-menu-list">
             <li class="active"><a href="@Url.Action("index", "home", new { province = CookieHelper.Province })">首页</a></li>
-            <li><a href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = 441 })">户外资源</a></li>
+            <li><a href="@Url.Action("index", "list", new
+                    {
+                        province = CookieHelper.Province,
+                        city = 0,
+                        mediacode = 0,
+                        childmediacode = 0,
+                        formatcode = 0,
+                        ownercode = 0,
+                        periodcode = 0,
+                        page = 1
+                    })">户外资源</a></li>
         </ul>
     </div>
 </nav>

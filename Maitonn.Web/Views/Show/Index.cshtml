@@ -7,4 +7,393 @@
 
 @Html.Partial("_DetailsNav", Model.ListMenu)
 
-@Html.Partial("_DetailsMain", Model)
+<div class="nav-bread">
+
+    @for (var i = 0; i < Model.Braed.Items.Count; i++)
+    {
+        var item = Model.Braed.Items[i];
+        if (i == 0)
+        {
+        <text>
+        <a class="nav-bread-home" href="@item.Url"></a>&gt;
+        @if (Model.Braed.Items.Count == 1)
+        {
+<strong>户外资源</strong>
+        }
+        </text>
+        }
+        else
+        {
+            if (i == Model.Braed.Items.Count - 1)
+            {
+        <strong>@item.Name</strong>
+            }
+            else
+            {
+        <text>
+        <a href="@item.Url">@item.Name</a> &gt;
+    </text>
+            }
+        }
+    }
+
+</div>
+<article class="details-wrap">
+    <div class="details-info-wrap">
+        <div class="details-box">
+            <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
+            <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
+            <div class="details-info-box">
+                <ul class="details-info-list">
+                    @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
+                    {
+                        var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
+                        <li class="@(i == 0 ? "active" : "")">
+                            <a href="javascript:;">
+                                <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img120)"></a></li>
+                    }
+                </ul>
+            </div>
+            <div class="details-info-show">
+                <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" id="showImg">
+            </div>
+            <a href="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="details-show-large" target="_blank">查看大图</a>
+            <div class="details-show-details">
+                <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" id="showImgBig" >
+            </div>
+
+        </div>
+        <dl class="details-info-content">
+            <dt>@Model.Item.Name - @(Model.Item.Wdith)米*@(Model.Item.Height)米*@(Model.Item.TotalFaces)面</dt>
+            <dd>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span class="details-info-item details-info-price">@Model.Item.Area.PCategory.CateName - @Model.Item.Area.CateName</span></dd>
+            <dd>售&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="details-info-item details-info-price-current"><strong>¥<b>@Model.Item.Price</b> 万元/年</strong></span></dd>
+            <dd>媒体类型：<span class="details-info-item">@Model.Item.OutDoorMediaCate.PCategory.CateName - @Model.Item.OutDoorMediaCate.CateName</span></dd>
+            <dd>最短投放：<span class="details-info-item">@Model.Item.PeriodCate.CateName</span></dd>
+            <dd>媒体形式：<span class="details-info-item">@Model.Item.FormatCate.CateName</span></dd>
+            <dd>区域属性：<span class="details-info-item">@String.Join(",", Model.Item.AreaAtt.Select(x => x.AttName))</span></dd>
+            <dd>代理类型：<span class="details-info-item">@Model.Item.OwnerCate.CateName</span> </dd>
+            <dd>媒体档期：</dd>
+            <dd>
+                @Html.Partial("_DisplayAuctionCalendar", new ShowOutDoorSetAuctionCalendarViewModel() { MediaID = Model.MediaID, AuctionCalendar = Model.MediaID })
+            </dd>
+        </dl>
+    </div>
+    <div class="details-bottom-wrap clearfix">
+        <div class="details-bottom-left">
+            <div class="gray-box">
+                <h4>相关功效</h4>
+                <ul class="gray-view clearfix">
+                    <li><a href="/products/3-21.html" target="_blank" title="补肾健体">补肾健体</a></li>
+                    <li><a href="/products/3-23.html" target="_blank" title="性腺养护">性腺养护</a></li>
+                    <li><a href="/products/3-24.html" target="_blank" title="健身塑肌">健身塑肌</a></li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>同类其他品牌</h4>
+                <ul class="gray-view clearfix">
+                    <li><a href="/brand/110-22.html" target="_blank" title="澳罗拉">澳罗拉</a></li>
+                    <li><a href="/brand/67-22.html" target="_blank" title="GNC健安喜">GNC健安喜</a></li>
+                    <li><a href="/brand/63-22.html" target="_blank" title="自然之宝">自然之宝</a></li>
+                    <li><a href="/brand/105-22.html" target="_blank" title="AURINDA澳琳达">AURINDA澳琳达</a></li>
+                    <li><a href="/brand/68-22.html" target="_blank" title="Cheerer喜瑞">Cheerer喜瑞</a></li>
+                    <li><a href="/brand/62-22.html" target="_blank" title="汤臣倍健">汤臣倍健</a></li>
+                    <li><a href="/brand/90-22.html" target="_blank" title="同仁堂">同仁堂</a></li>
+                    <li><a href="/brand/64-22.html" target="_blank" title="K-Lex康力士">K-Lex康力士</a></li>
+                    <li><a href="/brand/109-22.html" target="_blank" title="十一坊">十一坊</a></li>
+                    <li><a href="/brand/106-22.html" target="_blank" title="美澳健">美澳健</a></li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>浏览该商品的用户最终购买了</h4>
+                <ul class="list-gray-view">
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix list-gray-last">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="gray-box mt10">
+                <h4>浏览了此商品的用户还购买了</h4>
+                <ul class="list-gray-view">
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                    <li class="clearfix list-gray-last">
+                        <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
+                            <img width="100" height="100" border="0" src="http://img4.126.net/health/product/20130114/hbxa79sc10114_100_100.jpg" alt="自然之宝番茄红素软胶囊250mg/粒*100粒" title="自然之宝番茄红素软胶囊250mg/粒*100粒"></a>
+                        <p class="list-gray-desc">
+                            <strong class="c_ba2636">20%</strong><strong>会买：</strong>
+                            <a class="list-gray-title" target="_blank" title="自然之宝番茄红素软胶囊250mg/粒*100粒" href="/product/854.html">自然之宝番茄红素软胶囊250mg/粒*100粒</a>
+                        </p>
+                        <p class="list-gray-price"><strong>¥108.68</strong></p>
+                        <p class="list-gray-gift">
+                            <span title="原品1瓶">赠</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="gray-box mt10" style="visibility: hidden">
+                <h3><strong>浏览历史</strong></h3>
+                <ul></ul>
+            </div>
+        </div>
+        <div class="details-right">
+            <div class="details-nav">
+                <span class="active  details-goods" data-id="goods-details">媒体详情</span>
+                <span class="details-position" data-id="goods-position">位置信息</span>
+                <span class="details-credentials" data-id="goods-credentials">相关证书</span>
+                <span class="details-feedback" data-id="goods-feedback">留言咨询</span>
+            </div>
+            <div class="goods" id="goods-details">
+                <ul class="goods-params">
+
+                    <li class="">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span>@Model.Item.Area.PCategory.CateName - @Model.Item.Area.CateName</span></li>
+                    <li class="">媒体类型：<span>@Model.Item.OutDoorMediaCate.PCategory.CateName - @Model.Item.OutDoorMediaCate.CateName</span></li>
+                    <li class="goods-params-long">具体位置：<span>@Model.Item.Location</span></li>
+                    <li class="">最短投放：<span>@Model.Item.PeriodCate.CateName</span></li>
+                    <li class="">媒体形式：<span>@Model.Item.FormatCate.CateName</span></li>
+                    <li class="goods-params-long">区域属性：<span>@String.Join(",", Model.Item.AreaAtt.Select(x => x.AttName))</span></li>
+                    <li class="goods-params-long">媒体规格：<span>@(Model.Item.Wdith)米*@(Model.Item.Height)米*@(Model.Item.TotalFaces)面=@((Model.Item.Wdith * Model.Item.Height * Model.Item.TotalFaces).ToString("F2"))平方米</span></li>
+
+                    <li class="">代理类型：<span>@Model.Item.OwnerCate.CateName</span></li>
+                    <li class="">代理截至：<span>@Model.Item.Deadline.ToString("yyyy-MM-dd")</span></li>
+                    @if (Model.Item.HasLight)
+                    {
+                        <li class="">照明情况：<span>
+                            @UIHelper.GetTime(Model.Item.LightStrat)-@UIHelper.GetTime(Model.Item.LightEnd)
+                        </span></li>
+                    }
+                    else
+                    {
+                        <li class="">照明情况：<span>无</span></li>
+                    }
+                    <li class="">日车流量：<span>@Model.Item.TrafficAuto 万辆</span></li>
+                    <li class="">日人流量：<span>@Model.Item.TrafficAuto 万人</span></li>
+                    <li class="goods-params-long">具体描述：<span>@Model.Item.Description</span></li>
+                </ul>
+                <h3 class="goods-head goods-intro">商品介绍</h3>
+
+                @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
+                {
+                    var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
+                    <div class="tc">
+                        <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)" />
+                    </div>
+                }
+            </div>
+            <div class="goods-position" id="goods-position">
+                <h3 class="goods-head goods-packing">位置信息</h3>
+                <div class="goods-position-container">
+                    @Html.Partial("_DisplayMap", new ShowOutDoorMapViewModel()
+               {
+                   MediaID = Model.Item.MediaID,
+                   Position = Model.Item.Lat + "|" + Model.Item.Lng
+               })
+                </div>
+            </div>
+            <div class="goods-credentials" id="goods-credentials">
+                <h3 class="goods-head goods-comment">相关证书</h3>
+                @for (var i = 0; i < Model.Item.CredentialsImg.ImgUrls.Split(',').Length; i++)
+                {
+                    var imgurl = Model.Item.CredentialsImg.ImgUrls.Split(',')[i];
+                    <div class="tc">
+                        <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)" />
+                    </div>
+                }
+            </div>
+
+            <div class="goods-feedback" id="goods-feedback" data-show="1">
+                <h3 class="goods-head goods-comment">留言咨询</h3>
+                <div class="goods-feedback-container clearfix">
+                    <div class="goods-feedback-tab">
+                        <ul>
+                            <li name="goodsQA1" class="active">留言咨询</li>
+                        </ul>
+                    </div>
+                    <div class="goods-feedback-tips">
+                        <p class=" clearfix" style="">
+                            <span class="leftspan"><i>温馨提示：</i>因厂家会随时更改产品的包装、价格或者赠品等信息，且每位咨询者购买情况、提问时间等不同。因此以下回复仅对提问者3天内有效，对其余网友仅供参考！若由此给您带来不便请多多谅解，感谢您的支持！</span>
+                            <span class="rightspan">
+                                <a href="javascript:;" class="btn btn-success" id="btn-feedback">我要咨询</a><br>
+                                <a href="/consult/1-106-1608-1-1-1.html" target="_blank" data-link="/consult/1-106-1608-recieverStr-1-1.html">全部咨询</a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            @(Html.Kendo().Window().Name("Win-feedback")
+    .Title("留言咨询")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(false)
+    .Width(700)
+    .Height(560)
+    .Scrollable(true)
+    .Content(@<text>
+            <div class="goods-feedback-comment">
+                <div class="goods-feedback-box zxDetail">
+                    <dl name="tips_1" style="display: block;">
+                        <dd>您可在购买前，对商品本身的功效和服用方法、禁忌等方面咨询专业营养师。营养师回复的工作时间为：工作日9:00至18:00，请您耐心等待营养师的回复。营养师回复后您的咨询及回复内容会出现在商品的页面中，但您的账号会被隐藏。</dd>
+                        <dd class="c_ba2636">温馨提示：商品包装、规格、支付、发票、退换货和物流配送类的问题，请咨询客服。</dd>
+                    </dl>
+                </div>
+                <div class="goods-feedback-product ">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td width="90" align="center"><a class="aImgComm" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">
+                                    <img src="@Model.Item.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Item.Name" title="@Model.Item.Name"></a></td>
+                                <td width="240" align="left" title="汤臣倍健液体钙软胶囊1000mg/粒*100粒"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Item.Name
+                                </a></td>
+                                <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Item.Price 万元/年</strong></td>
+                                <td align="left"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="goods-feedback-commbox">
+                    <table class="commTb1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <th valign="top" width="95" height="34"></th>
+                                <td valign="top" height="34"></td>
+                            </tr>
+                            <tr>
+                                <th valign="top">咨询内容：</th>
+                                <td>
+                                    <textarea name="pjContent" class="commentText"></textarea>
+                                    <p class="txtTips zxBot"><span>10-300字之间，您还可以输入<strong class="c_4b8400 availWrite">300</strong>个字</span><label><input type="checkbox" checked="checked">将营养师的回复发到我的邮箱</label></p>
+                                    <p class="errTips"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <td><a class="btn btn-success mt20" href="javascript:void(0);" name="send_goodsQA"><strong>提交咨询</strong></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </text>)
+)
+
+            <script type="text/javascript">
+                $(function() {
+                    $('.details-nav').find('span').click(function() {
+                        var targetids = $.map($('.details-nav').find('span'), function(item) { return $(item).data('id') });
+                        var currentId = $(this).data('id');
+                        $(this).addClass('active').siblings().removeClass('active');
+                        $.each(targetids, function(index, item) {
+                            if (item === currentId || $('#' + item).data('show') === 1) {
+                                $('#' + item).show();
+                            } else {
+                                $('#' + item).hide();
+                            }
+                        })
+                    })
+                    $('#btn-feedback').click(function() {
+                        var kendoWindow = $('#Win-feedback').data('kendoWindow');
+                        kendoWindow.center().open();
+                    })
+                })
+            </script>
+        </div>
+    </div>
+</article>
+

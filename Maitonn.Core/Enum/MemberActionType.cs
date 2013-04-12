@@ -28,6 +28,40 @@ namespace Maitonn.Core
                              }).ToList();
             return _ProvinceList;
         }
+
+        public static IntRangeValue GetPriceValue(int price)
+        {
+            PriceListType CurrentType = (PriceListType)price;
+            switch (CurrentType)
+            {
+                case PriceListType.Default:
+                    return new IntRangeValue() { Min = 0, Max = (int)PriceListType.PriceMax };
+
+                case PriceListType.Price10Lower:
+                    return new IntRangeValue() { Min = 0, Max = (int)PriceListType.Price10Lower };
+
+                case PriceListType.Price50Lower:
+                    return new IntRangeValue() { Min = (int)PriceListType.Price10Lower, Max = (int)PriceListType.Price50Lower };
+
+                case PriceListType.Price100Lower:
+                    return new IntRangeValue() { Min = (int)PriceListType.Price50Lower, Max = (int)PriceListType.Price100Lower };
+
+                case PriceListType.Price200Lower:
+                    return new IntRangeValue() { Min = (int)PriceListType.Price100Lower, Max = (int)PriceListType.Price200Lower };
+
+                case PriceListType.PriceMax:
+                    return new IntRangeValue() { Min = (int)PriceListType.Price200Lower, Max = (int)PriceListType.PriceMax };
+                default:
+                    return new IntRangeValue() { Min = 0, Max = (int)PriceListType.PriceMax };
+            }
+        }
+
+    }
+
+    public class IntRangeValue
+    {
+        public int Min { get; set; }
+        public int Max { get; set; }
     }
 
     public enum ProvinceName
@@ -155,5 +189,15 @@ namespace Maitonn.Core
         Delete = 0,
         NotShow = 1,
         ShowOnLine = 2
+    }
+
+    public enum PriceListType
+    {
+        Default = 0,
+        Price10Lower = 10,
+        Price50Lower = 50,
+        Price100Lower = 100,
+        Price200Lower = 200,
+        PriceMax = 9000,
     }
 }

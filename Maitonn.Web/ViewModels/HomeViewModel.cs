@@ -38,14 +38,48 @@ namespace Maitonn.Web
         public ListSearchViewModel Search { get; set; }
 
         public ListPageViewModel Result { get; set; }
+
+        public string DefaultOrderUrl { get; set; }
+
+        public bool isSortDefault { get; set; }
+
+        public string PriceOrderDescUrl { get; set; }
+
+        public bool isSortPriceDesc { get; set; }
+
+        public string PriceOrderAscUrl { get; set; }
+
+        public bool isSortPriceAsc { get; set; }
+
+        public PriceListFilterViewModel PriceListFilter { get; set; }
+
     }
+
+    public class PriceListFilterViewModel
+    {
+        public PriceListFilterViewModel()
+        {
+            this.Items = new List<CategoryViewModel>();
+        }
+
+        public string Name { get; set; }
+
+        public List<CategoryViewModel> Items { get; set; }
+    }
+
 
     public class ListPageViewModel
     {
 
         public List<ListSearchProductViewModel> Items { get; set; }
 
+        public int PageSize { get; set; }
+
+        public int CurrentPage { get; set; }
+
         public int TotalCount { get; set; }
+
+        public string Querywords { get; set; }
     }
 
     public class ShowViewModel
@@ -109,7 +143,13 @@ namespace Maitonn.Web
 
         public int PeriodCode { get; set; }
 
+        public int Price { get; set; }
+
+        public int Order { get; set; }
+
         public int Page { get; set; }
+
+        public int Descending { get; set; }
 
         public string Query { get; set; }
 
@@ -166,34 +206,6 @@ namespace Maitonn.Web
         {
             this.items = new List<CategoryListViewModel>();
         }
-
-        //public string Province { get; set; }
-
-        //public string City { get; set; }
-
-        //public string MediaCode { get; set; }
-
-        //public string ChildMediaCode { get; set; }
-
-        //public string FormatCode { get; set; }
-
-        //public string OwnerCode { get; set; }
-
-        //public string PeriodCode { get; set; }
-
-        //public CategoryListViewModel ProvinceList { get; set; }
-
-        //public CategoryListViewModel CityList { get; set; }
-
-        //public CategoryListViewModel MediaCodeList { get; set; }
-
-        //public CategoryListViewModel ChildMediaCodeList { get; set; }
-
-        //public CategoryListViewModel FormatCodeList { get; set; }
-
-        //public CategoryListViewModel OwnerCodeList { get; set; }
-
-        //public CategoryListViewModel PeriodCodeList { get; set; }
 
         public List<CategoryListViewModel> items { get; set; }
     }

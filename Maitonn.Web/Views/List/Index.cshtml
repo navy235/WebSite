@@ -15,7 +15,11 @@
         {
         <text>
         <a class="nav-bread-home" href="@item.Url"></a>&gt;
-      </text>
+        @if (Model.Braed.Items.Count == 1)
+        {
+<strong>户外资源</strong>
+        }
+        </text>
         }
         else
         {
@@ -187,34 +191,38 @@
         </script>
         <div class="list-filter clearfix">
             <div class="list-filter-top scroll-fixed clearfix">
-                <a hidefocus="true" class="list-filter-sort list-filter-up" href="http://baojian.163.com/products/1-11-0-0-0-0-0-2-0-0-1.html">价格</a>
-                <a hidefocus="true" class="list-filter-sort list-filter-down mr10" href="http://baojian.163.com/products/1-11-0-0-0-0-0-3-0-0-1.html">价格</a>
+                <a hidefocus="true" class="list-filter-sort list-filter-default @(Model.isSortDefault ? "selected" : "") mr10 " href="@Model.DefaultOrderUrl">默认</a>
+                <a hidefocus="true" class="list-filter-sort list-filter-up @(Model.isSortPriceAsc ? "selected" : "")" href="@Model.PriceOrderAscUrl">价格</a>
+                <a hidefocus="true" class="list-filter-sort list-filter-down @(Model.isSortPriceDesc ? "selected" : "") mr10" href="@Model.PriceOrderDescUrl">价格</a>
                 <div class="list-filter-price">
-                    <span class="list-filter-price-text">价格区间</span>
+                    <span class="list-filter-price-text">@Model.PriceListFilter.Name</span>
                     <ul class="list-filter-price-list">
-                        <li><a href="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-1.html">价格区间</a></li>
-                        <li><a href="http://baojian.163.com/products/1-11-0-0-0-0-1-0-0-0-1.html">0~99元</a></li>
-                        <li><a href="http://baojian.163.com/products/1-11-0-0-0-0-2-0-0-0-1.html">100~199元</a></li>
-                        <li><a href="http://baojian.163.com/products/1-11-0-0-0-0-3-0-0-0-1.html">200~300元</a></li>
-                        <li><a href="http://baojian.163.com/products/1-11-0-0-0-0-4-0-0-0-1.html">300以上</a></li>
+                        @foreach (var item in Model.PriceListFilter.Items)
+                        {
+                            <li><a class="@(item.Selected ? "selected" : "")" href="@item.Url">@item.Name</a></li>
+                        }
                     </ul>
                 </div>
                 <div class="list-filter-search">
                     <span class="list-filter-search-text">关键字：</span>
-                    <input type="text" id="query" name="query" class="list-filter-search-query" />
+                    <input type="text" id="query" name="query" class="list-filter-search-query" value="@Model.Result.Querywords" />
                     <button type="button" class="btn btn-warning" id="querybtn">
                         <i class="icon-search icon-white mr5"></i>搜索</button>
-
                 </div>
                 <script type="text/javascript">
                     $(function() {
                         $("#querybtn").click(function() {
-                            if ($("#query").val() == "") {
-                                alert("请输入关键字！");
-                                return false;
-                            } else {
-                                window.location.href = window.location.origin + window.location.pathname + "?query=" + encodeURIComponent($("#query").val());
+                            window.location.href = window.location.origin + window.location.pathname.replace(/p_(\d+)/, 'p_1') + "?query=" + encodeURIComponent($("#query").val());
+                        });
+                        $('#query').keydown(function(e) {
+                            if (e.keyCode == 13) {
+                                $("#querybtn").click();
                             }
+                        });
+                        $('.list-filter-price').hover(function() {
+                            $(this).children("ul").show();
+                        }, function() {
+                            $(this).children("ul").hide();
                         })
                     })
                 </script>
@@ -231,41 +239,47 @@
         </div>
         <div class="list-products clearfix">
 
-            @foreach (var item in Model.Result.Items)
-            {
+            @{
+                var itemIndex = 1;
+                foreach (var item in Model.Result.Items)
+                {
+               
+                
                 <div class="list-products-item">
                     <a class="list-products-item-img" target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" >
                         <img width="220" height="220" border="0" src="@item.ImgUrl" alt="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))">
                         <span class="actNewIcon actIcon01"></span>
                     </a>
                     <p class="list-products-item-desc"><a target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))">@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))</a></p>
-                    <p class="list-products-item-price"><strong class="fs14">¥@item.Price</strong>万元/年</p>
+                    <p class="list-products-item-price">
+                        <strong class="fs14">¥@item.Price 万元/年</strong>
+                        <span class="pull-right" style="float: right;">最短投放：@(item.PeriodCateName)</span>
+                    </p>
                     <p class="list-products-item-title">
-                        @item.ProvinceName - @item.CityName
+                        <span class="pull-left">@item.ProvinceName - @item.CityName</span>
+                        <span class="pull-right">形式：@(item.FormatCateName)</span>
                     </p>
-                    <p class="list-products-item-comment">
+                    <p class="list-products-item-category">
                         <a target="_blank" href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode, childmediacode = item.MediaCateCode })">@item.ParentMediaCateName - @item.MediaCateName</a>&nbsp;&nbsp;
-                    </p>
-                    <p class="list-products-item-title">@item.FormatCateName
-                        <span title="最短投放@(item.PeriodCateName)">@item.PeriodCateName</span>
                     </p>
                     <a href="#Core.onCartIconClick:1661" hidefocus="true" class="list-products-item-car" title="添加到购物车"></a>
                 </div>
+                
+                    if (itemIndex % 3 == 0 && itemIndex < Model.Result.Items.Count - 2)
+                    { 
+                <div class="list-grayline"></div>
+                    }
+
+                    itemIndex++;
+                }
             }
 
         </div>
-        <div id="list-page">
-            <div id="list-page-nva">
-                <div class="list-page-split">
-                    <span class="prev">上一页<i></i></span>
-                    <span>1</span><a href="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-2.html">2</a>
-                    <a class="next" href="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-2.html">下一页<i></i></a>
-                    <span class="list-page-tip">到第</span>
-                    <input class="list-page-jump" tmpl="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-{p}.html" type="text" value="1">
-                    <span class="list-page-tip">页</span><a class="list-page-btn" href="javascript:">确定</a>
-                </div>
-                <input type="hidden" id="pageJumpUrl" total="2" value="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-{p}.html">
-            </div>
-        </div>
+        @Html.MaitonnPage(new PagingInfo()
+           {
+               CurrentPage = Model.Result.CurrentPage,
+               ItemsPerPage = Model.Result.PageSize,
+               TotalItems = Model.Result.TotalCount
+           })
     </section>
 </article>
