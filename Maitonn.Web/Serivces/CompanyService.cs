@@ -142,8 +142,34 @@ namespace Maitonn.Web
                 .Include(x => x.LinkManImg)
                 .Include(x => x.CompanyLogoImg)
                 .Include(x => x.CompanyBannerImg)
-                .Include(x => x.CompanyCredentialsImg)
                 .Single(x => x.MemberID == MemberID);
+        }
+
+        public Company IncludeFindCompanyProfile(int MemberID)
+        {
+            return DB_Service.Set<Company>()
+            .Include(x => x.CompanyImg)
+            .Include(x => x.LinkManImg)
+            .Include(x => x.CompanyLogoImg)
+            .Include(x => x.CompanyBannerImg)
+            .Include(x => x.CompanyBussiness)
+            .Include(x => x.CompanyScale)
+            .Include(x => x.CompanyFund)
+            .Include(x => x.Area)
+            .Include(x => x.Area.PCategory)
+            .Single(x => x.MemberID == MemberID);
+        }
+
+        public Company ShowIndexCompanyProfile(int MemberID)
+        {
+            return DB_Service.Set<Company>()
+            .Include(x => x.CompanyLogoImg)
+            .Include(x => x.CompanyBussiness)
+            .Include(x => x.CompanyScale)
+            .Include(x => x.CompanyFund)
+            .Include(x => x.Area)
+            .Include(x => x.Area.PCategory)
+            .Single(x => x.MemberID == MemberID);
         }
 
 

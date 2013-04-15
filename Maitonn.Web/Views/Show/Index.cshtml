@@ -40,7 +40,7 @@
 </div>
 <article class="details-wrap">
     <div class="details-info-wrap">
-        <div class="details-box">
+        @*   <div class="details-box">
             <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
             <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
             <div class="details-info-box">
@@ -54,15 +54,51 @@
                     }
                 </ul>
             </div>
-            <div class="details-info-show">
+            <div class="details-info-show jqzoom">
                 <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" id="showImg">
             </div>
             <a href="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="details-show-large" target="_blank">查看大图</a>
             <div class="details-show-details">
                 <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" id="showImgBig" >
             </div>
+          
+        </div>*@
+        <div class="clearfix details-box">
+            <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
+            <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
+            <div class=" details-info-show">
+                <a href="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="jqzoom" rel='gal1'>
+                    <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" width="430" height="430" >
+                </a>
+            </div>
+            <div class="details-info-box">
+                <ul id="thumblist" class="details-info-list">
+
+                    @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
+                    {
+                        var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
+                        <li class="@(i == 0 ? "zoomThumbActive" : "")">
+                            <a href="javascript:;" rel="{gallery:'gal1', smallimage:'@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img430)',largeimage:'@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)'}">
+                                <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img120)"></a></li>
+                    }
+
+                </ul>
+            </div>
+
 
         </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.jqzoom').jqzoom({
+                    zoomType: 'standard',
+                    lens:true,
+                    preloadImages: false,
+                    alwaysOn:false,                    preloadText:'加载中...',
+                    zoomWidth:430,
+                    zoomHeight:430
+                });
+            });
+        </script>
         <dl class="details-info-content">
             <dt>@Model.Item.Name - @(Model.Item.Wdith)米*@(Model.Item.Height)米*@(Model.Item.TotalFaces)面</dt>
             <dd>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span class="details-info-item details-info-price">@Model.Item.Area.PCategory.CateName - @Model.Item.Area.CateName</span></dd>
@@ -81,30 +117,30 @@
     <div class="details-bottom-wrap clearfix">
         <div class="details-bottom-left">
             <div class="gray-box">
-                <h4>相关功效</h4>
-                <ul class="gray-view clearfix">
-                    <li><a href="/products/3-21.html" target="_blank" title="补肾健体">补肾健体</a></li>
-                    <li><a href="/products/3-23.html" target="_blank" title="性腺养护">性腺养护</a></li>
-                    <li><a href="/products/3-24.html" target="_blank" title="健身塑肌">健身塑肌</a></li>
+                <h4>媒体主信息</h4>
+                <div class="gray-company">
+                    <a href="@Url.Action("index", "shop", new { id = Model.Company.MemberID })" class="gray-company-pic">
+                        <img src="@Model.Company.Logo" width="130" height="110" alt="@Model.Company.Name"></a>
+                    <ul>
+                        <li><a href="@Url.Action("index", "shop", new { id = Model.Company.MemberID })" class="btn btn-danger">
+                            <i class="icon-home icon-white"></i>&nbsp;&nbsp;公司首页</a></li>
+                        <li><a href="@Url.Action("contact", "shop", new { id = Model.Company.MemberID })" class="btn btn-danger">
+                            <i class="icon-globe icon-white"></i>&nbsp;&nbsp;联系方式</a></li>
+                        <li><a href="javascript:;" class="btn btn-danger btn-feedback">
+                            <i class="icon-envelope icon-white"></i>&nbsp;&nbsp;留言咨询</a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+
+                </div>
+                <ul class="gray-company-list">
+                    <li class="name">公司名称：<span>@Model.Company.Name</span></li>
+                    <li class="type">所在城市：<span>@Model.Company.Province - @Model.Company.City </span></li>
+                    <li class="reg">企业规模：<span>@Model.Company.ScaleName</span></li>
+                    <li class="update noLine">注册资金：<span>@Model.Company.FundName</span></li>
                 </ul>
             </div>
             <div class="gray-box mt10">
-                <h4>同类其他品牌</h4>
-                <ul class="gray-view clearfix">
-                    <li><a href="/brand/110-22.html" target="_blank" title="澳罗拉">澳罗拉</a></li>
-                    <li><a href="/brand/67-22.html" target="_blank" title="GNC健安喜">GNC健安喜</a></li>
-                    <li><a href="/brand/63-22.html" target="_blank" title="自然之宝">自然之宝</a></li>
-                    <li><a href="/brand/105-22.html" target="_blank" title="AURINDA澳琳达">AURINDA澳琳达</a></li>
-                    <li><a href="/brand/68-22.html" target="_blank" title="Cheerer喜瑞">Cheerer喜瑞</a></li>
-                    <li><a href="/brand/62-22.html" target="_blank" title="汤臣倍健">汤臣倍健</a></li>
-                    <li><a href="/brand/90-22.html" target="_blank" title="同仁堂">同仁堂</a></li>
-                    <li><a href="/brand/64-22.html" target="_blank" title="K-Lex康力士">K-Lex康力士</a></li>
-                    <li><a href="/brand/109-22.html" target="_blank" title="十一坊">十一坊</a></li>
-                    <li><a href="/brand/106-22.html" target="_blank" title="美澳健">美澳健</a></li>
-                </ul>
-            </div>
-            <div class="gray-box mt10">
-                <h4>浏览该商品的用户最终购买了</h4>
+                <h4>该公司其他户外资源</h4>
                 <ul class="list-gray-view">
                     <li class="clearfix">
                         <a href="/product/854.html" target="_blank" class="list-gray-img" style="background-image: none; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;">
@@ -309,8 +345,8 @@
                         <p class=" clearfix" style="">
                             <span class="leftspan"><i>温馨提示：</i>因厂家会随时更改产品的包装、价格或者赠品等信息，且每位咨询者购买情况、提问时间等不同。因此以下回复仅对提问者3天内有效，对其余网友仅供参考！若由此给您带来不便请多多谅解，感谢您的支持！</span>
                             <span class="rightspan">
-                                <a href="javascript:;" class="btn btn-success" id="btn-feedback">我要咨询</a><br>
-                                <a href="/consult/1-106-1608-1-1-1.html" target="_blank" data-link="/consult/1-106-1608-recieverStr-1-1.html">全部咨询</a>
+                                <a href="javascript:;" class="btn btn-danger btn-feedback">
+                                    <i class="icon-envelope icon-white"></i>&nbsp;&nbsp;留言咨询</a><br>
                             </span>
                         </p>
                     </div>
@@ -318,7 +354,7 @@
             </div>
 
             @(Html.Kendo().Window().Name("Win-feedback")
-    .Title("留言咨询")
+    .Title("留言咨询-" + Model.Company.Name)
     .Visible(false)
     .Modal(true)
     .Draggable(false)
@@ -329,17 +365,17 @@
             <div class="goods-feedback-comment">
                 <div class="goods-feedback-box zxDetail">
                     <dl name="tips_1" style="display: block;">
-                        <dd>您可在购买前，对商品本身的功效和服用方法、禁忌等方面咨询专业营养师。营养师回复的工作时间为：工作日9:00至18:00，请您耐心等待营养师的回复。营养师回复后您的咨询及回复内容会出现在商品的页面中，但您的账号会被隐藏。</dd>
-                        <dd class="c_ba2636">温馨提示：商品包装、规格、支付、发票、退换货和物流配送类的问题，请咨询客服。</dd>
+                        <dd>@(Model.Company.Description.Length > 120 ? Model.Company.Description.Substring(0, 120) + "..." : Model.Company.Description)[<a href="@Url.Action("intro", "shop", new { id = Model.Company.MemberID })" class="z_f2">详细</a>]</dd>
+                        <dd class="c_ba2636">联系地址：@Model.Company.Addresss</dd>
                     </dl>
                 </div>
                 <div class="goods-feedback-product ">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
-                                <td width="90" align="center"><a class="aImgComm" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">
+                                <td width="90" align="center"><a href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">
                                     <img src="@Model.Item.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Item.Name" title="@Model.Item.Name"></a></td>
-                                <td width="240" align="left" title="汤臣倍健液体钙软胶囊1000mg/粒*100粒"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Item.Name
+                                <td width="240" align="left" title="@Model.Item.Name"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Item.Name
                                 </a></td>
                                 <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Item.Price 万元/年</strong></td>
                                 <td align="left"></td>
@@ -348,7 +384,7 @@
                     </table>
                 </div>
                 <div class="goods-feedback-commbox">
-                    <table class="commTb1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
                                 <th valign="top" width="95" height="34"></th>
@@ -357,14 +393,15 @@
                             <tr>
                                 <th valign="top">咨询内容：</th>
                                 <td>
-                                    <textarea name="pjContent" class="commentText"></textarea>
-                                    <p class="txtTips zxBot"><span>10-300字之间，您还可以输入<strong class="c_4b8400 availWrite">300</strong>个字</span><label><input type="checkbox" checked="checked">将营养师的回复发到我的邮箱</label></p>
-                                    <p class="errTips"></p>
+                                    <textarea id="input-feedback" name="input-feedback" class="commentText"></textarea>
+                                    <p class="txtTips zxBot">
+                                        <span>10-300字之间，您还可以输入<strong class="c_4b8400 availWrite">300</strong>个字</span>
+                                    </p>
                                 </td>
                             </tr>
                             <tr>
                                 <th>&nbsp;</th>
-                                <td><a class="btn btn-success mt20" href="javascript:void(0);" name="send_goodsQA"><strong>提交咨询</strong></a></td>
+                                <td><a class="btn btn-danger mt20" href="javascript:void(0);" id="submit-feedback"><strong>提交咨询</strong></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -387,9 +424,43 @@
                             }
                         })
                     })
-                    $('#btn-feedback').click(function() {
+                    $('.btn-feedback').click(function() {
                         var kendoWindow = $('#Win-feedback').data('kendoWindow');
                         kendoWindow.center().open();
+                    })
+                    $('#input-feedback').keydown(function(e) {
+                        $(this).next().find('.availWrite').text(300-$(this).val().length);
+                    })
+                    $('#submit-feedback').click(function() {
+                        if (Maitonn.JHelper.checkLogin())
+                        {
+                            if ($('#input-feedback').val().length > 300 || $('#input-feedback').val().length < 10) {
+                                alert('请输入10~300个字');
+                                return false;
+                            } 
+                            var id=@Model.Company.MemberID,
+                                    name='@Model.Item.Name',
+                                    content=$('#input-feedback').val();
+                            $.ajax({
+                                type:'POST',
+                                url:'@Url.Action("addmessage", "ajaxservice")',
+                                data:{
+                                    id:id,
+                                    name:name,
+                                    content:content
+                                },
+                                success:function(res){
+                                    if (res.Success) {
+                                        var kendoWindow = $('#Win-feedback').data('kendoWindow');
+                                        kendoWindow.close();
+                                    }
+                                    Maitonn.JHelper.showMessage(res.Message);
+                                }
+                            })
+
+                        } else {
+                            Maitonn.JHelper.showPopLogin();
+                        }
                     })
                 })
             </script>

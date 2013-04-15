@@ -2800,28 +2800,27 @@ a.top-head-changcity {
   left: 80px;
   width: 430px;
   height: 430px;
-  overflow: hidden;
   position: relative;
   cursor: crosshair;
   background: url(images/loading.gif) no-repeat center center white;
 }
 
-  .details-info-show img {
-    width: 430px;
-    height: 430px;
-  }
+.zoomWrapperTitle {
+  visibility: hidden;
+  display: none;
+}
 
-  .details-info-show b {
-    background: rgba(0, 0, 0, 0.3);
-    display: inline-block;
-    width: 230px;
-    height: 230px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: none;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50999999,endColorstr=#50999999);
-  }
+.details-info-show b {
+  background: rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  width: 230px;
+  height: 230px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50999999,endColorstr=#50999999);
+}
 
 .details-show-large {
   display: inline-block;
@@ -3425,7 +3424,6 @@ goods-pack .goods-desc {
   border: 1px solid #e1e1e1;
   background: #f9f9f9;
   font: 12px/38px "宋体";
-  background: url(../../images/order/orderRpt_x.png);
 }
 
   .goods-feedback-tab ul {
@@ -3948,6 +3946,52 @@ goods-pack .goods-desc {
   right: 8px;
   top: 8px;
 }
+
+
+.gray-company {
+  padding: 6px 12px;
+  overflow: hidden;
+}
+
+.gray-company-pic {
+  float: left;
+  display: block;
+  padding: 2px;
+  border: 1px solid #ddd;
+}
+
+.gray-company ul {
+  float: left;
+  padding-left: 10px;
+}
+
+  .gray-company ul li {
+    overflow: hidden;
+    margin-bottom: 8px;
+    margin-top: 4px;
+  }
+
+.gray-company-list {
+  margin: 0 auto 5px auto;
+}
+
+  .gray-company-list li {
+    padding-left: 14px;
+    line-height: 24px;
+    color: #666;
+    background-position: 3px 4px;
+    background-repeat: no-repeat;
+  }
+
+    .gray-company-list li span {
+      color: #333;
+    }
+
+
+
+
+
+
 /*************************
  *
  *      footer

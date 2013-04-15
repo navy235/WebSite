@@ -273,6 +273,16 @@ namespace Maitonn.Web
 
         public string Addresss { get; set; }
 
+        public string Province { get; set; }
+
+        public string City{ get; set; }
+
+        public string BussinessName { get; set; }
+
+        public string ScaleName { get; set; }
+
+        public string FundName { get; set; }
+
         public int SourceCount { get; set; }
 
         public List<CompanyCategoryViewModel> CompanyCategory { get; set; }

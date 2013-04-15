@@ -88,7 +88,7 @@
             var self=@name;
             $.ajax({
                 type:'GET',
-                url:'@Url.Action("GetAuctionCalendar", "outdoor")',
+                url:'@Url.Action("getauctioncalendar", "ajaxservice")',
                 data:{
                     id:self.mediaId
                 },

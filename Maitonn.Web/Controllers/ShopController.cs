@@ -118,7 +118,7 @@ namespace Maitonn.Web
         {
             CompanyShopIntroViewModel model = new CompanyShopIntroViewModel();
 
-            var company = companyService.IncludeFind(id);
+            var company = companyService.IncludeFindCompanyProfile(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -130,6 +130,13 @@ namespace Maitonn.Web
             model.Banner = company.CompanyBannerImg.ImgUrls;
             model.Addresss = company.Address;
             model.CompanyCategory = GetCompanyCategory(id);
+            model.ScaleName = company.CompanyScale.CateName;
+            model.BussinessName = company.CompanyBussiness.CateName;
+            model.FundName=company.CompanyFund.CateName;
+            model.City=company.Area.CateName;
+            model.Province = company.Area.PCategory.CateName;
+            
+
             return View(model);
         }
 

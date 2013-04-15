@@ -21,6 +21,7 @@ namespace Maitonn.Web
         private IAreaService areaService;
         private IOutDoorMediaCateService outDoorMediaCateService;
         private IOutDoorService outDoorService;
+        private ICompanyService companyService;
         private IFormatCateService formatCateService;
         private ICompanyBussinessService companyBussinessService;
         private ICompanyFundService companyFundService;
@@ -34,6 +35,7 @@ namespace Maitonn.Web
             , IAreaService _areaService
             , IOutDoorMediaCateService _outDoorMediaCateService
             , IOutDoorService _outDoorService
+            , ICompanyService _companyService
             , IFormatCateService _formatCateService
             , ICompanyBussinessService _companyBussinessService
             , ICompanyFundService _companyFundService
@@ -49,6 +51,7 @@ namespace Maitonn.Web
             memberService = _memberService;
             outDoorMediaCateService = _outDoorMediaCateService;
             outDoorService = _outDoorService;
+            companyService = _companyService;
             formatCateService = _formatCateService;
             companyBussinessService = _companyBussinessService;
             companyFundService = _companyFundService;
@@ -62,16 +65,40 @@ namespace Maitonn.Web
         public ActionResult Index(int id)
         {
             var outdoor = outDoorService.IncludeFind(id);
+
             if (outdoor == null)
             {
                 return HttpNotFound();
             }
+
+            var company = companyService.ShowIndexCompanyProfile(outdoor.MemberID);
+
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+
             ShowViewModel model = new ShowViewModel();
 
             model.Braed = GetBread(CookieHelper.Province, outdoor);
             model.ListMenu = GetListMenu();
             model.Item = outdoor;
             model.MediaID = id;
+            model.Company = new CompanyShopIntroViewModel()
+            {
+                Addresss = company.Address,
+                BussinessName = company.CompanyBussiness.CateName,
+                City = company.Area.CateName,
+                Description = company.Description,
+                FundName = company.CompanyFund.CateName,
+                Logo = company.CompanyLogoImg.FocusImgUrl,
+                Name = company.Name,
+                Province = company.Area.PCategory.CateName,
+                ScaleName = company.CompanyScale.CateName,
+                MemberID = company.MemberID
+                
+                
+            };
             return View(model);
         }
         /// <summary>

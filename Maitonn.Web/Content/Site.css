@@ -584,7 +584,8 @@ textarea {
   padding-top: 200px;
 }
 
-#verifyLoading {
+#verifyLoading,
+#loginLoading {
   height: auto;
   text-align: center;
   padding-top: 200px;

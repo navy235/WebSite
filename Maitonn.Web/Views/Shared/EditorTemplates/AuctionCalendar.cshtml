@@ -220,7 +220,7 @@
             $('#'+self.submitId).on('click',self.addAuction);
             $.ajax({
                 type:'GET',
-                url:'@Url.Action("GetAuctionCalendar", "outdoor")',
+                url:'@Url.Action("GetAuctionCalendar", "ajaxservice")',
                 data:{
                     id:self.mediaId
                 },

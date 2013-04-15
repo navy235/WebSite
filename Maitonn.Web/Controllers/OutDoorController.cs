@@ -257,16 +257,7 @@ namespace Maitonn.Web
             }
 
         }
-        public ActionResult GetAuctionCalendar(int id)
-        {
-            List<AuctionCalendarViewModel> data = new List<AuctionCalendarViewModel>();
-            var query = auctionCalendarService.GetALL(id).ToList();
-            foreach (var item in query)
-            {
-                data.AddRange(GetAuctionCalendarViewModel(item));
-            }
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
+     
 
         [HttpPost]
         public ActionResult AddAuctionCalendar(int id, string startTime, string endTime)

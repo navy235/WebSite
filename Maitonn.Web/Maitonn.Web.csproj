@@ -441,6 +441,7 @@
     <Content Include="Content\jcrop\Jcrop.gif" />
     <Content Include="Content\jcrop\jquery.Jcrop.css" />
     <Content Include="Content\jcrop\jquery.Jcrop.min.css" />
+    <Content Include="Content\jquery.jqzoom.css" />
     <Content Include="Content\kendohelper.css" />
     <Content Include="Content\kendo\2012.3.1114\Black\editor.png" />
     <Content Include="Content\kendo\2012.3.1114\Black\imagebrowser.png" />
@@ -804,12 +805,14 @@
     <Content Include="Global.asax" />
     <Content Include="App_Code\ViewHelpers.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\base.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
     <Content Include="Scripts\jquery.hoverlist-1.0.js" />
     <Content Include="Scripts\jquery.Jcrop.min.js" />
+    <Content Include="Scripts\jquery.jqzoom-core.js" />
     <Content Include="Scripts\jquery.slider-1.0.js" />
     <Content Include="Scripts\jquery.slider-2.0.js" />
     <Content Include="Scripts\jquery.sliderbox-1.0.js" />
@@ -1434,6 +1437,8 @@
     <Content Include="Views\Test\CreateIndex.cshtml" />
     <Content Include="Views\Test\SearchIndex.cshtml" />
     <Content Include="Views\Shared\_MINIPROFILER UPDATED Layout.cshtml" />
+    <Content Include="Views\Login\PopLogin.cshtml" />
+    <Content Include="Views\Shared\_LayoutPopLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">

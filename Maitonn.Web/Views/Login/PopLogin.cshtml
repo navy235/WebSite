@@ -1,0 +1,68 @@
+﻿@model LogOnModel
+@{
+    ViewBag.Title = "登录";
+    Layout = "~/Views/Shared/_LayoutPopLogin.cshtml";
+}
+
+<div class="main" style="border: none; overflow: hidden">
+    @*  <div class="sub">
+        <h6><span>登录新浪地产网</span></h6>
+    </div>*@
+    <div class="login_form min_h">
+        @if (ViewBag.Message != null)
+        {
+            <p class="form_tips"><em class="s_icon i_point"></em>@ViewBag.Message</p>
+        }
+        else
+        {
+            <p class="form_tips"><em class="s_icon i_point"></em>欢迎登录新浪地产网</p>
+        }
+
+        @using (Html.BeginForm())
+        {
+    
+            @Html.AntiForgeryToken()
+            <div class="form-field">
+                @Html.LabelFor(x => x.Email, new { @class = "form-field-lable-required" })
+                @Html.EditorFor(x => x.Email)
+                @Html.ValidationMessageFor(x => x.Email)
+            </div>
+            <div class="form-field">
+                @Html.LabelFor(x => x.Password, new { @class = "form-field-lable-required" })
+                @Html.EditorFor(x => x.Password)
+                <a href="@Url.Action("GetPassword", "Register")" tabindex="-1">忘记密码？</a>
+                @Html.ValidationMessageFor(x => x.Password)
+
+            </div>
+            <div class="form-field form-field-remember">
+                <input type="checkbox" name="Remember" value="true" id="Remember">
+                <label for="Remember" class="c_gray remember">记住我</label>
+            </div>
+            <div class="form-field form-field-validatecode">
+                @Html.LabelFor(x => x.Vcode, new { @class = "form-field-lable-required" })
+                @Html.EditorFor(x => x.Vcode)
+                @Html.ValidationMessageFor(x => x.Vcode)
+            </div>
+            <div class="form-field form-field-submit">
+                <button type="submit" class="btn btn-success mr20 mt10">
+                    &nbsp;登&nbsp;录</button>
+
+                <a href="@Url.Action("Index", "Register")" class="btn  mt10 ">&nbsp;免费注册</a>
+                <div class="clearfix "></div>
+            </div>
+                    
+            <div class="form-field form-field-login">
+                <p>使用合作账号登录</p>
+                <ul class="other-login clearfix">
+                    <li><a href="@Url.Action("QQ")" class="qq" ></a></li>
+                    <li><a href="@Url.Action("Sina")" class="sina" ></a></li>
+                    <li><a href="@Url.Action("Douban")" class="douban" ></a></li>
+                    <li><a href="@Url.Action("Renren")" class="renren" ></a></li>
+                    <li><a href="@Url.Action("Taobao")" class="taobao" ></a></li>
+                </ul>
+                <div class="clearfix height10"></div>
+            </div>
+        }
+    </div>
+</div>
+

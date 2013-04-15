@@ -105,69 +105,72 @@ namespace Maitonn.Web
 
             #endregion
 
+
+
             #region page box
+            if (pagingInfo.ShowPageBox)
+            {
+                TagBuilder listPageTip = new TagBuilder("span");
+                listPageTip.AddCssClass("list-page-tip");
+                listPageTip.SetInnerText("到第");
+                container.InnerHtml += listPageTip.ToString();
 
-            TagBuilder listPageTip = new TagBuilder("span");
-            listPageTip.AddCssClass("list-page-tip");
-            listPageTip.SetInnerText("到第");
-            container.InnerHtml += listPageTip.ToString();
+                TagBuilder listPageJump = new TagBuilder("input");
+                listPageJump.AddCssClass("list-page-jump");
+                listPageJump.MergeAttribute("data-url", GenerateUrl(html, 1, routeName));
+                listPageJump.MergeAttribute("data-maxpage", pagingInfo.TotalPages.ToString());
 
-            TagBuilder listPageJump = new TagBuilder("input");
-            listPageJump.AddCssClass("list-page-jump");
-            listPageJump.MergeAttribute("data-url", GenerateUrl(html, 1, routeName));
-            listPageJump.MergeAttribute("data-maxpage", pagingInfo.TotalPages.ToString());
-
-            container.InnerHtml += listPageJump.ToString();
+                container.InnerHtml += listPageJump.ToString();
 
 
-            TagBuilder listPageTip2 = new TagBuilder("span");
-            listPageTip2.AddCssClass("list-page-tip");
-            listPageTip2.SetInnerText("页");
+                TagBuilder listPageTip2 = new TagBuilder("span");
+                listPageTip2.AddCssClass("list-page-tip");
+                listPageTip2.SetInnerText("页");
 
-            container.InnerHtml += listPageTip2.ToString();
+                container.InnerHtml += listPageTip2.ToString();
 
-            TagBuilder jumpPage = new TagBuilder("a");
-            jumpPage.AddCssClass("list-page-btn");
-            jumpPage.SetInnerText("确定");
-            jumpPage.MergeAttribute("href", "javascript:void(0);");
+                TagBuilder jumpPage = new TagBuilder("a");
+                jumpPage.AddCssClass("list-page-btn");
+                jumpPage.SetInnerText("确定");
+                jumpPage.MergeAttribute("href", "javascript:void(0);");
 
-            container.InnerHtml += jumpPage.ToString();
+                container.InnerHtml += jumpPage.ToString();
 
-            TagBuilder pageScripts = new TagBuilder("script");
+                TagBuilder pageScripts = new TagBuilder("script");
 
-            StringBuilder scriptBuilder = new StringBuilder();
+                StringBuilder scriptBuilder = new StringBuilder();
 
-            scriptBuilder.Append(@"
-            $(function(){
-               $('.list-page-btn').click(function(){
-                   var $pageBox=$(this).siblings('.list-page-jump');
-                   var page=$pageBox.val();
-                   if(page===''){
-                      $pageBox.focus();
-                   }else{
-                       var maxpage=$pageBox.data('maxpage');
-                       var url=$pageBox.data('url');
-                       page=page>maxpage?maxpage:page;
-                       url=url.replace(/p_(\d+)/,'p_'+page);
-                       window.location.href=url;
-                   }
-                });
-                $('.list-page-jump').keyup(function(){
-                    var value=$(this).val();
-                    if(isNaN(value)||value<=0){
-                        $(this).val('');    
-                    }
-                });
-                $('.list-page-jump').keydown(function(e){
-                    if (e.keyCode === 13) {
-                         $('.list-page-btn').click();
-                    }
-                });
-            })");
-            pageScripts.InnerHtml = scriptBuilder.ToString();
+                scriptBuilder.Append(@"
+                $(function(){
+                   $('.list-page-btn').click(function(){
+                       var $pageBox=$(this).siblings('.list-page-jump');
+                       var page=$pageBox.val();
+                       if(page===''){
+                          $pageBox.focus();
+                       }else{
+                           var maxpage=$pageBox.data('maxpage');
+                           var url=$pageBox.data('url');
+                           page=page>maxpage?maxpage:page;
+                           url=url.replace(/p_(\d+)/,'p_'+page);
+                           window.location.href=url;
+                       }
+                    });
+                    $('.list-page-jump').keyup(function(){
+                        var value=$(this).val();
+                        if(isNaN(value)||value<=0){
+                            $(this).val('');    
+                        }
+                    });
+                    $('.list-page-jump').keydown(function(e){
+                        if (e.keyCode === 13) {
+                             $('.list-page-btn').click();
+                        }
+                    });
+                })");
+                pageScripts.InnerHtml = scriptBuilder.ToString();
 
-            container.InnerHtml += pageScripts.ToString();
-
+                container.InnerHtml += pageScripts.ToString();
+            }
             #endregion
             return MvcHtmlString.Create(container.ToString());
         }
@@ -214,6 +217,7 @@ namespace Maitonn.Web
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }
         public int CurrentPage { get; set; }
+        public bool ShowPageBox { get; set; }
         public int TotalPages
         {
             get { return (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage); }

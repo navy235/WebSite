@@ -16,6 +16,7 @@ namespace Maitonn.Web
         private IMemberService memberService;
         private IAreaAttService areaAttService;
         private IAreaService areaService;
+        private ICompanyService companyService;
         private IOutDoorMediaCateService outDoorMediaCateService;
         private IFormatCateService formatCateService;
         private ICompanyBussinessService companyBussinessService;
@@ -28,6 +29,7 @@ namespace Maitonn.Web
             , IMemberService _memberService
             , IAreaAttService _areaAttService
             , IAreaService _areaService
+            , ICompanyService _companyService
             , IOutDoorMediaCateService _outDoorMediaCateService
             , IFormatCateService _formatCateService
             , ICompanyBussinessService _companyBussinessService
@@ -41,6 +43,7 @@ namespace Maitonn.Web
             DB_Service = _DB_Service;
             areaAttService = _areaAttService;
             areaService = _areaService;
+            companyService = _companyService;
             memberService = _memberService;
             outDoorMediaCateService = _outDoorMediaCateService;
             formatCateService = _formatCateService;
@@ -207,6 +210,42 @@ namespace Maitonn.Web
             var keyArray = key.Split(',').Select(x => Convert.ToInt32(x));
             return Json(areaAttService.GetList(keyArray).Select(x => x.AttName).ToList(), JsonRequestBehavior.AllowGet);
 
+        }
+
+        #endregion
+
+        #region Form
+        [HttpPost]
+        public ActionResult AddMessage(int id, string name, string content)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                AddCompanyMessageViewModel model = new AddCompanyMessageViewModel()
+                {
+                    Name = name,
+                    Content = content
+                };
+                var AddmemberID = Convert.ToInt32(CookieHelper.UID);
+                result = companyService.AddCompanyMessage(id, AddmemberID, model);
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            result.Message = "留言" + (result.Success ? "成功！" : "失败！");
+            return Json(result);
+        }
+
+        public ActionResult GetAuctionCalendar(int id)
+        {
+            List<AuctionCalendarViewModel> data = new List<AuctionCalendarViewModel>();
+            var query = auctionCalendarService.GetALL(id).ToList();
+            foreach (var item in query)
+            {
+                data.AddRange(GetAuctionCalendarViewModel(item));
+            }
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -389,5 +428,85 @@ namespace Maitonn.Web
         }
         #endregion
 
+
+        public List<AuctionCalendarViewModel> GetAuctionCalendarViewModel(AuctionCalendar model)
+        {
+            List<AuctionCalendarViewModel> data = new List<AuctionCalendarViewModel>();
+            bool hasTwo = false;
+            var CurrentYear = DateTime.Now.Year;
+            var currentYearFirtDay = new DateTime(CurrentYear, 1, 1);
+            var NextYear = DateTime.Now.Year + 1;
+            var nextYearFirtDay = new DateTime(NextYear, 1, 1);
+            if (model.StartTime < currentYearFirtDay)
+            {
+                model.StartTime = currentYearFirtDay;
+            }
+            if (model.StartTime.Year != model.EndTime.Year)
+            {
+                hasTwo = true;
+            }
+            if (!hasTwo)
+            {
+                AuctionCalendarViewModel item = new AuctionCalendarViewModel()
+                {
+                    ID = model.ID,
+                    EndTime = model.EndTime.ToString("yyyy-MM-dd"),
+                    EndDate = model.EndTime.ToString("MM-dd"),
+                    MediaID = model.MediaID,
+                    StartTime = model.StartTime.ToString("yyyy-MM-dd"),
+                    StartDate = model.StartTime.ToString("MM-dd"),
+                    Top = (model.EndTime < nextYearFirtDay)
+                };
+                if (item.Top)
+                {
+                    item.Left = (model.StartTime - currentYearFirtDay).Days;
+                    item.Width = (model.EndTime - model.StartTime).Days;
+                }
+                else
+                {
+                    item.Left = (model.StartTime - nextYearFirtDay).Days;
+                    item.Width = (model.EndTime - model.StartTime).Days;
+                }
+                data.Add(item);
+            }
+            else
+            {
+
+                AuctionCalendarViewModel item1 = new AuctionCalendarViewModel()
+                {
+                    ID = model.ID,
+                    EndTime = model.EndTime.ToString("yyyy-MM-dd"),
+                    EndDate = model.EndTime.ToString("MM-dd"),
+                    MediaID = model.MediaID,
+                    StartTime = model.StartTime.ToString("yyyy-MM-dd"),
+                    StartDate = model.StartTime.ToString("MM-dd"),
+                    Top = true,
+                    HasTwo = true,
+                    Left = (model.StartTime - currentYearFirtDay).Days,
+                    ShowLeft = true,
+                    Width = (new DateTime(CurrentYear, 12, 30) - model.StartTime).Days
+                };
+
+                AuctionCalendarViewModel item2 = new AuctionCalendarViewModel()
+                {
+                    ID = model.ID,
+                    EndTime = model.EndTime.ToString("yyyy-MM-dd"),
+                    EndDate = model.EndTime.ToString("MM-dd"),
+                    MediaID = model.MediaID,
+                    StartTime = model.StartTime.ToString("yyyy-MM-dd"),
+                    StartDate = model.StartTime.ToString("MM-dd"),
+                    Top = false,
+                    HasTwo = true,
+                    ShowLeft = false,
+                    Left = 0,
+                    Width = (model.EndTime - new DateTime(NextYear, 1, 1)).Days
+                };
+                data.Add(item1);
+                data.Add(item2);
+            }
+
+            return data;
+
+        }
     }
 }

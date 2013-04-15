@@ -16,6 +16,7 @@
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryplug")
+    <script src="~/Scripts/base.js"></script>
 </head>
 <body>
     @Html.Partial("_NoScript")
@@ -25,10 +26,27 @@
     @RenderBody()
 
     @Html.Partial("_FooterHome")
-
-
-
+    @Html.Partial("_DisplayMessage")
     @RenderSection("scripts", required: false)
+
+    @(Html.Kendo().Window().Name("Win-PopLogin")
+    .Title("登录")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(false)
+    .Width(600)
+    .Height(390)
+    .Scrollable(true)
+    .Content(@<text>
+    <input type="hidden" id="popLoginUrl" value="@Url.Action("poplogin", "login")" />
+    <div id="loginLoading">
+        <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
+    </div>
+    <iframe id="loginContent" name="verifycontent" width="100%" height="100%" style="display: none;" marginwidth="0" marginheight="0" frameborder="0" src=""></iframe>
+    </text>)
+    )
     @MiniProfiler.RenderIncludes(position: RenderPosition.Right, showTrivial: false, showTimeWithChildren: false)
+
+
 </body>
 </html>

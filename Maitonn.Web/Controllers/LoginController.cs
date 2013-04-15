@@ -41,6 +41,48 @@ namespace Maitonn.Web
             return View(model);
         }
 
+        public ActionResult PopLogin(string username = null)
+        {
+            var model = new LogOnModel();
+            if (!string.IsNullOrEmpty(username))
+            {
+                model.Email = username;
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PopLogin(LogOnModel model, bool Remember = false)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string Md5Password = CheckHelper.StrToMd5(model.Password);
+                    if (memberService.Login(model.Email, Md5Password))
+                    {
+                        ViewBag.Message = null;
+                        return Content("<script>window.top.location.reload();</script>");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "您的用户名和密码不匹配";
+                        return View(model);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                ViewBag.Message = "您的输入有误请确认后提交";
+                return View(model);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(LogOnModel model, string ReturnUrl = null, bool Remember = false)

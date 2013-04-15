@@ -104,6 +104,10 @@ namespace Maitonn.Web
         [UIHint("AuctionCalendar")]
         public int MediaID { get; set; }
 
+        public CompanyShopIntroViewModel Company { get; set; }
+
+
+
 
     }
 

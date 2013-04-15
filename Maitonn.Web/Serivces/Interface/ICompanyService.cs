@@ -19,6 +19,10 @@ namespace Maitonn.Web
 
         Company IncludeFind(int MemberID);
 
+        Company IncludeFindCompanyProfile(int MemberID);
+
+        Company ShowIndexCompanyProfile(int MemberID);
+
         CompanyCredentialsImg GetCompanyCredentialsSingle(int CredentialsID);
 
         CompanyNotice GetCompanyNotice(int NoticeID);

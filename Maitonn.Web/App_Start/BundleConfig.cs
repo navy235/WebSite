@@ -22,7 +22,9 @@ namespace Maitonn.Web
                        "~/Scripts/jquery.slider-2.0.js",
                        "~/Scripts/jquery.tab-1.0.js",
                        "~/Scripts/jquery.sliderbox-1.0.js",
-                       "~/Scripts/jquery.hoverlist-1.0.js"));
+                       "~/Scripts/jquery.hoverlist-1.0.js",
+                       "~/Scripts/jquery.jqzoom-core.js"
+                       ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/smooth").Include(
@@ -48,7 +50,9 @@ namespace Maitonn.Web
                         "~/Content/show.css",
                         "~/Content/site.css",
                         "~/Content/kendohelper.css",
-                        "~/Content/bootstrap.css"));
+                        "~/Content/bootstrap.css",
+                        "~/Content/jquery.jqzoom.css"
+                        ));
 
 
             bundles.Add(new StyleBundle("~/Content/company").Include(

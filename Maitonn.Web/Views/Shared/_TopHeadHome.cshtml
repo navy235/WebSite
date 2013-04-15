@@ -12,18 +12,42 @@
             </div>
         </div>
         <div class="top-head-feature"><span>全场免运费· 100%正品· 机打发票· 厂家直供</span></div>
-        <div class="top-head-search " defaultinput="澳罗拉" defaulthotid="439">
+        <div class="top-head-search ">
 
-            <form action="#" method="post">
-                <input class="search-text" type="text" value="澳罗拉">
-                <input class="search-button" type="button" value="">
-                <button type="submit" style="position: absolute; left: -9999px; top: -9999px"></button>
-            </form>
+            <input class="search-text" id="search-text" type="text" value="澳罗拉">
+            <input class="search-button" id="search-button" type="button" value="">
             <ul class="top-head-suggest" style="display: none;"></ul>
             <div class="top-head-hot-keys">
-                <label>热门搜索：</label><a target="_blank" href="/search/query.html?q=%E6%80%A7%E8%85%BA%E5%85%BB%E6%8A%A4&amp;hotId=440">性腺养护</a><a target="_blank" href="/search/query.html?q=%E4%B8%9C%E9%98%BF%E9%98%BF%E8%83%B6&amp;hotId=441">东阿阿胶</a><a target="_blank" href="/search/query.html?q=%E7%95%AA%E8%8C%84%E7%BA%A2%E7%B4%A0&amp;hotId=442">番茄红素</a><a target="_blank" href="/search/query.html?q=%E8%A2%8B%E9%BC%A0%E7%B2%BE&amp;hotId=443">袋鼠精</a><a target="_blank" href="/search/query.html?q=%E6%94%B9%E5%96%84%E7%9D%A1%E7%9C%A0&amp;hotId=444">改善睡眠</a>
+                <label>热门搜索：</label>
+                <a target="_blank" href="/search/query.html?q=%E6%80%A7%E8%85%BA%E5%85%BB%E6%8A%A4&amp;hotId=440">性腺养护</a>
+                <a target="_blank" href="/search/query.html?q=%E4%B8%9C%E9%98%BF%E9%98%BF%E8%83%B6&amp;hotId=441">东阿阿胶</a>
+                <a target="_blank" href="/search/query.html?q=%E7%95%AA%E8%8C%84%E7%BA%A2%E7%B4%A0&amp;hotId=442">番茄红素</a>
+                <a target="_blank" href="/search/query.html?q=%E8%A2%8B%E9%BC%A0%E7%B2%BE&amp;hotId=443">袋鼠精</a>
+                <a target="_blank" href="/search/query.html?q=%E6%94%B9%E5%96%84%E7%9D%A1%E7%9C%A0&amp;hotId=444">改善睡眠</a>
             </div>
         </div>
+        <script type="text/javascript">
+            $(function() {
+                $("#search-button").click(function() {
+                    window.location.href = "@Url.Action("index", "list", new
+                                   {
+                                       province = CookieHelper.Province,
+                                       city = 0,
+                                       mediacode = 0,
+                                       childmediacode = 0,
+                                       formatcode = 0,
+                                       ownercode = 0,
+                                       periodcode = 0,
+                                       page = 1
+                                   })query=" + encodeURIComponent($("#search-text").val());
+                });
+                $('#search-text').keydown(function(e) {
+                    if (e.keyCode == 13) {
+                        $("#search-button").click();
+                    }
+                });
+            })
 
+        </script>
     </div>
 </header>
