@@ -42,6 +42,9 @@ else
 
         @Html.Editor(prop.PropertyName)
 
+        @Html.ValidationMessage(prop.PropertyName)
+
+
         @if (prop.AdditionalValues.ContainsKey("Hint"))
         {
             <span class="field-hint-message">@prop.AdditionalValues["Hint"]</span>
@@ -52,7 +55,6 @@ else
             <span class="field-prompt-message">@prop.AdditionalValues["HintLabel"]</span>
         }
 
-        @Html.ValidationMessage(prop.PropertyName)
 
 
 

@@ -12,6 +12,17 @@ a {
     color: #7E7E7E;
   }
 
+.s_icon {
+  background: url(images/mixr.gif);
+  background-repeat: no-repeat;
+  width: 18px;
+  height: 14px;
+  line-height: 14px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+}
 
 .container {
   width: 1000px;
@@ -90,6 +101,12 @@ span.cut {
     float: left;
   }
 
+  .register .nowidth-content {
+    padding-top: 15px;
+    padding-bottom: 50px;
+    line-height: 22px;
+  }
+
   .register .n_form {
     line-height: 25px;
     display: inline-block;
@@ -131,6 +148,59 @@ span.cut {
       color: #666;
       font-size: 14px;
     }
+
+.top-tips {
+  padding-left: 30px;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+
+  .top-tips strong {
+    font-style: normal;
+    font-weight: 800;
+  }
+
+.top-tips-success {
+  background: url(images/mixr.gif);
+  background-repeat: no-repeat;
+  width: 42px;
+  height: 42px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+  background-position: -152px -218px;
+  float: left;
+  margin-right: 20px;
+}
+
+.top-tips-title {
+  font-size: 15px;
+  font-family: 'Microsoft YaHei',verdana;
+  padding-bottom: 30px;
+  font-weight: bold;
+}
+
+  .top-tips-title strong {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 22px;
+  }
+
+.s_icon_money {
+  background-position: -288px -98px;
+}
+
+.top-tips-next {
+  padding-left: 60px;
+}
+
+  .top-tips-next span {
+    font-size: 15px;
+    font-family: 'Microsoft YaHei',verdana;
+    padding-bottom: 30px;
+    font-weight: bold;
+  }
 
 .getpassword {
   margin: 50px 0 100px 230px;
@@ -289,17 +359,7 @@ span.cut {
   display: inline-block;
 }
 
-.s_icon {
-  background: url(images/mixr.gif);
-  background-repeat: no-repeat;
-  width: 18px;
-  height: 14px;
-  line-height: 14px;
-  display: inline-block;
-  display: -moz-inline-block;
-  vertical-align: middle;
-  zoom: 1;
-}
+
 
 .i_point {
   background-position: -199px -193px;

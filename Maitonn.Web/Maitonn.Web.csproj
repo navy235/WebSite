@@ -1371,7 +1371,6 @@
     <Content Include="Views\Register\GetPassword.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Register\RegAuto.cshtml" />
-    <Content Include="Views\Register\RegCompany.cshtml" />
     <Content Include="Views\Register\RegOk.cshtml" />
     <Content Include="Views\Register\ResetPassword.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
@@ -1439,6 +1438,7 @@
     <Content Include="Views\Shared\_MINIPROFILER UPDATED Layout.cshtml" />
     <Content Include="Views\Login\PopLogin.cshtml" />
     <Content Include="Views\Shared\_LayoutPopLogin.cshtml" />
+    <Content Include="Views\Register\ActiveEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">

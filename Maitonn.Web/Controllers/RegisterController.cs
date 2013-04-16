@@ -43,7 +43,7 @@ namespace Maitonn.Web
                 {
                     Member mb = memberService.Create(model);
                     memberService.SetLoginCookie(mb);
-                    return Redirect(Url.Action("index","personal"));
+                    return Redirect(Url.Action("regok"));
 
                 }
                 catch (Exception ex)
@@ -88,7 +88,7 @@ namespace Maitonn.Web
                 {
                     Member mb = memberService.Create(model);
                     memberService.SetLoginCookie(mb);
-                    return Redirect(Url.Action("index", "personal"));
+                    return Redirect(Url.Action("regok"));
 
                 }
                 catch (Exception ex)
@@ -104,16 +104,116 @@ namespace Maitonn.Web
         }
 
 
-
+        [BaseAuthorize]
         public ActionResult RegOk()
         {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            Member member = memberService.FindMemberWithProfile(memberID);
+            if (member.Member_Profile == null)
+            {
+                member.Member_Profile = new Member_Profile();
+            }
+            ProfileModel pm = new ProfileModel()
+            {
+                MemberID = member.MemberID,
+                Borthday = member.Member_Profile.Borthday,
+                Description = member.Member_Profile.Description,
+                NickName = member.NickName,
+                RealName = member.Member_Profile.RealName,
+                CityCode = member.Member_Profile.CityCode,
+                Sex = member.Member_Profile.Sex
+            };
+            return View(pm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegOk(ProfileModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var memberID = Convert.ToInt32(CookieHelper.UID);
+                    memberService.SaveMemberBaseInfo(memberID, model);
+                    return Redirect(Url.Action("activeemail"));
+                }
+                catch (Exception ex)
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        [BaseAuthorize]
+        public ActionResult ActiveEmail()
+        {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            Member member = memberService.Find(memberID);
+            ViewBag.Email = member.Email;
+            if (member.Status <= (int)MemberStatus.Registered)
+            {
+                int actionEmailActive = (int)MemberActionType.EmailActvie;
+                int limitMins = Convert.ToInt32(ConfigSetting.GetBindEmailTimeDiffMin);
+            
+                if (!member_ActionService.HasActionByActionTypeInLimiteTime(memberID, actionEmailActive, limitMins))
+                {
+                    string emailKey = Guid.NewGuid().ToString();
+
+                    EmailModel em = emailService.GetActiveEmailMail(member.MemberID, member.Email,
+                        member.NickName,
+                        emailKey);
+                    emailService.SendMail(em);
+
+                    member_ActionService.Create(member, actionEmailActive, emailKey);
+                }
+            }
+            else
+            {
+                return Content("<script>alert('您的邮箱已经激活，请勿重复激活!');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
+            }
             return View();
         }
 
-        public ActionResult RegCompany()
+        [BaseAuthorize]
+        public ActionResult GetActiveEmail()
         {
-            return View(new CompanyReg());
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            Member member = memberService.Find(memberID);
+            if (member.Status <= (int)MemberStatus.Registered)
+            {
+                int actionEmailActive = (int)MemberActionType.EmailActvie;
+                int limitMins = Convert.ToInt32(ConfigSetting.GetBindEmailTimeDiffMin);
+                if (member_ActionService.HasActionByActionTypeInLimiteTime(memberID, actionEmailActive, limitMins))
+                {
+                    return Content("<script>alert('您所使用的邮箱刚获取过激活邮件，请到您的邮箱收取邮件!');window.top.location='" + Url.Action("activeemail") + "';</script>");
+                }
+                else
+                {
+                    string emailKey = Guid.NewGuid().ToString();
+
+                    EmailModel em = emailService.GetActiveEmailMail(member.MemberID, member.Email,
+                        member.NickName,
+                        emailKey);
+                    emailService.SendMail(em);
+
+                    member_ActionService.Create(member, actionEmailActive, emailKey);
+                    return Content("<script>alert('绑定邮件已经发送到您的邮箱，请在" + ConfigSetting.ActiveEmailTimeDiffHour + "小时内进行绑定');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
+                }
+            }
+            else
+            {
+                return Content("<script>alert('您的邮箱已经激活，请勿重复激活!');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
+            }
         }
+
+
+
 
         public ActionResult GetPassword()
         {

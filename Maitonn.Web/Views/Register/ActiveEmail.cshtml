@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "激活邮件";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<div class="top-tips " style="padding-bottom: 30px;">
+    <em class="top-tips-success"></em>
+    <div style="padding-top: 15px;">
+        <span class="top-tips-title">您的账号已设立，请立即通过邮箱激活账号。</span>
+    </div>
+</div>
+<div class="register">
+    <div class="main">
+        <div class="sub">
+            <h6>
+                <span>激活邮件</span></h6>
+        </div>
+        <div class="nowidth-content">
+            <div style="width: 600px; margin: 0 auto;">
+                <a href="http://mail.yeah.net" target="_blank" class="zc_f3"><span style="font-size: 20px; font-family: '黑体'; line-height: 50px;">马上激活邮件，完成注册吧！</span></a><br>
+                确认邮件已经发送到你的邮箱 <span class="zc_f1_2012">@ViewBag.Email</span>
+                <br>
+                点击邮件里的确认链接即可登录广知网<br>
+
+                <a href="javascipt:void(0);"  class="btn btn-danger mt20" style="color:#fff" onclick="gotoEmailServiceWeb(this,'@ViewBag.Email')">
+                    <i class="icon-envelope icon-white"></i>&nbsp;&nbsp; 立即查看邮箱
+                </a>
+
+                <div class=" mt20">
+                    <strong>还没有收到确认邮件？</strong><br>
+                    ·尝试到广告邮件、垃圾邮件目录里找找看。<br>
+                    ·联系客服电话：010-56292999，企业QQ：4000680888<br>
+                    ·邮件地址写错了？很抱歉，你需要<a href="@Url.Action("index", "register")" >重新注册</a>。<br>
+                    ·或者再次<a  href="@Url.Action("getactiveemail", "register")">发送确认邮件</a>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script type="text/javascript">
+
+        function gotoEmailServiceWeb(element, currentEmail) {
+
+            var EmailHostArray = [];
+            EmailHostArray["@@sogou.com"] = "http://mail.sogou.com/";
+            EmailHostArray["@@10086.cn"] = "http://mail.10086.cn/";
+            EmailHostArray["@@gmail.com"] = "http://gmail.google.com/";
+            EmailHostArray["@@eyou.com"] = "http://www.eyou.com/";
+            EmailHostArray["@@wo.com.cn"] = "http://mail.wo.com.cn/";
+            EmailHostArray["@@hotmail.com"] = "http://www.hotmail.com/";
+            EmailHostArray["@@189.cn"] = "http://www.189.cn/";
+            EmailHostArray["@@hotmail.com"] = "http://www.hotmail.com/";
+            EmailHostArray["@@yahoo.com"] = "http://mail.cn.yahoo.com/";
+            EmailHostArray["@@yahoo.cn"] = "http://mail.cn.yahoo.com/";
+            EmailHostArray["@@yahoo.com.cn"] = "http://mail.cn.yahoo.com/";
+            EmailHostArray["@@alibaba.com.cn"] = "http://mail.china.alibaba.com/index.htm";
+            EmailHostArray["@@263.net"] = "http://mail.263.net/";
+            EmailHostArray["@@263.net.cn"] = "http://mail.264.net/";
+            EmailHostArray["@@x263.net"] = "http://mail.265.net/";
+            EmailHostArray["@@china.com"] = "http://mail.china.com/";
+            EmailHostArray["@@sohu.com"] = "http://mail.sohu.com/";
+            EmailHostArray["@@vip.sohu.com"] = "http://vip.sohu.com/";
+            EmailHostArray["@@sogou.com"] = "http://mail.sogou.com/";
+            EmailHostArray["@@chinaren.com"] = "http://mail.chinaren.com/";
+            EmailHostArray["@@vip.sohu.net"] = "http://vip.sohu.net/";
+            EmailHostArray["@@sohu.net"] = "http://www.sohu.net/";
+            EmailHostArray["@@sms.sohu.com"] = "http://sms.sohu.com/";
+            EmailHostArray["@@qq.com"] = "http://mail.qq.com/";
+            EmailHostArray["@@foxmail.com"] = "http://www.foxmail.com/";
+            EmailHostArray["@@vip.qq.com"] = "https://mail.qq.com/cgi-bin/loginpage";
+            EmailHostArray["@@postmaster.co.uk"] = "http://www.postmaster.co.uk/";
+            EmailHostArray["@@tom.com"] = "http://mail.tom.com/";
+            EmailHostArray["@@163.net"] = "http://vip.163.net/";
+            EmailHostArray["@@vip.tom.com"] = "http://vip.tom.com/";
+            EmailHostArray["@@163.net"] = "http://mail.163.net/";
+            EmailHostArray["@@126.com"] = "http://www.126.com/";
+            EmailHostArray["@@163.com"] = "http://mail.163.com/";
+            EmailHostArray["@@yeah.net"] = "http://www.yeah.net/";
+            EmailHostArray["@@vip.163.com"] = "http://vip.163.com/";
+            EmailHostArray["@@188.com"] = "http://www.188.com/";
+            EmailHostArray["@@21cn.net"] = "http://mail.21cn.com/net/";
+            EmailHostArray["@@21cn.com"] = "http://mail.21cn.com/jj/";
+            EmailHostArray["@@21cn.com"] = "http://mail.21cn.com/";
+            EmailHostArray["@@sina.com.cn"] = "http://mail.sina.com.cn/";
+            EmailHostArray["@@vip.sina.com"] = "http://vip.sina.com.cn/";
+            if (currentEmail != null && currentEmail != "") {
+                if (currentEmail.indexOf("@@") > 0) {
+                    var emailServiceKey = currentEmail.substring(currentEmail.indexOf("@@"));
+                    var emailServiceValue = EmailHostArray[emailServiceKey];
+                    if (emailServiceValue != null) {
+                        $(element).attr('href', emailServiceValue);
+                    }
+                    else {
+                        $(element).attr('href', "http://mail." + emailServiceKey.substring(1));
+                    }
+                }
+            }
+            else {
+                $(element).attr('target', '');
+                alert("无法获取您的邮箱，请先登录后再来激活邮箱!");
+            }
+            return false;
+        }
+
+    </script>
+}

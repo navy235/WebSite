@@ -55,7 +55,7 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入验证码")]
         [Display(Name = "验证码：")]
         [StringLength(4, ErrorMessage = "长度为4位", MinimumLength = 4)]
-        [Remote("ValidateVCode", "AjaxService", ErrorMessage = "验证码错误")]
+        [Remote("ValidateVCode", "AjaxService", ErrorMessage = "验证码错误或过期")]
         [UIHint("ValidateVCode")]
         [HintClass("validatecode")]
         public string Vcode { get; set; }
@@ -79,7 +79,7 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入验证码")]
         [Display(Name = "验证码：")]
         [StringLength(4, ErrorMessage = "长度为4位", MinimumLength = 4)]
-        [Remote("ValidateVCode", "AjaxService", ErrorMessage = "验证码错误")]
+        [Remote("ValidateVCode", "AjaxService", ErrorMessage = "验证码错误或过期")]
         [UIHint("ValidateVCode")]
         public string Vcode { get; set; }
     }

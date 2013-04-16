@@ -14,10 +14,6 @@
             <div class="personal-body-title clearfix">
                 <h5>@ViewBag.Title</h5>
             </div>
-
-            @ViewHelpers.Alert("友情提醒：",
-                CookieHelper.NickName + ",填写真实的资料更方便大家了解你。", false, AlertType.info.ToString())
-
             <ul class="personal-body-list">
                 <li>登录名：<a href="http://home.zhubajie.com/6200334">@Model.Email</a></li>
                 <li>昵称：<a href="http://home.zhubajie.com/6200334">@Model.NickName</a></li>

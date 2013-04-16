@@ -1,9 +1,61 @@
-﻿@{
+﻿@model ProfileModel
+@{
     ViewBag.Title = "注册成功";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@section topscripts{
+    @Styles.Render("~/Content/kendo/2012.3.1114/css")
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
+    <style type="text/css">
+        .form-field .text-box {
+            width: 250px;
+        }
+
+        .form-field-city .k-dropdown {
+            width: 125px;
+        }
+
+        .form-field textarea {
+            font-size: 1em;
+            height: 125px;
+            padding-top: 5px;
+        }
+    </style>
 }
 
-<h2>注册成功</h2>
 
-1.注册成功完善个人资料，
-2.注册成功进行企业注册，
-3.返回首页
+<div class="top-tips">
+    <em class="top-tips-success"></em>
+    <div>
+        <span class="top-tips-title">
+            <strong>恭喜</strong>，您已成功注册成为广知网会员，获得奖励 <em class="s_icon s_icon_money"></em><strong class="c_red">+1</strong> 个广知币</span>
+    </div>
+    <br>
+    <div class="top-tips-next">
+        <span>完善下面信息，即可获得 <em class="s_icon s_icon_money"></em><strong class="c_red">+3</strong> 个广知币</span>&nbsp;&nbsp;<a href="@Url.Action("activeemail")">以后再填，先不要币了。</a>
+    </div>
+</div>
+<div class="register">
+    <div class="main">
+        <div class="sub">
+            <h6>
+                <span>完善基本信息</span></h6>
+        </div>
+        <div class="content">
+            <div class="n_form">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-success mr20">
+                            填好了，提交注册</button><a href="/?tourl=">跳过此步，需要的时候再填</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
