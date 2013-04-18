@@ -62,8 +62,16 @@ namespace Maitonn.Web
         {
             HomeViewModel model = new HomeViewModel();
             model.TopHot = new TopHotViewModel();
+
+            //左边导航菜单
             model.TopHot.TopHotListMenu = GetTopHotListMenu(province);
+
+
+            //图片轮播数据
             model.TopHot.SliderBox = GetSliderBox();
+
+
+
             model.TopHot.SliderTabBox = GetSliderTabBox();
 
             model.MainHot = new MainHotViewModel();

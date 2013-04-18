@@ -1,0 +1,21 @@
+@model  string
+
+@(Html.Kendo().EditorFor(m => m)
+       .HtmlAttributes(new { style = "width: 740px; height:440px" })
+      .Tools(tools => tools
+        .SubScript()
+        .SuperScript()
+        .ViewHtml()
+      )
+      .Value(@<text>
+@Html.Raw(HttpUtility.HtmlDecode(Model))
+</text>)
+    .ImageBrowser(imageBrowser => imageBrowser
+        .Image("~/Content/UserFiles/Images/{0}")
+        .Read("Read", "ImageBrowser")
+        .Create("Create", "ImageBrowser")
+        .Destroy("Destroy", "ImageBrowser")
+        .Upload("Upload", "ImageBrowser")
+        .Thumbnail("Thumbnail", "ImageBrowser"))
+)
+

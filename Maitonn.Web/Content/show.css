@@ -703,7 +703,6 @@ a.top-head-changcity {
   }
 
 .top-hot-left-category li {
-  border-top: #e0e0e0 1px solid;
   background-color: #fff;
   padding: 10px 0 9px 7px;
   padding-bottom: 5px 9;
@@ -3765,7 +3764,6 @@ goods-pack .goods-desc {
 
 
 .personal-body-list {
-
 }
 
   .personal-body-list li {
@@ -3811,7 +3809,6 @@ goods-pack .goods-desc {
 
   .personal-body-bind dd.bind-btn {
     float: left;
-    margin-top: 10px;
   }
 
   .personal-body-bind dd.bind-desc span {
@@ -3822,6 +3819,10 @@ goods-pack .goods-desc {
 
     .personal-body-bind dd.bind-desc span.ok {
       background: url(images/up-ico.gif) 60px -427px no-repeat;
+    }
+
+    .personal-body-bind dd.bind-desc span.failed {
+      background: url(images/up-ico.gif) 60px -449px no-repeat;
     }
 
 .personal-form {
@@ -4075,6 +4076,76 @@ goods-pack .goods-desc {
       background: #d90000;
       color: #fff;
     }
+
+.help-main {
+  width: 990px;
+  margin: auto;
+  position: relative;
+}
+
+.help-left {
+  float: left;
+  width: 188px;
+  background-color: #fafafa;
+  border: #e8e8e8 1px solid;
+  color: #333;
+  border-top: 0;
+}
+
+  .help-left dt {
+    border-top: #e8e8e8 1px solid;
+    padding: 0 0 0 20px;
+    font-weight: bold;
+    height: 39px;
+    line-height: 40px;
+  }
+
+  .help-left dd {
+    height: 27px;
+    line-height: 26px;
+  }
+
+    .help-left dd a {
+      color: #333;
+      display: block;
+      height: 27px;
+      padding: 0 0 0 30px;
+      text-decoration: none;
+    }
+
+      .help-left dd a:hover {
+        color: #fff;
+        background-color: #f60;
+      }
+
+    .help-left dd .active,
+    .help-left dd .active:link,
+    .help-left dd .active:visited,
+    .help-left dd .active:hover {
+      font-weight: bold;
+      color: #fff;
+      background-color: #f60;
+      text-decoration: none;
+    }
+
+.help-right {
+  float: right;
+  width: 790px;
+}
+
+.help-right-h2 {
+  font: 900 14px/18px "宋体";
+  padding: 0 20px 10px;
+}
+
+.help-right-box {
+  border: #e8e8e8 1px solid;
+  padding: 20px;
+  line-height: 30px;
+  min-height: 496px;
+  _height: 496px;
+}
+
 
 
 .footer {

@@ -18,11 +18,13 @@ namespace Maitonn.Web
         {
             this.OutDoor = new HashSet<OutDoor>();
             this.Company = new HashSet<Company>();
+            this.StaticTemplate = new HashSet<StaticTemplate>();
             this.Member_Profile = new HashSet<Member_Profile>();
         }
 
         public virtual ICollection<Member_Profile> Member_Profile { get; set; }
         public virtual ICollection<Company> Company { get; set; }
         public virtual ICollection<OutDoor> OutDoor { get; set; }
+        public virtual ICollection<StaticTemplate> StaticTemplate { get; set; }
     }
 }

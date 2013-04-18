@@ -32,6 +32,7 @@ namespace Maitonn.Web
               .Map<FormatCate>(m => m.Requires("CategoryType").HasValue("Format"))
               .Map<OutDoorMediaCate>(m => m.Requires("CategoryType").HasValue("OutDoorMedia"))
               .Map<Area>(m => m.Requires("CategoryType").HasValue("Area"))
+              .Map<ArticleCate>(m => m.Requires("CategoryType").HasValue("Article"))
               .Map<CompanyScale>(m => m.Requires("CategoryType").HasValue("CompanyScale"))
               .Map<CompanyBussiness>(m => m.Requires("CategoryType").HasValue("CompanyBussiness"))
               .Map<CompanyFund>(m => m.Requires("CategoryType").HasValue("CompanyFund"));
@@ -112,8 +113,10 @@ namespace Maitonn.Web
             .WithRequired(m => m.Company);
 
             modelBuilder.Entity<Company>()
-        .HasMany(o => o.CompanyNotice)
-        .WithRequired(m => m.Company);
+            .HasMany(o => o.CompanyNotice)
+            .WithRequired(m => m.Company);
+
+
 
             modelBuilder.Entity<Permissions>()
                 .HasRequired(p => p.Department).WithMany(d => d.Permissions).HasForeignKey(p => p.DepartmentID);
@@ -222,7 +225,18 @@ namespace Maitonn.Web
                 );
 
 
+            modelBuilder.Entity<Article>()
+                .HasRequired(m => m.ArticleCate)
+                .WithMany(c => c.Article)
+                .HasForeignKey(o => o.ArticleCode)
+                .WillCascadeOnDelete(false);
 
+
+            modelBuilder.Entity<StaticTemplate>()
+              .HasRequired(m => m.Province)
+              .WithMany(c => c.StaticTemplate)
+              .HasForeignKey(o => o.ProvinceCode)
+              .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }

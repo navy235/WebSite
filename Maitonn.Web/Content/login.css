@@ -352,6 +352,12 @@ span.cut {
   margin-bottom: 10px;
 }
 
+.form_tips_error {
+  padding: 0 0 3px 5px;
+  border: 1px solid #d90000;
+  color: #d90000;
+}
+
 .notice_tips {
   border: 1px solid #FCDFA9;
   background: #fffeee;
@@ -394,7 +400,8 @@ input.single-line {
   width: 198px;
 }
 
-input.input-validation-error {
+input.input-validation-error,
+textarea.input-validation-error {
   border: 1px solid #ff8700;
   background: #FFFCEF;
   color: #333;

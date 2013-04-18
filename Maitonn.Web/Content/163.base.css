@@ -20,14 +20,14 @@ audio, canvas, video {
   *zoom: 1;
 }
 
-table {
+/*table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
 th {
   text-align: inherit;
-}
+}*/
 
 fieldset, img {
   border: 0;

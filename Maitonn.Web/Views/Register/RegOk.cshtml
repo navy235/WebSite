@@ -43,14 +43,14 @@
                 <span>完善基本信息</span></h6>
         </div>
         <div class="content">
-            <div class="n_form">
+            <div class="n_form mt40">
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
                     @Html.EditorForModel()
                     <div class="form-field form-field-submit c_gray">
                         <button type="submit" class="btn btn-success mr20">
-                            填好了，提交注册</button><a href="/?tourl=">跳过此步，需要的时候再填</a>
+                            填好了，提交注册</button><a href="@Url.Action("ActiveEmail")">跳过此步，需要的时候再填</a>
                     </div>
                 }
             </div>

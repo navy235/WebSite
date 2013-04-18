@@ -149,3 +149,11 @@ a {
   clear: both;
   overflow: hidden;
 }
+
+.k-panelbar .k-item .k-item a {
+  padding-left: 20px;
+}
+
+.k-editor .k-editable-area {
+  height: 370px!important;
+}

@@ -49,6 +49,7 @@ namespace Maitonn.Web
             ViewBag.MenuItem = "account";
             var memberID = Convert.ToInt32(CookieHelper.UID);
             Member member = memberService.Find(memberID);
+            ViewBag.EmailActived = member.Status >= (int)MemberStatus.EmailActived;
             return View(member);
         }
 

@@ -26,8 +26,6 @@ namespace Maitonn.Web
         [Key]
         public int MemberID { get; set; }
 
-      
-
         public bool Sex { get; set; }
 
         public System.DateTime Borthday { get; set; }
@@ -58,6 +56,12 @@ namespace Maitonn.Web
 
         [MaxLength(150)]
         public string Description { get; set; }
+
+        public DateTime VipStartTime { get; set; }
+
+        public DateTime VipEndTime { get; set; }
+
+        public int VipLevel { get; set; }
 
         public virtual Area Area { get; set; }
 

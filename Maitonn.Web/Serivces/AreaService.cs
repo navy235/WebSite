@@ -3,13 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using Maitonn.Core;
-using Maitonn.Core;
-using Maitonn.Core;
-using Maitonn.Core;
-using Maitonn.Core;
-
-
-
 namespace Maitonn.Web
 {
     public class AreaService : IAreaService

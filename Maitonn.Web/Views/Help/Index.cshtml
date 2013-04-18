@@ -1,0 +1,41 @@
+﻿@model HelpViewModel
+@{
+    ViewBag.Title = Model.Article.Name;
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@Html.Action("city", "home", new { province = CookieHelper.Province })
+@Html.Action("menu", "list", new { province = CookieHelper.Province })
+
+<div class="nav-bread">
+    <a class="nav-bread-home" href="@Url.Action("index", "home", new { province = CookieHelper.Province })"></a>&gt;
+    <span>@Model.Article.ArticleCate.CateName</span>
+    &gt;<strong>@ViewBag.Title</strong>
+</div>
+
+
+<article class="help-main clearfix">
+    <div class="help-left">
+        <dl>
+            @foreach (var item in Model.HelpNav)
+            { 
+                <dt>@item.Name</dt>
+                foreach (var childitem in item.Items)
+                { 
+                <dd><a class="@(childitem.ID == Model.Article.ID ? "active" : "")" href="@Url.Action("index", "help", new { id = childitem.ID })">@childitem.Name</a></dd>
+                }
+            }
+
+        </dl>
+    </div>
+    <div class="help-right">
+        <div>
+            <h2 class="help-right-h2">@Model.Article.Name</h2>
+            <div class="help-right-box">
+                @Html.Raw(HttpUtility.HtmlDecode(Model.Article.Content))
+            </div>
+        </div>
+    </div>
+</article>
+
+

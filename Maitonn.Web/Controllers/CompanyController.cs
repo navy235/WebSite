@@ -73,7 +73,7 @@ namespace Maitonn.Web
                     FundCode = cpy.FundCode,
                     LinkMan = cpy.LinkMan,
                     LinManImg = cpy.LinkManImg.ImgUrls,
-                    Logo = cpy.CompanyLogoImg.ImgUrls,
+                    Logo = cpy.CompanyLogoImg.FocusImgUrl,
                     Mobile = cpy.Mobile,
                     MSN = cpy.MSN,
                     Name = cpy.Name,

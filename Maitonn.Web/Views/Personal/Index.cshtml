@@ -20,17 +20,25 @@
                 @*  <li class="list-status"><span>我的余额：￥ 6 元</span><a href="http://task.zhubajie.com/payorder/order">充值</a><a href="http://u.zhubajie.com/pay/activeyjf" target="_blank">管理</a></li>*@
             </ul>
 
-            <p class="personal-body-tips mt10">你在猪八戒网还是黑户哦！作为一个有身份的人，没有身份认证怎么行! <a href="http://yan.zhubajie.com/certification/index-from-t5" target="_blank">马上认证身份&gt;</a></p>
+            @*  <p class="personal-body-tips mt10">你在猪八戒网还是黑户哦！作为一个有身份的人，没有身份认证怎么行! <a href="http://yan.zhubajie.com/certification/index-from-t5" target="_blank">马上认证身份&gt;</a></p>*@
             <div class="personal-body-bind">
-                <dl class="clearfix">
+                @* <dl class="clearfix">
                     <dt class="bind-mobile"></dt>
                     <dd class="bind-desc"><span class="ok">手机绑定</span>已绑定手机号码：186*****942</dd>
                     <dd class="bind-btn"><a href="/cert/mobile-action-change">修改手机号码</a></dd>
-                </dl>
+                </dl>*@
                 <dl class="clearfix">
                     <dt class="bind-email"></dt>
-                    <dd class="bind-desc"><span class="ok">邮箱绑定</span>已绑定邮箱：564*****@@qq.com</dd>
-                    <dd class="bind-btn"><a href="/cert/email-action-change">修改邮箱</a></dd>
+                    @if (ViewBag.EmailActived)
+                    {
+                        <dd class="bind-desc"><span class="ok">邮箱绑定</span>已绑定邮箱：@Model.Email</dd>
+                       
+                    }
+                    else
+                    {
+                        <dd class="bind-desc"><span class="failed">邮箱绑定</span>邮箱未绑定：@Model.Email</dd>
+                        <dd class="bind-btn"><a class="btn btn-danger" href="@Url.Action("bindemail")"><i class="icon-envelope icon-white"></i>&nbsp;&nbsp; 绑定邮箱</a></dd>
+                    }
                 </dl>
             </div>
         </div>

@@ -33,7 +33,7 @@
 </text>
 ).Draggable(true).Width(600).Height(400).Modal(true).Visible(false)
 
-<input type="text" disabled="disabled" id="@Html.Raw(name + "_text")" title="" />
+<input type="text" disabled="disabled"  class="k-textbox single-line text-box" id="@Html.Raw(name + "_text")" title="" />
 
 @Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
 <button type="button" id="@Html.Raw(name + "_select")" class="k-button" ><span class="k-icon k-add"></span>选择</button>

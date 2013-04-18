@@ -77,6 +77,7 @@ namespace Maitonn.Web
                 BussinessCode = cpy.BussinessCode,
                 CityCode = cpy.CityCode,
                 CompanyImg = cpy.CompanyImg.ImgUrls,
+                Logo = cpy.CompanyLogoImg.FocusImgUrl,
                 Description = cpy.Description,
                 Fax = cpy.Fax,
                 FundCode = cpy.FundCode,

@@ -204,6 +204,8 @@
     <Compile Include="Controllers\Admin\DepartmentController.cs" />
     <Compile Include="Controllers\Admin\FormatCateController.cs" />
     <Compile Include="Controllers\Admin\GroupController.cs" />
+    <Compile Include="Controllers\Admin\ArticleController.cs" />
+    <Compile Include="Controllers\Admin\ImageBrowserController.cs" />
     <Compile Include="Controllers\Admin\MemberController.cs" />
     <Compile Include="Controllers\Admin\OutDoorMediaCateController.cs" />
     <Compile Include="Controllers\Admin\OutDoorVerifyController.cs" />
@@ -211,11 +213,13 @@
     <Compile Include="Controllers\Admin\PeriodCateController.cs" />
     <Compile Include="Controllers\Admin\PermissionController.cs" />
     <Compile Include="Controllers\Admin\RolesController.cs" />
+    <Compile Include="Controllers\Admin\ArticleCateController.cs" />
     <Compile Include="Controllers\AjaxServiceController.cs" />
     <Compile Include="Controllers\ChangeProvinceController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -239,30 +243,6 @@
     <Compile Include="Lucene\LuceneIndexingService.cs" />
     <Compile Include="Lucene\LuceneSearchService.cs" />
     <Compile Include="Lucene\OutDoorIndexEntity.cs" />
-    <Compile Include="Migrations\201304020515107_AddCompanyLogo.cs" />
-    <Compile Include="Migrations\201304020515107_AddCompanyLogo.Designer.cs">
-      <DependentUpon>201304020515107_AddCompanyLogo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304020541457_AlterCompanyDescription.cs" />
-    <Compile Include="Migrations\201304020541457_AlterCompanyDescription.Designer.cs">
-      <DependentUpon>201304020541457_AlterCompanyDescription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304020901312_AlterCompanyBannber.cs" />
-    <Compile Include="Migrations\201304020901312_AlterCompanyBannber.Designer.cs">
-      <DependentUpon>201304020901312_AlterCompanyBannber.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304070533555_AddCompanyMessageAndNotice.cs" />
-    <Compile Include="Migrations\201304070533555_AddCompanyMessageAndNotice.Designer.cs">
-      <DependentUpon>201304070533555_AddCompanyMessageAndNotice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304070542590_AlterCompanyMessage.cs" />
-    <Compile Include="Migrations\201304070542590_AlterCompanyMessage.Designer.cs">
-      <DependentUpon>201304070542590_AlterCompanyMessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304070559107_AlterCompanyNotice.cs" />
-    <Compile Include="Migrations\201304070559107_AlterCompanyNotice.Designer.cs">
-      <DependentUpon>201304070559107_AlterCompanyNotice.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -297,6 +277,7 @@
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\SaleBase.cs" />
+    <Compile Include="Models\SliderImg.cs" />
     <Compile Include="Models\TopBase.cs" />
     <Compile Include="Models\CompanyLogoImg.cs" />
     <Compile Include="Models\CompanyCredentialsImg.cs" />
@@ -304,6 +285,11 @@
     <Compile Include="Models\CompanyBannerImg.cs" />
     <Compile Include="Models\CompanyNotice.cs" />
     <Compile Include="Models\CompanyMessage.cs" />
+    <Compile Include="Models\ArticleCate.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\StaticTemplate.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serivces\AreaAttService.cs" />
     <Compile Include="Serivces\AreaService.cs" />
@@ -316,6 +302,7 @@
     <Compile Include="Serivces\EmailService.cs" />
     <Compile Include="Serivces\FormatCateService.cs" />
     <Compile Include="Serivces\GroupService.cs" />
+    <Compile Include="Serivces\ArticleService.cs" />
     <Compile Include="Serivces\Interface\IAreaAttService.cs" />
     <Compile Include="Serivces\Interface\IAreaService.cs" />
     <Compile Include="Serivces\Interface\IAuctionCalendarService.cs" />
@@ -336,6 +323,9 @@
     <Compile Include="Serivces\Interface\IPeriodCateService.cs" />
     <Compile Include="Serivces\Interface\IPermissionService.cs" />
     <Compile Include="Serivces\Interface\IRolesService.cs" />
+    <Compile Include="Serivces\Interface\IArticleService.cs" />
+    <Compile Include="Serivces\Interface\IArticleCateService.cs" />
+    <Compile Include="Serivces\Interface\IStaticTemplateService.cs" />
     <Compile Include="Serivces\MemberService.cs" />
     <Compile Include="Serivces\Member_ActionService.cs" />
     <Compile Include="Serivces\OutDoorMediaCateService.cs" />
@@ -345,9 +335,12 @@
     <Compile Include="Serivces\PeriodCateService.cs" />
     <Compile Include="Serivces\PermissionService.cs" />
     <Compile Include="Serivces\RolesService.cs" />
+    <Compile Include="Serivces\ArticleCateService.cs" />
+    <Compile Include="Serivces\StaticTemplateService.cs" />
     <Compile Include="Utils\ServiceResult.cs" />
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="ViewModels\AccountModel.cs" />
+    <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\DashBoardViewModel.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
@@ -356,6 +349,7 @@
     <Compile Include="ViewModels\ImageBox.cs" />
     <Compile Include="ViewModels\OutDoorViewModel.cs" />
     <Compile Include="ViewModels\RoleModel.cs" />
+    <Compile Include="ViewModels\HelpViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LuceneAnalyer\sDict.txt" />
@@ -1435,30 +1429,15 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\CreateIndex.cshtml" />
     <Content Include="Views\Test\SearchIndex.cshtml" />
-    <Content Include="Views\Shared\_MINIPROFILER UPDATED Layout.cshtml" />
     <Content Include="Views\Login\PopLogin.cshtml" />
     <Content Include="Views\Shared\_LayoutPopLogin.cshtml" />
     <Content Include="Views\Register\ActiveEmail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201304020515107_AddCompanyLogo.resx">
-      <DependentUpon>201304020515107_AddCompanyLogo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304020541457_AlterCompanyDescription.resx">
-      <DependentUpon>201304020541457_AlterCompanyDescription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304020901312_AlterCompanyBannber.resx">
-      <DependentUpon>201304020901312_AlterCompanyBannber.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304070533555_AddCompanyMessageAndNotice.resx">
-      <DependentUpon>201304070533555_AddCompanyMessageAndNotice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304070542590_AlterCompanyMessage.resx">
-      <DependentUpon>201304070542590_AlterCompanyMessage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304070559107_AlterCompanyNotice.resx">
-      <DependentUpon>201304070559107_AlterCompanyNotice.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Views\Shared\EditorTemplates\RichEditor.cshtml" />
+    <Content Include="Views\ArticleCate\Index.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\Create.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

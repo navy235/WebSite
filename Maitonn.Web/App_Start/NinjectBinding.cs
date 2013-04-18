@@ -50,7 +50,13 @@ namespace Maitonn.Web
                 .To<Groupervice>()
                 .InRequestScope();
 
+            kernel.Bind<IArticleService>()
+                .To<ArticleService>()
+                .InRequestScope();
 
+            kernel.Bind<IStaticTemplateService>()
+                .To<StaticTemplateService>()
+                .InRequestScope();
 
             kernel.Bind<IOwnerCateService>()
                 .To<OwnerCateService>()
@@ -75,6 +81,9 @@ namespace Maitonn.Web
                 .InRequestScope();
             kernel.Bind<IOutDoorMediaCateService>()
                 .To<OutDoorMediaCateService>()
+                .InRequestScope();
+            kernel.Bind<IArticleCateService>()
+                .To<ArticleCateService>()
                 .InRequestScope();
             //kernel.Bind<IOwnerService>()
             //    .To<OwnerService>()

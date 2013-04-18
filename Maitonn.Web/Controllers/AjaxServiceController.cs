@@ -25,6 +25,7 @@ namespace Maitonn.Web
         private IPeriodCateService periodCateService;
         private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
+        private IArticleCateService articleCateService;
         public AjaxServiceController(IUnitOfWork _DB_Service
             , IMemberService _memberService
             , IAreaAttService _areaAttService
@@ -38,6 +39,7 @@ namespace Maitonn.Web
             , IPeriodCateService _periodCateService
             , IOwnerCateService _ownerCateService
             , IAuctionCalendarService _auctionCalendarService
+            , IArticleCateService _articleCateService
             )
         {
             DB_Service = _DB_Service;
@@ -53,6 +55,7 @@ namespace Maitonn.Web
             periodCateService = _periodCateService;
             ownerCateService = _ownerCateService;
             auctionCalendarService = _auctionCalendarService;
+            articleCateService = _articleCateService;
         }
 
         #region  Control
@@ -80,6 +83,34 @@ namespace Maitonn.Web
         {
             var selectValues = new List<int>();
             var item = areaService.Find(value);
+            selectValues.Add(item.ID);
+            if (item.PID.HasValue)
+            {
+                selectValues.Add(item.PID.Value);
+            }
+            selectValues.Reverse();
+            return Json(selectValues, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        public ActionResult ArticleCode()
+        {
+            var renderRadioList = Utilities.GetSelectListData(articleCateService.GetALL().Where(x => x.PID.Equals(null)).ToList(),
+             x => x.ID,
+             x => x.CateName, false);
+            return Json(renderRadioList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ArticleCodeName(int key)
+        {
+            return Content(articleCateService.Find(key).CateName);
+        }
+
+        public ActionResult Get_ArticleCode(int value)
+        {
+            var selectValues = new List<int>();
+            var item = articleCateService.Find(value);
             selectValues.Add(item.ID);
             if (item.PID.HasValue)
             {

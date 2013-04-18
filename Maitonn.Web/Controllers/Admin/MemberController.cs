@@ -90,6 +90,10 @@ namespace Maitonn.Web
             model.NickName = member.NickName;
             model.GroupID = member.GroupID;
             model.AvtarUrl = member.AvtarUrl;
+            if (member.Member_Profile == null)
+            {
+                member.Member_Profile = new Member_Profile();
+            }
             model.CityCode = member.Member_Profile.CityCode;
             model.Sex = member.Member_Profile.Sex;
             model.Borthday = member.Member_Profile.Borthday;

@@ -196,6 +196,10 @@ textarea {
   width: 125px;
 }
 
+.form-field-richeditor .k-editor {
+  display: inline-block;
+}
+
 .form-field-avtar .img-box {
   display: inline-block;
 }
