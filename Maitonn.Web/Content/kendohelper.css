@@ -184,3 +184,7 @@ div.k-grid-header, div.k-grid-footer {
       top: 5px;
       cursor: pointer;
     }
+
+.k-grid a:hover {
+  text-decoration: none;
+}

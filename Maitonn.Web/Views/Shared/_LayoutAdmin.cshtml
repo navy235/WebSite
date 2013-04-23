@@ -153,6 +153,14 @@
                items.Add().Text("添加文章").Action("create", "article")
                .LinkHtmlAttributes(new { target = "content" });
            });
+
+        panelbar.Add().Text("广知币产品")
+        .Items(items =>
+        {
+            items.Add().Text("广知币消费类型").Action("index", "moneytypesetting")
+                 .LinkHtmlAttributes(new { target = "content" });
+
+        });
     })
 )
     }

@@ -48,9 +48,9 @@ namespace Maitonn.Core
             base.Dispose();
         }
 
-        public int ExecuteSqlCommand(string sql, params object[] parameters)
+        public System.Collections.Generic.IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
         {
-            return base.Database.ExecuteSqlCommand(sql, parameters);
+            return base.Database.SqlQuery<TElement>(sql, parameters);
         }
     }
 

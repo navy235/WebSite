@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "广知币类型管理";
+}
+@(Html.Kendo().Grid<Member_Money_Type>()
+    .Name("Member_Money_TypesList")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Key);
+        columns.Bound(c => c.Name);
+        columns.Bound(c => c.Money);
+        columns.Bound(c => c.DayLimit);
+        columns.Bound(c => c.TimeLimit);
+        columns.Bound(c => c.MoneyLimit);
+        columns.Command(command => command.Destroy()).Title("删除").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Create();
+        toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Sortable()
+    .Groupable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Batch(true)
+        .PageSize(120)
+        .Model(model => model.Id(c => c.Key))
+        .Create("Editing_Create", "MoneyTypeSetting")
+        .Read("Editing_Read", "MoneyTypeSetting")
+        .Update("Editing_Update", "MoneyTypeSetting")
+        .Destroy("Editing_Destroy", "MoneyTypeSetting")
+    )
+)

@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "广知币赚币记录";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="personal-form mt20">
+
+                @(Html.Kendo().Grid<Member_Money_List>()
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+
+                        columns.Bound(c => c.Description).Title("赚币原因").Sortable(false);
+                        columns.Bound(c => c.Money).Title("赚币金额");
+                        columns.Bound(c => c.AddTime).Format("{0:yyyy-MM-dd}").Width(80).Title("赚币时间");
+
+                    })
+
+                    .Pageable()
+                    .Scrollable()
+                    .Sortable()
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(10)
+                        .Sort(sort => sort.Add(x => x.AddTime).Descending())
+                        .Model(model => model.Id(c => c.ID))
+                        .Read(read => read.Action("WalletGain_Read", "wallet"))
+                     )
+                     .HtmlAttributes(new { style = "height:300px;" })
+                    )
+            </div>
+        </div>
+
+    </div>
+</article>

@@ -111,13 +111,55 @@
         <li class="item-outdoor-top ">
             <p><a href="http://u.zhubajie.com/changepass/index">置顶管理</a></p>
         </li>
-
     </ul>
     <div class="nav-title ">
         <em></em>
-        <p class="nav-pay"><a href="http://u.zhubajie.com/pay">支付账户管理</a></p>
+        <p class="nav-message">留言管理</p>
         <i></i>
     </div>
+    <ul class="menu-message" style="display: none;">
+        <li class="item-message-list ">
+            <p><a href="@Url.Action("index", "message")">系统留言</a></p>
+        </li>
+        <li class="item-message-recive ">
+            <p><a href="@Url.Action("recive", "message")">收到的留言</a></p>
+        </li>
+        <li class="item-message-send ">
+            <p><a href="@Url.Action("send", "message")">发出的留言</a></p>
+        </li>
+    </ul>
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-wallet">钱包管理</p>
+        <i></i>
+    </div>
+    <ul class="menu-wallet" style="display: none;">
+        <li class="item-wallet-list ">
+            <p><a href="@Url.Action("index", "wallet")">消费记录</a></p>
+        </li>
+        <li class="item-wallet-gain ">
+            <p><a href="@Url.Action("gain", "wallet")">赚币记录</a></p>
+        </li>
+    </ul>
+
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-gztvip">广知通管理</p>
+        <i></i>
+    </div>
+    <ul class="menu-wallet" style="display: none;">
+        <li class="item-wallet-list ">
+            <p><a href="@Url.Action("index", "gztvip")">基本信息</a></p>
+        </li>
+        <li class="item-wallet-gain ">
+            <p><a href="@Url.Action("pay", "gztvip")">开通或续费</a></p>
+        </li>
+        <li class="item-wallet-list ">
+            <p><a href="@Url.Action("paycz", "gztvip")">广知币充值</a></p>
+        </li>
+    </ul>
+
+
 </div>
 
 <script type="text/javascript">

@@ -600,6 +600,7 @@ namespace Maitonn.Web
             {
                 member.Member_Profile = new Member_Profile();
             }
+
             return View(new CompanyMessageDetailsViewModel()
             {
                 ID = Details.ID,

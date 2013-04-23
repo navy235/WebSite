@@ -90,6 +90,33 @@ namespace Maitonn.Web
             //    .InRequestScope();
 
 
+            kernel.Bind<IMember_Money_TypeService>()
+              .To<Member_Money_TypeService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_MoneyService>()
+              .To<Member_MoneyService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_Money_ListService>()
+              .To<Member_Money_ListService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_VIPService>()
+              .To<Member_VIPService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_MessageService>()
+              .To<Member_MessageService>()
+              .InRequestScope();
+
+
+
+            kernel.Bind<ISys_MessageService>()
+              .To<Sys_MessageService>()
+              .InRequestScope();
+
+
             kernel.Bind<IEmailService>()
                 .To<EmailService>()
                 .InRequestScope();

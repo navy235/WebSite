@@ -660,9 +660,6 @@ namespace Maitonn.Web
         [Display(Name = "留言时间")]
         public DateTime AddTime { get; set; }
 
-
-
-
     }
 
     public class AddCompanyMessageViewModel

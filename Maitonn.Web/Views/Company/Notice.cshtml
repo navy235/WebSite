@@ -48,7 +48,7 @@
                     })
                     .ToolBar(toolbar =>
                     {
-
+                        toolbar.Custom().Text("添加公告").Action("addnotice", "company");
                         toolbar.Custom().Text("批量不显示").HtmlAttributes(new { onclick = "Grid.notShowALL(this);", href = "javascript:void(0);" });
                         toolbar.Custom().Text("批量显示").HtmlAttributes(new { onclick = "Grid.showALL(this);", href = "javascript:void(0);" });
                         toolbar.Custom().Text("批量删除").HtmlAttributes(new { onclick = "Grid.deleteAll(this);", href = "javascript:void(0);" });

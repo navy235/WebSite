@@ -200,4 +200,17 @@ namespace Maitonn.Core
         Price200Lower = 200,
         PriceMax = 9000,
     }
+
+
+    public enum Sys_MessageStatus
+    {
+        Delete = 0,
+        Show = 1
+    }
+
+    public enum Member_MessageStatus
+    {
+        Delete = 0,
+        Show = 1
+    }
 }

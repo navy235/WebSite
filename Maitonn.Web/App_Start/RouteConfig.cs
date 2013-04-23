@@ -14,6 +14,8 @@ namespace Maitonn.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 
+
+
             routes.MapRoute(
                name: "defaultlist",
                url: "list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{price}-{order}-{descending}-p_{page}",
@@ -82,6 +84,20 @@ namespace Maitonn.Web
                    page = @"\d+"
                }
             );
+
+            routes.MapRoute(
+            name: "media",
+            url: "media-{id}",
+            defaults: new
+            {
+                controller = "show",
+                action = "index"
+            },
+            constraints: new
+            {
+                id = @"\d+"
+            }
+         );
 
             routes.MapRoute(
               name: "defaulthome",

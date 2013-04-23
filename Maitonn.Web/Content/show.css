@@ -3440,7 +3440,7 @@ goods-pack .goods-desc {
 
       .goods-feedback-tab ul li.active {
         font: bold 12px/38px "宋体";
-        border-top: 2px solid #4b7805;
+        border-top: 2px solid #d90000;
         margin: -1px 0 -1px 0;
         background: #fff;
         position: relative;
@@ -3706,17 +3706,32 @@ goods-pack .goods-desc {
 }
 
 .nav-current p.nav-security {
-  background-position: 0 -665px;
+  background-position: 0 -667px;
 }
 
-.nav-title p.nav-pay {
+.nav-title p.nav-wallet {
   background-position: 0 -553px;
 }
 
-.nav-current p.nav-pay {
-  background-position: 0 -691px;
+.nav-current p.nav-wallet {
+  background-position: 0 -693px;
 }
 
+.nav-title p.nav-message {
+  background-position: 0 -117px;
+}
+
+.nav-current p.nav-message {
+  background-position: 0 -117px;
+}
+
+.nav-title p.nav-company {
+  background-position: 0 -192px;
+}
+
+.nav-current p.nav-company {
+  background-position: 0 -192px;
+}
 
 .personal-right-body {
   padding-bottom: 150px;
@@ -4132,6 +4147,10 @@ goods-pack .goods-desc {
   float: right;
   width: 790px;
 }
+
+  .help-right h2 {
+    font-weight: 900;
+  }
 
 .help-right-h2 {
   font: 900 14px/18px "宋体";

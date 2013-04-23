@@ -25,6 +25,15 @@ namespace Maitonn.Web
         //
         // GET: /Test/
 
+        private IMember_MoneyService Member_MoneyService;
+
+        public TestController(
+            IMember_MoneyService Member_MoneyService)
+        {
+            this.Member_MoneyService = Member_MoneyService;
+
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -231,6 +240,13 @@ namespace Maitonn.Web
         }
 
 
+
+        public ActionResult MemberMoney()
+        {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            ViewBag.Result = Member_MoneyService.AddMoney(memberID, 2, "0001", "登录");
+            return View();
+        }
 
     }
 }

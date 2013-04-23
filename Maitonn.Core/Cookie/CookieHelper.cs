@@ -128,6 +128,11 @@ namespace Maitonn.Core
             }
         }
 
+        public static int MemberID
+        {
+            get { return Convert.ToInt32(UID); }
+        }
+
         public static string NickName
         {
             get
@@ -198,6 +203,8 @@ namespace Maitonn.Core
                 }
             }
         }
+
+
 
         public static string Province
         {

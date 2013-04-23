@@ -207,6 +207,7 @@
     <Compile Include="Controllers\Admin\ArticleController.cs" />
     <Compile Include="Controllers\Admin\ImageBrowserController.cs" />
     <Compile Include="Controllers\Admin\MemberController.cs" />
+    <Compile Include="Controllers\Admin\MoneyTypeSettingController.cs" />
     <Compile Include="Controllers\Admin\OutDoorMediaCateController.cs" />
     <Compile Include="Controllers\Admin\OutDoorVerifyController.cs" />
     <Compile Include="Controllers\Admin\OwnerCateController.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GztvipController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListController.cs" />
@@ -229,6 +231,8 @@
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ShowController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\WalletController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Filters\BaseAuthorizeAttribute.cs" />
     <Compile Include="Filters\PermissionAttributes.cs" />
@@ -243,6 +247,30 @@
     <Compile Include="Lucene\LuceneIndexingService.cs" />
     <Compile Include="Lucene\LuceneSearchService.cs" />
     <Compile Include="Lucene\OutDoorIndexEntity.cs" />
+    <Compile Include="Migrations\201304220731324_AddMemberVIP.cs" />
+    <Compile Include="Migrations\201304220731324_AddMemberVIP.Designer.cs">
+      <DependentUpon>201304220731324_AddMemberVIP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304220738481_AddVIPSetting.cs" />
+    <Compile Include="Migrations\201304220738481_AddVIPSetting.Designer.cs">
+      <DependentUpon>201304220738481_AddVIPSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304230152177_AddRelationOnMemberMoney.cs" />
+    <Compile Include="Migrations\201304230152177_AddRelationOnMemberMoney.Designer.cs">
+      <DependentUpon>201304230152177_AddRelationOnMemberMoney.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304230313095_AddSysMessage1.cs" />
+    <Compile Include="Migrations\201304230313095_AddSysMessage1.Designer.cs">
+      <DependentUpon>201304230313095_AddSysMessage1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304230346220_AddSysMessageTitle.cs" />
+    <Compile Include="Migrations\201304230346220_AddSysMessageTitle.Designer.cs">
+      <DependentUpon>201304230346220_AddSysMessageTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304230559488_AlterMessageStatus.cs" />
+    <Compile Include="Migrations\201304230559488_AlterMessageStatus.Designer.cs">
+      <DependentUpon>201304230559488_AlterMessageStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -267,6 +295,7 @@
     <Compile Include="Models\MediaImg.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Member_Action.cs" />
+    <Compile Include="Models\Member_Message.cs" />
     <Compile Include="Models\Member_Profile.cs" />
     <Compile Include="Models\OutDoor.cs" />
     <Compile Include="Models\OutDoorMediaCate.cs" />
@@ -288,8 +317,13 @@
     <Compile Include="Models\ArticleCate.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\StaticTemplate.cs" />
-    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\PayList.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Member_Money.cs" />
+    <Compile Include="Models\Member_Money_Type.cs" />
+    <Compile Include="Models\Member_Money_List.cs" />
+    <Compile Include="Models\Member_VIP.cs" />
+    <Compile Include="Models\Sys_Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serivces\AreaAttService.cs" />
     <Compile Include="Serivces\AreaService.cs" />
@@ -303,6 +337,8 @@
     <Compile Include="Serivces\FormatCateService.cs" />
     <Compile Include="Serivces\GroupService.cs" />
     <Compile Include="Serivces\ArticleService.cs" />
+    <Compile Include="Serivces\Interface\IMember_MessageService.cs" />
+    <Compile Include="Serivces\Interface\IMember_MoneyService.cs" />
     <Compile Include="Serivces\Interface\IAreaAttService.cs" />
     <Compile Include="Serivces\Interface\IAreaService.cs" />
     <Compile Include="Serivces\Interface\IAuctionCalendarService.cs" />
@@ -316,6 +352,7 @@
     <Compile Include="Serivces\Interface\IGroupService.cs" />
     <Compile Include="Serivces\Interface\IMemberService.cs" />
     <Compile Include="Serivces\Interface\IMember_ActionService.cs" />
+    <Compile Include="Serivces\Interface\IMember_Money_TypeService.cs" />
     <Compile Include="Serivces\Interface\IOutDoorMediaCateService.cs" />
     <Compile Include="Serivces\Interface\IOutDoorService.cs" />
     <Compile Include="Serivces\Interface\IOwnerCateService.cs" />
@@ -326,8 +363,16 @@
     <Compile Include="Serivces\Interface\IArticleService.cs" />
     <Compile Include="Serivces\Interface\IArticleCateService.cs" />
     <Compile Include="Serivces\Interface\IStaticTemplateService.cs" />
+    <Compile Include="Serivces\Interface\IMember_Money_ListService.cs" />
+    <Compile Include="Serivces\Interface\ISys_MessageService.cs" />
+    <Compile Include="Serivces\Interface\IMember_VIPService.cs" />
     <Compile Include="Serivces\MemberService.cs" />
     <Compile Include="Serivces\Member_ActionService.cs" />
+    <Compile Include="Serivces\Member_MessageService.cs" />
+    <Compile Include="Serivces\Member_MoneyService.cs" />
+    <Compile Include="Serivces\Member_Money_ListService.cs" />
+    <Compile Include="Serivces\Member_Money_TypeService.cs" />
+    <Compile Include="Serivces\Member_VIPService.cs" />
     <Compile Include="Serivces\OutDoorMediaCateService.cs" />
     <Compile Include="Serivces\OutDoorService.cs" />
     <Compile Include="Serivces\OwnerCateService.cs" />
@@ -337,6 +382,7 @@
     <Compile Include="Serivces\RolesService.cs" />
     <Compile Include="Serivces\ArticleCateService.cs" />
     <Compile Include="Serivces\StaticTemplateService.cs" />
+    <Compile Include="Serivces\Sys_MessageService.cs" />
     <Compile Include="Utils\ServiceResult.cs" />
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="ViewModels\AccountModel.cs" />
@@ -347,9 +393,11 @@
     <Compile Include="ViewModels\GroupModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ImageBox.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\OutDoorViewModel.cs" />
     <Compile Include="ViewModels\RoleModel.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
+    <Compile Include="ViewModels\PayVIPViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LuceneAnalyer\sDict.txt" />
@@ -366,6 +414,7 @@
     <Content Include="Content\EmailTemplate\activeemail.htm" />
     <Content Include="Content\EmailTemplate\getpwd.htm" />
     <Content Include="Content\EmailTemplate\reg.htm" />
+    <Content Include="Content\Html\gztHelp.html" />
     <Content Include="Content\images\activityFlags.png" />
     <Content Include="Content\images\actTags.png" />
     <Content Include="Content\images\bind-email.jpg" />
@@ -387,6 +436,7 @@
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\guideImg.png" />
+    <Content Include="Content\images\gzbhelp.gif" />
     <Content Include="Content\images\hint_16.png" />
     <Content Include="Content\images\icons.png" />
     <Content Include="Content\images\icon\error.png" />
@@ -1438,6 +1488,17 @@
     <Content Include="Views\Article\Create.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\MoneyTypeSetting\Index.cshtml" />
+    <Content Include="Views\Test\MemberMoney.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\SysMessageDetails.cshtml" />
+    <Content Include="Views\Message\Recive.cshtml" />
+    <Content Include="Views\Message\Send.cshtml" />
+    <Content Include="Views\Message\ReciveMessageDetails.cshtml" />
+    <Content Include="Views\Message\SendMessageDetails.cshtml" />
+    <Content Include="Views\Wallet\Index.cshtml" />
+    <Content Include="Views\Wallet\Gain.cshtml" />
+    <Content Include="Views\Gztvip\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1452,6 +1513,26 @@
     <Content Include="Content\kendo\2012.3.1114\images\KendoUI.ttf" />
     <Content Include="Content\kendo\2012.3.1114\images\KendoUI.woff" />
     <Content Include="Content\smooth\images\images.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201304220731324_AddMemberVIP.resx">
+      <DependentUpon>201304220731324_AddMemberVIP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304220738481_AddVIPSetting.resx">
+      <DependentUpon>201304220738481_AddVIPSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304230152177_AddRelationOnMemberMoney.resx">
+      <DependentUpon>201304230152177_AddRelationOnMemberMoney.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304230313095_AddSysMessage1.resx">
+      <DependentUpon>201304230313095_AddSysMessage1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304230346220_AddSysMessageTitle.resx">
+      <DependentUpon>201304230346220_AddSysMessageTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304230559488_AlterMessageStatus.resx">
+      <DependentUpon>201304230559488_AlterMessageStatus.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

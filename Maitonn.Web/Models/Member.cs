@@ -70,5 +70,12 @@ namespace Maitonn.Web
         public virtual Company Company { get; set; }
 
         public virtual Member_Profile Member_Profile { get; set; }
+
+        public virtual Member_VIP Member_VIP { get; set; }
+
+        public virtual Member_Money Member_Money { get; set; }
+
+     
+
     }
 }

@@ -19,6 +19,19 @@ namespace Maitonn.Web
 
         public IDbSet<WorkItem> WorkItems { get; set; }
 
+        public IDbSet<Member_Money> Member_Money { get; set; }
+
+        public IDbSet<Member_Money_List> Member_Money_List { get; set; }
+
+        public IDbSet<Member_Money_Type> Member_Money_Type { get; set; }
+
+        public IDbSet<PayList> PayList { get; set; }
+
+        public IDbSet<Member_Message> Member_Message { get; set; }
+
+        public IDbSet<Sys_Message> Sys_Message { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
@@ -48,6 +61,13 @@ namespace Maitonn.Web
                 .HasOptional(m => m.Member_Profile)
                 .WithRequired(x => x.Member);
 
+            modelBuilder.Entity<Member>()
+             .HasOptional(m => m.Member_VIP)
+             .WithRequired(x => x.Member);
+
+            modelBuilder.Entity<Member>()
+               .HasOptional(m => m.Member_Money)
+               .WithRequired(x => x.Member);
 
             modelBuilder.Entity<Member>()
                 .HasOptional(m => m.Company)
@@ -56,15 +76,15 @@ namespace Maitonn.Web
 
 
             modelBuilder.Entity<Company>()
-             .HasRequired(c => c.Creator)
-             .WithOptional(m => m.SelfCompany)
-             .WillCascadeOnDelete(false);
+               .HasRequired(c => c.Creator)
+               .WithOptional(m => m.SelfCompany)
+               .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Company>()
-              .HasRequired(m => m.Area)
-              .WithMany(c => c.Company)
-              .HasForeignKey(o => o.CityCode)
-              .WillCascadeOnDelete(false);
+               .HasRequired(m => m.Area)
+               .WithMany(c => c.Company)
+               .HasForeignKey(o => o.CityCode)
+               .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Company>()
                .HasRequired(m => m.CompanyScale)
@@ -237,6 +257,7 @@ namespace Maitonn.Web
               .WithMany(c => c.StaticTemplate)
               .HasForeignKey(o => o.ProvinceCode)
               .WillCascadeOnDelete(false);
+
 
             base.OnModelCreating(modelBuilder);
         }
