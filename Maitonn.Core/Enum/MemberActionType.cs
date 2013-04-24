@@ -213,4 +213,32 @@ namespace Maitonn.Core
         Delete = 0,
         Show = 1
     }
+
+    public enum Pay_State
+    {
+        Applying,
+        ApplyOk,
+        ApplyFail
+    }
+
+    public enum Pay_Type
+    {
+        VIP,
+        VIP2,
+        CZ,
+        ZD
+    }
+
+    public enum Pay_Mode
+    {
+        ZFB,
+        WY
+    }
+
+
+    public enum ServerType
+    {
+        VIPServer = 1,
+        TopServer = 2
+    }
 }

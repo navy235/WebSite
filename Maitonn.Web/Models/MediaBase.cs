@@ -15,10 +15,9 @@
         [MaxLength(50)]
         public string Name { get; set; }
 
-
         [Required(ErrorMessage = "请输入媒体补充说明.")]
         [Display(Name = "媒体补充说明")]
-        [MaxLength(2500)]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         public int Integrity { get; set; }

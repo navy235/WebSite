@@ -11,8 +11,6 @@ namespace Maitonn.Web
         public OutDoor()
         {
             this.AreaAtt = new HashSet<AreaAtt>();
-            this.TopBase = new HashSet<TopBase>();
-            this.SaleBase = new HashSet<SaleBase>();
             this.AuctionCalendar = new HashSet<AuctionCalendar>();
             this.Hit = 0;
             this.Message = 0;
@@ -88,10 +86,6 @@ namespace Maitonn.Web
         public virtual OwnerCate OwnerCate { get; set; }
 
         public virtual ICollection<AuctionCalendar> AuctionCalendar { get; set; }
-
-        public virtual ICollection<TopBase> TopBase { get; set; }
-
-        public virtual ICollection<SaleBase> SaleBase { get; set; }
 
         public virtual MapImg MapImg { get; set; }
 

@@ -188,7 +188,7 @@ namespace Maitonn.Web
             SliderTabBoxViewModel model = new SliderTabBoxViewModel();
 
             SliderTabContainerViewModel tab = new SliderTabContainerViewModel();
-            tab.Name = "惊爆特价";
+            tab.Name = "推荐资源";
             var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(8).ToList();
             tab.Items = product.Select(x => new ProductViewModel()
             {
@@ -203,7 +203,7 @@ namespace Maitonn.Web
             model.Tabs.Add(tab);
 
             tab = new SliderTabContainerViewModel();
-            tab.Name = "每日优选";
+            tab.Name = "优质资源";
             tab.Items = product.Select(x => new ProductViewModel()
             {
                 ID = x.MediaID,
@@ -216,7 +216,7 @@ namespace Maitonn.Web
             model.Tabs.Add(tab);
 
             tab = new SliderTabContainerViewModel();
-            tab.Name = "本周热卖";
+            tab.Name = "认证资源";
             tab.Items = product.Select(x => new ProductViewModel()
             {
                 ID = x.MediaID,
@@ -229,7 +229,7 @@ namespace Maitonn.Web
             model.Tabs.Add(tab);
 
             tab = new SliderTabContainerViewModel();
-            tab.Name = "新品上架";
+            tab.Name = "最新资源";
             tab.Items = product.Select(x => new ProductViewModel()
             {
                 ID = x.MediaID,
@@ -355,7 +355,7 @@ namespace Maitonn.Web
 
             MainGalleryItemViewModel mgivm = new MainGalleryItemViewModel();
 
-            mgivm.Name = "增强免疫";
+            mgivm.Name = "推荐资源";
 
             mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
             {
@@ -380,7 +380,7 @@ namespace Maitonn.Web
 
             mgivm = new MainGalleryItemViewModel();
 
-            mgivm.Name = "维生素类";
+            mgivm.Name = "优质资源";
 
             mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
             {
@@ -405,7 +405,7 @@ namespace Maitonn.Web
 
             mgivm = new MainGalleryItemViewModel();
 
-            mgivm.Name = "改善睡眠";
+            mgivm.Name = "认证资源";
 
             mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
             {
@@ -430,7 +430,7 @@ namespace Maitonn.Web
 
             mgivm = new MainGalleryItemViewModel();
 
-            mgivm.Name = "调节肠胃";
+            mgivm.Name = "最新资源";
 
             mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
             {

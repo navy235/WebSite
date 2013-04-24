@@ -16,15 +16,28 @@ namespace Maitonn.Web
 
     public partial class TopBase
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public int MediaID { get; set; }
+        public int MemberID { get; set; }
 
         public System.DateTime TopStart { get; set; }
 
         public System.DateTime TopEnd { get; set; }
 
-        public virtual OutDoor OutDoor { get; set; }
+        public bool IsQuanGuo { get; set; }
+
+        public int ProvinceCode { get; set; }
+
+        public int CityCode { get; set; }
+
+        public bool IsByCategory { get; set; }
+
+        public int PCategoryCode { get; set; }
+
+        public int CategoryCode { get; set; }
+
+
     }
 }

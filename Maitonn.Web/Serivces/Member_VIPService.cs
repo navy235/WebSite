@@ -14,9 +14,21 @@ namespace Maitonn.Web
         {
             this.DB_Service = DB_Service;
         }
-        public int GetMemberVIP(int MemberID)
+
+        public ServiceResult PayVIP(int MemberID, PayVIPViewModel VipModel, PayList PayOrder)
         {
-            var vip = DB_Service.Set<Member_VIP>().Single(x => x.MemberID == MemberID);
+            throw new NotImplementedException();
+        }
+
+        public ServiceResult PayMoney(int MemberID, PayMoneyViewModel MoneyModel, PayList PayOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetMemberVIPLevel(int MemberID, bool includeExpries)
+        {
+            var vip = GetMemberVIP(MemberID, includeExpries);
+
             if (vip == null)
             {
                 return 0;
@@ -27,14 +39,18 @@ namespace Maitonn.Web
             }
         }
 
-        public ServiceResult PayVIP(int MemberID, PayVIPViewModel VipModel, PayList PayOrder)
+        public Member_VIP GetMemberVIP(int MemberID, bool includeExpries)
         {
-            throw new NotImplementedException();
-        }
-
-        public ServiceResult PayMoney(int MemberID, PayMoneyViewModel MoneyModel, PayList PayOrder)
-        {
-            throw new NotImplementedException();
+            var query = DB_Service.Set<Member_VIP>();
+            if (!includeExpries)
+            {
+                query = query.Where(x => x.MemberID == MemberID && x.EndTime > DateTime.Now);
+            }
+            else
+            {
+                query = query.Where(x => x.MemberID == MemberID);
+            }
+            return query.FirstOrDefault();
         }
     }
 }

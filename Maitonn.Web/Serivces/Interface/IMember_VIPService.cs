@@ -7,7 +7,9 @@ namespace Maitonn.Web
 {
     public interface IMember_VIPService
     {
-        int GetMemberVIP(int MemberID);
+        int GetMemberVIPLevel(int MemberID, bool includeExpries);
+
+        Member_VIP GetMemberVIP(int MemberID, bool includeExpries);
 
         ServiceResult PayVIP(int MemberID, PayVIPViewModel VipModel, PayList PayOrder);
 

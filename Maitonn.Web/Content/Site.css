@@ -163,7 +163,6 @@ textarea {
 
   .form-field label.radio {
     display: inline-block;
-    width: 60px;
     text-align: left;
     padding-right: 0;
   }
@@ -200,13 +199,16 @@ textarea {
   display: inline-block;
 }
 
+
 .form-field-avtar .img-box {
   display: inline-block;
 }
 
+
   .form-field-avtar .img-box img {
     width: 198px;
     height: 198px;
+    border: 1px solid #c5c5c5;
   }
 
 .form-field-avtar .k-upload {

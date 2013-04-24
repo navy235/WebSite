@@ -106,6 +106,15 @@ namespace Maitonn.Web
               .To<Member_VIPService>()
               .InRequestScope();
 
+            kernel.Bind<IPayListService>()
+                .To<PayListService>()
+                .InRequestScope();
+
+
+            kernel.Bind<IServerItemService>()
+              .To<ServerItemService>()
+              .InRequestScope();
+
             kernel.Bind<IMember_MessageService>()
               .To<Member_MessageService>()
               .InRequestScope();

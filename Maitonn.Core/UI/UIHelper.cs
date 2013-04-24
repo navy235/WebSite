@@ -27,6 +27,8 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> PriceList { get; set; }
 
+        public static List<SelectListItem> ServerTypeList { get; set; }
+
         static UIHelper()
         {
             singleStone = new UIHelper();
@@ -38,6 +40,7 @@ namespace Maitonn.Core
             InitProvinceList();
             InitTimeList();
             InitPriceList();
+            InitServerTypeList();
 
         }
         private static void InitSexList()
@@ -150,10 +153,19 @@ namespace Maitonn.Core
             PriceList.Add(new SelectListItem() { Text = "200万元以上", Value = ((int)PriceListType.PriceMax).ToString() });
         }
 
+        private static void InitServerTypeList()
+        {
+            ServerTypeList = new List<SelectListItem>();
+            ServerTypeList.Add(new SelectListItem() { Text = "VIP购买或续费", Value = ((int)ServerType.VIPServer).ToString() });
+            ServerTypeList.Add(new SelectListItem() { Text = "置顶服务", Value = ((int)ServerType.TopServer).ToString() });
+        }
+
         public static string GetTime(string timeValue)
         {
             return TimeList.Single(x => x.Value.Equals(timeValue, StringComparison.CurrentCultureIgnoreCase)).Text;
         }
+
+
 
 
         public static List<SelectListItem> getDictionary(string key)
@@ -187,6 +199,7 @@ namespace Maitonn.Core
             }
             return dy;
         }
+
 
 
         public static string GetImgUrl(string imgUrl, ImgUrlType urlType)

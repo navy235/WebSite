@@ -154,13 +154,21 @@
                .LinkHtmlAttributes(new { target = "content" });
            });
 
-        panelbar.Add().Text("广知币产品")
+        panelbar.Add().Text("广知币管理")
         .Items(items =>
         {
             items.Add().Text("广知币消费类型").Action("index", "moneytypesetting")
                  .LinkHtmlAttributes(new { target = "content" });
 
         });
+
+        panelbar.Add().Text("增值服务产品")
+      .Items(items =>
+      {
+          items.Add().Text("增值服务产品").Action("index", "serveritem")
+               .LinkHtmlAttributes(new { target = "content" });
+
+      });
     })
 )
     }

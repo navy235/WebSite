@@ -1,5 +1,42 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model Member_VIP
+@{
+    ViewBag.Title = "广知通基本信息";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
 }
 
-<h2>Index</h2>
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            @if (Model == null)
+            { 
+                @ViewHelpers.Alert("友情提示：",
+            CookieHelper.NickName + " 你好！您当前还没有开通广知通，广知通VIP会员具有下载资料无积分限制、无冻结时间限制、充值地产币等十大独享权限。",
+            Html.ActionLink("查看权益", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
+            }
+            else if (Model.EndTime.CompareTo(DateTime.Now) < 0)
+            {
+                @ViewHelpers.Alert("友情提示：",
+            CookieHelper.NickName + " 你好！您的广知通已于" + Model.EndTime.ToString("yyyy-MM-dd") + "过期。",
+            Html.ActionLink("续费延长", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
+            }
+            else
+            {
+                @ViewHelpers.Alert("友情提示：",
+            CookieHelper.NickName + " 你好！您的广知通将于" + Model.EndTime.ToString("yyyy-MM-dd") + "过期。",
+            Html.ActionLink("查看权益", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
+            }
+
+            <div class="personal-form mt40">
+            </div>
+        </div>
+
+    </div>
+</article>

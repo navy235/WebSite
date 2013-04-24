@@ -147,6 +147,8 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入媒体补充说明.")]
         [Display(Name = "媒体补充说明", Order = 18)]
         [DataType(DataType.MultilineText)]
+        [StringCheckLength(4, 1000)]
+        [Hint("请输入4-1000位媒体补充说明，英文、数字或中文均可（中文占2个字符）。")]
         public string Description { get; set; }
 
 
@@ -226,7 +228,6 @@ namespace Maitonn.Web
 
         [Display(Name = "媒体类别")]
         public int MediaCode { get; set; }
-
 
         [Display(Name = "城市")]
         public string City { get; set; }

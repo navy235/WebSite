@@ -1,6 +1,6 @@
 ﻿
 
-namespace CodeFirstEF.ViewsModel
+namespace Maitonn.Web
 {
     using System;
     using System.Collections.Generic;

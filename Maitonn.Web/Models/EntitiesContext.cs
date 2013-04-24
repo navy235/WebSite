@@ -31,6 +31,11 @@ namespace Maitonn.Web
 
         public IDbSet<Sys_Message> Sys_Message { get; set; }
 
+        public IDbSet<TopCompany> TopCompany { get; set; }
+
+        public IDbSet<TopMedia> TopMedia { get; set; }
+
+        public IDbSet<ServerItem> ServerItem { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -55,6 +60,8 @@ namespace Maitonn.Web
                 .WithMany(pc => pc.ChildCategoies)
                 .HasForeignKey(c => c.PID)
                 .WillCascadeOnDelete(false);
+
+
 
 
             modelBuilder.Entity<Member>()

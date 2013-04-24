@@ -99,6 +99,21 @@ namespace Maitonn.Web
             }
          );
 
+
+            routes.MapRoute(
+            name: "help",
+            url: "help-{id}",
+            defaults: new
+            {
+                controller = "help",
+                action = "index"
+            },
+            constraints: new
+            {
+                id = @"\d+"
+            }
+         );
+
             routes.MapRoute(
               name: "defaulthome",
               url: "{province}",

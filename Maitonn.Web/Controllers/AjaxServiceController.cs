@@ -59,6 +59,18 @@ namespace Maitonn.Web
         }
 
         #region  Control
+
+        public ActionResult ServerType()
+        {
+            return Json(UIHelper.ServerTypeList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ServerTypeName(int key)
+        {
+            return Content(UIHelper.ServerTypeList.Single(x => x.Value == key.ToString()).Text);
+        }
+
+
         public ActionResult CityCode(string key, int pid = 0)
         {
             var renderRadioList = areaService.GetALL();

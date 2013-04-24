@@ -38,4 +38,17 @@
         public decimal Price { get; set; }
     }
 
+    public class PayStatusViewModel
+    {
+        public string Status { get; set; }
+
+        public string Trade_No { get; set; }
+
+        public string Buy_ID { get; set; }
+
+        public string Buy_Email { get; set; }
+
+        public string Pay_No { get; set; }
+    }
+
 }

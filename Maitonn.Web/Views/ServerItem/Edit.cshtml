@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "编辑增值服务";
+}
+
+@if (ViewBag.Message != null)
+{ 
+    @ViewHelpers.Alert("错误信息：",
+                ViewBag.Message, false, AlertType.error.ToString())
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.EditorFor(m => Model)
+    <div class="form-field form-field-submit">
+        <button class="btn btn-warning" type="submit">提交表单</button>
+    </div>
+}
