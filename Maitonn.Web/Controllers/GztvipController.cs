@@ -26,6 +26,7 @@ namespace Maitonn.Web.Controllers
         private IMember_VIPService member_VIPService;
         private IMember_MoneyService member_MoneyService;
         private IPayListService payListService;
+        private IServerItemService serverItemService;
         public GztvipController(
             IMemberService _memberService
             , IMember_ActionService _member_ActionService
@@ -34,6 +35,7 @@ namespace Maitonn.Web.Controllers
             , IMember_VIPService _member_VIPService
             , IMember_MoneyService _member_MoneyService
             , IPayListService _payListService
+            , IServerItemService _serverItemService
             )
         {
             memberService = _memberService;
@@ -43,18 +45,120 @@ namespace Maitonn.Web.Controllers
             member_VIPService = _member_VIPService;
             member_MoneyService = _member_MoneyService;
             payListService = _payListService;
+            serverItemService = _serverItemService;
         }
 
         public ActionResult Index()
         {
             ViewBag.MenuItem = "gztvip-index";
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+            var serverType = (int)ServerType.NomarlVIPServer;
+            if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
+            {
+                serverType = vip.VipLevel;
+                var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+                ViewBag.Money = money;
+            }
+            var servers = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType >= serverType).OrderBy(x => x.AddTime).ToList();
+            ViewBag.Servers = servers;
             return View(vip);
         }
 
-        public ActionResult Open()
+        public ActionResult Open(int id)
         {
             ViewBag.MenuItem = "gztvip-open";
+            var serverType = (int)ServerType.NomarlVIPServer;
+            var server = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType >= serverType && x.ID == id).FirstOrDefault();
+            if (server == null)
+            {
+                return HttpNotFound();
+            }
+
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+            if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
+            {
+                var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
+                ViewBag.Money = money;
+
+                if (server.ServerType < vip.VipLevel)
+                {
+                    return Content("<script>alert('您当前的版本的广知通权益比所选择的要高请选择更高的权益版本的广知通升级!');window.top.location='" + Url.Action("Index") + "';</script>");
+                }
+                else if (server.ServerType == vip.VipLevel)
+                {
+                    ViewBag.Renew = true;
+                    server.Money = server.Month * 10;
+                }
+                else
+                {
+                    ViewBag.Upgrade = true;
+                    var day = UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, vip.EndTime);
+                    server.Money = day * 2;
+                }
+            }
+            else
+            {
+                if (vip != null)
+                {
+                    ViewBag.Renew = true;
+                    server.Money = server.Month * 10;
+                }
+                else
+                {
+                    ViewBag.FirstTime = true;
+                    server.Money = server.Month * 5;
+                }
+            }
+            ViewBag.Server = server;
+
+
+            return View(vip);
+        }
+
+        [HttpPost]
+
+        public ActionResult Open(int ID, int Price)
+        {
+            ServiceResult result = new ServiceResult();
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+            var server = serverItemService.Find(ID);
+            try
+            {
+                if (server == null)
+                {
+                    return Content("<script>alert('您提交的表单有误!');window.top.location='" + Url.Action("Index") + "';</script>");
+                }
+
+                PayList orderItem = new PayList();
+                orderItem.Pay_No = Guid.NewGuid();
+                orderItem.MemberID = CookieHelper.MemberID;
+                orderItem.Money = server.Price;
+                orderItem.ServerID = ID;
+                orderItem.Mode = "VIPTest";
+                orderItem.ProductType = UIHelper.ServerTypeList.Single(x => x.Value == server.ServerType.ToString()).Text;
+                orderItem.Status = Pay_State.Applying.ToString();
+                orderItem.AddTime = DateTime.Now;
+                orderItem.AddIP = HttpHelper.IP;
+                payListService.CreateOrder(orderItem);
+
+                result = member_VIPService.PayVIP(CookieHelper.MemberID, server, orderItem);
+               
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+
+            result.Message = "VIP开通" + (result.Success ? "成功！" : "失败！");
+            TempData["Service_Result"] = result;
+            ViewBag.Server = server;
+            return View(vip);
+
+        }
+
+        public ActionResult OpenOK()
+        {
             return View();
         }
 

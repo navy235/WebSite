@@ -15,28 +15,66 @@
             <div class="personal-body-title clearfix">
                 <h5>@ViewBag.Title</h5>
             </div>
-            @if (Model == null)
-            { 
-                @ViewHelpers.Alert("友情提示：",
-            CookieHelper.NickName + " 你好！您当前还没有开通广知通，广知通VIP会员具有下载资料无积分限制、无冻结时间限制、充值地产币等十大独享权限。",
-            Html.ActionLink("查看权益", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
-            }
-            else if (Model.EndTime.CompareTo(DateTime.Now) < 0)
+
+            @if (Model != null)
             {
-                @ViewHelpers.Alert("友情提示：",
-            CookieHelper.NickName + " 你好！您的广知通已于" + Model.EndTime.ToString("yyyy-MM-dd") + "过期。",
-            Html.ActionLink("续费延长", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString())</span></td>
+                            <td width="33%">到期日期：<span class="red">@Model.EndTime.ToString("yyyy-MM-dd")</span></td>
+                            <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, Model.EndTime)</span></td>
+                        </tr>
+                        <tr>
+                            <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
+
+                            @if (Model.EndTime.CompareTo(DateTime.Now) > 0)
+                            {
+                                <td><a href="@Url.Action("paygzb")">充值广知币</a></td>
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
             }
             else
             {
                 @ViewHelpers.Alert("友情提示：",
-            CookieHelper.NickName + " 你好！您的广知通将于" + Model.EndTime.ToString("yyyy-MM-dd") + "过期。",
+            CookieHelper.NickName + " 你好！您当前还没有开通广知通，广知通VIP会员具有下载资料无积分限制、无冻结时间限制、充值地产币等十大独享权限。",
             Html.ActionLink("查看权益", "index", "help", new { id = 7 }, new { }), false, AlertType.info.ToString())
             }
+            @if (ViewBag.Servers != null)
+            {
+                <div class="list-products clearfix">
 
-            <div class="personal-form mt40">
-            </div>
+                    @foreach (var server in (List<ServerItem>)ViewBag.Servers)
+                    {
+                        <div class="list-products-item">
+                            <a class="list-products-item-img" target="_blank" href="@server.HelpUrl" title="查看权益介绍">
+                                <img width="220" height="220" border="0" src="@server.ImgUrl" alt="查看权益介绍" title="查看权益介绍">
+                                <span class="actNewIcon actIcon01"></span>
+                            </a>
+                            <p class="list-products-item-desc"><a target="_blank" href="@server.HelpUrl" title="查看权益介绍">@server.Name</a></p>
+                            <p class="list-products-item-price">
+                                <strong class="fs14">¥@server.Price 元</strong>
+                                <span class="pull-right" style="float: right;">权益：@server.Month 个月</span>
+                            </p>
+                            <p class="list-products-item-title">
+                                <span class="pull-left">赠广知币:@server.GiftMoney 个</span>
+                                <span class="pull-right">赠送权益：@server.GiftMonth 个月</span>
+                            </p>
+                            <p class="list-products-item-category">
+                                <a target="_blank" href="@server.HelpUrl">查看权益介绍</a>&nbsp;&nbsp;
+                            </p>
+                            <a href="@Url.Action("open", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+                        </div>
+                    }
+                </div>
+            }
         </div>
-
     </div>
 </article>

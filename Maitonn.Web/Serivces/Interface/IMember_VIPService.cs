@@ -11,7 +11,7 @@ namespace Maitonn.Web
 
         Member_VIP GetMemberVIP(int MemberID, bool includeExpries);
 
-        ServiceResult PayVIP(int MemberID, PayVIPViewModel VipModel, PayList PayOrder);
+        ServiceResult PayVIP(int MemberID, ServerItem Server, PayList PayOrder);
 
         ServiceResult PayMoney(int MemberID, PayMoneyViewModel MoneyModel, PayList PayOrder);
     }

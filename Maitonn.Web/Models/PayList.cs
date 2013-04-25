@@ -18,6 +18,7 @@ namespace Maitonn.Web
 
         public int? VMoney { get; set; }
 
+        public int ServerID { get; set; }
 
         [MaxLength(10)]
         [Display(Name = "产品类型")]

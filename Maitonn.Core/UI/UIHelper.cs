@@ -156,8 +156,9 @@ namespace Maitonn.Core
         private static void InitServerTypeList()
         {
             ServerTypeList = new List<SelectListItem>();
-            ServerTypeList.Add(new SelectListItem() { Text = "VIP购买或续费", Value = ((int)ServerType.VIPServer).ToString() });
             ServerTypeList.Add(new SelectListItem() { Text = "置顶服务", Value = ((int)ServerType.TopServer).ToString() });
+            ServerTypeList.Add(new SelectListItem() { Text = "广知通VIP", Value = ((int)ServerType.NomarlVIPServer).ToString() });
+            ServerTypeList.Add(new SelectListItem() { Text = "广知通黄金VIP", Value = ((int)ServerType.SuperVIPServer).ToString() });
         }
 
         public static string GetTime(string timeValue)
@@ -229,6 +230,30 @@ namespace Maitonn.Core
             return url;
         }
 
+
+        public static int DateDiff(DateDiffType type, DateTime StartTime, DateTime EndTime)
+        {
+            if (StartTime.CompareTo(EndTime) > 0)
+            {
+                return 0;
+            }
+            switch (type)
+            {
+                case DateDiffType.Year:
+                    return EndTime.Year - StartTime.Year;
+                case DateDiffType.Month:
+                    return Convert.ToInt32((EndTime - StartTime).TotalDays) / 30;
+                case DateDiffType.Day:
+                    return Convert.ToInt32((EndTime - StartTime).TotalDays);
+                case DateDiffType.Min:
+                    return Convert.ToInt32((EndTime - StartTime).TotalMinutes);
+                case DateDiffType.Second:
+                    return Convert.ToInt32((EndTime - StartTime).TotalSeconds);
+                default:
+                    return 0;
+            }
+
+        }
 
 
     }

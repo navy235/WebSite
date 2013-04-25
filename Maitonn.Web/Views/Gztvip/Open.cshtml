@@ -1,8 +1,89 @@
-﻿@{
-    ViewBag.Title = "Open";
+﻿@model Member_VIP
+@{
+    ViewBag.Title = "广知通服务";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
 }
 
-<h2>Open</h2>
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="server-status">
+                @if (Model != null)
+                {
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString())</span></td>
+                                <td width="33%">到期日期：<span class="red">@Model.EndTime.ToString("yyyy-MM-dd")</span></td>
+                                <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, Model.EndTime)</span></td>
+                            </tr>
+                            <tr>
+                                <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
 
+                                @if (Model.EndTime.CompareTo(DateTime.Now) > 0)
+                                {
+                                    <td><a href="@Url.Action("paygzb")">充值广知币</a></td>
+                                }
+                                else
+                                {
+                                    <td>&nbsp;</td>
+                                }
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    @ViewHelpers.Alert("友情提示：", CookieHelper.NickName + ",您好！您还没有开通任何广知通产品。", false, AlertType.info.ToString())
+                }
 
-@Html.ActionLink("创建一个订单", "CreateOrder");
+            </div>
+            @{
+                
+                var server = (ServerItem)ViewBag.Server;
+               
+                <dl class="details-info-content">
+                    <dt>@server.Name</dt>
+                    <dd>价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：<span class="details-info-item details-info-price-current"><strong>¥<b>@server.Price</b> 元</strong></span></dd>
+                    <dd>权&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;益：<span class="details-info-item">@server.Month 个月</span></dd>
+                    <dd>赠广知币：<span class="details-info-item">@server.GiftMoney 个</span></dd>
+                    <dd>赠送权益：<span class="details-info-item">@server.GiftMonth 个月</span></dd>
+                    @if (ViewBag.FirstTime != null)
+                    {
+                        <dd>额外赠送：<span class="details-info-item">由于您首次开通额外赠送广知币 @server.Money 个</span></dd>
+                    
+                    }
+                    @if (ViewBag.Upgrade != null)
+                    {
+                        <dd>升级转换：<span class="details-info-item">由于您升级广知通，原广知通服务剩余天数按每天2个广知币计算共 @server.Money 个，原广知通将直接到期</span></dd>
+                    
+                    }
+                    @if (ViewBag.First != null)
+                    {
+                        <dd>额外赠送：<span class="details-info-item">由于您续费开通额外赠送广知币 @server.Money 个</span></dd>
+                    
+                    }
+                    <dd><span class="details-info-item"><a href="@server.HelpUrl" target="_blank">查看权益</a></span> </dd>
+                </dl>
+                
+                using (Html.BeginForm())
+                {
+                 
+                <input type="hidden" name="ID" id="ID"  value="@server.ID"/>
+                <input type="hidden" name="Price" id="Price"  value="@server.Price"/>
+                <button type="submit" class="btn btn-danger">立即支付</button>
+                    
+                }
+            }
+        </div>
+    </div>
+</article>

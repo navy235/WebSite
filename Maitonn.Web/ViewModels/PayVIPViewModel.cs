@@ -12,7 +12,6 @@
     using PagedList;
     using Maitonn.Core;
 
-
     public class PayVIPViewModel
     {
 

@@ -30,6 +30,7 @@ namespace Maitonn.Web
         #region KendoGrid Action
         public ActionResult Index()
         {
+            ViewBag.ServerType = Utilities.CreateSelectList(UIHelper.ServerTypeList, x => x.Value, x => x.Text, false);
             return View();
         }
 

@@ -238,7 +238,18 @@ namespace Maitonn.Core
 
     public enum ServerType
     {
-        VIPServer = 1,
-        TopServer = 2
+        TopServer = 1,
+        NomarlVIPServer = 2,
+        SuperVIPServer = 3,
+
+    }
+
+    public enum DateDiffType
+    {
+        Year = 1,
+        Month = 2,
+        Day = 3,
+        Min = 4,
+        Second = 5
     }
 }

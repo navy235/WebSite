@@ -229,6 +229,7 @@
     <Compile Include="Controllers\OutDoorController.cs" />
     <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ShowController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -279,6 +280,14 @@
     <Compile Include="Migrations\201304240847544_AddServerItem.cs" />
     <Compile Include="Migrations\201304240847544_AddServerItem.Designer.cs">
       <DependentUpon>201304240847544_AddServerItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304250947249_AlertPayList1.cs" />
+    <Compile Include="Migrations\201304250947249_AlertPayList1.Designer.cs">
+      <DependentUpon>201304250947249_AlertPayList1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304250949418_AlertPayList11.cs" />
+    <Compile Include="Migrations\201304250949418_AlertPayList11.Designer.cs">
+      <DependentUpon>201304250949418_AlertPayList11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
@@ -1520,6 +1529,7 @@
     <Content Include="Views\ServerItem\Index.cshtml" />
     <Content Include="Views\ServerItem\Create.cshtml" />
     <Content Include="Views\ServerItem\Edit.cshtml" />
+    <Content Include="Views\Gztvip\OpenOK.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1559,6 +1569,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304240847544_AddServerItem.resx">
       <DependentUpon>201304240847544_AddServerItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304250947249_AlertPayList1.resx">
+      <DependentUpon>201304250947249_AlertPayList1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304250949418_AlertPayList11.resx">
+      <DependentUpon>201304250949418_AlertPayList11.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
