@@ -78,7 +78,7 @@
     <Compile Include="Cookie\CookieHelper.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
-    <Compile Include="Enum\MemberActionType.cs" />
+    <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Error\ErrorType.cs" />
     <Compile Include="Files\FileHelper.cs" />
     <Compile Include="Filters\AjaxOnlyAttribute.cs" />

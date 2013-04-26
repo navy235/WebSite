@@ -115,9 +115,15 @@ namespace Maitonn.Web
               .To<ServerItemService>()
               .InRequestScope();
 
+            kernel.Bind<ISliderImgService>()
+             .To<SliderImgService>()
+             .InRequestScope();
+
             kernel.Bind<IMember_MessageService>()
               .To<Member_MessageService>()
               .InRequestScope();
+
+
 
 
 

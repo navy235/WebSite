@@ -252,4 +252,12 @@ namespace Maitonn.Core
         Min = 4,
         Second = 5
     }
+
+
+    public enum SliderImgStatus
+    {
+        User = 1,
+        System = 2
+
+    }
 }

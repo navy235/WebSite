@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "广知币充值";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="server-status">
+                @if (ViewBag.VIP != null)
+                {
+                    var VIP = (Member_VIP)ViewBag.VIP;
+                    
+                    <table width="100%" class="alert alert-info">
+                        <tbody>
+                            <tr>
+                                <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == VIP.VipLevel.ToString()).Text</span></td>
+                                <td width="33%">到期日期：<span class="red">@VIP.EndTime.ToString("yyyy-MM-dd")</span></td>
+                                <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, VIP.EndTime)</span></td>
+                            </tr>
+                            <tr>
+                                <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
+
+                                @if (VIP.EndTime.CompareTo(DateTime.Now) < 0)
+                                {
+                                    <td colspan="2">当前权益已到期<a href="@Url.Action("open")">立即续费</a> 广知通会员充值广知币有额外赠送</td>
+                                }
+                                else
+                                {
+                                    <td colspan="2">&nbsp;</td>
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <table width="100%" class="alert alert-info">
+                        <tbody>
+                            <tr>
+                                <td width="33%">会员属性：<span class="red">普通会员</span></td>
+                                <td width="33%">目前广知币：<span class="red">@ViewBag.Money</span></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">广知通会员充值广知币有额外赠送，等权益<a  href="@Url.Action("index", "help", new { id = 7 })">查看权益</a><a href="@Url.Action("open")">立即开通广知通</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                }
+
+            </div>
+            <div class="personal-form mt20">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-field">
+
+                        @Html.Label("充值地产币数：")
+
+                        <div class="form-field-pay">
+                            <label>
+                                <input type="radio" name="ApplyMoney" checked="checked" value="200" id="RadioGroup1_2">
+                                200个</label>
+                            <label>
+                                <input name="ApplyMoney" type="radio" id="RadioGroup1_3" value="500">
+                                500个</label>
+                            <label>
+                                <input name="ApplyMoney" type="radio" id="RadioGroup1_5" value="1000">
+                                1000个</label>
+                            <label>
+                                <input name="ApplyMoney" type="radio" id="RadioGroup1_4" value="600" data-enabletext="true">
+                                其他</label>
+                            <input type="text" id="txtMoney" name="txtMoney" disabled style="width: 50px;">
+                            <span style="color: #999;">(200~10000区间）</span>
+                            <div class="desc">
+                                广知通普通会员充值赠送10%， 广知通黄金会员充值赠送20%
+                                @if (ViewBag.VIP == null)
+                                {
+                                    <a href="@Url.Action("open")">立即开通广知通</a> 
+                                    <a  href="@Url.Action("index", "help", new { id = 7 })">查看权益</a>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-field-money">
+                            付款金额： <span class="red" id="showMoney">200</span> 元
+                        </div>
+                    </div>
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-danger ">
+                            立即支付</button>
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            $("[name='ApplyMoney']").click(function() {
+                                var enabletext = $(this).data('enabletext');
+                                var $text = $('#txtMoney');
+                                var $show = $('#showMoney');
+                                if (enabletext) {
+                                    $text.removeAttr('disabled');
+                                    $text.val(200);
+                                } else {
+                                    $text.attr('disabled', 'disabled');
+                                    $show.html($(this).val());
+                                }
+                            })
+                            $("#txtMoney").blur(function() {
+                                var $show = $('#showMoney');
+                                var r = /^[1-9]{1,}[0-9]*$/;                                if ($(this).val() != "" || $(this).val() != null) {
+                                    if (r.test($(this).val())) {
+                                        if ($(this).val() < 200 || $(this).val() > 10000) {
+                                            alert("金额必须处于200~10000！");
+                                            $(this).val("200");
+                                            $show.text("200");
+                                            return false;
+                                        }
+                                        $show.text($(this).val());
+                                    }
+                                    else {
+                                        alert("金额必须为数字！");
+                                        $(this).val("200");
+                                        $show.text("200");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("请填写要充值的金额");
+                                    return false;
+                                }
+                            })
+                        })
+                    </script>
+                }
+            </div>
+        </div>
+
+
+    </div>
+</article>

@@ -13,6 +13,6 @@ namespace Maitonn.Web
 
         ServiceResult PayVIP(int MemberID, ServerItem Server, PayList PayOrder);
 
-        ServiceResult PayMoney(int MemberID, PayMoneyViewModel MoneyModel, PayList PayOrder);
+        ServiceResult PayMoney(int MemberID, PayList PayOrder);
     }
 }

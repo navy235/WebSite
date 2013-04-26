@@ -66,7 +66,7 @@ namespace Maitonn.Web.Controllers
 
         public ActionResult Open(int id)
         {
-            ViewBag.MenuItem = "gztvip-open";
+            ViewBag.MenuItem = "gztvip-index";
             var serverType = (int)ServerType.NomarlVIPServer;
             var server = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType >= serverType && x.ID == id).FirstOrDefault();
             if (server == null)
@@ -120,8 +120,9 @@ namespace Maitonn.Web.Controllers
 
         public ActionResult Open(int ID, int Price)
         {
+            ViewBag.MenuItem = "gztvip-index";
             ServiceResult result = new ServiceResult();
-            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
             var server = serverItemService.Find(ID);
             try
             {
@@ -143,24 +144,153 @@ namespace Maitonn.Web.Controllers
                 payListService.CreateOrder(orderItem);
 
                 result = member_VIPService.PayVIP(CookieHelper.MemberID, server, orderItem);
-               
+
             }
             catch (Exception ex)
             {
                 result.AddServiceError(Utilities.GetInnerMostException(ex));
             }
 
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            ViewBag.Money = money;
+
             result.Message = "VIP开通" + (result.Success ? "成功！" : "失败！");
+
             TempData["Service_Result"] = result;
+
             ViewBag.Server = server;
+            if (result.Success)
+            {
+                return RedirectToAction("openok");
+            }
             return View(vip);
 
         }
+
 
         public ActionResult OpenOK()
         {
             return View();
         }
+
+
+
+        public ActionResult PayCz()
+        {
+            ViewBag.MenuItem = "gztvip-paycz";
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            ViewBag.VIP = vip;
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            ViewBag.Money = money;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PayCz(int ApplyMoney, string txtMoney)
+        {
+            ViewBag.MenuItem = "gztvip-paycz";
+            ServiceResult result = new ServiceResult();
+            if (string.IsNullOrEmpty(txtMoney))
+            {
+                txtMoney = "0";
+            }
+            var intMoney = Convert.ToInt32(txtMoney);
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+            ViewBag.VIP = vip;
+            try
+            {
+                PayList orderItem = new PayList();
+                switch (ApplyMoney)
+                {
+                    case 200:
+                    case 500:
+                    case 1000:
+                        if (vip != null)
+                        {
+                            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+                            {
+                                orderItem.VMoney = ApplyMoney / 10;
+                            }
+                            else if (vip.VipLevel == (int)ServerType.SuperVIPServer)
+                            {
+                                orderItem.VMoney = ApplyMoney / 5;
+                            }
+                        }
+                        orderItem.Money = ApplyMoney;
+                        break;
+                    case 600:
+                        orderItem.Money = intMoney;
+                        if (vip != null)
+                        {
+                            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+                            {
+                                orderItem.VMoney = intMoney / 10;
+                            }
+                            else if (vip.VipLevel == (int)ServerType.SuperVIPServer)
+                            {
+                                orderItem.VMoney = intMoney / 5;
+                            }
+                        }
+                        break;
+                    default:
+                        return Content("<script>alert('您提交的表单有误!');window.top.location='" + Url.Action("paycz") + "';</script>");
+
+                }
+                orderItem.Pay_No = Guid.NewGuid();
+                orderItem.MemberID = CookieHelper.MemberID;
+                orderItem.Mode = "GZBCZ";
+                orderItem.ProductType = "GZBCZ";
+                orderItem.Status = Pay_State.Applying.ToString();
+                orderItem.AddTime = DateTime.Now;
+                orderItem.AddIP = HttpHelper.IP;
+                payListService.CreateOrder(orderItem);
+                result = member_VIPService.PayMoney(CookieHelper.MemberID, orderItem);
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
+            ViewBag.Money = money;
+
+            result.Message = "充值" + (result.Success ? "成功！" : "失败！");
+
+            TempData["Service_Result"] = result;
+
+            if (result.Success)
+            {
+                return RedirectToAction("OpenOK");
+            }
+
+            return View(vip);
+        }
+
+
+        public ActionResult PayTop()
+        {
+            ViewBag.MenuItem = "gztvip-paytop";
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            ViewBag.VIP = vip;
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            
+            ViewBag.Money = money;
+            var serverType = (int)ServerType.TopServer;
+           
+            var servers = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType == serverType).OrderBy(x => x.AddTime).ToList();
+           
+            ViewBag.Servers = servers;
+
+            return View();
+        }
+
 
         public ActionResult CreateOrder()
         {

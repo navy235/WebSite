@@ -19,6 +19,10 @@ namespace Maitonn.Web
 
         public int AddMoney(int MemberID, int Money, string Type, string Description = null, int RelateID = 0)
         {
+            if (string.IsNullOrEmpty(Description))
+            {
+                Description = string.Empty;
+            }
             var memberId = new SqlParameter("memberId", MemberID);
             var money = new SqlParameter("money", Money);
             var type = new SqlParameter("type", Type);
@@ -35,7 +39,16 @@ namespace Maitonn.Web
 
         public int GetMemberMoney(int MemberID)
         {
-            return DB_Service.Set<Member_Money>().Single(x => x.MemberID == MemberID).TotalMoney;
+            var Money = DB_Service.Set<Member_Money>().SingleOrDefault(x => x.MemberID == MemberID);
+            if (Money == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Money.TotalMoney;
+            }
+
         }
     }
 }

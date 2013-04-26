@@ -37,7 +37,7 @@ namespace Maitonn.Web
 
         public DateTime AddTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         [MaxLength(150)]
         public string Trade_No { get; set; }

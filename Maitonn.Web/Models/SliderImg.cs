@@ -19,26 +19,33 @@ namespace Maitonn.Web
         [MaxLength(250)]
         public string ImgUrl { get; set; }
 
+
         [Required(ErrorMessage = "请填写图片链接地址")]
         [Display(Name = "图片链接地址")]
         [MaxLength(250)]
         public string LinkUrl { get; set; }
+
 
         [Required(ErrorMessage = "请填写图片标题")]
         [Display(Name = "图片标题")]
         [MaxLength(50)]
         public string Title { get; set; }
 
+
         [Display(Name = "排序")]
         public int OrderIndex { get; set; }
+
 
         [Display(Name = "创建日期")]
         public DateTime AddTime { get; set; }
 
+
+        [Display(Name = "结束日期")]
+        public DateTime EndTime { get; set; }
+
+
         [Display(Name = "省份")]
         public int ProvinceCode { get; set; }
-
-        public Area Province { get; set; }
 
         public int MemberID { get; set; }
 

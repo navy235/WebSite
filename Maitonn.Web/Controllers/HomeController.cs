@@ -28,6 +28,7 @@ namespace Maitonn.Web
         private IPeriodCateService periodCateService;
         private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
+        private ISliderImgService sliderImgService;
         public HomeController(
             IMemberService _memberService
             , IAreaAttService _areaAttService
@@ -41,6 +42,7 @@ namespace Maitonn.Web
             , IPeriodCateService _periodCateService
             , IOwnerCateService _ownerCateService
             , IAuctionCalendarService _auctionCalendarService
+            , ISliderImgService _sliderImgService
             )
         {
 
@@ -56,6 +58,7 @@ namespace Maitonn.Web
             periodCateService = _periodCateService;
             ownerCateService = _ownerCateService;
             auctionCalendarService = _auctionCalendarService;
+            sliderImgService = _sliderImgService;
         }
 
         public ActionResult Index(string province = "quanguo")
@@ -149,36 +152,51 @@ namespace Maitonn.Web
         {
             SliderBoxViewModel model = new SliderBoxViewModel();
 
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "1",
-                ImgUrl = Url.Content("~/Content/images/slider/1.jpg"),
-                Url = Url.Action("index", "list", new { mediacode = "1" })
-            });
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "2",
-                ImgUrl = Url.Content("~/Content/images/slider/2.jpg"),
-                Url = Url.Action("index", "list", new { mediacode = "2" })
-            });
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "3",
-                ImgUrl = Url.Content("~/Content/images/slider/3.jpg"),
-                Url = Url.Action("index", "list", new { mediacode = "3" })
-            });
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "4",
-                ImgUrl = Url.Content("~/Content/images/slider/4.jpg"),
-                Url = Url.Action("index", "list", new { mediacode = "4" })
-            });
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "5",
-                ImgUrl = Url.Content("~/Content/images/slider/5.jpg"),
-                Url = Url.Action("index", "list", new { mediacode = "5" })
-            });
+            var ProvinceCode = EnumHelper.GetProvinceValue(CookieHelper.Province);
+            var quanguoCode = (int)ProvinceName.quanguo;
+            model.Items = sliderImgService.GetALL()
+                .Where(x => x.EndTime > DateTime.Now)
+                .Where(x => x.ProvinceCode == ProvinceCode || x.ProvinceCode == quanguoCode)
+                  .OrderByDescending(x => x.OrderIndex)
+                .OrderByDescending(x => x.Status)
+                .OrderByDescending(x => x.AddTime).ToList()
+                .Select(x => new CategoryViewModel()
+                {
+                    Url = x.LinkUrl,
+                    ImgUrl = x.ImgUrl,
+                    Name = x.Title
+                }).ToList();
+
+            //model.Items.Add(new CategoryViewModel()
+            //{
+            //    CID = "1",
+            //    ImgUrl = Url.Content("~/Content/images/slider/1.jpg"),
+            //    Url = Url.Action("index", "list", new { mediacode = "1" })
+            //});
+            //model.Items.Add(new CategoryViewModel()
+            //{
+            //    CID = "2",
+            //    ImgUrl = Url.Content("~/Content/images/slider/2.jpg"),
+            //    Url = Url.Action("index", "list", new { mediacode = "2" })
+            //});
+            //model.Items.Add(new CategoryViewModel()
+            //{
+            //    CID = "3",
+            //    ImgUrl = Url.Content("~/Content/images/slider/3.jpg"),
+            //    Url = Url.Action("index", "list", new { mediacode = "3" })
+            //});
+            //model.Items.Add(new CategoryViewModel()
+            //{
+            //    CID = "4",
+            //    ImgUrl = Url.Content("~/Content/images/slider/4.jpg"),
+            //    Url = Url.Action("index", "list", new { mediacode = "4" })
+            //});
+            //model.Items.Add(new CategoryViewModel()
+            //{
+            //    CID = "5",
+            //    ImgUrl = Url.Content("~/Content/images/slider/5.jpg"),
+            //    Url = Url.Action("index", "list", new { mediacode = "5" })
+            //});
 
             return model;
         }

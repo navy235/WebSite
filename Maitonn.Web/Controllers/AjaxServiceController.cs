@@ -70,6 +70,27 @@ namespace Maitonn.Web
             return Content(UIHelper.ServerTypeList.Single(x => x.Value == key.ToString()).Text);
         }
 
+        public ActionResult SliderImgStatus()
+        {
+            return Json(UIHelper.SliderImgStatusList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SliderImgStatusName(int key)
+        {
+            return Content(UIHelper.SliderImgStatusList.Single(x => x.Value == key.ToString()).Text);
+        }
+
+        public ActionResult ProvinceCode()
+        {
+            var renderRadioList = areaService.GetALL().Where(x => x.PID.Equals(null));
+            return Json(Utilities.GetSelectListData(renderRadioList, x => x.ID, x => x.CateName, false),
+                JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ProvinceCodeName(int key)
+        {
+            return Content(areaService.Find(key).CateName);
+        }
 
         public ActionResult CityCode(string key, int pid = 0)
         {

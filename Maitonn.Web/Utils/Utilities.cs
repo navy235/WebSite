@@ -20,7 +20,7 @@ namespace Maitonn.Web
                    }).ToList();
 
             if (addDefaultSelectItem)
-                eList.Insert(0, new SelectListItem { Selected = true, Text = "Select", Value = null });
+                eList.Insert(0, new SelectListItem { Selected = true, Text = "请选择", Value = null });
 
             return eList;
         }

@@ -18,10 +18,10 @@
 
             @if (Model != null)
             {
-                <table width="100%">
+                <table width="100%" class="alert alert-info">
                     <tbody>
                         <tr>
-                            <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString())</span></td>
+                            <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString()).Text</span></td>
                             <td width="33%">到期日期：<span class="red">@Model.EndTime.ToString("yyyy-MM-dd")</span></td>
                             <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, Model.EndTime)</span></td>
                         </tr>
@@ -49,6 +49,11 @@
             }
             @if (ViewBag.Servers != null)
             {
+                
+                <div class="personal-body-title clearfix">
+                    <h5>广知通产品</h5>
+                </div>
+                
                 <div class="list-products clearfix">
 
                     @foreach (var server in (List<ServerItem>)ViewBag.Servers)

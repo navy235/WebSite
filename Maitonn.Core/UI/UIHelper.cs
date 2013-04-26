@@ -29,6 +29,8 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> ServerTypeList { get; set; }
 
+        public static List<SelectListItem> SliderImgStatusList { get; set; }
+
         static UIHelper()
         {
             singleStone = new UIHelper();
@@ -41,6 +43,7 @@ namespace Maitonn.Core
             InitTimeList();
             InitPriceList();
             InitServerTypeList();
+            InitSliderImgStatusList();
 
         }
         private static void InitSexList()
@@ -160,6 +163,15 @@ namespace Maitonn.Core
             ServerTypeList.Add(new SelectListItem() { Text = "广知通VIP", Value = ((int)ServerType.NomarlVIPServer).ToString() });
             ServerTypeList.Add(new SelectListItem() { Text = "广知通黄金VIP", Value = ((int)ServerType.SuperVIPServer).ToString() });
         }
+
+        private static void InitSliderImgStatusList()
+        {
+            SliderImgStatusList = new List<SelectListItem>();
+         
+            SliderImgStatusList.Add(new SelectListItem() { Text = "用户置顶", Value = ((int)SliderImgStatus.User).ToString() });
+            SliderImgStatusList.Add(new SelectListItem() { Text = "系统置顶", Value = ((int)SliderImgStatus.System).ToString() });
+        }
+
 
         public static string GetTime(string timeValue)
         {

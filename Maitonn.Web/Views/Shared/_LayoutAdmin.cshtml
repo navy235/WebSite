@@ -126,6 +126,14 @@
                .LinkHtmlAttributes(new { target = "content" });
             });
 
+
+        panelbar.Add().Text("首页轮播管理")
+           .Items(items =>
+           {
+               items.Add().Text("首页轮播管理").Action("index", "sliderimg")
+                    .LinkHtmlAttributes(new { target = "content" });
+           });
+
         panelbar.Add().Text("企业信息审核")
            .Items(items =>
            {
@@ -135,6 +143,9 @@
                    .LinkHtmlAttributes(new { target = "content" });
 
            });
+
+
+
 
         panelbar.Add().Text("户外信息管理")
             .Items(items =>

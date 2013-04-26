@@ -200,7 +200,8 @@ textarea {
 }
 
 
-.form-field-avtar .img-box {
+.form-field-avtar .img-box,
+.form-field-sliderImg .img-box {
   display: inline-block;
 }
 
@@ -211,7 +212,15 @@ textarea {
     border: 1px solid #c5c5c5;
   }
 
-.form-field-avtar .k-upload {
+
+  .form-field-sliderImg .img-box img {
+    width: 708px;
+    height: 278px;
+    border: 1px solid #c5c5c5;
+  }
+
+.form-field-avtar .k-upload,
+.form-field-sliderImg .k-upload {
   margin-left: 107px;
   margin-top: 5px;
   display: block;

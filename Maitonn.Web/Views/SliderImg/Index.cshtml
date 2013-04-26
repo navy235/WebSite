@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "首页轮播列表管理";
+}
+@(Html.Kendo().Grid<SliderImg>()
+    .Name("SliderImgList")
+    .Columns(columns =>
+    {
+
+        columns.Bound(c => c.Title);
+        columns.Bound(c => c.OrderIndex).Width(50);
+        columns.ForeignKey(c => c.ProvinceCode, (SelectList)ViewBag.ProvinceCode);
+        columns.ForeignKey(c => c.Status, (SelectList)ViewBag.SliderImgStatus);
+        columns.Template(@<text></text>)
+.ClientTemplate(@"<a class='k-button k-button-icontext ' href='"
++ Url.Action("Edit", "SliderImg") + "/#=ID#'><span class='k-icon k-edit'></span>编辑</a>").Title("编辑").Width(120);
+        columns.Command(command =>
+        {
+            command.Destroy();
+        }).Title("删除").Width(120);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Custom().Text("添加轮播").Action("Create", "SliderImg");
+        toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+    .HtmlAttributes(new { style = "height:500px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Batch(true)
+        .PageSize(100)
+        .Model(model => model.Id(c => c.ID))
+        .Read("Editing_Read", "SliderImg")
+        .Update("Editing_Update", "SliderImg")
+        .Destroy("Editing_Destroy", "SliderImg")
+    )
+)

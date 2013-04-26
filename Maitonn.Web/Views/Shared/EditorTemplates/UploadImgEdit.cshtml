@@ -164,7 +164,7 @@
             $('#'+cropId).Jcrop({
                 bgFade:true,
                 bgOpacity: .3,
-                aspectRatio: @(Convert.ToInt32(targetWidth) / Convert.ToInt32(targetHeight)),
+                aspectRatio: @(Convert.ToDouble(targetWidth) / Convert.ToDouble(targetHeight)),
                 boxWidth: 450,
                 boxHeight: 400,
                 minSize:[ @targetWidth, @targetHeight],

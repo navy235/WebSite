@@ -73,5 +73,11 @@ namespace Maitonn.Web
         }
 
 
+        public ActionResult Select()
+        {
+            ViewBag.OutDoorStatus = UIHelper.OutDoorStatusList;
+            return View();
+        }
+
     }
 }

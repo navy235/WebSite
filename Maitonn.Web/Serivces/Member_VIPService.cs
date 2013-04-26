@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Transactions;
 using Maitonn.Core;
 
 namespace Maitonn.Web
@@ -25,79 +26,120 @@ namespace Maitonn.Web
         public ServiceResult PayVIP(int MemberID, ServerItem Server, PayList PayOrder)
         {
             ServiceResult result = new ServiceResult();
-
-            Member_VIP model = new Member_VIP();
-            var vip = GetMemberVIP(MemberID, true);
-
-
-
-            PayStatusViewModel PayStatus = new PayStatusViewModel();
-            PayStatus.Pay_No = PayOrder.Pay_No.ToString();
-            PayStatus.Buy_Email = CookieHelper.Email;
-            PayStatus.Buy_ID = CookieHelper.UID;
-            PayStatus.Trade_No = "29038423784523849573247856";
-            PayStatus.Status = Pay_State.ApplyOk.ToString();
-            PayListService.UpdateOrder(PayStatus);
-
-            if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
+            try
             {
-                if (Server.ServerType == vip.VipLevel)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    Server.Money = Server.Month * 10;
-                }
-                else
-                {
-                    var day = UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, vip.EndTime);
-                    Server.Money = day * 2;
+                    Member_VIP model = new Member_VIP();
+                    var vip = GetMemberVIP(MemberID, true);
+
+                    PayStatusViewModel PayStatus = new PayStatusViewModel();
+                    PayStatus.Pay_No = PayOrder.Pay_No.ToString();
+                    PayStatus.Buy_Email = CookieHelper.Email;
+                    PayStatus.Buy_ID = CookieHelper.UID;
+
+                    PayStatus.Trade_No = "29038423784523849573247856";
+                    PayStatus.Status = Pay_State.ApplyOk.ToString();
+                    PayListService.UpdateOrder(PayStatus);
+
+                    var Upgrade = false;
+                    var MoneyType = "0201";
+                    if (vip != null)
+                    {
+                        Server.Money = Server.Month * 10;
+                        MoneyType = "0206";
+
+                        if (vip.EndTime.CompareTo(DateTime.Now) > 0 && Server.ServerType > vip.VipLevel)
+                        {
+                            Upgrade = true;
+                            var day = UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, vip.EndTime);
+                            var UpgradeMoney = day * 2;
+                            Member_MoneyService.AddMoney(MemberID, Server.Money, "0202");
+                        }
+                    }
+                    else
+                    {
+                        MoneyType = "0205";
+                        Server.Money = Server.Month * 5;
+                    }
+
+                    Member_MoneyService.AddMoney(MemberID, Server.Money, MoneyType);
+
+                    if (vip == null)
+                    {
+                        model.AddTime = DateTime.Now;
+                        model.VipLevel = Server.ServerType;
+                        model.StartTime = DateTime.Now;
+                        model.MemberID = MemberID;
+                        model.EndTime = DateTime.Now.AddMonths(Server.Month + Server.GiftMonth);
+                        model.Description = PayOrder.ProductType;
+                        model.PayTime = 1;
+                        Create(model);
+                    }
+                    else
+                    {
+                        model.ID = vip.ID;
+                        model.MemberID = MemberID;
+                        model.VipLevel = Server.ServerType;
+                        if (vip.EndTime.CompareTo(DateTime.Now) > 0)
+                        {
+                            if (Upgrade)
+                            {
+                                model.EndTime = DateTime.Now.AddMonths(Server.Month + Server.GiftMonth);
+                            }
+                            else
+                            {
+                                model.EndTime = vip.EndTime.AddMonths(Server.Month + Server.GiftMonth);
+                            }
+                        }
+                        else
+                        {
+                            model.EndTime = DateTime.Now.AddMonths(Server.Month + Server.GiftMonth);
+                        }
+
+                        Update(model);
+
+                    }
+                    Member_MoneyService.AddMoney(MemberID, Server.GiftMoney, "0201");
+
+                    scope.Complete();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (vip != null)
-                {
-                    Server.Money = Server.Month * 10;
-                }
-                else
-                {
-                    Server.Money = Server.Month * 5;
-                }
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
             }
-
-            Member_MoneyService.AddMoney(MemberID, Server.Money, "0101", "开通或续费额外赠送");
-            if (vip == null)
-            {
-
-                model.StartTime = DateTime.Now;
-                model.MemberID = MemberID;
-                model.EndTime = DateTime.Now.AddMonths(Server.Month + Server.GiftMonth);
-                model.Description = PayOrder.ProductType;
-                model.PayTime = 1;
-                Create(model);
-
-            }
-            else
-            {
-                model.ID = vip.ID;
-                model.MemberID = model.MemberID;
-                if (vip.EndTime.CompareTo(DateTime.Now) > 0)
-                {
-                    model.EndTime = vip.EndTime.AddMonths(Server.Month + Server.GiftMonth);
-                }
-                else
-                {
-                    model.EndTime = DateTime.Now.AddMonths(Server.Month + Server.GiftMonth);
-                }
-
-            }
-            Member_MoneyService.AddMoney(MemberID, Server.GiftMonth, "0101", "开通赠送");
-
             return result;
 
         }
 
-        public ServiceResult PayMoney(int MemberID, PayMoneyViewModel MoneyModel, PayList PayOrder)
+        public ServiceResult PayMoney(int MemberID, PayList PayOrder)
         {
-            throw new NotImplementedException();
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    PayStatusViewModel PayStatus = new PayStatusViewModel();
+                    PayStatus.Pay_No = PayOrder.Pay_No.ToString();
+                    PayStatus.Buy_Email = CookieHelper.Email;
+                    PayStatus.Buy_ID = CookieHelper.UID;
+                    PayStatus.Trade_No = "29038423784523849573247856";
+                    PayStatus.Status = Pay_State.ApplyOk.ToString();
+                    PayListService.UpdateOrder(PayStatus);
+
+                    Member_MoneyService.AddMoney(MemberID, PayOrder.VMoney.Value, "0204");
+
+                    Member_MoneyService.AddMoney(MemberID, Convert.ToInt32(PayOrder.Money.Value), "0203");
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
         }
 
 

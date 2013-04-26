@@ -95,6 +95,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -211,11 +212,13 @@
     <Compile Include="Controllers\Admin\OutDoorMediaCateController.cs" />
     <Compile Include="Controllers\Admin\OutDoorVerifyController.cs" />
     <Compile Include="Controllers\Admin\OwnerCateController.cs" />
+    <Compile Include="Controllers\Admin\PageSettingController.cs" />
     <Compile Include="Controllers\Admin\PeriodCateController.cs" />
     <Compile Include="Controllers\Admin\PermissionController.cs" />
     <Compile Include="Controllers\Admin\RolesController.cs" />
     <Compile Include="Controllers\Admin\ArticleCateController.cs" />
     <Compile Include="Controllers\Admin\ServerItemController.cs" />
+    <Compile Include="Controllers\Admin\SliderImgController.cs" />
     <Compile Include="Controllers\AjaxServiceController.cs" />
     <Compile Include="Controllers\ChangeProvinceController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -288,6 +291,14 @@
     <Compile Include="Migrations\201304250949418_AlertPayList11.cs" />
     <Compile Include="Migrations\201304250949418_AlertPayList11.Designer.cs">
       <DependentUpon>201304250949418_AlertPayList11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304260148118_AlertPaylistEndtime.cs" />
+    <Compile Include="Migrations\201304260148118_AlertPaylistEndtime.Designer.cs">
+      <DependentUpon>201304260148118_AlertPaylistEndtime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304260831173_AddSliderImg1.cs" />
+    <Compile Include="Migrations\201304260831173_AddSliderImg1.Designer.cs">
+      <DependentUpon>201304260831173_AddSliderImg1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
@@ -387,6 +398,7 @@
     <Compile Include="Serivces\Interface\IMember_Money_ListService.cs" />
     <Compile Include="Serivces\Interface\ISys_MessageService.cs" />
     <Compile Include="Serivces\Interface\IMember_VIPService.cs" />
+    <Compile Include="Serivces\Interface\ISliderImgService.cs" />
     <Compile Include="Serivces\MemberService.cs" />
     <Compile Include="Serivces\Member_ActionService.cs" />
     <Compile Include="Serivces\Member_MessageService.cs" />
@@ -406,6 +418,7 @@
     <Compile Include="Serivces\StaticTemplateService.cs" />
     <Compile Include="Serivces\Sys_MessageService.cs" />
     <Compile Include="Serivces\ServerItemService.cs" />
+    <Compile Include="Serivces\SliderImgService.cs" />
     <Compile Include="Utils\ServiceResult.cs" />
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="ViewModels\AccountModel.cs" />
@@ -422,6 +435,7 @@
     <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\PayVIPViewModel.cs" />
     <Compile Include="ViewModels\ServerItemViewModel.cs" />
+    <Compile Include="ViewModels\SliderImgViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LuceneAnalyer\sDict.txt" />
@@ -1530,6 +1544,12 @@
     <Content Include="Views\ServerItem\Create.cshtml" />
     <Content Include="Views\ServerItem\Edit.cshtml" />
     <Content Include="Views\Gztvip\OpenOK.cshtml" />
+    <Content Include="Views\Gztvip\PayCz.cshtml" />
+    <Content Include="Views\Gztvip\PayTop.cshtml" />
+    <Content Include="Views\OutDoorVerify\Select.cshtml" />
+    <Content Include="Views\SliderImg\Index.cshtml" />
+    <Content Include="Views\SliderImg\Create.cshtml" />
+    <Content Include="Views\SliderImg\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1575,6 +1595,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304250949418_AlertPayList11.resx">
       <DependentUpon>201304250949418_AlertPayList11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304260148118_AlertPaylistEndtime.resx">
+      <DependentUpon>201304260148118_AlertPaylistEndtime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304260831173_AddSliderImg1.resx">
+      <DependentUpon>201304260831173_AddSliderImg1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

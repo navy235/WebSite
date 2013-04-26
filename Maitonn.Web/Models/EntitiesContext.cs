@@ -37,6 +37,8 @@ namespace Maitonn.Web
 
         public IDbSet<ServerItem> ServerItem { get; set; }
 
+        public IDbSet<SliderImg> SliderImg { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
