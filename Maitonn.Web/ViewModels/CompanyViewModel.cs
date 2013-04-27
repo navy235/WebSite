@@ -122,6 +122,7 @@ namespace Maitonn.Web
         [UIHint("UploadImgEdit")]
         [HintClass("uploadlogo")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         [HintLabel("请上传不小于200X200像素的图片,图片文件大小不超过5M")]
         public string Logo { get; set; }
 
@@ -189,6 +190,7 @@ namespace Maitonn.Web
         [Display(Name = "企业LOGO")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         public string LogoUrl { get; set; }
     }
 

@@ -30,7 +30,7 @@
                 {
                     var slider = Model.SliderBox.Items[i];
                     <li style="@((i == 0) ? "opacity:1; z-index:10" : "opacity: 0; z-index: 9")" style="opacity: 0; z-index: 9"><a target="_blank" href="@slider.Url">
-                        <img title="" alt="" src="@slider.ImgUrl" width="710" height="280" border="0"></a></li>
+                        <img title="@slider.Name" alt="@slider.Name" src="@slider.ImgUrl" width="710" height="280" border="0"></a></li>
                 }
             </ul>
             <div class="slider-page" style="z-index: 11">

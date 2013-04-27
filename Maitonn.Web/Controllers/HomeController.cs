@@ -157,9 +157,7 @@ namespace Maitonn.Web
             model.Items = sliderImgService.GetALL()
                 .Where(x => x.EndTime > DateTime.Now)
                 .Where(x => x.ProvinceCode == ProvinceCode || x.ProvinceCode == quanguoCode)
-                  .OrderByDescending(x => x.OrderIndex)
-                .OrderByDescending(x => x.Status)
-                .OrderByDescending(x => x.AddTime).ToList()
+                .ToList().OrderByDescending(x => x.Status).OrderByDescending(x=>x.OrderIndex)
                 .Select(x => new CategoryViewModel()
                 {
                     Url = x.LinkUrl,

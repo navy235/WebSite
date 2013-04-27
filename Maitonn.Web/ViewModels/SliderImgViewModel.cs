@@ -15,7 +15,8 @@
 
         public SliderImgViewModel()
         {
-            this.EndTime = DateTime.Now;
+            this.StartTime = DateTime.Now;
+            this.Day = 1;
         }
 
         [HiddenInput(DisplayValue = false)]
@@ -43,6 +44,7 @@
         [Display(Name = "轮播图片")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "710|280")]
+        [AdditionalMetadata("mustUpload", false)]
         [HintClass("sliderImg")]
         public string ImgUrl { get; set; }
 
@@ -58,9 +60,18 @@
         public int OrderIndex { get; set; }
 
 
-        [Required(ErrorMessage = "请输入结束时间")]
-        [Display(Name = "结束时间")]
+        [Required(ErrorMessage = "请输入开始时间")]
+        [Display(Name = "开始时间")]
         [DataType(DataType.DateTime)]
-        public DateTime EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+
+
+        [Display(Name = "推广天数：")]
+        [UIHint("IntegerExtension")]
+        [AdditionalMetadata("IntegerExtension", "1,30")]
+        [AdditionalMetadata("IntegerExtensionUnit", "天")]
+        public int Day { get; set; }
+
+
     }
 }

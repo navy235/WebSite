@@ -46,6 +46,9 @@ namespace Maitonn.Web
             target.VipDiscount = model.VipDiscount;
             target.VipDiscount2 = model.VipDiscount2;
             target.IsPayByVMoney = model.IsPayByVMoney;
+            target.IsByCategory = model.IsByCategory;
+            target.IsQuanGuo = model.IsQuanGuo;
+            target.IsByChildCategory = model.IsByChildCategory;
             target.Money = model.Money;
             target.Month = model.Month;
             target.GiftMoney = model.GiftMoney;

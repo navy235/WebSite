@@ -214,8 +214,8 @@ textarea {
 
 
   .form-field-sliderImg .img-box img {
-    width: 708px;
-    height: 278px;
+    width: 358px;
+    height: 138px;
     border: 1px solid #c5c5c5;
   }
 
@@ -224,6 +224,10 @@ textarea {
   margin-left: 107px;
   margin-top: 5px;
   display: block;
+}
+
+.personal-form-top .form-field-sliderImg .k-upload {
+  margin-left: 100px;
 }
 
 .form-areas {

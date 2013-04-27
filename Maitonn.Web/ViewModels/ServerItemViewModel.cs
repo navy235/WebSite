@@ -40,6 +40,7 @@ namespace Maitonn.Web
         [Display(Name = "服务标识图片")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         [HintClass("avtar")]
         public string ImgUrl { get; set; }
 
@@ -63,9 +64,26 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入支付模式")]
         [Display(Name = "支付模式")]
         [UIHint("Radio")]
-        [AdditionalMetadata("Radio", "仅网银支付,网银或广知币")]
+        [AdditionalMetadata("Radio", "网银支付,广知币")]
         public bool IsPayByVMoney { get; set; }
 
+        [Required(ErrorMessage = "请输入投放模式")]
+        [Display(Name = "投放模式")]
+        [UIHint("Radio")]
+        [AdditionalMetadata("Radio", "全国投放,地区投放")]
+        public bool IsQuanGuo { get; set; }
+
+        [Required(ErrorMessage = "请输入是否按类别投放")]
+        [Display(Name = "按类别投放")]
+        [UIHint("Radio")]
+        [AdditionalMetadata("Radio", "否,是")]
+        public bool IsByCategory { get; set; }
+
+        [Required(ErrorMessage = "请输入是否二级类别投放")]
+        [Display(Name = "二级类别投放")]
+        [UIHint("Radio")]
+        [AdditionalMetadata("Radio", "否,是")]
+        public bool IsByChildCategory { get; set; }
 
         [Display(Name = "基础币值")]
         [UIHint("Integer")]

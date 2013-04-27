@@ -20,7 +20,6 @@ namespace Maitonn.Web
             this.DB_Service = DB_Service;
             this.PayListService = PayListService;
             this.Member_MoneyService = Member_MoneyService;
-
         }
 
         public ServiceResult PayVIP(int MemberID, ServerItem Server, PayList PayOrder)

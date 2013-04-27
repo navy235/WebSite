@@ -110,7 +110,8 @@ namespace Maitonn.Web
                     SliderImg item = new SliderImg()
                     {
                         AddTime = DateTime.Now,
-                        EndTime = model.EndTime,
+                        StartTime=model.StartTime,
+                        EndTime = model.StartTime.AddDays(model.Day),
                         ImgUrl = model.ImgUrl,
                         LinkUrl = model.LinkUrl,
                         MemberID = CookieHelper.MemberID,
@@ -141,7 +142,8 @@ namespace Maitonn.Web
             var item = SliderImgService.Find(id);
             var model = new SliderImgViewModel()
             {
-                EndTime = item.EndTime,
+                StartTime = item.StartTime,
+                Day=Convert.ToInt32((item.EndTime-item.StartTime).TotalDays),
                 ImgUrl = item.ImgUrl,
                 LinkUrl = item.LinkUrl,
                 OrderIndex = item.OrderIndex,
@@ -164,7 +166,8 @@ namespace Maitonn.Web
                     SliderImg item = new SliderImg()
                     {
                         ID = model.ID,
-                        EndTime = model.EndTime,
+                        StartTime = model.StartTime,
+                        EndTime = model.StartTime.AddDays(model.Day),
                         ImgUrl = model.ImgUrl,
                         LinkUrl = model.LinkUrl,
                         MemberID = CookieHelper.MemberID,

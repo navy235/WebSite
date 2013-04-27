@@ -300,6 +300,14 @@
     <Compile Include="Migrations\201304260831173_AddSliderImg1.Designer.cs">
       <DependentUpon>201304260831173_AddSliderImg1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304270539071_AddSliderImgStartTime.cs" />
+    <Compile Include="Migrations\201304270539071_AddSliderImgStartTime.Designer.cs">
+      <DependentUpon>201304270539071_AddSliderImgStartTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304270905550_AddServerItemType.cs" />
+    <Compile Include="Migrations\201304270905550_AddServerItemType.Designer.cs">
+      <DependentUpon>201304270905550_AddServerItemType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -1550,6 +1558,7 @@
     <Content Include="Views\SliderImg\Index.cshtml" />
     <Content Include="Views\SliderImg\Create.cshtml" />
     <Content Include="Views\SliderImg\Edit.cshtml" />
+    <Content Include="Views\Gztvip\TopSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1601,6 +1610,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304260831173_AddSliderImg1.resx">
       <DependentUpon>201304260831173_AddSliderImg1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304270539071_AddSliderImgStartTime.resx">
+      <DependentUpon>201304270539071_AddSliderImgStartTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304270905550_AddServerItemType.resx">
+      <DependentUpon>201304270905550_AddServerItemType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

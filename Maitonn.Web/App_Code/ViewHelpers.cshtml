@@ -20,7 +20,7 @@
 @helper Alert(string message,bool success)
 {
     var type = success?"success":"error";
-    <div class="alert displaymessage @if (success){ <text>alert-@type </text> }else{ <text>alert-@type </text> }">
+    <div class="alert displaymessage alert-@type }">
         <div class="image">
             <img src="~/Content/images/icon/@(type).png"  />
         </div>

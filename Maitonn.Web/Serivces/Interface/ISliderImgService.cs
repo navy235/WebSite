@@ -7,6 +7,9 @@ namespace Maitonn.Web
 {
     public interface ISliderImgService
     {
+
+        ServiceResult PayTopSliderImg(SliderImg model, int price);
+
         IQueryable<SliderImg> GetALL();
 
         IQueryable<SliderImg> GetKendoALL();

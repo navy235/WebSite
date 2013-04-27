@@ -30,6 +30,12 @@
 
         public bool IsPayByVMoney { get; set; }
 
+        public bool IsQuanGuo { get; set; }
+
+        public bool IsByCategory { get; set; }
+
+        public bool IsByChildCategory { get; set; }
+
         public int Money { get; set; }
 
         public int Month { get; set; }

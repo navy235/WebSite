@@ -1,0 +1,168 @@
+﻿@model PayTopViewModel
+@{
+    ViewBag.Title = "置顶服务";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="server-status">
+                @if (ViewBag.VIP != null)
+                {
+                    var VIP = (Member_VIP)ViewBag.VIP;
+                    
+                    <table width="100%" class="alert alert-info">
+                        <tbody>
+                            <tr>
+                                <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == VIP.VipLevel.ToString()).Text</span></td>
+                                <td width="33%">到期日期：<span class="red">@VIP.EndTime.ToString("yyyy-MM-dd")</span></td>
+                                <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, VIP.EndTime)</span></td>
+                            </tr>
+                            <tr>
+                                <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
+
+                                @if (VIP.EndTime.CompareTo(DateTime.Now) < 0)
+                                {
+                                    <td colspan="2">当前权益已到期<a href="@Url.Action("open")">立即续费</a> 广知通会员充值广知币有额外赠送</td>
+                                }
+                                else
+                                {
+                                    <td colspan="2">&nbsp;</td>
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <table width="100%" class="alert alert-info">
+                        <tbody>
+                            <tr>
+                                <td width="33%">会员属性：<span class="red">普通会员</span></td>
+                                <td width="33%">目前广知币：<span class="red">@ViewBag.Money</span></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">广知通会员充值广知币有额外赠送，等权益<a  href="@Url.Action("index", "help", new { id = 7 })">查看权益</a><a href="@Url.Action("open")">立即开通广知通</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                }
+            </div>
+
+            <div class="personal-form  personal-form-top">
+
+                @if (ViewBag.CheckErr != null)
+                {
+                    var serverErr = ((ServiceResult)ViewBag.CheckErr).GetServiceErrors();
+                    
+                    <div class="alert  alert-error ">
+                        <div class="image">
+                            <img src="~/Content/images/icon/error.png" />
+                        </div>
+                        <div class="text">
+                            <ul>
+                                @foreach (var err in serverErr)
+                                { 
+                                    <li>@err.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-field">
+
+                        @Html.EditorFor(x => x.ID)
+                        @Html.ValidationMessageFor(x => x.ID)
+                    </div>
+                    <div class="form-field">
+                        @Html.EditorFor(x => x.TopID)
+                        @Html.ValidationMessageFor(x => x.TopID)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.TopName)
+                        @Html.EditorFor(x => x.TopName)
+                        @Html.ValidationMessageFor(x => x.TopName)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.Price)
+                        @Html.EditorFor(x => x.Price) 广知币/天
+                        @Html.ValidationMessageFor(x => x.Price)
+                    </div>
+                    
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.Discount)
+                        @Html.EditorFor(x => x.Discount) 折
+                        @Html.ValidationMessageFor(x => x.Discount)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.Name)
+                        @Html.EditorFor(x => x.Name)
+                        @Html.ValidationMessageFor(x => x.Name)
+                    </div>@*
+
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.ProvinceCode)
+                        @Html.EditorFor(x => x.ProvinceCode)
+                        @Html.ValidationMessageFor(x => x.ProvinceCode)
+                    </div>*@
+                    
+                    <div class="form-field form-field-sliderImg">
+                        @Html.LabelFor(x => x.ImgUrl)
+                        @Html.EditorFor(x => x.ImgUrl)
+                        @Html.ValidationMessageFor(x => x.ImgUrl)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.LinkUrl)
+                        @Html.EditorFor(x => x.LinkUrl)
+                        @Html.ValidationMessageFor(x => x.LinkUrl)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.StartTime)
+                        @Html.EditorFor(x => x.StartTime)
+                        @Html.ValidationMessageFor(x => x.StartTime)
+                    </div>
+                    <div class="form-field">
+                        @Html.LabelFor(x => x.Day)
+                        @Html.EditorFor(x => x.Day)
+                        @Html.ValidationMessageFor(x => x.Day)
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>总价：</label>
+                        <span class="form-field-totalprice">@(Convert.ToInt32(Model.Price * Model.Day * Model.Discount / 10)) </span>广知币
+                    </div>
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-warning ">
+                            &nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;</button>
+                    </div>
+                    
+                    <script type="text/javascript">
+                        $(function() {
+                            var DayNumericTextBox = $("#Day").data("kendoNumericTextBox");
+                            DayNumericTextBox.bind("change", function(e) {
+                                $('.form-field-totalprice').text($('#Day').val() * $('#Price').val() * $('#Discount').val() / 10);
+                            });
+                        })
+                    </script>
+                }
+            </div>
+
+        </div>
+    </div>
+</article>

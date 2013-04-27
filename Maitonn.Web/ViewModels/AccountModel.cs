@@ -139,6 +139,7 @@ namespace Maitonn.Web
         [Display(Name = "上传头像")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         public string AvtarUrl { get; set; }
     }
 
@@ -283,6 +284,7 @@ namespace Maitonn.Web
         [HintClass("avtar")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         public string AvtarUrl { get; set; }
 
         [Required(ErrorMessage = "请选择城市")]
@@ -349,6 +351,7 @@ namespace Maitonn.Web
         [HintClass("avtar")]
         [UIHint("UploadImgEdit")]
         [AdditionalMetadata("UploadImgEdit", "200|200")]
+        [AdditionalMetadata("mustUpload", false)]
         public string AvtarUrl { get; set; }
 
 

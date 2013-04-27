@@ -5,7 +5,8 @@
     var orgUrl = Url.Content("~/Content/noimages.gif");
     var targetWidth = ViewData.ModelMetadata.AdditionalValues["UploadImgEdit"].ToString().Split('|')[0];
     var targetHeight = ViewData.ModelMetadata.AdditionalValues["UploadImgEdit"].ToString().Split('|')[1];
- 
+    var needUpload = Convert.ToBoolean(ViewData.ModelMetadata.AdditionalValues["mustUpload"]);
+
 }
 
 <div class="img-box ">
@@ -59,7 +60,7 @@
 <link type="text/css" href="~/Content/jcrop/jquery.Jcrop.min.css" rel="stylesheet" />
 
 
-@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text", value = orgUrl })
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text", value = (needUpload ? "" : orgUrl) })
 
 <script type="text/javascript" src="~/Scripts/jquery.Jcrop.min.js"></script>
 <script type="text/javascript">
@@ -74,8 +75,14 @@
             }
             var imgId='@Html.Raw(name + "_img")';
             var id='@name';
-            $("#"+imgId).attr("src", _imgurl);
+            @if (!String.IsNullOrEmpty(Model))
+            {
+                <text>
             $("#"+id).val(_imgurl);
+         
+            </text>
+            }
+            $("#"+imgId).attr("src", _imgurl);
         },
         onError:function(e){
         
@@ -225,6 +232,8 @@
                         .close();
                         $('#'+imgEditId+"_img").attr("src", resData.imgurl);
                         $("#"+imgEditId).val(resData.imgurl);
+                        $('#'+imgEditId).parents('form:first').validate().element('#'+imgEditId);
+
                     }else{
                         alert(resData.err);
                     }

@@ -27,6 +27,7 @@ namespace Maitonn.Web.Controllers
         private IMember_MoneyService member_MoneyService;
         private IPayListService payListService;
         private IServerItemService serverItemService;
+        private ISliderImgService sliderImgService;
         public GztvipController(
             IMemberService _memberService
             , IMember_ActionService _member_ActionService
@@ -36,6 +37,7 @@ namespace Maitonn.Web.Controllers
             , IMember_MoneyService _member_MoneyService
             , IPayListService _payListService
             , IServerItemService _serverItemService
+            , ISliderImgService _sliderImgService
             )
         {
             memberService = _memberService;
@@ -46,6 +48,7 @@ namespace Maitonn.Web.Controllers
             member_MoneyService = _member_MoneyService;
             payListService = _payListService;
             serverItemService = _serverItemService;
+            sliderImgService = _sliderImgService;
         }
 
         public ActionResult Index()
@@ -53,11 +56,12 @@ namespace Maitonn.Web.Controllers
             ViewBag.MenuItem = "gztvip-index";
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
             var serverType = (int)ServerType.NomarlVIPServer;
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            ViewBag.Money = money;
             if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
             {
                 serverType = vip.VipLevel;
-                var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
-                ViewBag.Money = money;
+
             }
             var servers = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType >= serverType).OrderBy(x => x.AddTime).ToList();
             ViewBag.Servers = servers;
@@ -75,11 +79,13 @@ namespace Maitonn.Web.Controllers
             }
 
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            ViewBag.Money = money;
+
             if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
             {
-                var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
 
-                ViewBag.Money = money;
 
                 if (server.ServerType < vip.VipLevel)
                 {
@@ -210,7 +216,7 @@ namespace Maitonn.Web.Controllers
                     case 200:
                     case 500:
                     case 1000:
-                        if (vip != null)
+                        if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
                         {
                             if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
                             {
@@ -221,11 +227,15 @@ namespace Maitonn.Web.Controllers
                                 orderItem.VMoney = ApplyMoney / 5;
                             }
                         }
+                        else
+                        {
+                            orderItem.VMoney = 0;
+                        }
                         orderItem.Money = ApplyMoney;
                         break;
                     case 600:
                         orderItem.Money = intMoney;
-                        if (vip != null)
+                        if (vip != null && vip.EndTime.CompareTo(DateTime.Now) > 0)
                         {
                             if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
                             {
@@ -235,6 +245,10 @@ namespace Maitonn.Web.Controllers
                             {
                                 orderItem.VMoney = intMoney / 5;
                             }
+                        }
+                        else
+                        {
+                            orderItem.VMoney = 0;
                         }
                         break;
                     default:
@@ -280,15 +294,119 @@ namespace Maitonn.Web.Controllers
 
             ViewBag.VIP = vip;
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
-            
+
             ViewBag.Money = money;
             var serverType = (int)ServerType.TopServer;
-           
+
             var servers = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType == serverType).OrderBy(x => x.AddTime).ToList();
-           
+
             ViewBag.Servers = servers;
 
             return View();
+        }
+
+
+        public ActionResult TopSet(int id)
+        {
+
+            ViewBag.MenuItem = "gztvip-paytop";
+            var serverType = (int)ServerType.TopServer;
+            var server = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType == serverType && x.ID == id).FirstOrDefault();
+            if (server == null)
+            {
+                return HttpNotFound();
+            }
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+            ViewBag.VIP = vip;
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            ViewBag.Money = money;
+
+            PayTopViewModel payTop = new PayTopViewModel()
+            {
+                TopID = server.ID,
+                Price = server.Price,
+                TopName = server.Name
+            };
+
+            if (vip == null)
+            {
+                payTop.Discount = 10;
+            }
+            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+            {
+                payTop.Discount = server.VipDiscount;
+            }
+            else if (vip.VipLevel == (int)ServerType.SuperVIPServer)
+            {
+                payTop.Discount = server.VipDiscount2;
+            }
+
+            return View(payTop);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TopSet(PayTopViewModel model)
+        {
+            ViewBag.MenuItem = "gztvip-paytop";
+            ServiceResult result = new ServiceResult();
+            var server = serverItemService.Find(model.TopID);
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+            var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+            if (money < totalPrice)
+            {
+                result.AddServiceError("您当前剩余广知币不足已支付。当前" + money + "个，支付需要" + totalPrice + "个");
+            }
+            ViewBag.Money = money;
+
+            for (var i = 1; i <= model.Day; i++)
+            {
+                var endtime = model.StartTime.AddDays(i);
+                var count = sliderImgService.GetALL().Count(x => x.EndTime <= endtime && x.StartTime >= model.StartTime);
+                if (count >= 3)
+                {
+                    result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
+                }
+            }
+            if (result.Success)
+            {
+                SliderImg payModel = new SliderImg()
+                {
+                    MemberID = CookieHelper.MemberID,
+                    AddTime = DateTime.Now,
+                    StartTime = model.StartTime,
+                    EndTime = model.StartTime.AddDays(model.Day),
+                    ImgUrl = model.ImgUrl,
+                    LinkUrl = model.LinkUrl,
+                    ProvinceCode = (int)ProvinceName.quanguo,
+                    Status = (int)SliderImgStatus.User,
+                    Title = model.Name
+                };
+
+                var excuteresult = sliderImgService.PayTopSliderImg(payModel, totalPrice);
+                if (!excuteresult.Success)
+                {
+                    result.AddServiceError("置顶失败！");
+                }
+
+            }
+            else
+            {
+                ViewBag.CheckErr = result;
+            }
+            result.Message = "置顶" + (result.Success ? "成功！" : "失败！");
+
+            TempData["Service_Result"] = result;
+
+            if (result.Success)
+            {
+                return RedirectToAction("OpenOK");
+            }
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            ViewBag.VIP = vip;
+
+            return View(model);
         }
 
 
