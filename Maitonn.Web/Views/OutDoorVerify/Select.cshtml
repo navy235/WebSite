@@ -25,6 +25,7 @@
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(10)
+        .Model(model => model.Id(c => c.MediaID))
         .Read(read => read.Action("outdoor_read", "outdoorverify"))
     )
 )

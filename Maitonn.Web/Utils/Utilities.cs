@@ -27,7 +27,7 @@ namespace Maitonn.Web
 
         public static SelectList CreateSelectList<T>(IEnumerable<T> entities, Func<T, object> funcToGetValue, Func<T, object> funcToGetText, bool addDefaultSelectItem = true)
         {
-            return new SelectList(GetSelectListData(entities, funcToGetValue, funcToGetText, true), "Value", "Text");
+            return new SelectList(GetSelectListData(entities, funcToGetValue, funcToGetText, addDefaultSelectItem), "Value", "Text");
 
         }
 

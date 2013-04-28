@@ -102,6 +102,20 @@ namespace Maitonn.Web
               .To<Member_Money_ListService>()
               .InRequestScope();
 
+
+            kernel.Bind<IMember_CreditIndex_TypeService>()
+              .To<Member_CreditIndex_TypeService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_CreditIndexService>()
+              .To<Member_CreditIndexService>()
+              .InRequestScope();
+
+            kernel.Bind<IMember_CreditIndex_ListService>()
+              .To<Member_CreditIndex_ListService>()
+              .InRequestScope();
+
+
             kernel.Bind<IMember_VIPService>()
               .To<Member_VIPService>()
               .InRequestScope();
@@ -119,13 +133,18 @@ namespace Maitonn.Web
              .To<SliderImgService>()
              .InRequestScope();
 
-            kernel.Bind<IMember_MessageService>()
-              .To<Member_MessageService>()
+            kernel.Bind<ITopMediaService>()
+              .To<TopMediaService>()
               .InRequestScope();
 
 
+            kernel.Bind<ITopCompanyService>()
+              .To<TopCompanyService>()
+              .InRequestScope();
 
-
+            kernel.Bind<IMember_MessageService>()
+              .To<Member_MessageService>()
+              .InRequestScope();
 
             kernel.Bind<ISys_MessageService>()
               .To<Sys_MessageService>()

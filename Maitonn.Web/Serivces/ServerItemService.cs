@@ -43,6 +43,7 @@ namespace Maitonn.Web
             target.ImgUrl = model.ImgUrl;
             target.Price = model.Price;
             target.ServerType = model.ServerType;
+            target.TopType = model.TopType;
             target.VipDiscount = model.VipDiscount;
             target.VipDiscount2 = model.VipDiscount2;
             target.IsPayByVMoney = model.IsPayByVMoney;

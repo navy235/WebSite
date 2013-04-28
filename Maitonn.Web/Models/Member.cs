@@ -62,7 +62,11 @@ namespace Maitonn.Web
         public int Status { get; set; }
 
         public virtual Group Group { get; set; }
+
+
         public virtual ICollection<Member_Action> Member_Action { get; set; }
+
+        public virtual ICollection<OutDoor> OutDoor { get; set; }
 
         public virtual Company SelfCompany { get; set; }
 
@@ -74,6 +78,8 @@ namespace Maitonn.Web
         public virtual Member_VIP Member_VIP { get; set; }
 
         public virtual Member_Money Member_Money { get; set; }
+
+        public virtual Member_CreditIndex Member_CreditIndex { get; set; }
 
      
 

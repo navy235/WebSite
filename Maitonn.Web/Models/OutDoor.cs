@@ -93,5 +93,7 @@ namespace Maitonn.Web
 
         public virtual CredentialsImg CredentialsImg { get; set; }
 
+        public virtual Member Member { get; set; }
+
     }
 }

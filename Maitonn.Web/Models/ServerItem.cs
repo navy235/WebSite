@@ -11,7 +11,11 @@
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        [Display(Name = "服务类型")]
         public int ServerType { get; set; }
+
+        [Display(Name = "置顶类型")]
+        public int TopType { get; set; }
 
         [Display(Name = "服务名称")]
         [MaxLength(50)]

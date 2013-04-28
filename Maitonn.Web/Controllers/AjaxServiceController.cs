@@ -70,6 +70,16 @@ namespace Maitonn.Web
             return Content(UIHelper.ServerTypeList.Single(x => x.Value == key.ToString()).Text);
         }
 
+        public ActionResult TopType()
+        {
+            return Json(UIHelper.TopTypeList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TopTypeName(int key)
+        {
+            return Content(UIHelper.TopTypeList.Single(x => x.Value == key.ToString()).Text);
+        }
+
         public ActionResult SliderImgStatus()
         {
             return Json(UIHelper.SliderImgStatusList, JsonRequestBehavior.AllowGet);
@@ -91,6 +101,7 @@ namespace Maitonn.Web
         {
             return Content(areaService.Find(key).CateName);
         }
+
 
         public ActionResult CityCode(string key, int pid = 0)
         {
@@ -206,6 +217,20 @@ namespace Maitonn.Web
         public ActionResult BussinessCodeName(int key)
         {
             return Content(companyBussinessService.Find(key).CateName);
+        }
+
+
+
+        public ActionResult ParentMediaCode()
+        {
+            var renderRadioList = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null));
+            return Json(Utilities.GetSelectListData(renderRadioList, x => x.ID, x => x.CateName, false),
+                JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ParentMediaCode(int key)
+        {
+            return Content(outDoorMediaCateService.Find(key).CateName);
         }
 
         public ActionResult MeidaCode(string key, int pid = 0)

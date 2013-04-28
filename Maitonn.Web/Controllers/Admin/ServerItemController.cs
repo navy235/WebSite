@@ -31,6 +31,7 @@ namespace Maitonn.Web
         public ActionResult Index()
         {
             ViewBag.ServerType = Utilities.CreateSelectList(UIHelper.ServerTypeList, x => x.Value, x => x.Text, false);
+            ViewBag.TopType = Utilities.CreateSelectList(UIHelper.TopTypeList, x => x.Value, x => x.Text, false);
             return View();
         }
 
@@ -123,6 +124,7 @@ namespace Maitonn.Web
                         Name = model.Name,
                         Price = model.Price,
                         ServerType = model.ServerType,
+                        TopType = model.TopType,
                         VipDiscount = model.VipDiscount,
                         VipDiscount2 = model.VipDiscount2
                     };
@@ -151,6 +153,7 @@ namespace Maitonn.Web
                 VipDiscount2 = item.VipDiscount2,
                 VipDiscount = item.VipDiscount,
                 ServerType = item.ServerType,
+                TopType = item.TopType,
                 Price = item.Price,
                 Name = item.Name,
                 Month = item.Month,
@@ -197,6 +200,7 @@ namespace Maitonn.Web
                         Name = model.Name,
                         Price = model.Price,
                         ServerType = model.ServerType,
+                        TopType = model.TopType,
                         VipDiscount = model.VipDiscount,
                         VipDiscount2 = model.VipDiscount2
                     };

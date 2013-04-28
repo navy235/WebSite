@@ -29,6 +29,8 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> ServerTypeList { get; set; }
 
+        public static List<SelectListItem> TopTypeList { get; set; }
+
         public static List<SelectListItem> SliderImgStatusList { get; set; }
 
         static UIHelper()
@@ -43,6 +45,7 @@ namespace Maitonn.Core
             InitTimeList();
             InitPriceList();
             InitServerTypeList();
+            InitTopTypeList();
             InitSliderImgStatusList();
 
         }
@@ -160,14 +163,23 @@ namespace Maitonn.Core
         {
             ServerTypeList = new List<SelectListItem>();
             ServerTypeList.Add(new SelectListItem() { Text = "置顶服务", Value = ((int)ServerType.TopServer).ToString() });
-            ServerTypeList.Add(new SelectListItem() { Text = "广知通VIP", Value = ((int)ServerType.NomarlVIPServer).ToString() });
-            ServerTypeList.Add(new SelectListItem() { Text = "广知通黄金VIP", Value = ((int)ServerType.SuperVIPServer).ToString() });
+            ServerTypeList.Add(new SelectListItem() { Text = "广知通普通版", Value = ((int)ServerType.NomarlVIPServer).ToString() });
+            ServerTypeList.Add(new SelectListItem() { Text = "广知通黄金版", Value = ((int)ServerType.SuperVIPServer).ToString() });
+        }
+
+        private static void InitTopTypeList()
+        {
+            TopTypeList = new List<SelectListItem>();
+            TopTypeList.Add(new SelectListItem() { Text = "非顶置类型", Value = ((int)TopType.NoTop).ToString() });
+            TopTypeList.Add(new SelectListItem() { Text = "首页轮播图", Value = ((int)TopType.SliderImg).ToString() });
+            TopTypeList.Add(new SelectListItem() { Text = "媒体信息", Value = ((int)TopType.Media).ToString() });
+            TopTypeList.Add(new SelectListItem() { Text = "企业信息", Value = ((int)TopType.Company).ToString() });
         }
 
         private static void InitSliderImgStatusList()
         {
             SliderImgStatusList = new List<SelectListItem>();
-         
+
             SliderImgStatusList.Add(new SelectListItem() { Text = "用户置顶", Value = ((int)SliderImgStatus.User).ToString() });
             SliderImgStatusList.Add(new SelectListItem() { Text = "系统置顶", Value = ((int)SliderImgStatus.System).ToString() });
         }

@@ -85,7 +85,21 @@
                             <p class="list-products-item-category">
                                 <a target="_blank" href="@server.HelpUrl">查看权益介绍</a>&nbsp;&nbsp;
                             </p>
-                            <a href="@Url.Action("topset", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+
+                            @if (server.TopType == (int)TopType.Media)
+                            { 
+                                <a href="@Url.Action("topmedia", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+                            }
+                            @if (server.TopType == (int)TopType.SliderImg)
+                            { 
+                                <a href="@Url.Action("topset", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+                            }
+                            @if (server.TopType == (int)TopType.Company)
+                            { 
+                                <a href="@Url.Action("topcompany", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+                            }
+
+
                         </div>
                     }
                 </div>

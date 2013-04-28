@@ -9,6 +9,7 @@
         columns.Bound(c => c.Name);
         columns.Bound(c => c.Description);
         columns.ForeignKey(c => c.ServerType, (SelectList)ViewBag.ServerType);
+        columns.ForeignKey(c => c.TopType, (SelectList)ViewBag.TopType);
         columns.Template(@<text></text>)
 .ClientTemplate(@"<a class='k-button k-button-icontext ' href='"
 + Url.Action("Edit", "ServerItem") + "/#=ID#'><span class='k-icon k-edit'></span>编辑</a>").Title("编辑").Width(120);

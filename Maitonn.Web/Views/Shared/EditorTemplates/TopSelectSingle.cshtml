@@ -1,0 +1,161 @@
+﻿@model  int?
+@{
+    var name = ViewData.TemplateInfo.GetFullHtmlFieldName("");
+    var displayname = ViewData.ModelMetadata.DisplayName;
+}
+
+
+@Html.Kendo().Window().Name(name + "_window").Title("请选择" + displayname).Content(
+    @<text>
+<div class="grid-toolbar">
+    <label>媒体名称：</label>
+    <span class="k-textbox k-space-right ">
+        <input type="text" id="@(name)_keywords" class="k-textbox ">
+        <a href="javascript:void(0)" id="@(name)_search" class="k-icon k-i-search ">&nbsp;</a>
+    </span>
+</div>
+<div id="@(name + "_grid")"></div>
+<div class="k-window-footer">
+    <button type="button" id="@(name + "_save")" class="k-button" ><span class="k-icon k-i-tick"></span>确认</button>
+</div>
+</text>
+).Width(600).Height(440).Modal(true).Visible(false).Scrollable(false)
+
+<span id="@(name + "_info")">当前没有选择置顶信息</span>
+@Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+<button type="button" id="@(name + "_select")" class="k-button" ><span class="k-icon k-add"></span>选择</button>
+
+
+<script type="text/javascript">
+    jQuery(function() {
+        $('#@(name + "_select")').click(function() {
+            InitGrid();
+            var gridWindow = $('#@(name + "_window")').data('kendoWindow');
+            gridWindow.center().open();
+        });
+        $('#@(name + "_search")').on('click', function() {
+            var value = $('#@(name + "_keywords")').val();
+            var grid = $("#@(name + "_grid")").data('kendoGrid');
+            if (value) {
+                grid.dataSource.filter({ field: "Name", operator: "contains", value: value });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+        $('#@(name + "_save")').click(function() {
+            if ($('[name="ID_check"]:checked').size() == 0) {
+                alert("请选择要置顶的媒体");
+            } else {
+                var checkId = $('[name="ID_check"]:checked').val();
+                var grid = $("#@(name + "_grid")").data('kendoGrid');
+                var item = grid.dataSource.get(checkId);
+                $('#@(name + "_info")').html(item.Name);
+                $('#@name').val(checkId);
+                $('#@name').parents('form:first').validate().element('#@name');
+                $('#@(name + "_window")').data('kendoWindow').close();
+            }
+        });
+        function InitGrid() {
+
+            jQuery("#@(name + "_grid")").kendoGrid({
+                "columns": [{
+                    "title": "选择",
+                    "attributes": {
+                        "style": "text-align:center"
+                    },
+                    "width": "50px",
+                    "template": "\u003cinput type=\u0027radio\u0027 name=\u0027ID_check\u0027 id=\u0027#=MediaID#_check\u0027  class=\u0027chkbx\u0027 value=\u0027#=MediaID#\u0027 /\u003e",
+                    "field": "MediaID",
+                    "sortable": false,
+                    "filterable": false,
+                    "encoded": true
+                },
+                {
+                    "title": "媒体名称",
+                    "field": "Name",
+                    "encoded": true
+                },
+                {
+                    "title": "添加时间",
+                    "width": "80px",
+                    "field": "AddTime",
+                    "format": "{0:yyyy-MM-dd}",
+                    "encoded": true
+                }],
+                "pageable": {
+                    "buttonCount": 10,
+                    "messages": {
+                        "display": "显示条目 {0} - {1} 共 {2}",
+                        "empty": "没有可显示的记录。",
+                        "page": "页",
+                        "of": "共 {0}",
+                        "refresh": "刷新"
+                    }
+                },
+                "sortable": true,
+
+                "dataSource": {
+                    "transport": {
+                        "read": {
+                            "url": "@Url.Action("OutDoor_Read", "outdoor")"
+                        }
+                    },
+                    "pageSize": 10,
+                    "page": 1,
+                    "total": 0,
+                    "serverPaging": true,
+                    "serverSorting": true,
+                    "serverFiltering": true,
+                    "serverGrouping": true,
+                    "serverAggregates": true,
+                    "type": "aspnetmvc-ajax",
+                    "filter": [],
+                    "sort": [{
+                        "field": "AddTime",
+                        "dir": "desc"
+                    }],
+                    "schema": {
+                        "data": "Data",
+                        "total": "Total",
+                        "errors": "Errors",
+                        "model": {
+                            "id": "MediaID",
+                            "fields": {
+                                "MediaID": {
+                                    "type": "number"
+                                },
+                                "Name": {
+                                    "type": "string"
+                                },
+                                "FocusImg": {
+                                    "type": "string"
+                                },
+                                "Unapprovedlog": {
+                                    "type": "string"
+                                },
+                                "Province": {
+                                    "type": "string"
+                                },
+                                "MediaCode": {
+                                    "type": "number"
+                                },
+                                "City": {
+                                    "type": "string"
+                                },
+                                "Status": {
+                                    "type": "number"
+                                },
+                                "Price": {
+                                    "type": "number"
+                                },
+                                "AddTime": {
+                                    "type": "date"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+    }
+    });
+</script>

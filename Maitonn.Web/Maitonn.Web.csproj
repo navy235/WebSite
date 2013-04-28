@@ -308,6 +308,18 @@
     <Compile Include="Migrations\201304270905550_AddServerItemType.Designer.cs">
       <DependentUpon>201304270905550_AddServerItemType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304280651067_AlertTopBase.cs" />
+    <Compile Include="Migrations\201304280651067_AlertTopBase.Designer.cs">
+      <DependentUpon>201304280651067_AlertTopBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304280716127_AlertServerItemAddTopType.cs" />
+    <Compile Include="Migrations\201304280716127_AlertServerItemAddTopType.Designer.cs">
+      <DependentUpon>201304280716127_AlertServerItemAddTopType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304280805253_AddMemberCreditIndex1.cs" />
+    <Compile Include="Migrations\201304280805253_AddMemberCreditIndex1.Designer.cs">
+      <DependentUpon>201304280805253_AddMemberCreditIndex1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -332,6 +344,7 @@
     <Compile Include="Models\MediaImg.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Member_Action.cs" />
+    <Compile Include="Models\Member_CreditIndex.cs" />
     <Compile Include="Models\Member_Message.cs" />
     <Compile Include="Models\Member_Profile.cs" />
     <Compile Include="Models\OutDoor.cs" />
@@ -362,6 +375,8 @@
     <Compile Include="Models\Sys_Message.cs" />
     <Compile Include="Models\TopCompany.cs" />
     <Compile Include="Models\TopMedia.cs" />
+    <Compile Include="Models\Member_CreditIndex_Type.cs" />
+    <Compile Include="Models\Member_CreditIndex_List.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serivces\AreaAttService.cs" />
     <Compile Include="Serivces\AreaService.cs" />
@@ -407,6 +422,11 @@
     <Compile Include="Serivces\Interface\ISys_MessageService.cs" />
     <Compile Include="Serivces\Interface\IMember_VIPService.cs" />
     <Compile Include="Serivces\Interface\ISliderImgService.cs" />
+    <Compile Include="Serivces\Interface\ITopCompanyService.cs" />
+    <Compile Include="Serivces\Interface\ITopMediaService.cs" />
+    <Compile Include="Serivces\Interface\IMember_CreditIndexService.cs" />
+    <Compile Include="Serivces\Interface\IMember_CreditIndex_ListService.cs" />
+    <Compile Include="Serivces\Interface\IMember_CreditIndex_TypeService.cs" />
     <Compile Include="Serivces\MemberService.cs" />
     <Compile Include="Serivces\Member_ActionService.cs" />
     <Compile Include="Serivces\Member_MessageService.cs" />
@@ -427,6 +447,11 @@
     <Compile Include="Serivces\Sys_MessageService.cs" />
     <Compile Include="Serivces\ServerItemService.cs" />
     <Compile Include="Serivces\SliderImgService.cs" />
+    <Compile Include="Serivces\TopCompanyService.cs" />
+    <Compile Include="Serivces\TopMediaService.cs" />
+    <Compile Include="Serivces\Member_CreditIndexService.cs" />
+    <Compile Include="Serivces\Member_CreditIndex_ListService.cs" />
+    <Compile Include="Serivces\Member_CreditIndex_TypeService.cs" />
     <Compile Include="Utils\ServiceResult.cs" />
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="ViewModels\AccountModel.cs" />
@@ -1559,6 +1584,8 @@
     <Content Include="Views\SliderImg\Create.cshtml" />
     <Content Include="Views\SliderImg\Edit.cshtml" />
     <Content Include="Views\Gztvip\TopSet.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TopSelectSingle.cshtml" />
+    <Content Include="Views\Gztvip\TopMedia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1616,6 +1643,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304270905550_AddServerItemType.resx">
       <DependentUpon>201304270905550_AddServerItemType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304280651067_AlertTopBase.resx">
+      <DependentUpon>201304280651067_AlertTopBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304280716127_AlertServerItemAddTopType.resx">
+      <DependentUpon>201304280716127_AlertServerItemAddTopType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304280805253_AddMemberCreditIndex1.resx">
+      <DependentUpon>201304280805253_AddMemberCreditIndex1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

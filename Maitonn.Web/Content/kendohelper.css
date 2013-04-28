@@ -189,3 +189,10 @@ div.k-grid-header, div.k-grid-footer {
   text-decoration: none;
 }
 
+.grid-toolbar {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  border: 1px solid #c5c5c5;
+  border-bottom: 0;
+}

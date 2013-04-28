@@ -244,6 +244,14 @@ namespace Maitonn.Core
 
     }
 
+    public enum TopType
+    {
+        NoTop = 0,
+        SliderImg = 1,
+        Media = 2,
+        Company = 3
+    }
+
     public enum DateDiffType
     {
         Year = 1,
@@ -258,6 +266,7 @@ namespace Maitonn.Core
     {
         User = 1,
         System = 2
-
     }
+
+
 }

@@ -39,6 +39,12 @@ namespace Maitonn.Web
 
         public IDbSet<SliderImg> SliderImg { get; set; }
 
+        public IDbSet<Member_CreditIndex> Member_CreditIndex { get; set; }
+
+        public IDbSet<Member_CreditIndex_List> Member_CreditIndex_List { get; set; }
+
+        public IDbSet<Member_CreditIndex_Type> Member_CreditIndex_Type { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
@@ -77,6 +83,12 @@ namespace Maitonn.Web
             modelBuilder.Entity<Member>()
                .HasOptional(m => m.Member_Money)
                .WithRequired(x => x.Member);
+
+
+            modelBuilder.Entity<Member>()
+               .HasOptional(m => m.Member_CreditIndex)
+               .WithRequired(x => x.Member);
+
 
             modelBuilder.Entity<Member>()
                 .HasOptional(m => m.Company)
@@ -237,7 +249,10 @@ namespace Maitonn.Web
                 .WithRequired(a => a.OutDoor)
                 .HasForeignKey(a => a.MediaID);
 
-
+            modelBuilder.Entity<OutDoor>()
+                .HasRequired(o => o.Member)
+                .WithMany(m => m.OutDoor)
+                .HasForeignKey(o => o.MemberID);
 
             //多对多关系
             modelBuilder.Entity<OutDoor>()

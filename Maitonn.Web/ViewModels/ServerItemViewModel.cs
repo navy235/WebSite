@@ -29,6 +29,11 @@ namespace Maitonn.Web
         [UIHint("SingleDropdownList")]
         public int ServerType { get; set; }
 
+        [Required(ErrorMessage = "请选择置顶类型")]
+        [Display(Name = "置顶类型")]
+        [UIHint("SingleDropdownList")]
+        public int TopType { get; set; }
+
 
         [Required(ErrorMessage = "请输入服务名称")]
         [Display(Name = "服务名称")]
@@ -70,7 +75,7 @@ namespace Maitonn.Web
         [Required(ErrorMessage = "请输入投放模式")]
         [Display(Name = "投放模式")]
         [UIHint("Radio")]
-        [AdditionalMetadata("Radio", "全国投放,地区投放")]
+        [AdditionalMetadata("Radio", "地区投放,全国投放")]
         public bool IsQuanGuo { get; set; }
 
         [Required(ErrorMessage = "请输入是否按类别投放")]
