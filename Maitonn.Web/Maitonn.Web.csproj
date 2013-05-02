@@ -320,6 +320,18 @@
     <Compile Include="Migrations\201304280805253_AddMemberCreditIndex1.Designer.cs">
       <DependentUpon>201304280805253_AddMemberCreditIndex1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201305020324333_AddScheme.cs" />
+    <Compile Include="Migrations\201305020324333_AddScheme.Designer.cs">
+      <DependentUpon>201305020324333_AddScheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305020330427_AlertFavorite.cs" />
+    <Compile Include="Migrations\201305020330427_AlertFavorite.Designer.cs">
+      <DependentUpon>201305020330427_AlertFavorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305020925110_AddMedia_refresh.cs" />
+    <Compile Include="Migrations\201305020925110_AddMedia_refresh.Designer.cs">
+      <DependentUpon>201305020925110_AddMedia_refresh.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\AreaAtt.cs" />
@@ -342,11 +354,14 @@
     <Compile Include="Models\MapImg.cs" />
     <Compile Include="Models\MediaBase.cs" />
     <Compile Include="Models\MediaImg.cs" />
+    <Compile Include="Models\Media_Refresh.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Member_Action.cs" />
     <Compile Include="Models\Member_CreditIndex.cs" />
+    <Compile Include="Models\Member_Favorite.cs" />
     <Compile Include="Models\Member_Message.cs" />
     <Compile Include="Models\Member_Profile.cs" />
+    <Compile Include="Models\Member_Scheme.cs" />
     <Compile Include="Models\OutDoor.cs" />
     <Compile Include="Models\OutDoorMediaCate.cs" />
     <Compile Include="Models\Owner.cs" />
@@ -354,6 +369,7 @@
     <Compile Include="Models\PeriodCate.cs" />
     <Compile Include="Models\Permissions.cs" />
     <Compile Include="Models\Roles.cs" />
+    <Compile Include="Models\Scheme_Media.cs" />
     <Compile Include="Models\ServerItem.cs" />
     <Compile Include="Models\SliderImg.cs" />
     <Compile Include="Models\TopBase.cs" />
@@ -390,6 +406,8 @@
     <Compile Include="Serivces\FormatCateService.cs" />
     <Compile Include="Serivces\GroupService.cs" />
     <Compile Include="Serivces\ArticleService.cs" />
+    <Compile Include="Serivces\Interface\IMedia_RefreshService.cs" />
+    <Compile Include="Serivces\Interface\IMember_FavoriteService.cs" />
     <Compile Include="Serivces\Interface\IMember_MessageService.cs" />
     <Compile Include="Serivces\Interface\IMember_MoneyService.cs" />
     <Compile Include="Serivces\Interface\IAreaAttService.cs" />
@@ -406,6 +424,7 @@
     <Compile Include="Serivces\Interface\IMemberService.cs" />
     <Compile Include="Serivces\Interface\IMember_ActionService.cs" />
     <Compile Include="Serivces\Interface\IMember_Money_TypeService.cs" />
+    <Compile Include="Serivces\Interface\IMember_SchemeService.cs" />
     <Compile Include="Serivces\Interface\IOutDoorMediaCateService.cs" />
     <Compile Include="Serivces\Interface\IOutDoorService.cs" />
     <Compile Include="Serivces\Interface\IOwnerCateService.cs" />
@@ -416,6 +435,7 @@
     <Compile Include="Serivces\Interface\IRolesService.cs" />
     <Compile Include="Serivces\Interface\IArticleService.cs" />
     <Compile Include="Serivces\Interface\IArticleCateService.cs" />
+    <Compile Include="Serivces\Interface\IScheme_MediaService.cs" />
     <Compile Include="Serivces\Interface\IServerItemService.cs" />
     <Compile Include="Serivces\Interface\IStaticTemplateService.cs" />
     <Compile Include="Serivces\Interface\IMember_Money_ListService.cs" />
@@ -427,12 +447,15 @@
     <Compile Include="Serivces\Interface\IMember_CreditIndexService.cs" />
     <Compile Include="Serivces\Interface\IMember_CreditIndex_ListService.cs" />
     <Compile Include="Serivces\Interface\IMember_CreditIndex_TypeService.cs" />
+    <Compile Include="Serivces\Media_RefreshService.cs" />
     <Compile Include="Serivces\MemberService.cs" />
     <Compile Include="Serivces\Member_ActionService.cs" />
+    <Compile Include="Serivces\Member_FavoriteService.cs" />
     <Compile Include="Serivces\Member_MessageService.cs" />
     <Compile Include="Serivces\Member_MoneyService.cs" />
     <Compile Include="Serivces\Member_Money_ListService.cs" />
     <Compile Include="Serivces\Member_Money_TypeService.cs" />
+    <Compile Include="Serivces\Member_SchemeService.cs" />
     <Compile Include="Serivces\Member_VIPService.cs" />
     <Compile Include="Serivces\OutDoorMediaCateService.cs" />
     <Compile Include="Serivces\OutDoorService.cs" />
@@ -443,6 +466,7 @@
     <Compile Include="Serivces\PermissionService.cs" />
     <Compile Include="Serivces\RolesService.cs" />
     <Compile Include="Serivces\ArticleCateService.cs" />
+    <Compile Include="Serivces\Scheme_MediaService.cs" />
     <Compile Include="Serivces\StaticTemplateService.cs" />
     <Compile Include="Serivces\Sys_MessageService.cs" />
     <Compile Include="Serivces\ServerItemService.cs" />
@@ -1652,6 +1676,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304280805253_AddMemberCreditIndex1.resx">
       <DependentUpon>201304280805253_AddMemberCreditIndex1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305020324333_AddScheme.resx">
+      <DependentUpon>201305020324333_AddScheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305020330427_AlertFavorite.resx">
+      <DependentUpon>201305020330427_AlertFavorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305020925110_AddMedia_refresh.resx">
+      <DependentUpon>201305020925110_AddMedia_refresh.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

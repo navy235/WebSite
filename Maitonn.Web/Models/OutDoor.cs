@@ -12,11 +12,8 @@ namespace Maitonn.Web
         {
             this.AreaAtt = new HashSet<AreaAtt>();
             this.AuctionCalendar = new HashSet<AuctionCalendar>();
-            this.Hit = 0;
-            this.Message = 0;
-            this.Favorite = 0;
-
         }
+
         [Required(ErrorMessage = "请输入价格")]
         [Display(Name = "价格")]
         public decimal Price { get; set; }
@@ -59,14 +56,19 @@ namespace Maitonn.Web
         public decimal Height { get; set; }
 
         public int TotalFaces { get; set; }
+
         public int TrafficAuto { get; set; }
+
         public int TrafficPerson { get; set; }
 
-
         public int CityCode { get; set; }
+
         public int FormatCode { get; set; }
+
         public int MeidaCode { get; set; }
+
         public int PeriodCode { get; set; }
+
         public int OwnerCode { get; set; }
 
         public System.DateTime Deadline { get; set; }

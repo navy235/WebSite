@@ -45,12 +45,15 @@ namespace Maitonn.Web
 
         public IDbSet<Member_CreditIndex_Type> Member_CreditIndex_Type { get; set; }
 
+        public IDbSet<Media_Refresh> Media_Refresh { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
 
+            #region Category
             modelBuilder.Entity<Category>()
               .Map<Category>(m => m.Requires("CategoryType").HasValue("Category"))
               .Map<OwnerCate>(m => m.Requires("CategoryType").HasValue("Owner"))
@@ -70,6 +73,10 @@ namespace Maitonn.Web
                 .WillCascadeOnDelete(false);
 
 
+            #endregion
+
+
+            #region Member
 
 
             modelBuilder.Entity<Member>()
@@ -96,6 +103,22 @@ namespace Maitonn.Web
                 .HasForeignKey(m => m.CompanyID);
 
 
+            modelBuilder.Entity<Member_Scheme>()
+                  .HasMany(s => s.Scheme_Media)
+                  .WithRequired(m => m.Member_Scheme)
+                  .HasForeignKey(o => o.SchemeID)
+                  .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Member_Profile>()
+                 .HasRequired(m => m.Area)
+                 .WithMany(a => a.Member_Profile)
+                 .HasForeignKey(m => m.CityCode);
+
+            #endregion
+
+
+
+            #region Company
             modelBuilder.Entity<Company>()
                .HasRequired(c => c.Creator)
                .WithOptional(m => m.SelfCompany)
@@ -157,16 +180,16 @@ namespace Maitonn.Web
             .HasMany(o => o.CompanyNotice)
             .WithRequired(m => m.Company);
 
+            #endregion
+
+
 
 
             modelBuilder.Entity<Permissions>()
                 .HasRequired(p => p.Department).WithMany(d => d.Permissions).HasForeignKey(p => p.DepartmentID);
 
 
-            modelBuilder.Entity<Member_Profile>()
-             .HasRequired(m => m.Area)
-             .WithMany(a => a.Member_Profile)
-             .HasForeignKey(m => m.CityCode);
+
 
 
             //多对多关系
@@ -254,6 +277,7 @@ namespace Maitonn.Web
                 .WithMany(m => m.OutDoor)
                 .HasForeignKey(o => o.MemberID);
 
+
             //多对多关系
             modelBuilder.Entity<OutDoor>()
                 .HasMany(b => b.AreaAtt)
@@ -267,6 +291,9 @@ namespace Maitonn.Web
                         m.ToTable("OutDoor_AreaAtt");
                     }
                 );
+
+
+
 
 
             modelBuilder.Entity<Article>()

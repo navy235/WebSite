@@ -66,6 +66,10 @@ namespace Maitonn.Web
 
         public virtual ICollection<Member_Action> Member_Action { get; set; }
 
+        public virtual ICollection<Member_Scheme> Member_Scheme { get; set; }
+
+        public virtual ICollection<Member_Favorite> Member_Favorite { get; set; }
+
         public virtual ICollection<OutDoor> OutDoor { get; set; }
 
         public virtual Company SelfCompany { get; set; }

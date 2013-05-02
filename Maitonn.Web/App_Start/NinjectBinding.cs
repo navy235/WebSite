@@ -11,30 +11,19 @@ namespace Maitonn.Web
         public static void Binding(IKernel kernel)
         {
             //kernel.Bind<IUnitOfWork>().To<EntitiesContext>();
-            kernel.Bind<IUnitOfWork>()
-                .To<EntitiesContext>()
-                .InRequestScope();
+            kernel.Bind<IUnitOfWork>().To<EntitiesContext>().InRequestScope();
 
-            kernel.Bind<IMemberService>()
-                .To<MemberService>()
-                .InRequestScope();
-            kernel.Bind<IMember_ActionService>()
-                .To<Member_ActionService>()
-                .InRequestScope();
-            kernel.Bind<ICompanyService>()
-                 .To<CompanyService>()
-                 .InRequestScope();
-            kernel.Bind<IAreaAttService>()
-                .To<AreaAttService>()
-                .InRequestScope();
+            kernel.Bind<IMemberService>().To<MemberService>().InRequestScope();
 
+            kernel.Bind<IMember_ActionService>().To<Member_ActionService>().InRequestScope();
 
-            kernel.Bind<IOutDoorService>()
-                .To<OutDoorService>()
-                .InRequestScope();
-            kernel.Bind<IAuctionCalendarService>()
-                 .To<AuctionCalendarService>()
-                 .InRequestScope();
+            kernel.Bind<ICompanyService>().To<CompanyService>().InRequestScope();
+
+            kernel.Bind<IAreaAttService>().To<AreaAttService>().InRequestScope();
+
+            kernel.Bind<IOutDoorService>().To<OutDoorService>().InRequestScope();
+
+            kernel.Bind<IAuctionCalendarService>().To<AuctionCalendarService>().InRequestScope();
 
 
             kernel.Bind<IDepartmentService>()
@@ -114,6 +103,16 @@ namespace Maitonn.Web
             kernel.Bind<IMember_CreditIndex_ListService>()
               .To<Member_CreditIndex_ListService>()
               .InRequestScope();
+
+            kernel.Bind<IMember_SchemeService>()
+                .To<Member_SchemeService>()
+                .InRequestScope();
+
+            kernel.Bind<IScheme_MediaService>()
+               .To<Scheme_MediaService>()
+               .InRequestScope();
+
+            kernel.Bind<IMedia_RefreshService>().To<Media_RefreshService>().InRequestScope();
 
 
             kernel.Bind<IMember_VIPService>()
