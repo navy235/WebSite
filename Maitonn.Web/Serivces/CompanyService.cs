@@ -86,7 +86,38 @@ namespace Maitonn.Web
             return company;
 
         }
+        public Company SaveBasInfo(int MemberID, CompanyReg model)
+        {
+            Company company = new Company();
+            company.AddIP = HttpHelper.IP;
+            company.Address = model.Address;
+            company.AddTime = DateTime.Now;
+            company.BussinessCode = model.BussinessCode;
+            company.CityCode = model.CityCode;
+            company.Description = model.Description;
 
+            company.Fax = model.Fax;
+            company.FundCode = model.FundCode;
+            company.LastIP = HttpHelper.IP;
+            company.LastTime = DateTime.Now;
+            company.Lat = Convert.ToSingle(model.Position.Split('|')[0]);
+            company.Lng = Convert.ToSingle(model.Position.Split('|')[1]);
+            company.LinkMan = model.LinkMan;
+
+            company.MemberID = MemberID;
+            company.Mobile = model.Mobile;
+            company.MSN = model.MSN;
+            company.Name = model.Name;
+            company.Phone = model.Phone;
+            company.QQ = model.QQ;
+            company.ScaleCode = model.ScaleCode;
+            company.Sex = model.Sex;
+            company.Status = (int)CompanyStatus.CompanyApply;
+            DB_Service.Add<Company>(company);
+            DB_Service.Commit();
+
+            return company;
+        }
 
         public Company Update(CompanyReg model)
         {
@@ -444,6 +475,53 @@ namespace Maitonn.Web
         }
 
 
+
+        public ServiceResult SaveCompanyAuthInfo(int MemberID, BizAuthModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = Find(MemberID);
+
+                DB_Service.Attach<Company>(company);
+
+                CompanyImg cimg = new CompanyImg()
+                {
+                    FocusImgUrl = model.CompanyImg.Split(',')[0],
+                    ImgUrls = model.CompanyImg,
+                    MemberID = MemberID,
+                    CompanyID = company.CompanyID
+                };
+                company.CompanyImg = cimg;
+
+                LinkManImg limg = new LinkManImg()
+                {
+                    FocusImgUrl = model.LinManImg.Split(',')[0],
+                    ImgUrls = model.LinManImg,
+                    MemberID = MemberID,
+                    CompanyID = company.CompanyID
+                };
+                company.LinkManImg = limg;
+
+                CompanyLogoImg logoimg = new CompanyLogoImg()
+                {
+                    FocusImgUrl = model.Logo,
+                    ImgUrls = model.Logo,
+                    CompanyID = company.CompanyID,
+                    MemberID = MemberID
+                };
+
+                company.CompanyLogoImg = logoimg;
+
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
         public ServiceResult ChangeCompanyNoticeStatus(string Ids, CompanyNoticeStatus CompanyNoticeStatus)
         {
 
@@ -559,5 +637,7 @@ namespace Maitonn.Web
         {
             return DB_Service.Set<CompanyMessage>().Single(x => x.ID == MessageID);
         }
+
+
     }
 }

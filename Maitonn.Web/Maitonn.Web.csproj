@@ -532,6 +532,7 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\guideImg.png" />
     <Content Include="Content\images\gzbhelp.gif" />
+    <Content Include="Content\images\h6sub.gif" />
     <Content Include="Content\images\hint_16.png" />
     <Content Include="Content\images\icons.png" />
     <Content Include="Content\images\icon\error.png" />
@@ -1610,6 +1611,8 @@
     <Content Include="Views\Gztvip\TopSet.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TopSelectSingle.cshtml" />
     <Content Include="Views\Gztvip\TopMedia.cshtml" />
+    <Content Include="Views\Register\RegBiz.cshtml" />
+    <Content Include="Views\Register\RegAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

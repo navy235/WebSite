@@ -15,16 +15,18 @@ namespace Maitonn.Web
         private IMemberService memberService;
         private IEmailService emailService;
         private IMember_ActionService member_ActionService;
-
+        private ICompanyService companyService;
         public RegisterController(IUnitOfWork _DB_Service
             , IMemberService _memberService
             , IEmailService _emailService
-            , IMember_ActionService _member_ActionService)
+            , IMember_ActionService _member_ActionService
+            , ICompanyService _companyService)
         {
             DB_Service = _DB_Service;
             memberService = _memberService;
             emailService = _emailService;
             member_ActionService = _member_ActionService;
+            companyService = _companyService;
         }
 
         public ActionResult Index()
@@ -51,6 +53,127 @@ namespace Maitonn.Web
                     throw ex;
                 }
                 #endregion
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        public ActionResult RegBiz()
+        {
+            return View(new RegBizModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegBiz(RegBizModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                #region 注册用户并登录
+                try
+                {
+                    RegisterModel rm = new RegisterModel()
+                    {
+                        Email = model.Email,
+                        NickName = model.NickName,
+                        Password = model.Password
+                    };
+
+                    Member mb = memberService.Create(rm);
+
+                    memberService.SetLoginCookie(mb);
+
+                    ProfileModel pm = new ProfileModel()
+                    {
+                        CityCode = model.CityCode,
+                        Borthday = DateTime.Now,
+                        NickName = mb.NickName,
+                        RealName = model.LinkMan,
+                        Sex = model.Sex
+                    };
+
+                    memberService.SaveMemberBaseInfo(mb.MemberID, pm);
+
+                    ContactModel cm = new ContactModel()
+                    {
+                        Address = model.Address,
+                        Email = model.Email,
+                        Mobile = model.Mobile,
+                        Phone = model.Phone,
+                        Position = model.Position
+                    };
+
+                    memberService.SaveMemberContact(mb.MemberID, cm);
+
+                    CompanyReg cr = new CompanyReg()
+                    {
+                        Address = model.Address,
+                        BussinessCode = model.BussinessCode,
+                        CityCode = model.BussinessCode,
+                        Description = model.Description,
+                        FundCode = model.FundCode,
+                        LinkMan = model.LinkMan,
+                        Mobile = model.Mobile,
+                        Name = model.Name,
+                        Phone = model.Phone,
+                        Position = model.Position,
+                        ScaleCode = model.ScaleCode,
+                        Sex = model.Sex
+                    };
+
+                    companyService.SaveBasInfo(mb.MemberID, cr);
+
+                    //memberService.SetLoginCookie(mb);
+                    return Redirect(Url.Action("regauth"));
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                #endregion
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+
+        [BaseAuthorize]
+        public ActionResult RegAuth()
+        {
+            Company cpy = companyService.Find(CookieHelper.MemberID);
+            if (cpy == null)
+            {
+                return Content("<script>alert('您的邮箱已经激活，请勿重复激活!');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
+            }
+
+            return View(new BizAuthModel()
+            {
+                MemberID = CookieHelper.MemberID
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegAuth(BizAuthModel model)
+        {
+
+            ServiceResult result = new ServiceResult();
+            if (ModelState.IsValid)
+            {
+                result = companyService.SaveCompanyAuthInfo(CookieHelper.MemberID, model);
+                if (result.Success)
+                {
+                    return Redirect(Url.Action("activeemail"));
+                }
+                else
+                {
+                    return View(model);
+                }
             }
             else
             {
@@ -160,7 +283,7 @@ namespace Maitonn.Web
             {
                 int actionEmailActive = (int)MemberActionType.EmailActvie;
                 int limitMins = Convert.ToInt32(ConfigSetting.GetBindEmailTimeDiffMin);
-            
+
                 if (!member_ActionService.HasActionByActionTypeInLimiteTime(memberID, actionEmailActive, limitMins))
                 {
                     string emailKey = Guid.NewGuid().ToString();

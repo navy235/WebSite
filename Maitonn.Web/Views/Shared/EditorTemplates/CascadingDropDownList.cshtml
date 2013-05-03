@@ -102,6 +102,9 @@
         id:'@name',
         binding:function(){
             var self=@name;
+            if($('#'+self.id).val()=='0'){
+                $('#'+self.id).val('');
+            }
             $('#'+self.id).removeAttr('disabled')
                 .removeAttr('style')
                 .attr('tabindex',-1)

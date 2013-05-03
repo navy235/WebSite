@@ -242,8 +242,9 @@ textarea {
 }
 
   .form-field-uploadlogo .img-box img {
-    width: 200px;
-    height: 200px;
+    width: 198px;
+    height: 198px;
+    border: 1px solid #bbb;
   }
 
 

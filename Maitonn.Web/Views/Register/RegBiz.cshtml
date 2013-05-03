@@ -1,0 +1,74 @@
+﻿@model RegBizModel
+@{
+    ViewBag.Title = "注册";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@section topscripts{
+    @Styles.Render("~/Content/kendo/2012.3.1114/css")
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
+    <style type="text/css">
+        .register .main {
+            position: relative;
+        }
+
+        .register .content {
+            width: 100%;
+        }
+
+        .form-field textarea {
+            font-size: 1em;
+            height: 125px;
+            padding-top: 5px;
+        }
+
+
+        .form-field-validatecode input.single-line {
+            width: 50px;
+        }
+    </style>
+}
+
+<div class="register">
+    <div class="main">
+        <div class="sub">
+            <h6>
+                <span>注册帐号并开通商务交易功能</span></h6>
+        </div>
+        <div class="content">
+            <div class="n_form">
+
+
+                <span class="c_gray ml60">填写以下信息，即可使用国内最大的房地产全产业链商务交易平台，即可获得<em class="s_icon s_icon_money"></em><strong class="c_red">+10</strong>个地产币。
+                </em>( 已有帐号？请 <a href="/Login">登录</a> 后开通商务交易功能 )</span>
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.EditorForModel()
+                    <div class="form-field form-field-submit c_gray">
+                        <button type="submit" class="btn btn-success mr20">
+                            同意服务协议，提交注册</button>已有账号？<a href="/?tourl=">请登录</a>
+                    </div>
+                    <div class="form-field form-field-submit">
+                        <a href="@Url.Action("index", "help", new { id = 5 })" target="_blank">查看《广知网网站服务条款》</a>
+                        <div class="clearfix height20"></div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="item_r c_gray">
+            <h3>完善信息并激活邮箱后，即可开通：</h3>
+            <ul class="dot_list ml10">
+                <li>发布商机信息</li>
+                <li>查看企业联系方式</li>
+                <li>查看招投标信息</li>
+                <li>建立企业展厅</li>
+                <li>使用企业图书馆</li>
+            </ul>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>

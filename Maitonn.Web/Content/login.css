@@ -380,6 +380,7 @@ span.cut {
   margin: 0 0 10px 0;
 }
 
+  .form-field-contact label,
   .form-field label.form-field-lable-required {
     width: 70px;
     text-align: right;
@@ -387,6 +388,7 @@ span.cut {
     line-height: 25px;
     display: inline-block;
   }
+
 
   .form-field label.remember {
   }
@@ -453,11 +455,13 @@ span.field-validation-error {
   background-position: -80px -333px;
 }
 
-
+.register .form-field-contact label,
 .register .form-field label.form-field-lable-required {
   width: 130px;
+  margin-right: 5px;
 }
 
+  .register .form-field-contact label:after,
   .register .form-field label.form-field-lable-required:after {
     content: "*";
     width: 5px;
@@ -550,6 +554,72 @@ span.field-validation-error {
       .other-login li a.taobao {
         background-position: 0 0;
       }
+
+.form-field .text-box {
+  width: 250px;
+}
+
+.form-field-city .k-dropdown {
+  width: 125px;
+}
+
+.form-field label.radio {
+  display: inline-block;
+  text-align: left;
+  padding-right: 0;
+  width: 80px;
+}
+
+.form-field textarea {
+  font-size: 1em;
+  height: 125px;
+  padding-top: 5px;
+}
+
+.form-title {
+  background: url(/content/images/h6sub.gif) 23px 27px no-repeat;
+  margin: 25px 0 0 0;
+  padding: 0 0 5px 37px;
+  height: 30px;
+  font-size: 14px;
+  width: 600px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+  .form-title span {
+    color: #999;
+    font-weight: normal;
+    font-size: 12px;
+  }
+
+    .form-title span b {
+      color: #F00;
+      margin: 0px 5px;
+      font-weight: normal;
+    }
+
+.item_r {
+  position: absolute;
+  zoom: 1;
+  width: 250px;
+  top: 125px;
+  left: 630px;
+  _left: 590px;
+  border: 1px solid #FCDFA9;
+  background: #fff;
+  padding: 5px 8px 8px 8px;
+  line-height: 18px;
+  display: inline-block;
+}
+
+  .item_r h3 {
+    font-size: 12px;
+    margin: 10px 5px;
+    border-bottom: 1px dashed #FCDFA9;
+    padding-bottom: 10px;
+    display: inline-block;
+  }
 
 .footer {
   border-top: 1px solid #e6e6e6;

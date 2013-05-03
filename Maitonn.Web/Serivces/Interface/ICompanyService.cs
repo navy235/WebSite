@@ -9,6 +9,10 @@ namespace Maitonn.Web
     {
         Company Create(CompanyReg model);
 
+        Company SaveBasInfo(int MemberID, CompanyReg model);
+
+
+
         Company Update(CompanyReg model);
 
         Company Find(int MemberID);
@@ -32,6 +36,8 @@ namespace Maitonn.Web
         CompanyLogo GetCompanyLogo(int MemberID);
 
         CompanyBanner GetCompanyBanner(int MemberID);
+
+        ServiceResult SaveCompanyAuthInfo(int MemberID, BizAuthModel model);
 
         ServiceResult SaveCompanyLogo(int MemberID, CompanyLogo logo);
 
