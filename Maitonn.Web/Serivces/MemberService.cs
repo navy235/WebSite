@@ -77,12 +77,11 @@ namespace Maitonn.Web
 
         public bool Login(string Email, string Md5Password)
         {
-            bool hasMember = DB_Service.Set<Member>()
-                .Count(x => x.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase)
-                    && x.Password.Equals(Md5Password, StringComparison.CurrentCultureIgnoreCase)) == 1;
-            if (hasMember)
+            var LoginUser = DB_Service.Set<Member>()
+                .SingleOrDefault(x => x.Email.Equals(Email, StringComparison.CurrentCultureIgnoreCase)
+                    && x.Password.Equals(Md5Password, StringComparison.CurrentCultureIgnoreCase));
+            if (LoginUser != null)
             {
-                Member LoginUser = FindMemberByEmail(Email);
                 DB_Service.Attach<Member>(LoginUser);
                 LoginUser.LastIP = HttpHelper.IP;
                 LoginUser.LastTime = DateTime.Now;
@@ -96,22 +95,23 @@ namespace Maitonn.Web
                 LoginUser.Member_Action.Add(ma);
                 DB_Service.Commit();
                 SetLoginCookie(LoginUser);
+                return true;
             }
-            return hasMember;
-
+            else
+            {
+                return false;
+            }
         }
 
         public bool OpenUserLogin(OpenLoginStatus OpenUser, OpenLoginType openType)
         {
             int typeValue = (int)openType;
-            var hasMember = DB_Service.Set<Member>()
-                .Count(x =>
+            var LoginUser = DB_Service.Set<Member>()
+                .SingleOrDefault(x =>
                     x.OpenID.Equals(OpenUser.OpenId)
-                    && x.OpenType == typeValue) == 1;
-
-            if (hasMember)
+                    && x.OpenType == typeValue);
+            if (LoginUser != null)
             {
-                Member LoginUser = FindMemberByOpenUser(OpenUser, openType);
                 DB_Service.Attach<Member>(LoginUser);
                 LoginUser.LastIP = HttpHelper.IP;
                 LoginUser.LastTime = DateTime.Now;
@@ -123,8 +123,12 @@ namespace Maitonn.Web
                 LoginUser.Member_Action.Add(ma);
                 DB_Service.Commit();
                 SetLoginCookie(LoginUser);
+                return true;
             }
-            return hasMember;
+            else
+            {
+                return false;
+            }
         }
 
         public Member Find(int MemberID)

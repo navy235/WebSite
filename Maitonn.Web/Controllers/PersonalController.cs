@@ -29,12 +29,14 @@ namespace Maitonn.Web
         private IMember_ActionService member_ActionService;
         private IAreaAttService areaAttService;
         private IOutDoorService outDoorService;
+        private ICompanyService companyService;
         public PersonalController(IAreaService _areaService
             , IMemberService _memberService
             , IEmailService _emailService
             , IMember_ActionService _member_ActionService
             , IAreaAttService _areaAttService
-            , IOutDoorService _outDoorService)
+            , IOutDoorService _outDoorService
+            , ICompanyService _companyService)
         {
             areaService = _areaService;
             memberService = _memberService;
@@ -42,6 +44,7 @@ namespace Maitonn.Web
             member_ActionService = _member_ActionService;
             areaAttService = _areaAttService;
             outDoorService = _outDoorService;
+            companyService = _companyService;
         }
 
         public ActionResult Index()
@@ -327,6 +330,11 @@ namespace Maitonn.Web
                         }
                         else
                         {
+                            var company = companyService.Find(member.MemberID);
+                            if (company != null && company.Status > (int)CompanyStatus.Default)
+                            {
+                                emailActived = (int)MemberStatus.CompanyApply;
+                            }
                             memberService.ActiveEmail(member, emailActived);
                             return Content("<script>alert('恭喜您，邮箱绑定成功!');window.top.location='" + Url.Action("BindEmail") + "';</script>");
                         }

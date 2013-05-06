@@ -1,6 +1,6 @@
-﻿@model RegBizModel
+﻿@model OpenBizModel
 @{
-    ViewBag.Title = "注册帐号并开通商务交易功能";
+    ViewBag.Title = "开通商务交易功能";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 @section topscripts{
@@ -37,7 +37,40 @@
         }
 
         .item_r {
-            top: 215px;
+            top: 125px;
+        }
+
+        .form-field .text-box {
+            width: 250px;
+        }
+
+        .form-field-city .k-dropdown {
+            width: 125px;
+        }
+
+        .form-field-uploadlogo .img-box {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+            .form-field-uploadlogo .img-box img {
+                width: 198px;
+                height: 198px;
+                border: 1px solid #bbb;
+            }
+
+        .form-field-uploadlogo .k-upload {
+            margin-left: 133px;
+        }
+
+        .field-prompt-message {
+            display: block;
+            margin-left: 135px;
+            color: #999;
+        }
+
+        .img-box-list {
+            margin-left: 135px;
         }
     </style>
 }
@@ -46,23 +79,13 @@
     <div class="main">
         <div class="sub">
             <h6>
-                <span>注册帐号并开通商务交易功能</span></h6>
+                <span>开通商务交易功能</span></h6>
         </div>
         <div class="content">
             <div class="n_form">
 
-                <div class="clearfix n_form_step">
-                    <ul class="form-step clearfix">
-                        <li class="cur"><i></i><span>第一步：填写企业信息</span></li>
-                        <li><i></i><span>第二步：填写认证信息</span></li>
-                        <li><i></i><span>第三步：邮箱验证</span></li>
-                        <li><i></i><span>第四步：审核通过认证成功</span></li>
-                    </ul>
-                </div>
-
                 <span class="c_gray ml60">填写以下信息，即可使用国内最大的房地产全产业链商务交易平台，即可获得<em class="s_icon s_icon_money"></em><strong class="c_red">+10</strong>个地产币。
-              ( 已有帐号？请 <a href="/Login">登录</a> 后开通商务交易功能 )</span>
-
+              ( 已有帐号？请 <a href="@Url.Action("login")">登录</a> 后开通商务交易功能 )</span>
 
                 @using (Html.BeginForm())
                 {
@@ -70,7 +93,7 @@
                     @Html.EditorForModel()
                     <div class="form-field form-field-submit c_gray">
                         <button type="submit" class="btn btn-success mr20">
-                            同意服务协议，提交注册</button>已有账号？<a href="/?tourl=">请登录</a>
+                            同意服务协议，提交注册</button>已有账号？<a href="@Url.Action("login")">请登录</a>
                     </div>
                     <div class="form-field form-field-submit">
                         <a href="@Url.Action("index", "help", new { id = 5 })" target="_blank">查看《广知网网站服务条款》</a>
@@ -80,13 +103,13 @@
             </div>
         </div>
         <div class="item_r c_gray">
-            <h3>完善信息并激活邮箱后，即可开通：</h3>
+            <h3>成功认证将获得：</h3>
             <ul class="dot_list ml10">
-                <li>发布商机信息</li>
-                <li>查看企业联系方式</li>
-                <li>查看招投标信息</li>
-                <li>建立企业展厅</li>
-                <li>使用企业图书馆</li>
+                <li>获得信誉值 <em class="s_icon s_icon_money"></em><strong class="c_red">+10</strong> ，<a href="@Url.Action("index", "help", new { id = 3 })">什么是信誉值?</a></li>
+                <li>发布的信息将更靠前</li>
+                <li>更多搜索收录</li>
+                <li>发布的信息的条目更多</li>
+                <li>更大的图片空间</li>
             </ul>
         </div>
         <div class="clearfix">

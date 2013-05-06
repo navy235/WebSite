@@ -112,7 +112,9 @@ namespace Maitonn.Web
             company.QQ = model.QQ;
             company.ScaleCode = model.ScaleCode;
             company.Sex = model.Sex;
-            company.Status = (int)CompanyStatus.CompanyApply;
+
+          
+
             DB_Service.Add<Company>(company);
             DB_Service.Commit();
 
@@ -146,7 +148,9 @@ namespace Maitonn.Web
             company.QQ = model.QQ;
             company.ScaleCode = model.ScaleCode;
             company.Sex = model.Sex;
+
             company.Status = (int)CompanyStatus.CompanyApply;
+
             company.CompanyImg.FocusImgUrl = model.CompanyImg.Split(',')[0];
             company.CompanyImg.ImgUrls = model.CompanyImg;
             company.LinkManImg.FocusImgUrl = model.LinManImg.Split(',')[0];
@@ -162,7 +166,7 @@ namespace Maitonn.Web
 
         public Company Find(int MemberID)
         {
-            return DB_Service.Set<Company>().Single(x => x.MemberID == MemberID);
+            return DB_Service.Set<Company>().SingleOrDefault(x => x.MemberID == MemberID);
         }
 
 
@@ -173,7 +177,7 @@ namespace Maitonn.Web
                 .Include(x => x.LinkManImg)
                 .Include(x => x.CompanyLogoImg)
                 .Include(x => x.CompanyBannerImg)
-                .Single(x => x.MemberID == MemberID);
+                .SingleOrDefault(x => x.MemberID == MemberID);
         }
 
         public Company IncludeFindCompanyProfile(int MemberID)
@@ -476,7 +480,7 @@ namespace Maitonn.Web
 
 
 
-        public ServiceResult SaveCompanyAuthInfo(int MemberID, BizAuthModel model)
+        public ServiceResult CreateCompanyAuthInfo(int MemberID, BizAuthModel model)
         {
             ServiceResult result = new ServiceResult();
             try
@@ -512,6 +516,35 @@ namespace Maitonn.Web
                 };
 
                 company.CompanyLogoImg = logoimg;
+
+                company.Status = (int)CompanyStatus.CompanyApply;
+
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
+
+        public ServiceResult UpdateCompanyAuthInfo(int MemberID, BizAuthModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = IncludeFind(MemberID);
+
+                DB_Service.Attach<Company>(company);
+
+                company.CompanyImg.FocusImgUrl = model.CompanyImg.Split(',')[0];
+                company.CompanyImg.ImgUrls = model.CompanyImg;
+                company.LinkManImg.FocusImgUrl = model.LinManImg.Split(',')[0];
+                company.LinkManImg.ImgUrls = model.LinManImg;
+                company.CompanyLogoImg.FocusImgUrl = model.Logo;
+                company.CompanyLogoImg.ImgUrls = model.Logo;
+
+                company.Status = (int)CompanyStatus.CompanyApply;
 
                 DB_Service.Commit();
             }
@@ -638,6 +671,10 @@ namespace Maitonn.Web
             return DB_Service.Set<CompanyMessage>().Single(x => x.ID == MessageID);
         }
 
-
+        public CompanyStatus GetCompanyStatus(int MemberID)
+        {
+            var status = DB_Service.Set<Company>().Single(x => x.MemberID == MemberID).Status;
+            return (CompanyStatus)status;
+        }
     }
 }

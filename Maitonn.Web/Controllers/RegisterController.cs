@@ -141,20 +141,185 @@ namespace Maitonn.Web
             }
         }
 
+        [BaseAuthorize]
+        public ActionResult OpenBiz()
+        {
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.EmailActived)
+            {
+                return Content("<script>alert('您的邮箱还未激活，请先激活邮箱再进行企业认证!');window.top.location='" + Url.Action("activeemail") + "';</script>");
+            }
+            else
+            {
+                if (member.Status >= (int)MemberStatus.CompanyAuth)
+                {
+                    return Content("<script>alert('您的企业已经认证通过了!');window.top.location='" + Url.Action("index", "personal") + "';</script>");
+                }
+                else
+                {
+                    var company = companyService.IncludeFind(member.MemberID);
+                    if (company == null)
+                    {
+                        return View(new OpenBizModel());
+                    }
+                    else
+                    {
+                        return View(new OpenBizModel()
+                        {
+                            Address = company.Address,
+                            BussinessCode = company.BussinessCode,
+                            CityCode = company.CityCode,
+                            Description = company.Description,
+                            FundCode = company.FundCode,
+                            LinkMan = company.LinkMan,
+                            Mobile = company.Mobile,
+                            Name = company.Name,
+                            Phone = company.Phone,
+                            Position = company.Lat + "|" + company.Lng,
+                            ScaleCode = company.ScaleCode,
+                            Sex = company.Sex,
+                            LinManImg = company.LinkManImg.ImgUrls,
+                            CompanyImg = company.CompanyImg.ImgUrls,
+                            Logo = company.CompanyLogoImg.FocusImgUrl
+                        });
+                    }
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [BaseAuthorize]
+        public ActionResult OpenBiz(OpenBizModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                #region 企业入驻
+                try
+                {
+                    Member member = memberService.Find(CookieHelper.MemberID);
+                    if (member.Status < (int)MemberStatus.EmailActived)
+                    {
+                        return Content("<script>alert('您的邮箱还未激活，请先激活邮箱再进行企业认证!');window.top.location='" + Url.Action("activeemail") + "';</script>");
+                    }
+                    else
+                    {
+                        if (member.Status >= (int)MemberStatus.CompanyAuth)
+                        {
+                            return Content("<script>alert('您的企业已经认证通过了!');window.top.location='" + Url.Action("index", "personal") + "';</script>");
+                        }
+                        else
+                        {
+                            var company = companyService.IncludeFind(member.MemberID);
+
+                            if (company == null)
+                            {
+                                CompanyReg reg = new CompanyReg()
+                                {
+                                    Address = model.Address,
+                                    BussinessCode = model.BussinessCode,
+                                    CityCode = model.BussinessCode,
+                                    Description = model.Description,
+                                    FundCode = model.FundCode,
+                                    LinkMan = model.LinkMan,
+                                    Mobile = model.Mobile,
+                                    Name = model.Name,
+                                    Phone = model.Phone,
+                                    Position = model.Position,
+                                    ScaleCode = model.ScaleCode,
+                                    Sex = model.Sex,
+                                    CompanyImg = model.CompanyImg,
+                                    LinManImg = model.LinManImg,
+                                    Logo = model.Logo
+                                };
+                                companyService.Create(reg);
+                            }
+                            else
+                            {
+                                CompanyReg reg = new CompanyReg()
+                                {
+                                    Address = model.Address,
+                                    BussinessCode = model.BussinessCode,
+                                    CityCode = model.BussinessCode,
+                                    Description = model.Description,
+                                    FundCode = model.FundCode,
+                                    LinkMan = model.LinkMan,
+                                    Mobile = model.Mobile,
+                                    Name = model.Name,
+                                    Phone = model.Phone,
+                                    Position = model.Position,
+                                    ScaleCode = model.ScaleCode,
+                                    Sex = model.Sex,
+                                    CompanyImg = model.CompanyImg,
+                                    LinManImg = model.LinManImg,
+                                    Logo = model.Logo,
+                                    Fax = company.Fax,
+                                    MSN = company.MSN,
+                                    QQ = company.QQ
+                                };
+
+                                companyService.Update(reg);
+                            }
+                        }
+                    }
+
+                    //memberService.SetLoginCookie(mb);
+                    return Redirect(Url.Action("regauth"));
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                #endregion
+            }
+            else
+            {
+                return View(model);
+            }
+        }
 
         [BaseAuthorize]
         public ActionResult RegAuth()
         {
-            Company cpy = companyService.Find(CookieHelper.MemberID);
-            if (cpy == null)
-            {
-                return Content("<script>alert('您的邮箱已经激活，请勿重复激活!');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
-            }
 
-            return View(new BizAuthModel()
+            Member member = memberService.Find(CookieHelper.MemberID);
+
+            if (member.Status >= (int)MemberStatus.CompanyAuth)
             {
-                MemberID = CookieHelper.MemberID
-            });
+                return Content("<script>alert('您的企业已经认证通过了!');window.top.location='" + Url.Action("index", "personal") + "';</script>");
+            }
+            else
+            {
+                if (member.Status >= (int)MemberStatus.EmailActived)
+                {
+                    return Redirect(Url.Action("OpenBiz"));
+                }
+
+                Company cpy = companyService.Find(CookieHelper.MemberID);
+
+                if (cpy == null)
+                {
+                    return Content("<script>alert('请先填写企业基本信息然后再填写认证信息!');window.top.location='" + Url.Action("openbiz") + "';</script>");
+                }
+                else
+                {
+                    if (cpy.Status > (int)CompanyStatus.Default)
+                    {
+                        return View(new BizAuthModel()
+                        {
+                            MemberID = CookieHelper.MemberID,
+                            CompanyImg = cpy.CompanyImg.ImgUrls,
+                            LinManImg = cpy.LinkManImg.ImgUrls,
+                            Logo = cpy.CompanyLogoImg.FocusImgUrl
+                        });
+                    }
+                    else
+                    {
+                        return View(new BizAuthModel());
+                    }
+                }
+            }
         }
 
         [HttpPost]
@@ -162,24 +327,93 @@ namespace Maitonn.Web
         public ActionResult RegAuth(BizAuthModel model)
         {
 
-            ServiceResult result = new ServiceResult();
-            if (ModelState.IsValid)
+            Member member = memberService.Find(CookieHelper.MemberID);
+
+            if (member.Status >= (int)MemberStatus.CompanyAuth)
             {
-                result = companyService.SaveCompanyAuthInfo(CookieHelper.MemberID, model);
-                if (result.Success)
+                return Content("<script>alert('您的企业已经认证通过了!');window.top.location='" + Url.Action("index", "personal") + "';</script>");
+            }
+            else
+            {
+                if (member.Status >= (int)MemberStatus.EmailActived)
                 {
-                    return Redirect(Url.Action("activeemail"));
+                    return Redirect(Url.Action("OpenBiz"));
+                }
+
+                Company cpy = companyService.Find(CookieHelper.MemberID);
+
+                if (cpy == null)
+                {
+                    return Content("<script>alert('请先填写企业基本信息然后再填写认证信息!');window.top.location='" + Url.Action("openbiz") + "';</script>");
                 }
                 else
                 {
-                    return View(model);
+
+
+                    ServiceResult result = new ServiceResult();
+
+                    if (ModelState.IsValid)
+                    {
+                        if (cpy.Status > (int)CompanyStatus.Default)
+                        {
+                            result = companyService.UpdateCompanyAuthInfo(CookieHelper.MemberID, model);
+                        }
+                        else
+                        {
+                            result = companyService.CreateCompanyAuthInfo(CookieHelper.MemberID, model);
+                        }
+
+                        if (result.Success)
+                        {
+                            return Redirect(Url.Action("BizActiveEmail"));
+                        }
+                        else
+                        {
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
+                }
+            }
+
+        }
+
+        [BaseAuthorize]
+        public ActionResult BizActiveEmail()
+        {
+            var memberID = Convert.ToInt32(CookieHelper.UID);
+            Member member = memberService.Find(memberID);
+            ViewBag.Email = member.Email;
+            if (member.Status <= (int)MemberStatus.Registered)
+            {
+                int actionEmailActive = (int)MemberActionType.EmailActvie;
+
+                int limitMins = Convert.ToInt32(ConfigSetting.GetBindEmailTimeDiffMin);
+
+                if (!member_ActionService.HasActionByActionTypeInLimiteTime(memberID, actionEmailActive, limitMins))
+                {
+                    string emailKey = Guid.NewGuid().ToString();
+
+                    EmailModel em = emailService.GetActiveEmailMail(member.MemberID, member.Email,
+                        member.NickName,
+                        emailKey);
+                    emailService.SendMail(em);
+
+                    member_ActionService.Create(member, actionEmailActive, emailKey);
                 }
             }
             else
             {
-                return View(model);
+                return Content("<script>alert('您的邮箱已经激活，请勿重复激活!');window.top.location='" + Url.Action("bindemail", "personal") + "';</script>");
             }
+
+            return View();
         }
+
+
 
         public ActionResult RegAuto()
         {
@@ -430,5 +664,6 @@ namespace Maitonn.Web
                 }
             }
         }
+
     }
 }

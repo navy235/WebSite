@@ -12,7 +12,12 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li class="selected"><a href="user_basic.aspx"><span>基本信息</span></a></li>
+                    <li><a href="user_face.aspx"><span>个人头像</span></a></li>
+                    <li><a href="user_edu.aspx"><span>教育经历</span></a></li>
+                    <li><a href="user_work.aspx"><span>工作经历</span></a></li>
+                </ul>
             </div>
 
             @ViewHelpers.Alert("友情提醒：",

@@ -16,8 +16,6 @@ namespace Maitonn.Web
     [BaseAuthorize]
     public class CompanyController : Controller
     {
-
-
         private IMemberService memberService;
         private IEmailService emailService;
         private IMember_ActionService member_ActionService;

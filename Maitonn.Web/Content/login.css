@@ -402,6 +402,10 @@ input.single-line {
   width: 198px;
 }
 
+textarea.single-line {
+  width: 250px;
+}
+
 input.input-validation-error,
 textarea.input-validation-error {
   border: 1px solid #ff8700;
@@ -465,7 +469,7 @@ span.field-validation-error {
   .register .form-field label.form-field-lable-required:after {
     content: "*";
     width: 5px;
-    padding-right: 5px;
+    padding: 0 5px;
     font: 12px simsun;
     color: #ff6600;
     display: inline-block;
@@ -474,7 +478,7 @@ span.field-validation-error {
 
 .register .form-field-submit,
 .register .field-hint-message {
-  margin-left: 130px;
+  margin-left: 135px;
 }
 
 .register span.field-validation-error {
@@ -555,7 +559,7 @@ span.field-validation-error {
         background-position: 0 0;
       }
 
-.form-field .text-box {
+.text-box {
   width: 250px;
 }
 
@@ -630,3 +634,35 @@ span.field-validation-error {
   width: 100%;
   margin: 20px 0 0 0;
 }
+
+.form-step {
+  float: left;
+  margin-left: 15px;
+}
+
+  .form-step li {
+    float: left;
+    margin-left: 1px;
+    color: #b5b5b5;
+  }
+
+    .form-step li.cur {
+      color: #333;
+    }
+
+    .form-step li i {
+      display: block;
+      background-color: #eee;
+      width: 150px;
+      height: 8px;
+      overflow: hidden;
+      margin: 5px 0 15px 0;
+    }
+
+    .form-step li.pass i {
+      background-color: #ffd05e;
+    }
+
+    .form-step li.cur i {
+      background-color: #ff9c00;
+    }

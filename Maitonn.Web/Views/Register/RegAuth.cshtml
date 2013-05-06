@@ -8,6 +8,23 @@
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
     <style type="text/css">
+        .register .main {
+            position: relative;
+        }
+
+        .register .content {
+            width: 100%;
+        }
+
+            .register .content .n_form {
+                width: 100%;
+            }
+
+        .n_form_step {
+            padding-left: 40px;
+            margin: 20px 0;
+        }
+
         .form-field .text-box {
             width: 250px;
         }
@@ -46,6 +63,10 @@
         .img-box-list {
             margin-left: 135px;
         }
+
+        .item_r {
+            top: 215px;
+        }
     </style>
 }
 
@@ -57,9 +78,6 @@
             <strong>恭喜</strong>，您已成功注册成为广知网企业会员，获得奖励 <em class="s_icon s_icon_money"></em><strong class="c_red">+1</strong> 个广知币</span>
     </div>
     <br>
-    <div class="top-tips-next">
-        <span>完善下面信息，可以进行企业认证，认证成功后即可获得 <em class="s_icon s_icon_money"></em><strong class="c_red">+3</strong> 个广知币</span>&nbsp;&nbsp;<a href="@Url.Action("activeemail")">以后再填，先不要币了。</a>
-    </div>
 </div>
 <div class="register">
     <div class="main">
@@ -69,6 +87,21 @@
         </div>
         <div class="content">
             <div class="n_form ">
+
+
+                <div class="clearfix n_form_step">
+                    <ul class="form-step clearfix">
+                        <li class="pass"><i></i><span>第一步：填写企业信息</span></li>
+                        <li class="cur"><i></i><span>第二步：填写认证信息</span></li>
+                        <li><i></i><span>第三步：邮箱验证</span></li>
+                        <li><i></i><span>第四步：审核通过认证成功</span></li>
+                    </ul>
+                </div>
+
+                <span class="c_gray ml60">完善下面信息，可以进行企业认证，认证成功后即可获得 <em class="s_icon s_icon_money"></em><strong class="c_red">+10</strong> 个广知币。
+             
+                     <a href="@Url.Action("activeemail")">跳过此步，需要的时候再填。</a></span>
+
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
@@ -79,6 +112,16 @@
                     </div>
                 }
             </div>
+        </div>
+        <div class="item_r c_gray">
+            <h3>成功认证将获得：</h3>
+            <ul class="dot_list ml10">
+                <li>获得信誉值 <em class="s_icon s_icon_money"></em><strong class="c_red">+10</strong> ，<a href="@Url.Action("index", "help", new { id = 3 })">什么是信誉值?</a></li>
+                <li>发布的信息将更靠前</li>
+                <li>更多搜索收录</li>
+                <li>发布的信息的条目更多</li>
+                <li>更大的图片空间</li>
+            </ul>
         </div>
         <div class="clearfix">
         </div>

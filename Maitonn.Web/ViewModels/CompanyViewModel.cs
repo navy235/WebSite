@@ -86,7 +86,7 @@ namespace Maitonn.Web
 
 
         [Display(Name = "手机号码")]
-        [RegularExpression(@"^(13[0-9]|15[-9]|18[0-9])\d{8}$", ErrorMessage = "您输入的手机号码格式不正确.")]
+        [RegularExpression(@"^(13[0-9]|15[0-9]|18[0-9])\d{8}$", ErrorMessage = "您输入的手机号码格式不正确.")]
         [Hint("请输入手机号码.")]
         public string Mobile { get; set; }
 

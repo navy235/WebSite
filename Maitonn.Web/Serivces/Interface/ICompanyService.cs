@@ -37,7 +37,9 @@ namespace Maitonn.Web
 
         CompanyBanner GetCompanyBanner(int MemberID);
 
-        ServiceResult SaveCompanyAuthInfo(int MemberID, BizAuthModel model);
+        ServiceResult CreateCompanyAuthInfo(int MemberID, BizAuthModel model);
+
+        ServiceResult UpdateCompanyAuthInfo(int MemberID, BizAuthModel model);
 
         ServiceResult SaveCompanyLogo(int MemberID, CompanyLogo logo);
 
@@ -48,6 +50,9 @@ namespace Maitonn.Web
         ServiceResult UpdateCompanyCredentials(int MemberID, CompanyCredentials credentials);
 
         ServiceResult DeleteCompanyCredentials(int MemberID, int CredentialsID);
+
+        CompanyStatus GetCompanyStatus(int MemberID);
+
 
         IEnumerable<CompanyCredentials> GetCompanyCredentials(int MemberID);
 

@@ -104,6 +104,7 @@ namespace Maitonn.Core
 
     }
 
+
     public enum MemberStatus
     {
         Registered = 1,
@@ -125,9 +126,10 @@ namespace Maitonn.Core
 
     public enum CompanyStatus
     {
-        CompanyFailed = 0,
-        CompanyApply = 1,
-        CompanyAuth = 2
+        Default = 0,
+        CompanyFailed = 1,
+        CompanyApply = 2,
+        CompanyAuth = 3
     }
 
     public enum OutDoorStatus

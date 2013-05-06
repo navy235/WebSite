@@ -3746,7 +3746,6 @@ goods-pack .goods-desc {
 }
 
 .personal-body-title {
-  border-bottom: 1px solid #e6e6e6;
   padding-bottom: 15px;
   margin-bottom: 10px;
 }
@@ -3758,6 +3757,36 @@ goods-pack .goods-desc {
     float: left;
     font-family: "微软雅黑",Microsoft YaHei;
   }
+
+.personal-tab {
+  border-bottom: 1px solid #C5DDF5;
+  padding-left: 10px;
+  zoom: 1;
+}
+
+  .personal-tab li {
+    float: left;
+    display: inline;
+    padding: 0 5px;
+    position: relative;
+    margin-bottom: -1px;
+  }
+
+    .personal-tab li a {
+      display: inline-block;
+      padding: 0 14px;
+      line-height: 25px;
+      height: 25px;
+      border: 1px solid #C5DDF5;
+      border-bottom: 1px solid #C5DDF5;
+    }
+
+    .personal-tab li.selected a {
+      background-color: #fff;
+      font-weight: 700;
+      color: #000;
+      border-bottom: 1px solid #fff;
+    }
 
 .personal-body-tips {
   color: #999;

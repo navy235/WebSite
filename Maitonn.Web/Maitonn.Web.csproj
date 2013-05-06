@@ -509,6 +509,7 @@
     <Content Include="Content\EmailTemplate\activeemail.htm" />
     <Content Include="Content\EmailTemplate\getpwd.htm" />
     <Content Include="Content\EmailTemplate\reg.htm" />
+    <Content Include="Content\EmailTemplate\bizactiveemail.htm" />
     <Content Include="Content\Html\gztHelp.html" />
     <Content Include="Content\images\activityFlags.png" />
     <Content Include="Content\images\actTags.png" />
@@ -1613,6 +1614,8 @@
     <Content Include="Views\Gztvip\TopMedia.cshtml" />
     <Content Include="Views\Register\RegBiz.cshtml" />
     <Content Include="Views\Register\RegAuth.cshtml" />
+    <Content Include="Views\Register\BizActiveEmail.cshtml" />
+    <Content Include="Views\Register\OpenBiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
