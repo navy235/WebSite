@@ -36,87 +36,96 @@
             <p><a href="@Url.Action("ChangePwd", "Personal")">修改密码</a></p>
         </li>
     </ul>
-    <div class="nav-title ">
-        <em></em>
-        <p class="nav-auth"><a href="@Url.Action("bizreg", "register")">企业入驻</a></p>
-        <i></i>
-    </div>
 
-    <div class="nav-title ">
-        <em></em>
-        <p class="nav-company">企业管理</p>
-        <i></i>
-    </div>
-    <ul class="menu-company" style="display: none;">
-        <li class="item-company-baseinfo">
-            <p><a href="@Url.Action("baseinfo", "company")">基本信息</a></p>
-        </li>
-        <li class="item-company-baseinfo">
-            <p><a href="@Url.Action("contact", "company")">联系方式</a></p>
-        </li>
-        <li class="item-company-logo ">
-            <p><a href="@Url.Action("logo", "company")">企业LOGO</a></p>
-        </li>
-        <li class="item-company-banner ">
-            <p><a href="@Url.Action("banner", "company")">企业BANNER</a></p>
-        </li>
-        <li class="item-company-credentials ">
-            <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
-        </li>
-        <li class="item-company-notice ">
-            <p><a href="@Url.Action("notice", "company")">企业公告管理</a></p>
-        </li>
-        <li class="item-company-addnotice ">
-            <p><a href="@Url.Action("addnotice", "company")">添加企业公告</a></p>
-        </li>
-        <li class="item-company-message ">
-            <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
-        </li>
-    </ul>
-    <div class="nav-title ">
-        <em></em>
-        <p class="nav-shop">企业商铺</p>
-        <i></i>
-    </div>
-    <ul class="menu-company" style="display: none;">
-        <li class="item-company-banner ">
-            <p><a href="@Url.Action("banner", "company")">商铺BANNER</a></p>
-        </li>
-        <li class="item-company-credentials ">
-            <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
-        </li>
-        <li class="item-company-notice ">
-            <p><a href="@Url.Action("notice", "company")">商铺公告管理</a></p>
-        </li>
-        <li class="item-company-message ">
-            <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
-        </li>
-    </ul>
-    <div class="nav-title ">
-        <em></em>
-        <p class="nav-media">媒体信息</p>
-        <i></i>
-    </div>
-    <ul class="menu-media" style="display: none;">
-        <li class="item-media-publish ">
-            <p><a href="@Url.Action("add", "outdoor")">发布信息</a></p>
-        </li>
-        <li class="item-media-list ">
-            <p><a href="@Url.Action("index", "outdoor")">显示中信息</a></p>
-        </li>
-        <li class="item-media-notshow ">
-            <p><a href="@Url.Action("notshow", "outdoor")">未显示信息</a></p>
-        </li>
-        <li class="item-media-preverify ">
-            <p><a href="@Url.Action("preverify", "outdoor")">待审核信息</a></p>
-        </li>
-        <li class="item-media-verifyfailed ">
-            <p><a href="@Url.Action("verifyfailed", "outdoor")">审核失败信息</a></p>
-        </li>
-        <li class="item-media-delete ">
-            <p><a href="@Url.Action("delete", "outdoor")">已删除信息</a></p>
-        </li>
-    </ul>
+    @if (Convert.ToInt32(CookieHelper.Status) >= (int)MemberStatus.CompanyAuth)
+    { 
+        <div class="nav-title ">
+            <em></em>
+            <p class="nav-company">企业管理</p>
+            <i></i>
+        </div>
+        <ul class="menu-company" style="display: none;">
+            <li class="item-company-baseinfo">
+                <p><a href="@Url.Action("baseinfo", "company")">基本信息</a></p>
+            </li>
+            <li class="item-company-baseinfo">
+                <p><a href="@Url.Action("contact", "company")">联系方式</a></p>
+            </li>
+            <li class="item-company-logo ">
+                <p><a href="@Url.Action("logo", "company")">企业LOGO</a></p>
+            </li>
+            <li class="item-company-banner ">
+                <p><a href="@Url.Action("banner", "company")">企业BANNER</a></p>
+            </li>
+            <li class="item-company-credentials ">
+                <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
+            </li>
+            <li class="item-company-notice ">
+                <p><a href="@Url.Action("notice", "company")">企业公告管理</a></p>
+            </li>
+            <li class="item-company-addnotice ">
+                <p><a href="@Url.Action("addnotice", "company")">添加企业公告</a></p>
+            </li>
+            <li class="item-company-message ">
+                <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
+            </li>
+        </ul>
+        <div class="nav-title ">
+            <em></em>
+            <p class="nav-shop">企业商铺</p>
+            <i></i>
+        </div>
+        <ul class="menu-company" style="display: none;">
+            <li class="item-company-banner ">
+                <p><a href="@Url.Action("banner", "company")">商铺BANNER</a></p>
+            </li>
+            <li class="item-company-credentials ">
+                <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
+            </li>
+            <li class="item-company-notice ">
+                <p><a href="@Url.Action("notice", "company")">商铺公告管理</a></p>
+            </li>
+            <li class="item-company-message ">
+                <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
+            </li>
+        </ul>
+        <div class="nav-title ">
+            <em></em>
+            <p class="nav-media">媒体信息</p>
+            <i></i>
+        </div>
+        <ul class="menu-media" style="display: none;">
+            <li class="item-media-publish ">
+                <p><a href="@Url.Action("add", "outdoor")">发布信息</a></p>
+            </li>
+            <li class="item-media-list ">
+                <p><a href="@Url.Action("index", "outdoor")">显示中信息</a></p>
+            </li>
+            <li class="item-media-notshow ">
+                <p><a href="@Url.Action("notshow", "outdoor")">未显示信息</a></p>
+            </li>
+            <li class="item-media-preverify ">
+                <p><a href="@Url.Action("preverify", "outdoor")">待审核信息</a></p>
+            </li>
+            <li class="item-media-verifyfailed ">
+                <p><a href="@Url.Action("verifyfailed", "outdoor")">审核失败信息</a></p>
+            </li>
+            <li class="item-media-delete ">
+                <p><a href="@Url.Action("delete", "outdoor")">已删除信息</a></p>
+            </li>
+        </ul>
+    
+    }
+    else
+    {
+        <div class="nav-title ">
+            <em></em>
+            <p class="nav-auth"><a href="@Url.Action("openbiz", "register")">企业入驻</a></p>
+            <i></i>
+        </div>
+
+    }
+
     <div class="nav-title ">
         <em></em>
         <p class="nav-message">留言管理</p>

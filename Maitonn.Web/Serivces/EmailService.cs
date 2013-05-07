@@ -40,5 +40,20 @@ namespace Maitonn.Web
                 .Replace("{email}", Email);
             return em;
         }
+
+
+        public EmailModel GetBizActiveEmailMail(int MemberID, string Email, string NickName, string emailKey)
+        {
+            EmailModel em = new EmailModel();
+            em.Email = Email;
+            em.Title = NickName + " 您好！绑定www.dotaeye.com登录邮箱!";
+            em.Content = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/emailTemplate/bizactiveemail.htm"), System.Text.Encoding.Default);
+            em.Content = em.Content.Replace("{emailkey}", emailKey)
+                .Replace("{nid}", NickName)
+                .Replace("{uid}", MemberID.ToString())
+                .Replace("{time}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{email}", Email);
+            return em;
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "激活邮件";
+    ViewBag.Title = "绑定邮箱";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 <div class="top-tips " style="padding-bottom: 30px;">
@@ -12,11 +12,11 @@
     <div class="main">
         <div class="sub">
             <h6>
-                <span>激活邮件</span></h6>
+                <span>绑定邮箱</span></h6>
         </div>
         <div class="nowidth-content">
             <div style="width: 600px; margin: 0 auto;">
-                <a href="http://mail.yeah.net" target="_blank" class="zc_f3"><span style="font-size: 20px; font-family: '黑体'; line-height: 50px;">马上激活邮件，完成注册吧！</span></a><br>
+                <a href="javascipt:void(0);" onclick="gotoEmailServiceWeb(this,'@ViewBag.Email')" class="zc_f3"><span style="font-size: 20px; font-family: '黑体'; line-height: 50px;">马上激活邮件，完成注册吧！</span></a><br>
                 确认邮件已经发送到你的邮箱 <span class="zc_f1_2012">@ViewBag.Email</span>
                 <br>
                 点击邮件里的确认链接即可登录广知网<br>
@@ -100,7 +100,7 @@
             }
             else {
                 $(element).attr('target', '');
-                alert("无法获取您的邮箱，请先登录后再来激活邮箱!");
+                alert("无法获取您的邮箱，请先登录后再来绑定邮箱!");
             }
             return false;
         }

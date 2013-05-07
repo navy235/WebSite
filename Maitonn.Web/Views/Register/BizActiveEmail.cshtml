@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "激活邮件";
+    ViewBag.Title = "绑定邮件";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 @section topscripts{
@@ -13,14 +13,14 @@
 <div class="top-tips " style="padding-bottom: 30px;">
     <em class="top-tips-success"></em>
     <div style="padding-top: 15px;">
-        <span class="top-tips-title">您的账号已设立，请立即通过邮箱激活账号。</span>
+        <span class="top-tips-title"> @CookieHelper.NickName 您好，您的账号已设立，请立即通过邮箱绑定账号。</span>
     </div>
 </div>
 <div class="register">
     <div class="main">
         <div class="sub">
             <h6>
-                <span>激活邮件</span></h6>
+                <span>绑定邮件</span></h6>
         </div>
         <div class="nowidth-content">
 
@@ -34,8 +34,12 @@
             </div>
 
             <div style="margin-left: 60px;">
-                <a href="javascipt:void(0);" onclick="gotoEmailServiceWeb(this,'@ViewBag.Email')" class="zc_f3"><span style="font-size: 20px; font-family: '黑体'; line-height: 50px;">马上激活邮件，完成注册吧！</span></a><br>
-                确认邮件已经发送到你的邮箱 <span class="zc_f1_2012">@ViewBag.Email</span>
+
+                @CookieHelper.NickName 您好，您的企业认证资料将在1~2个工作日内审核完成，审核结果将以邮件通知，请先
+                
+                <a href="javascipt:void(0);" onclick="gotoEmailServiceWeb(this,'@ViewBag.Email')" class="zc_f3"><span style="font-size: 20px; font-family: '黑体'; line-height: 50px;">绑定邮件，完成注册吧！</span></a><br>
+               
+                 确认邮件已经发送到你的邮箱 <span class="zc_f1_2012">@ViewBag.Email</span>
                 <br>
                 点击邮件里的确认链接即可登录广知网<br>
 
@@ -118,7 +122,7 @@
             }
             else {
                 $(element).attr('target', '');
-                alert("无法获取您的邮箱，请先登录后再来激活邮箱!");
+                alert("无法获取您的邮箱，请先登录后再来绑定邮箱!");
             }
             return false;
         }

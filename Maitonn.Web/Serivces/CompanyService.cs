@@ -113,7 +113,7 @@ namespace Maitonn.Web
             company.ScaleCode = model.ScaleCode;
             company.Sex = model.Sex;
 
-          
+
 
             DB_Service.Add<Company>(company);
             DB_Service.Commit();
@@ -150,13 +150,58 @@ namespace Maitonn.Web
             company.Sex = model.Sex;
 
             company.Status = (int)CompanyStatus.CompanyApply;
+            if (company.CompanyImg == null)
+            {
+                CompanyImg cimg = new CompanyImg()
+                {
+                    FocusImgUrl = model.CompanyImg.Split(',')[0],
+                    ImgUrls = model.CompanyImg,
+                    MemberID = MemberID,
+                    CompanyID = company.CompanyID
+                };
+                company.CompanyImg = cimg;
+            }
+            else
+            {
+                company.CompanyImg.FocusImgUrl = model.CompanyImg.Split(',')[0];
+                company.CompanyImg.ImgUrls = model.CompanyImg;
+            }
 
-            company.CompanyImg.FocusImgUrl = model.CompanyImg.Split(',')[0];
-            company.CompanyImg.ImgUrls = model.CompanyImg;
-            company.LinkManImg.FocusImgUrl = model.LinManImg.Split(',')[0];
-            company.LinkManImg.ImgUrls = model.LinManImg;
-            company.CompanyLogoImg.FocusImgUrl = model.Logo;
-            company.CompanyLogoImg.ImgUrls = model.Logo;
+            if (company.LinkManImg == null)
+            {
+                LinkManImg limg = new LinkManImg()
+                {
+                    FocusImgUrl = model.LinManImg.Split(',')[0],
+                    ImgUrls = model.LinManImg,
+                    MemberID = MemberID,
+                    CompanyID = company.CompanyID
+                };
+                company.LinkManImg = limg;
+            }
+            else
+            {
+                company.CompanyImg.FocusImgUrl = model.CompanyImg.Split(',')[0];
+                company.CompanyImg.ImgUrls = model.CompanyImg;
+            }
+
+            if (company.CompanyLogoImg == null)
+            {
+
+                CompanyLogoImg logoimg = new CompanyLogoImg()
+                {
+                    FocusImgUrl = model.Logo,
+                    ImgUrls = model.Logo,
+                    CompanyID = company.CompanyID,
+                    MemberID = MemberID
+                };
+
+                company.CompanyLogoImg = logoimg;
+            }
+            else
+            {
+                company.CompanyLogoImg.FocusImgUrl = model.Logo;
+                company.CompanyLogoImg.ImgUrls = model.Logo;
+            }
 
             DB_Service.Commit();
 

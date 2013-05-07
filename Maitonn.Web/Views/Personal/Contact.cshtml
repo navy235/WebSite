@@ -12,7 +12,11 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("baseinfo")"><span>基本信息</span></a></li>
+                    <li><a href="@Url.Action("avtar")"><span>个人头像</span></a></li>
+                    <li class="selected"><a href="@Url.Action("contact")"><span>联系方式</span></a></li>
+                </ul>
             </div>
 
             @ViewHelpers.Alert("友情提醒：",
@@ -20,7 +24,7 @@
 
             @if (ViewBag.Error != null)
             { 
-                   @ViewHelpers.Alert("错误信息：",
+                @ViewHelpers.Alert("错误信息：",
                 ViewBag.Error, false, AlertType.error.ToString())
             }
             <div class="personal-form personal-form-contact mt40">

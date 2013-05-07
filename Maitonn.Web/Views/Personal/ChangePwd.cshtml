@@ -12,7 +12,10 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("bindemail")"><span>邮箱绑定</span></a></li>
+                    <li class="selected"><a href="@Url.Action("changepwd")"><span>修改密码</span></a></li>
+                </ul>
             </div>
 
             @ViewHelpers.Alert("安全提醒：", "请妥善保管密码！dotaeye.com工作人员不会以任何理由向您索取密码。", false, AlertType.info.ToString())

@@ -100,9 +100,6 @@ namespace Maitonn.Web
             DB_Service.Commit();
         }
 
-
-
-
         public bool CheckPermission(int groupID, string controller, string action)
         {
             var query = DB_Service.Set<Group>()

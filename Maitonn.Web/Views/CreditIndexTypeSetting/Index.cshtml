@@ -1,16 +1,16 @@
 ﻿@{
-    ViewBag.Title = "广知币类型管理";
+    ViewBag.Title = "用户信誉值类型管理";
 }
-@(Html.Kendo().Grid<Member_Money_Type>()
-    .Name("Member_Money_TypesList")
+@(Html.Kendo().Grid<Member_CreditIndex_Type>()
+    .Name("Member_CreditIndex_TypesList")
     .Columns(columns =>
     {
         columns.Bound(c => c.Key);
         columns.Bound(c => c.Name);
-        columns.Bound(c => c.Money);
+        columns.Bound(c => c.CreditIndex);
         columns.Bound(c => c.DayLimit);
         columns.Bound(c => c.TimeLimit);
-        columns.Bound(c => c.MoneyLimit);
+        columns.Bound(c => c.CreditIndexLimit);
         columns.Command(command => command.Destroy()).Title("删除").Width(120);
     })
     .ToolBar(toolbar =>
@@ -28,9 +28,9 @@
         .Batch(true)
         .PageSize(120)
         .Model(model => model.Id(c => c.Key))
-        .Create("Editing_Create", "MoneyTypeSetting")
-        .Read("Editing_Read", "MoneyTypeSetting")
-        .Update("Editing_Update", "MoneyTypeSetting")
-        .Destroy("Editing_Destroy", "MoneyTypeSetting")
-    )
+        .Create("Editing_Create", "CreditIndexTypeSetting")
+        .Read("Editing_Read", "CreditIndexTypeSetting")
+        .Update("Editing_Update", "CreditIndexTypeSetting")
+        .Destroy("Editing_Destroy", "CreditIndexTypeSetting")
+    ).HtmlAttributes(new { @style = "height:500px;" })
 )

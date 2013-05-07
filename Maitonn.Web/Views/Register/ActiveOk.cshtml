@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "绑定邮件成功";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section topscripts{
+    <style type="text/css">
+        .register-tips {
+            margin: 5px 0 0 100px;
+            line-height: 24px;
+            overflow: hidden;
+        }
+
+            .register-tips h4 {
+                color: #339900;
+                font-size: 14px;
+                font-weight: 800;
+                margin-bottom: 5px;
+            }
+
+                .register-tips h4 span {
+                    font-size: 12px;
+                    color: #333;
+                    font-weight: 400;
+                }
+
+        .register-line {
+            height: 1px;
+            background: #e1e1e1;
+            margin: 20px 40px;
+            padding: 0px;
+            overflow: hidden;
+        }
+
+        .register-ok {
+            margin-left: 100px;
+        }
+    </style>
+
+}
+
+<div class="register">
+    <div class="main">
+        <div class="sub">
+            <h6>
+                <span>邮箱绑定成功</span></h6>
+        </div>
+        <div class="nowidth-content">
+            <div class="register-tips clearfix">
+                <em class="top-tips-success"></em>
+                <div class="pull-left">
+                    <h4>@CookieHelper.NickName ,您的邮箱已成功绑定！<span> <em class="s_icon s_icon_money"></em><b class="c_red">+2</b> 个地产币， <a href="@Url.Action("index", "help", new { id = 4 })">什么是广知币?</a></span></h4>
+                    开通<a target="_blank"  href="@Url.Action("index", "help", new { id = 3 })">广知通</a>，立即获赠<span style="color: red; font-weight: 800;"> 100-10000 </span>个地产币，<a href="http://zst.dichan.com/vip/payNewZst.aspx" target="_blank" class="s_submit"><span>立即开通</span></a><br>
+                    您还可以进入 <a href="@Url.Action("index", "personal")"><span>“我的广知网”</span></a> 查看所有应用。
+                </div>
+            </div>
+            <div class="register-line">
+            </div>
+            <div class="register-ok">
+                <div class="clearfix">
+                    <div class="mb10 clearfix">
+                        <em class="s_icon s_icon_dot"></em><em class="iblock">您已开通以下功能：</em>
+                    </div>
+                    <ul class="list_icon">
+                        <!-- 招聘功能 -->
+
+                        <!-- 商务功能 -->
+
+                        <!-- 基本功能 -->
+                        <li class="bder action"><a href="@Url.Action("index", "list")" target="_blank"><span class="icon a1" title="地产资讯"></span>
+                            <div>
+                                <h3>资源资源</h3>
+                                <p>
+                                    每天数百条专业要闻<br>
+                                    动态、政策、资讯
+                                </p>
+                            </div>
+                        </a></li>
+                        <li class="bder action"><a href="http://daka.dichan.com" target="_blank"><span class="icon a7" title="打卡赚币"></span>
+                            <div>
+                                <h3>媒体通讯录</h3>
+                                <p>
+                                    收获地产币的不二选择<br>
+                                    每天打卡，轻松赚币
+                                </p>
+                            </div>
+                        </a></li>
+                        <li class="bder action"><a href="http://shequ.dichan.com" target="_blank"><span class="icon a2" title="地产社区"></span>
+                            <div>
+                                <h3>方案制作</h3>
+                                <p>
+                                    找到身边的地产人<br>
+                                    拓展行业人脉
+                                </p>
+                            </div>
+                        </a></li>
+                        <li class="bder action"><a href="http://daka.dichan.com" target="_blank"><span class="icon a7" title="打卡赚币"></span>
+                            <div>
+                                <h3>收藏媒体</h3>
+                                <p>
+                                    收获地产币的不二选择<br>
+                                    每天打卡，轻松赚币
+                                </p>
+                            </div>
+                        </a></li>
+                    </ul>
+                    <div class="mb10 clearfix">
+                        <em class="s_icon s_icon_dot"></em><em class="iblock">热门产品推荐：</em>
+                    </div>
+                    <ul class="list_icon">
+
+                        <li class="bder action"><a href="@Url.Action("index", "help", new { id = 3 })" target="_blank"><span class="icon a10" title="广知通"></span>
+                            <div>
+                                <h3>
+                                    <b>广知通</b><em>详情</em></h3>
+                                <p>
+                                    体验房商知识通<br>
+                                    优质资源一网打尽
+                                </p>
+                            </div>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="mt20 mb20">
+                    <a href="@Url.Action("index", "home")" style="margin-right: 60px">» 返回广知网首页
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>

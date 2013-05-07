@@ -12,7 +12,10 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li class="selected"><a href="@Url.Action("bindemail")"><span>邮箱绑定</span></a></li>
+                    <li><a href="@Url.Action("changepwd")"><span>修改密码</span></a></li>
+                </ul>
             </div>
             @if (!ViewBag.Actived)
             {
@@ -53,7 +56,7 @@
             else
             {
                 @ViewHelpers.Alert("友情提醒：",
-                CookieHelper.NickName + ",您的邮箱" + CookieHelper.Email + "已经绑定成功。", false, AlertType.info.ToString())
+                CookieHelper.NickName + "，您的邮箱 " + CookieHelper.Email + " 已经绑定成功。", false, AlertType.info.ToString())
                 <div class="personal-body-bind">
                     <dl class="clearfix">
                         <dt class="bind-email"></dt>

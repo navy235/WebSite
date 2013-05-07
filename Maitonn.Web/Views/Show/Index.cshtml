@@ -40,29 +40,7 @@
 </div>
 <article class="details-wrap">
     <div class="details-info-wrap">
-        @*   <div class="details-box">
-            <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
-            <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
-            <div class="details-info-box">
-                <ul class="details-info-list">
-                    @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
-                    {
-                        var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
-                        <li class="@(i == 0 ? "active" : "")">
-                            <a href="javascript:;">
-                                <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img120)"></a></li>
-                    }
-                </ul>
-            </div>
-            <div class="details-info-show jqzoom">
-                <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" id="showImg">
-            </div>
-            <a href="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="details-show-large" target="_blank">查看大图</a>
-            <div class="details-show-details">
-                <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" id="showImgBig" >
-            </div>
-          
-        </div>*@
+    
         <div class="clearfix details-box">
             <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
             <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
@@ -93,7 +71,8 @@
                     zoomType: 'standard',
                     lens:true,
                     preloadImages: false,
-                    alwaysOn:false,                    preloadText:'加载中...',
+                    alwaysOn:false,
+                    preloadText:'加载中...',
                     zoomWidth:430,
                     zoomHeight:430
                 });

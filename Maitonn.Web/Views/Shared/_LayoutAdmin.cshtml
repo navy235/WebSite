@@ -144,9 +144,6 @@
 
            });
 
-
-
-
         panelbar.Add().Text("户外信息管理")
             .Items(items =>
             {
@@ -172,6 +169,15 @@
                  .LinkHtmlAttributes(new { target = "content" });
 
         });
+
+        panelbar.Add().Text("信誉值管理")
+     .Items(items =>
+     {
+         items.Add().Text("信誉值类型").Action("index", "CreditIndexTypeSetting")
+              .LinkHtmlAttributes(new { target = "content" });
+
+     });
+
 
         panelbar.Add().Text("增值服务产品")
       .Items(items =>

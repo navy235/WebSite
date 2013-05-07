@@ -208,7 +208,7 @@
     <Compile Include="Controllers\Admin\ArticleController.cs" />
     <Compile Include="Controllers\Admin\ImageBrowserController.cs" />
     <Compile Include="Controllers\Admin\MemberController.cs" />
-    <Compile Include="Controllers\Admin\MoneyTypeSettingController.cs" />
+    <Compile Include="Controllers\Admin\CreditIndexTypeSettingController.cs" />
     <Compile Include="Controllers\Admin\OutDoorMediaCateController.cs" />
     <Compile Include="Controllers\Admin\OutDoorVerifyController.cs" />
     <Compile Include="Controllers\Admin\OwnerCateController.cs" />
@@ -219,6 +219,7 @@
     <Compile Include="Controllers\Admin\ArticleCateController.cs" />
     <Compile Include="Controllers\Admin\ServerItemController.cs" />
     <Compile Include="Controllers\Admin\SliderImgController.cs" />
+    <Compile Include="Controllers\Admin\MoneyTypeSettingController.cs" />
     <Compile Include="Controllers\AjaxServiceController.cs" />
     <Compile Include="Controllers\ChangeProvinceController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -535,6 +536,7 @@
     <Content Include="Content\images\gzbhelp.gif" />
     <Content Include="Content\images\h6sub.gif" />
     <Content Include="Content\images\hint_16.png" />
+    <Content Include="Content\images\iconlist.gif" />
     <Content Include="Content\images\icons.png" />
     <Content Include="Content\images\icon\error.png" />
     <Content Include="Content\images\icon\info.png" />
@@ -1616,6 +1618,9 @@
     <Content Include="Views\Register\RegAuth.cshtml" />
     <Content Include="Views\Register\BizActiveEmail.cshtml" />
     <Content Include="Views\Register\OpenBiz.cshtml" />
+    <Content Include="Views\Register\ActiveOk.cshtml" />
+    <Content Include="Views\Register\BizOk.cshtml" />
+    <Content Include="Views\CreditIndexTypeSetting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -30,13 +30,17 @@ namespace Maitonn.Web
         private IAreaAttService areaAttService;
         private IOutDoorService outDoorService;
         private ICompanyService companyService;
+        private IMember_MoneyService member_MoneySerivce;
+        private IMember_CreditIndexService member_CreditIndexService;
         public PersonalController(IAreaService _areaService
             , IMemberService _memberService
             , IEmailService _emailService
             , IMember_ActionService _member_ActionService
             , IAreaAttService _areaAttService
             , IOutDoorService _outDoorService
-            , ICompanyService _companyService)
+            , ICompanyService _companyService
+            , IMember_MoneyService _member_MoneySerivce
+            , IMember_CreditIndexService _member_CreditIndexService)
         {
             areaService = _areaService;
             memberService = _memberService;
@@ -45,6 +49,8 @@ namespace Maitonn.Web
             areaAttService = _areaAttService;
             outDoorService = _outDoorService;
             companyService = _companyService;
+            member_MoneySerivce = _member_MoneySerivce;
+            member_CreditIndexService = _member_CreditIndexService;
         }
 
         public ActionResult Index()
@@ -90,8 +96,11 @@ namespace Maitonn.Web
                 try
                 {
                     var memberID = Convert.ToInt32(CookieHelper.UID);
+
                     memberService.SaveMemberBaseInfo(memberID, model);
+
                     result.Message = "基本信息保存成功！";
+
                     TempData["Service_Result"] = result;
                 }
                 catch (Exception ex)
@@ -336,6 +345,11 @@ namespace Maitonn.Web
                                 emailActived = (int)MemberStatus.CompanyApply;
                             }
                             memberService.ActiveEmail(member, emailActived);
+
+                            member_MoneySerivce.AddMoney(member.MemberID, 3, "0003");
+
+                            member_CreditIndexService.AddCreditIndex(member.MemberID, 3, "0001");
+
                             return Content("<script>alert('恭喜您，邮箱绑定成功!');window.top.location='" + Url.Action("BindEmail") + "';</script>");
                         }
                     }

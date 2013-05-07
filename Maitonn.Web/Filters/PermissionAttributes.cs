@@ -48,11 +48,8 @@ namespace Maitonn.Web
                                 &&
                                 (p.Action.Equals(action, StringComparison.OrdinalIgnoreCase) || p.Action.Equals("controller", StringComparison.OrdinalIgnoreCase))) > 0))
                         && g.GroupID == groupID);
-                if (query.Count() > 0)
-                {
-                    hasPermission = true;
-                }
-              
+
+                hasPermission = query.Any();
             }
             return hasPermission;
         }
