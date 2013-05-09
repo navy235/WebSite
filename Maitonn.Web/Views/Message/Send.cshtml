@@ -11,7 +11,11 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("index")"><span>系统留言</span></a></li>
+                    <li><a href="@Url.Action("recive")"><span>收到的留言</span></a></li>
+                    <li class="selected"><a href="@Url.Action("send")"><span>发出的留言</span></a></li>
+                </ul>
             </div>
             <div class="personal-form mt20">
 
@@ -24,7 +28,7 @@
                             .ClientTemplate("<input type='checkbox' name='ID_check' id='#=MediaID#_check'  class='chkbx' value='#=ID#' />")
                             .HeaderTemplate("<div style='text-align:center'><input type='checkbox' id='checkAll' onclick='Grid.checkAll(this)' title='全选'/></div>")
                             .Width(40).HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(c => c.Title).Title("标题");
+                        columns.Bound(c => c.Title).Title("标题").Sortable(false);
                         columns.Bound(c => c.AddTime).Format("{0:yyyy-MM-dd}").Width(80).Title("添加时间");
                         columns.Command(command => command.Custom("查看详情").Click("Grid.showDetails")).Width(90).Title("查看");
                         columns.Template(@<text></text>)
@@ -44,6 +48,7 @@
                         .Ajax()
                         .PageSize(20)
                         .Model(model => model.Id(c => c.ID))
+                        .Sort(sort => sort.Add(x => x.AddTime).Descending())
                         .Read(read => read.Action("SendMessage_Read", "message"))
                      )
                      .HtmlAttributes(new { style = "height:500px;" })

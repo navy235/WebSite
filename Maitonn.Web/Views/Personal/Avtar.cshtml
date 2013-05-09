@@ -20,9 +20,9 @@
             </div>
             @ViewHelpers.Alert("友情提醒：",
                 CookieHelper.NickName + ",选择真实头像更方便大家了解你。", false, AlertType.info.ToString())
-            <p class="personal-body-tips mt10">
-                没有合适的？快来 <a href="http://www.zhubajie.com/topic/1/p.html">在线设计</a> 专属你的形象标识吧
-            </p>
+            @*  <p class="personal-body-tips mt10">
+                没有合适的？快来在线设计专属你的形象标识吧
+            </p>*@
             @if (ViewBag.Error != null)
             { 
                 @ViewHelpers.Alert("错误信息：",

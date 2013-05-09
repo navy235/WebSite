@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "UpdateIndex";
+}
+
+<h2>UpdateIndex</h2>
+
+@using (Html.BeginForm())
+{ 
+    <label>更新索引ID</label>
+    
+    <input type="text" class="k-textbox single-line " name="ids" />
+    
+    <button type="submit" class="btn btn-success ">
+        更新索引
+    </button>
+}

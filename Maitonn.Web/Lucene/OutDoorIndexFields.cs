@@ -23,6 +23,8 @@ namespace Maitonn.Web
 
         public const string OwnerCode = "OwnerCode";
 
+        public const string AuthStatus = "AuthStatus";
+
         public const string Status = "Status";
 
         public const string CityName = "CityName";

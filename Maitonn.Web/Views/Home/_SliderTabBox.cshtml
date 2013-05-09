@@ -1,0 +1,50 @@
+﻿@model List<HttpLinkGroup>
+<section class="slider-tab-box clearfix">
+    <ul class="slider-tab-top clearfix">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i].Group;
+            <li class="slider-tab-child@(i) @(i == 0 ? "active" : "") " rel="#slidGoods@(i)">@item.Name</li>
+        }
+    </ul>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="slider-tab-container" id="slidGoods@(i)" @(i == 0 ? "" : "style=display:none")>
+            <a class="slider-tab-left-handler" href="javascript:;"></a>
+            <a class="slider-tab-right-handler" href="javascript:;"></a>
+            <div class="slider-tab-content">
+                <div class="slider-tab-scroll">
+                    <div class="slider-tab-viewbox clearfix">
+                        @foreach (var product in Model[i].Items)
+                        {
+                            <div class="slider-tab-item">
+                                <a href="@Url.Action("index", "show", new { id = product.ID })" target="_blank" class="slider-tab-item-img" >
+                                    <img width="150" height="150" border="0" src="@product.ImgUrl" alt="@product.Name">
+                                    <span class="slider-tab-item-img-icon icon0"></span>
+                                </a>
+                                <p class="slider-tab-item-title">
+                                    <a target="_blank" title="@product.Name" href="@Url.Action("index", "show", new { id = product.ID })">@product.Name
+                                        @*&nbsp;<span class="c_ba2636">赠红色经典礼盒一个</span>*@
+                                    </a>
+                                </p>
+                                <p class="slider-tab-item-delete-price">
+                                    @product.Province - @product.City
+                                </p>
+                                <p class="slider-tab-item-price">
+                                    <strong>¥@product.Price 万元/年</strong>
+                                    @*  <span title="红色经典礼盒一个">赠</span>*@
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+<script type="text/javascript">
+    $(function() {
+        $('.slider-tab-box').tab();
+        $('.slider-tab-box').sliderbox();
+    })
+</script>

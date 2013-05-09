@@ -29,6 +29,7 @@ namespace Maitonn.Web
         private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
         private ISliderImgService sliderImgService;
+        private ISourceService sourceService;
         public HomeController(
             IMemberService _memberService
             , IAreaAttService _areaAttService
@@ -43,6 +44,7 @@ namespace Maitonn.Web
             , IOwnerCateService _ownerCateService
             , IAuctionCalendarService _auctionCalendarService
             , ISliderImgService _sliderImgService
+            , ISourceService _sourceService
             )
         {
 
@@ -59,32 +61,27 @@ namespace Maitonn.Web
             ownerCateService = _ownerCateService;
             auctionCalendarService = _auctionCalendarService;
             sliderImgService = _sliderImgService;
+            sourceService = _sourceService;
         }
 
         public ActionResult Index(string province = "quanguo")
         {
+
+            var provinceValue = EnumHelper.GetProvinceValue(province);
+
+            var LeftMenu = sourceService.GetLeftMenu(provinceValue);
+
+            var SliderBox = sourceService.GetSlider(provinceValue, 8);
+
+            var SliderTabBox = GetSliderTabBox(provinceValue);
+
+            var TopCompany = sourceService.GetSuggestCompany(provinceValue, 10);
+
+            var GoodCompany = sourceService.GetGoodCompany(provinceValue, 10);
+
+            var Gallery = GetGallery(provinceValue);
+
             HomeViewModel model = new HomeViewModel();
-            model.TopHot = new TopHotViewModel();
-
-            //左边导航菜单
-            model.TopHot.TopHotListMenu = GetTopHotListMenu(province);
-
-
-            //图片轮播数据
-            model.TopHot.SliderBox = GetSliderBox();
-
-
-
-            model.TopHot.SliderTabBox = GetSliderTabBox();
-
-            model.MainHot = new MainHotViewModel();
-            model.MainHot.MainHotLeftLinks = GetMainHotLeftLinks();
-            model.MainHot.MainHotLeftBox = GetMainHotLeftBox();
-            model.MainHot.MainHotRightLinks = GetHotRightLinks();
-            model.MainHot.MainHotLinks = GetHotLinks();
-            model.MainHot.MainGallery = GetMainGallery();
-
-            model.Province = province;
 
             return View(model);
         }
@@ -98,380 +95,134 @@ namespace Maitonn.Web
                 CookieHelper.SetProvinceCookie(province);
             }
             ProvinceViewModel model = GetProvince(province);
+
             return View(model);
         }
 
-        /// <summary>
-        /// 获取左边导航条
-        /// </summary>
-        /// <returns></returns>
-        private TopHotListMenuViewModel GetTopHotListMenu(string province)
+
+
+        private List<HttpLinkGroup> GetSliderTabBox(int province)
         {
-            TopHotListMenuViewModel model = new TopHotListMenuViewModel();
+            List<HttpLinkGroup> result = new List<HttpLinkGroup>();
 
-            var category = outDoorMediaCateService.IncludeGetALL().ToList();
-
-            foreach (var item in category)
+            HttpLinkGroup group = new HttpLinkGroup()
             {
-                CategoryListViewModel clvm = new CategoryListViewModel();
-
-                CategoryViewModel cvm = new CategoryViewModel()
+                Group = new HttpLinkItem()
                 {
-                    CID = item.ID.ToString(),
-                    Name = item.CateName,
-                    Url = Url.Action("index", "list", new
-                    {
-                        province = province,
-                        mediacode = item.ID
-                    })
-                };
-
-                clvm.Category = cvm;
-
-                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Select(x => new CategoryViewModel
-                {
-                    CID = x.ID.ToString(),
-                    Name = x.CateName,
-                    Url = Url.Action("index", "list", new
-                    {
-                        province = province,
-                        mediacode = item.ID,
-                        childmediacode = x.ID
-                    })
-
-                }).ToList();
-
-                clvm.ChildCategories = ChildCategories;
-
-                model.Items.Add(clvm);
-            }
-            return model;
-        }
-
-        private SliderBoxViewModel GetSliderBox()
-        {
-            SliderBoxViewModel model = new SliderBoxViewModel();
-
-            var ProvinceCode = EnumHelper.GetProvinceValue(CookieHelper.Province);
-            var quanguoCode = (int)ProvinceName.quanguo;
-            model.Items = sliderImgService.GetALL()
-                .Where(x => x.EndTime > DateTime.Now)
-                .Where(x => x.ProvinceCode == ProvinceCode || x.ProvinceCode == quanguoCode)
-                .ToList().OrderByDescending(x => x.Status).OrderByDescending(x=>x.OrderIndex)
-                .Select(x => new CategoryViewModel()
-                {
-                    Url = x.LinkUrl,
-                    ImgUrl = x.ImgUrl,
-                    Name = x.Title
-                }).ToList();
-
-            //model.Items.Add(new CategoryViewModel()
-            //{
-            //    CID = "1",
-            //    ImgUrl = Url.Content("~/Content/images/slider/1.jpg"),
-            //    Url = Url.Action("index", "list", new { mediacode = "1" })
-            //});
-            //model.Items.Add(new CategoryViewModel()
-            //{
-            //    CID = "2",
-            //    ImgUrl = Url.Content("~/Content/images/slider/2.jpg"),
-            //    Url = Url.Action("index", "list", new { mediacode = "2" })
-            //});
-            //model.Items.Add(new CategoryViewModel()
-            //{
-            //    CID = "3",
-            //    ImgUrl = Url.Content("~/Content/images/slider/3.jpg"),
-            //    Url = Url.Action("index", "list", new { mediacode = "3" })
-            //});
-            //model.Items.Add(new CategoryViewModel()
-            //{
-            //    CID = "4",
-            //    ImgUrl = Url.Content("~/Content/images/slider/4.jpg"),
-            //    Url = Url.Action("index", "list", new { mediacode = "4" })
-            //});
-            //model.Items.Add(new CategoryViewModel()
-            //{
-            //    CID = "5",
-            //    ImgUrl = Url.Content("~/Content/images/slider/5.jpg"),
-            //    Url = Url.Action("index", "list", new { mediacode = "5" })
-            //});
-
-            return model;
-        }
-
-        private SliderTabBoxViewModel GetSliderTabBox()
-        {
-            SliderTabBoxViewModel model = new SliderTabBoxViewModel();
-
-            SliderTabContainerViewModel tab = new SliderTabContainerViewModel();
-            tab.Name = "推荐资源";
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(8).ToList();
-            tab.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-
-            model.Tabs.Add(tab);
-
-            tab = new SliderTabContainerViewModel();
-            tab.Name = "优质资源";
-            tab.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            model.Tabs.Add(tab);
-
-            tab = new SliderTabContainerViewModel();
-            tab.Name = "认证资源";
-            tab.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            model.Tabs.Add(tab);
-
-            tab = new SliderTabContainerViewModel();
-            tab.Name = "最新资源";
-            tab.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            model.Tabs.Add(tab);
-
-
-            return model;
-        }
-
-        private MainHotLeftLinksViewModel GetMainHotLeftLinks()
-        {
-            MainHotLeftLinksViewModel model = new MainHotLeftLinksViewModel();
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "1",
-                Name = "奈氏力斯年底回馈",
-                Url = Url.Action("index", "list", new { mediacode = "1" })
-            });
-            model.Items.Add(new CategoryViewModel()
-            {
-                CID = "2",
-                Name = "十一坊买一赠一",
-                Url = Url.Action("index", "list", new { mediacode = "2" })
-            });
-            return model;
-        }
-
-        private MainHotLeftBoxViewModel GetMainHotLeftBox()
-        {
-            MainHotLeftBoxViewModel model = new MainHotLeftBoxViewModel();
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList();
-            model.Items = product.Select(x => new CategoryViewModel()
-            {
-                CID = x.MediaID.ToString(),
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Url = Url.Action("index", "list", new { mediacode = "2" })
-            }).ToList();
-            return model;
-        }
-
-        private MainHotRightLinksViewModel GetHotRightLinks()
-        {
-            MainHotRightLinksViewModel model = new MainHotRightLinksViewModel();
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList();
-            model.Items = product.Select(x => new CategoryViewModel()
-            {
-                CID = x.MediaID.ToString(),
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Url = Url.Action("index", "list", new { mediacode = "2" })
-            }).ToList();
-            return model;
-        }
-
-        private MainHotLinksViewModel GetHotLinks()
-        {
-            MainHotLinksViewModel model = new MainHotLinksViewModel();
-
-            var category = outDoorMediaCateService.IncludeGetALL().Take(3).ToList();
-
-            foreach (var item in category)
-            {
-                CategoryListViewModel clvm = new CategoryListViewModel();
-
-                CategoryViewModel cvm = new CategoryViewModel()
-                {
-                    CID = item.ID.ToString(),
-                    Name = item.CateName,
-                    Url = Url.Action("index", "list", new { mediacode = item.ID })
-                };
-
-                clvm.Category = cvm;
-
-                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Take(8).Select(x => new CategoryViewModel
-                {
-                    CID = x.ID.ToString(),
-                    Name = x.CateName,
-                    Url = Url.Action("index", "list", new { mediacode = x.ID })
-
-                }).ToList();
-
-                clvm.ChildCategories = ChildCategories;
-
-                model.Items.Add(clvm);
-            }
-            return model;
-
-        }
-
-        private MainGalleryViewModel GetMainGallery()
-        {
-            MainGalleryViewModel model = new MainGalleryViewModel();
-
-            MainGalleryContainerViewModel mgcvm = new MainGalleryContainerViewModel();
-
-            var category = outDoorMediaCateService.GetALL().First(x => x.PID.Equals(null));
-
-            mgcvm.Category = new CategoryViewModel()
-            {
-                CID = category.ID.ToString(),
-                Name = category.CateName,
-                CssClass = category.ID.ToString(),
-                Url = Url.Action("index", "list", new { mediacode = category.ID })
+                    Name = "推荐资源"
+                }
             };
 
-            var suggestItem = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).OrderByDescending(x => x.Status).First();
-            mgcvm.SuggestItem = new ProductViewModel()
+            group.Items = sourceService.GetSuggestMedia(province, 8);
+
+            result.Add(group);
+
+            group = new HttpLinkGroup()
             {
-                ID = suggestItem.MediaID,
-                ImgUrl = suggestItem.FocusImg,
-                Name = suggestItem.Name,
-                Price = suggestItem.Price,
-                City = suggestItem.City,
-                Province = suggestItem.Province
+                Group = new HttpLinkItem()
+                {
+                    Name = "优质资源"
+                }
             };
+            group.Items = sourceService.GetGoodMedia(province, 8);
 
-            MainGalleryItemViewModel mgivm = new MainGalleryItemViewModel();
+            result.Add(group);
 
-            mgivm.Name = "推荐资源";
-
-            mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
+            group = new HttpLinkGroup()
             {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            mgivm.TopItems = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList().Select(x => new ProductViewModel()
+                Group = new HttpLinkItem()
+                {
+                    Name = "认证资源"
+                }
+            };
+            group.Items = sourceService.GetAuthMedia(province, 8);
+
+            result.Add(group);
+
+
+            group = new HttpLinkGroup()
             {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
+                Group = new HttpLinkItem()
+                {
+                    Name = "最新资源"
+                }
+            };
+            group.Items = sourceService.GetNewMedia(province, 8);
 
-            mgcvm.Items.Add(mgivm);
+            result.Add(group);
 
-            mgivm = new MainGalleryItemViewModel();
+            return result;
+        }
 
-            mgivm.Name = "优质资源";
 
-            mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
+        private List<HttpLinkGallery> GetGallery(int province)
+        {
+            List<HttpLinkGallery> result = new List<HttpLinkGallery>();
+
+            var categorys = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null));
+
+            foreach (var category in categorys)
             {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            mgivm.TopItems = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList().Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
+                HttpLinkGallery galleryContainer = new HttpLinkGallery()
+                {
+                    Gallery = new HttpLinkItem()
+                    {
+                        ID = category.ID,
+                        Name = category.CateName
+                    }
+                };
 
-            mgcvm.Items.Add(mgivm);
+                HttpLinkGroup tab = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "推荐资源"
+                    }
+                };
 
-            mgivm = new MainGalleryItemViewModel();
+                tab.Items = sourceService.GetSuggestMedia(province, 8, category.ID);
 
-            mgivm.Name = "认证资源";
+                galleryContainer.Tabs.Add(tab);
 
-            mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            mgivm.TopItems = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList().Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
+                tab = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "优质资源"
+                    }
+                };
+                tab.Items = sourceService.GetGoodMedia(province, 8, category.ID);
 
-            mgcvm.Items.Add(mgivm);
+                galleryContainer.Tabs.Add(tab);
 
-            mgivm = new MainGalleryItemViewModel();
+                tab = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "认证资源"
+                    }
+                };
+                tab.Items = sourceService.GetAuthMedia(province, 8, category.ID);
 
-            mgivm.Name = "最新资源";
+                galleryContainer.Tabs.Add(tab);
 
-            mgivm.Items = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(3).ToList().Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            mgivm.TopItems = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList().Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
 
-            mgcvm.Items.Add(mgivm);
+                tab = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "最新资源"
+                    }
+                };
 
-            model.Items.Add(mgcvm);
+                tab.Items = sourceService.GetNewMedia(province, 8, category.ID);
 
-            return model;
+                galleryContainer.Tabs.Add(tab);
+
+                result.Add(galleryContainer);
+            }
+
+            return result;
         }
 
         private ProvinceViewModel GetProvince(string province)

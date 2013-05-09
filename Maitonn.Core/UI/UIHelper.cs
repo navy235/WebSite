@@ -90,7 +90,7 @@ namespace Maitonn.Core
             OutDoorStatusList.Add(new SelectListItem() { Text = "审核通过", Value = ((int)OutDoorStatus.Verified).ToString() });
             OutDoorStatusList.Add(new SelectListItem() { Text = "未显示", Value = ((int)OutDoorStatus.NoShow).ToString() });
             OutDoorStatusList.Add(new SelectListItem() { Text = "显示中", Value = ((int)OutDoorStatus.ShowOnline).ToString() });
-            OutDoorStatusList.Add(new SelectListItem() { Text = "置顶中", Value = ((int)OutDoorStatus.Top).ToString() });
+
         }
 
         private static void InitProvinceList()

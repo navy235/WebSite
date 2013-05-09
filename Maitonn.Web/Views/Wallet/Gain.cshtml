@@ -11,7 +11,10 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("index")"><span>消费记录</span></a></li>
+                    <li class="selected"><a href="@Url.Action("gain")"><span>赚币记录</span></a></li>
+                </ul>
             </div>
             <div class="personal-form mt20">
 
@@ -21,7 +24,7 @@
                     {
 
                         columns.Bound(c => c.Description).Title("赚币原因").Sortable(false);
-                        columns.Bound(c => c.Money).Title("赚币金额");
+                        columns.Bound(c => c.Money).Title("赚币金额").Width(80);
                         columns.Bound(c => c.AddTime).Format("{0:yyyy-MM-dd}").Width(80).Title("赚币时间");
 
                     })

@@ -1,0 +1,12 @@
+﻿@model List<HttpLinkItem>
+
+<ul class="clearfix">
+    @foreach (var item in Model)
+    { 
+        <li><a href="@Url.Action("index", "shop", new { id = item.ID })" target="_blank">
+            <img src="@item.ImgUrl" />
+            <p class="imgblock-name">@item.Name</p>
+            <p class="imgblock-city">@item.ProvinceName @item.CityName</p>
+        </a></li>
+    }
+</ul>

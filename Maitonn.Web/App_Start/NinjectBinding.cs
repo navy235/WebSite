@@ -10,8 +10,10 @@ namespace Maitonn.Web
     {
         public static void Binding(IKernel kernel)
         {
-            //kernel.Bind<IUnitOfWork>().To<EntitiesContext>();
+
             kernel.Bind<IUnitOfWork>().To<EntitiesContext>().InRequestScope();
+
+            kernel.Bind<ISourceService>().To<SourceService>().InRequestScope();
 
             kernel.Bind<IMemberService>().To<MemberService>().InRequestScope();
 
@@ -25,16 +27,22 @@ namespace Maitonn.Web
 
             kernel.Bind<IAuctionCalendarService>().To<AuctionCalendarService>().InRequestScope();
 
+            kernel.Bind<ISearchService>().To<LuceneSearchService>().InRequestScope();
+
+            kernel.Bind<IIndexingService>().To<LuceneIndexingService>().InRequestScope();
 
             kernel.Bind<IDepartmentService>()
                 .To<DepartmentService>()
                 .InRequestScope();
+
             kernel.Bind<IPermissionService>()
                 .To<PermissionService>()
                 .InRequestScope();
+
             kernel.Bind<IRoleService>()
                 .To<RoleService>()
                 .InRequestScope();
+
             kernel.Bind<IGroupService>()
                 .To<Groupervice>()
                 .InRequestScope();

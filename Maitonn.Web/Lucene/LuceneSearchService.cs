@@ -32,9 +32,6 @@ namespace Maitonn.Web
 
         public SortDirection SortDirection { get; set; }
 
-        /// <summary>
-        ///     Determines if only this is a count only query and does not process the source queryable.
-        /// </summary>
         public bool CountOnly { get; set; }
     }
 
@@ -60,6 +57,11 @@ namespace Maitonn.Web
         /// <param name="filter"> The filter to be used. </param>
         /// <param name="totalHits"> The total number of OutDoors discovered. </param>
         IQueryable<OutDoor> Search(IQueryable<OutDoor> OutDoors, SearchFilter filter, out int totalHits);
+
+        List<ListSearchProductViewModel> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits);
+
+        List<HttpLinkItem> Search(List<int> Keys);
+
     }
 
     public class LuceneSearchService : ISearchService
@@ -88,6 +90,7 @@ namespace Maitonn.Web
 
             // For the given search term, find the keys that match.
             var keys = SearchCore(searchFilter, out totalHits);
+
             if (keys.Count == 0 || searchFilter.CountOnly)
             {
                 return Enumerable.Empty<OutDoor>().AsQueryable();
@@ -125,6 +128,36 @@ namespace Maitonn.Web
 
             return searchResults;
 
+        }
+
+        public List<HttpLinkItem> Search(List<int> Keys)
+        {
+            if (!Directory.Exists(LuceneCommon.IndexDirectory))
+            {
+                return new List<HttpLinkItem>();
+            }
+
+            using (var directory = new LuceneFileSystem(LuceneCommon.IndexDirectory))
+            {
+                var searcher = new IndexSearcher(directory, readOnly: true);
+
+                var combineQuery = new BooleanQuery();
+
+                foreach (var key in Keys)
+                {
+
+                    combineQuery.Add(NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaID, key, key, true, true), Occur.SHOULD);
+                }
+
+                var searchResults = searcher.Search(combineQuery, filter: null, n: Keys.Count, sort: null);
+
+                var results = searchResults.ScoreDocs.Select(c => GetMediaItem(searcher.Doc(c.Doc)))
+                    .ToList();
+
+                searcher.Close();
+
+                return results;
+            }
         }
 
         private static OutDoor LookupOutDoor(Dictionary<int, OutDoor> dict, int key)
@@ -204,7 +237,7 @@ namespace Maitonn.Web
             decimal Width = Decimal.Parse(doc.Get(OutDoorIndexFields.Width), CultureInfo.InvariantCulture);
             decimal Height = Decimal.Parse(doc.Get(OutDoorIndexFields.Height), CultureInfo.InvariantCulture);
             int TotalFaces = Int32.Parse(doc.Get(OutDoorIndexFields.TotalFaces), CultureInfo.InvariantCulture);
-            DateTime AddTime = new DateTime(Int64.Parse(doc.Get("Published"), CultureInfo.InvariantCulture));
+            DateTime AddTime = new DateTime(Int64.Parse(doc.Get(OutDoorIndexFields.Published), CultureInfo.InvariantCulture));
             return new ListSearchProductViewModel
             {
                 ID = MediaID,
@@ -226,6 +259,38 @@ namespace Maitonn.Web
                 TotalFaces = TotalFaces,
                 PeriodCateName = doc.Get(OutDoorIndexFields.PeriodName),
                 Addtime = AddTime
+            };
+        }
+
+        private static HttpLinkItem GetMediaItem(Document doc)
+        {
+            int Hit = Int32.Parse(doc.Get(OutDoorIndexFields.Hit), CultureInfo.InvariantCulture);
+            int MediaID = Int32.Parse(doc.Get(OutDoorIndexFields.MediaID), CultureInfo.InvariantCulture);
+            int Province = Int32.Parse(doc.Get(OutDoorIndexFields.Province), CultureInfo.InvariantCulture);
+            int City = Int32.Parse(doc.Get(OutDoorIndexFields.City), CultureInfo.InvariantCulture);
+            int FormatCode = Int32.Parse(doc.Get(OutDoorIndexFields.FormatCode), CultureInfo.InvariantCulture);
+            int MediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.MediaCode), CultureInfo.InvariantCulture);
+            int PMediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.PMediaCode), CultureInfo.InvariantCulture);
+            decimal Price = Decimal.Parse(doc.Get(OutDoorIndexFields.Price), CultureInfo.InvariantCulture);
+            decimal Width = Decimal.Parse(doc.Get(OutDoorIndexFields.Width), CultureInfo.InvariantCulture);
+            decimal Height = Decimal.Parse(doc.Get(OutDoorIndexFields.Height), CultureInfo.InvariantCulture);
+            int TotalFaces = Int32.Parse(doc.Get(OutDoorIndexFields.TotalFaces), CultureInfo.InvariantCulture);
+            DateTime AddTime = new DateTime(Int64.Parse(doc.Get(OutDoorIndexFields.Published), CultureInfo.InvariantCulture));
+            return new HttpLinkItem
+            {
+                ID = MediaID,
+                ImgUrl = doc.Get(OutDoorIndexFields.ImgUrl),
+                Province = Province,
+                ProvinceName = doc.Get(OutDoorIndexFields.ProvinceName),
+                City = City,
+                CityName = doc.Get(OutDoorIndexFields.CityName),
+                PCategoryCode = PMediaCode,
+                PCategoryName = doc.Get(OutDoorIndexFields.PMediaCateName),
+                CategoryCode = MediaCode,
+                CategoryName = doc.Get(OutDoorIndexFields.MediaCateName),
+                Name = doc.Get(OutDoorIndexFields.Title),
+                Price = Price,
+                PeriodName = doc.Get(OutDoorIndexFields.PeriodName)
             };
         }
 
@@ -378,6 +443,14 @@ namespace Maitonn.Web
             }
             #endregion
 
+            #region 认证状态
+            if (queryParams.AuthStatus != 0)
+            {
+                var authStatusQuery = NumericRangeQuery.NewIntRange(OutDoorIndexFields.AuthStatus, queryParams.AuthStatus, queryParams.AuthStatus, true, true);
+                combineQuery.Add(authStatusQuery, Occur.MUST);
+            }
+            #endregion
+
             #region 媒体类别查询
             if (queryParams.MediaCode != 0)
             {
@@ -435,6 +508,7 @@ namespace Maitonn.Web
 
             return combineQuery;
         }
+
         private static IEnumerable<string> GetSearchTerms(string searchTerm)
         {
             List<string> result = new List<string>();
@@ -468,11 +542,11 @@ namespace Maitonn.Web
             switch (searchFilter.SortProperty)
             {
                 case SortProperty.Hit:
-                    return new SortField("Hit", SortField.INT, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
+                    return new SortField(OutDoorIndexFields.Hit, SortField.INT, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
                 case SortProperty.Price:
-                    return new SortField("Price", SortField.DOUBLE, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
+                    return new SortField(OutDoorIndexFields.Price, SortField.DOUBLE, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
                 case SortProperty.Published:
-                    return new SortField("Published", SortField.LONG, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
+                    return new SortField(OutDoorIndexFields.Published, SortField.LONG, reverse: searchFilter.SortDirection.Equals(SortDirection.Descending));
             }
             return SortField.FIELD_SCORE;
         }
@@ -487,5 +561,9 @@ namespace Maitonn.Web
             int key;
             return Int32.TryParse(value, out key) ? key : 0;
         }
+
+
+
+
     }
 }

@@ -4,32 +4,21 @@
 
 <h2>SearchIndex</h2>
 
-<input type="text" id="query" name="query" />
-
-<button class="btn btn-warning" id="querybtn" type="button">搜索</button>
-
-@if (ViewBag.Result != null)
-{
-    <p>搜索条总数：@ViewBag.Result.Count</p>
-    foreach (var s in ViewBag.Result)
-    {
-    <p>@s</p>
-    }
+@using (Html.BeginForm())
+{ 
+    <label>关键字</label>
+    
+    <input type="text" class="k-textbox single-line " name="query" />
+    
+    <button type="submit" class="btn btn-success ">
+        搜索
+    </button>
 }
 
-<script type="text/javascript">
-    $(function() {
-        $("#querybtn").click(function() {
-            if ($("#query").val() == "") {
-                alert("请输入关键字！");
-                return false;
-            } else {
-                window.location.href = window.location.origin + window.location.pathname + "?query=" + encodeURIComponent($("#query").val());
-            }
-        })
-    })
-</script>
-
-
-
-
+@if (ViewBag.List != null)
+{
+    foreach (var item in ViewBag.List)
+    { 
+    <p>@item.Name</p>
+    }
+}

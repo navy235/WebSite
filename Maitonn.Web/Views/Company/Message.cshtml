@@ -11,18 +11,17 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+
+                    <li><a href="@Url.Action("logo")"><span>企业LOGO</span></a></li>
+                    <li><a href="@Url.Action("banner")"><span>企业BANNER</span></a></li>
+                    <li><a href="@Url.Action("notice")"><span>企业公告</span></a></li>
+                    <li class="selected"><a href="@Url.Action("message")"><span>企业留言</span></a></li>
+                </ul>
             </div>
 
-            @if (ViewBag.UserStatus < (int)MemberStatus.CompanyFailed)
-            {
-                @ViewHelpers.Alert("友情提醒：", CookieHelper.NickName + ",请先进行企业认证.", Html.ActionLink("马上进行企业认证", "index", "company")
-               , false, AlertType.info.ToString())
-            }
-            else
-            {
-                <div class="personal-form mt20">
-                    @(Html.Kendo().Grid<CompanyMessageViewModel>()
+            <div class="personal-form mt20">
+                @(Html.Kendo().Grid<CompanyMessageViewModel>()
                     .Name("Grid")
                     .Columns(columns =>
                     {
@@ -53,13 +52,14 @@
                         .Ajax()
                         .PageSize(20)
                         .Model(model => model.Id(c => c.ID))
+                        .Sort(sort => sort.Add(x => x.AddTime).Descending())
                         .Read(read => read.Action("message_read", "company"))
 
                      )
                      .HtmlAttributes(new { style = "height:500px;" })
                     )
 
-                    @(Html.Kendo().Window().Name("Details")
+                @(Html.Kendo().Window().Name("Details")
                             .Title("留言信息")
                             .Visible(false)
                             .Modal(true)
@@ -68,96 +68,94 @@
                             .Height(500)
                             .Scrollable(true)
                             .Content(@<text>
-                    <div id="verifyLoading">
-                        <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
-                    </div>
-                    <iframe id="verifyContent" name="verifycontent" width="100%" height="100%" style="display: none;" marginwidth="0" marginheight="0" frameborder="0" src=""></iframe>
-                    </text>)
+                <div id="verifyLoading">
+                    <img src="~/Content/images/formloading.gif" alt="loading" border="0" />
+                </div>
+                <iframe id="verifyContent" name="verifycontent" width="100%" height="100%" style="display: none;" marginwidth="0" marginheight="0" frameborder="0" src=""></iframe>
+                </text>)
                         )
-                    <script type="text/javascript">
-                        var Grid = {
-                            id: 'Grid',
-                            checkAll: function(element) {
-                                var self = Grid;
-                                var state = $(element).is(':checked');
-                                $('[name="ID_check"]').attr('checked', state);
-                            },
-                            getCheckIds: function() {
-                                return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
-                            },
-                            addSpinner: function(element) {
-                                var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
-                                $(element).addClass('disabled');
-                            },
-                            removeSpinner: function(element) {
-                                $(element).find('.ajax-working').remove();
-                                $(element).removeClass('disabled');
-                            },
-                            successMessage: function(message) {
-                                var $jsmessage = $('.jsmessage');
-                                $('.jsmessage-text').text(message);
-                                $jsmessage.show();
-                                $jsmessage.fadeOut(5000)
-                            },
-                            excute: function(element, url, Ids) {
-                                if ($(element).hasClass('disabled'))
-                                    return false;
-                                var self = Grid;
-                                if (Ids) {
-                                    self.addSpinner(element);
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: url,
-                                        data: { ids: Ids },
-                                        success: function(res) {
-                                            if (res.Success) {
-                                                self.successMessage(res.Message);
-                                                var grid = $("#Grid").data("kendoGrid");
-                                                grid.dataSource.read();
-                                                grid.refresh();
-                                            }
-                                        },
-                                        complete: function() {
-                                            self.removeSpinner(element);
+                <script type="text/javascript">
+                    var Grid = {
+                        id: 'Grid',
+                        checkAll: function(element) {
+                            var self = Grid;
+                            var state = $(element).is(':checked');
+                            $('[name="ID_check"]').attr('checked', state);
+                        },
+                        getCheckIds: function() {
+                            return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
+                        },
+                        addSpinner: function(element) {
+                            var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
+                            $(element).addClass('disabled');
+                        },
+                        removeSpinner: function(element) {
+                            $(element).find('.ajax-working').remove();
+                            $(element).removeClass('disabled');
+                        },
+                        successMessage: function(message) {
+                            var $jsmessage = $('.jsmessage');
+                            $('.jsmessage-text').text(message);
+                            $jsmessage.show();
+                            $jsmessage.fadeOut(5000)
+                        },
+                        excute: function(element, url, Ids) {
+                            if ($(element).hasClass('disabled'))
+                                return false;
+                            var self = Grid;
+                            if (Ids) {
+                                self.addSpinner(element);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: { ids: Ids },
+                                    success: function(res) {
+                                        if (res.Success) {
+                                            self.successMessage(res.Message);
+                                            var grid = $("#Grid").data("kendoGrid");
+                                            grid.dataSource.read();
+                                            grid.refresh();
                                         }
-                                    })
-                                } else {
-                                    alert('请选择要处理的信息');
-                                    return false;
-                                }
-                            },
-                            deleteAll: function(element) {
-                                var self = Grid;
-                                var url = '@Url.Action("messagedelete", "company")';
+                                    },
+                                    complete: function() {
+                                        self.removeSpinner(element);
+                                    }
+                                })
+                            } else {
+                                alert('请选择要处理的信息');
+                                return false;
+                            }
+                        },
+                        deleteAll: function(element) {
+                            var self = Grid;
+                            var url = '@Url.Action("messagedelete", "company")';
                                 var Ids = self.getCheckIds();
                                 self.excute(element, url, Ids);
                             },
-                            deleteSingle: function(element, id) {
-                                var self = Grid;
-                                var url = '@Url.Action("messagedelete", "company")';
+                        deleteSingle: function(element, id) {
+                            var self = Grid;
+                            var url = '@Url.Action("messagedelete", "company")';
                                 var Ids = id;
                                 self.excute(element, url, Ids);
                             },
-                            showDetails: function(e) {
-                                e.preventDefault();
-                                $('#verifyContent').hide();
-                                $('#verifyLoading').show();
-                                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-                                var url = '@Url.Action("messagedetails", "company")';
+                        showDetails: function(e) {
+                            e.preventDefault();
+                            $('#verifyContent').hide();
+                            $('#verifyLoading').show();
+                            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                            var url = '@Url.Action("messagedetails", "company")';
                                 $('#verifyContent').attr('src', url + '/' + dataItem.ID);
                                 var wnd = $("#Details").data("kendoWindow").center().open();
                             }
-                        }
+                    }
                         $(function() {
                             $('#verifyContent').load(function() {
                                 $('#verifyLoading').hide();
                                 $(this).show();
                             })
                         })
-                    </script>
-                </div>
-            }
+                </script>
+            </div>
         </div>
-
     </div>
 </article>

@@ -41,33 +41,18 @@
     { 
         <div class="nav-title ">
             <em></em>
-            <p class="nav-company">企业管理</p>
+            <p class="nav-company">企业资料</p>
             <i></i>
         </div>
         <ul class="menu-company" style="display: none;">
             <li class="item-company-baseinfo">
                 <p><a href="@Url.Action("baseinfo", "company")">基本信息</a></p>
             </li>
-            <li class="item-company-baseinfo">
+            <li class="item-company-contact">
                 <p><a href="@Url.Action("contact", "company")">联系方式</a></p>
-            </li>
-            <li class="item-company-logo ">
-                <p><a href="@Url.Action("logo", "company")">企业LOGO</a></p>
-            </li>
-            <li class="item-company-banner ">
-                <p><a href="@Url.Action("banner", "company")">企业BANNER</a></p>
             </li>
             <li class="item-company-credentials ">
                 <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
-            </li>
-            <li class="item-company-notice ">
-                <p><a href="@Url.Action("notice", "company")">企业公告管理</a></p>
-            </li>
-            <li class="item-company-addnotice ">
-                <p><a href="@Url.Action("addnotice", "company")">添加企业公告</a></p>
-            </li>
-            <li class="item-company-message ">
-                <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
             </li>
         </ul>
         <div class="nav-title ">
@@ -75,18 +60,21 @@
             <p class="nav-shop">企业商铺</p>
             <i></i>
         </div>
-        <ul class="menu-company" style="display: none;">
-            <li class="item-company-banner ">
+        <ul class="menu-shop" style="display: none;">
+            <li class="item-shop-logo ">
+                <p><a href="@Url.Action("index", "shop", new { id = CookieHelper.MemberID })">商铺首页</a></p>
+            </li>
+            <li class="item-shop-logo ">
+                <p><a href="@Url.Action("logo", "company")">企业LOGO</a></p>
+            </li>
+            <li class="item-shop-banner ">
                 <p><a href="@Url.Action("banner", "company")">商铺BANNER</a></p>
             </li>
-            <li class="item-company-credentials ">
-                <p><a href="@Url.Action("credentials", "company")">资质证书</a></p>
+            <li class="item-shop-notice ">
+                <p><a href="@Url.Action("notice", "company")">公告管理</a></p>
             </li>
-            <li class="item-company-notice ">
-                <p><a href="@Url.Action("notice", "company")">商铺公告管理</a></p>
-            </li>
-            <li class="item-company-message ">
-                <p><a href="@Url.Action("message", "company")">企业留言管理</a></p>
+            <li class="item-shop-message ">
+                <p><a href="@Url.Action("message", "company")">留言管理</a></p>
             </li>
         </ul>
         <div class="nav-title ">

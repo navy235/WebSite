@@ -155,6 +155,8 @@ namespace Maitonn.Web
 
         public int Descending { get; set; }
 
+        public int AuthStatus { get; set; }
+
         public string Query { get; set; }
 
     }

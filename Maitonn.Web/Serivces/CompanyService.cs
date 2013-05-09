@@ -252,6 +252,10 @@ namespace Maitonn.Web
             .Single(x => x.MemberID == MemberID);
         }
 
+        public IQueryable<Company> GetAll()
+        {
+            return DB_Service.Set<Company>();
+        }
 
         public IQueryable<CompanyVerifyViewModel> GetVerifyList()
         {
@@ -269,6 +273,7 @@ namespace Maitonn.Web
             });
 
         }
+
         public IQueryable<CompanyVerifyViewModel> GetVerifyList(CompanyStatus CompanyStatus)
         {
             int CompanyStatusValue = (int)CompanyStatus;
@@ -474,10 +479,12 @@ namespace Maitonn.Web
         public IEnumerable<CompanyNoticeViewModel> GetCompanyNoticeList(int MemberID, CompanyNoticeStatus CompanyNoticeStatus, bool inCludeUpLevel = false)
         {
             var NoticeStatus = (int)CompanyNoticeStatus;
+
             var company = DB_Service.Set<Company>()
                 .Include(x => x.CompanyNotice).Where(x => x.MemberID == MemberID).First();
 
             var query = company.CompanyNotice.AsQueryable();
+
             if (inCludeUpLevel)
             {
                 query = query.Where(x => x.Status >= NoticeStatus);
@@ -523,7 +530,29 @@ namespace Maitonn.Web
             });
         }
 
+        public ServiceResult UpdateCompanyContact(int MemberID, CompanyContactInfoViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var company = IncludeFind(MemberID);
+                DB_Service.Attach<Company>(company);
+                company.LinkMan = model.LinkMan;
+                company.Fax = model.Fax;
+                company.Mobile = model.Mobile;
+                company.MSN = model.MSN;
+                company.Phone = model.Phone;
+                company.QQ = model.QQ;
+                company.Sex = model.Sex;
+                DB_Service.Commit();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
 
+        }
 
         public ServiceResult CreateCompanyAuthInfo(int MemberID, BizAuthModel model)
         {
@@ -721,5 +750,8 @@ namespace Maitonn.Web
             var status = DB_Service.Set<Company>().Single(x => x.MemberID == MemberID).Status;
             return (CompanyStatus)status;
         }
+
+
+
     }
 }

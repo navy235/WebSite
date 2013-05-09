@@ -12,17 +12,17 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("index")"><span>显示中</span></a></li>
+                    <li><a href="@Url.Action("notshow")"><span>未显示</span></a></li>
+                    <li><a href="@Url.Action("preverify")"><span>待审核</span></a></li>
+                    <li><a href="@Url.Action("verifyfailed")"><span>审核失败</span></a></li>
+                    <li><a href="@Url.Action("delete")"><span>已删除</span></a></li>
+                </ul>
+                <a class="btn btn-success pull-right" style="margin-top:-30px" href="@Url.Action("add")">添加户外媒体</a>
             </div>
             @ViewHelpers.Alert("友情提醒：",
                 CookieHelper.NickName + ",请设置媒体不可售时间，如果需要删除某一段时间，请单击排期状态条上需要删除的时间段即可。", false, AlertType.info.ToString())
-
-            @if (ViewBag.Error != null)
-            { 
-                @ViewHelpers.Alert("错误信息：",
-                ViewBag.Error, false, AlertType.error.ToString())
-            }
-
             <div class="personal-form  personal-form-setauction">
                 <div class="form-field">
                     @Html.LabelFor(x => x.Name)

@@ -139,8 +139,7 @@ namespace Maitonn.Core
         PreVerify = 1,
         Verified = 2,
         NoShow = 3,
-        ShowOnline = 4,
-        Top = 9
+        ShowOnline = 4
     }
 
     public enum OpenLoginType

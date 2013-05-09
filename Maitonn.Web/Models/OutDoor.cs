@@ -73,6 +73,8 @@ namespace Maitonn.Web
 
         public System.DateTime Deadline { get; set; }
 
+        public int AuthStatus { get; set; }
+
         public int Status { get; set; }
 
         public virtual ICollection<AreaAtt> AreaAtt { get; set; }

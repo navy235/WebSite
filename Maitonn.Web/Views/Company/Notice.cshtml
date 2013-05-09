@@ -11,18 +11,18 @@
     <div class="personal-right">
         <div class="personal-right-body">
             <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
+                <ul class="personal-tab clearfix">
+                    <li><a href="@Url.Action("logo")"><span>企业LOGO</span></a></li>
+                    <li><a href="@Url.Action("banner")"><span>企业BANNER</span></a></li>
+                    <li class="selected"><a href="@Url.Action("notice")"><span>企业公告</span></a></li>
+                    <li><a href="@Url.Action("message")"><span>企业留言</span></a></li>
+                </ul>
+                <a class="btn btn-success pull-right" style="margin-top:-30px" href="@Url.Action("addnotice")">添加公告</a>
             </div>
 
-            @if (ViewBag.UserStatus < (int)MemberStatus.CompanyFailed)
-            {
-                @ViewHelpers.Alert("友情提醒：", CookieHelper.NickName + ",请先进行企业认证.", Html.ActionLink("马上进行企业认证", "index", "company")
-               , false, AlertType.info.ToString())
-            }
-            else
-            {
-                <div class="personal-form mt20">
-                    @(Html.Kendo().Grid<CompanyNoticeViewModel>()
+
+            <div class="personal-form mt20">
+                @(Html.Kendo().Grid<CompanyNoticeViewModel>()
                     .Name("Grid")
                     .Columns(columns =>
                     {
@@ -60,106 +60,105 @@
                         .Ajax()
                         .PageSize(20)
                         .Model(model => model.Id(c => c.ID))
+                        .Sort(sort => sort.Add(x => x.AddTime).Descending())
                         .Read(read => read.Action("notice_read", "company"))
 
                      )
                      .HtmlAttributes(new { style = "height:500px;" })
                     )
 
-                    <script type="text/javascript">
-                        var Grid = {
-                            id: 'Grid',
-                            checkAll: function(element) {
-                                var self = Grid;
-                                var state = $(element).is(':checked');
-                                $('[name="ID_check"]').attr('checked', state);
-                            },
-                            getCheckIds: function() {
-                                return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
-                            },
-                            addSpinner: function(element) {
-                                var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
-                                $(element).addClass('disabled');
-                            },
-                            removeSpinner: function(element) {
-                                $(element).find('.ajax-working').remove();
-                                $(element).removeClass('disabled');
-                            },
-                            successMessage: function(message) {
-                                var $jsmessage = $('.jsmessage');
-                                $('.jsmessage-text').text(message);
-                                $jsmessage.show();
-                                $jsmessage.fadeOut(5000)
-                            },
-                            excute: function(element, url, Ids) {
-                                if ($(element).hasClass('disabled'))
-                                    return false;
-                                var self = Grid;
-                                if (Ids) {
-                                    self.addSpinner(element);
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: url,
-                                        data: { ids: Ids },
-                                        success: function(res) {
-                                            if (res.Success) {
-                                                self.successMessage(res.Message);
-                                                var grid = $("#Grid").data("kendoGrid");
-                                                grid.dataSource.read();
-                                                grid.refresh();
-                                            }
-                                        },
-                                        complete: function() {
-                                            self.removeSpinner(element);
+                <script type="text/javascript">
+                    var Grid = {
+                        id: 'Grid',
+                        checkAll: function(element) {
+                            var self = Grid;
+                            var state = $(element).is(':checked');
+                            $('[name="ID_check"]').attr('checked', state);
+                        },
+                        getCheckIds: function() {
+                            return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
+                        },
+                        addSpinner: function(element) {
+                            var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
+                            $(element).addClass('disabled');
+                        },
+                        removeSpinner: function(element) {
+                            $(element).find('.ajax-working').remove();
+                            $(element).removeClass('disabled');
+                        },
+                        successMessage: function(message) {
+                            var $jsmessage = $('.jsmessage');
+                            $('.jsmessage-text').text(message);
+                            $jsmessage.show();
+                            $jsmessage.fadeOut(5000)
+                        },
+                        excute: function(element, url, Ids) {
+                            if ($(element).hasClass('disabled'))
+                                return false;
+                            var self = Grid;
+                            if (Ids) {
+                                self.addSpinner(element);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: { ids: Ids },
+                                    success: function(res) {
+                                        if (res.Success) {
+                                            self.successMessage(res.Message);
+                                            var grid = $("#Grid").data("kendoGrid");
+                                            grid.dataSource.read();
+                                            grid.refresh();
                                         }
-                                    })
-                                } else {
-                                    alert('请选择要处理的信息');
-                                    return false;
-                                }
-                            },
-                            notShowALL: function(element) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeNotShow", "company")';
+                                    },
+                                    complete: function() {
+                                        self.removeSpinner(element);
+                                    }
+                                })
+                            } else {
+                                alert('请选择要处理的信息');
+                                return false;
+                            }
+                        },
+                        notShowALL: function(element) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeNotShow", "company")';
                                 var Ids = self.getCheckIds();
                                 self.excute(element, url, Ids);
                             },
-                            showALL: function(element) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeShow", "company")';
+                        showALL: function(element) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeShow", "company")';
                                 var Ids = self.getCheckIds();
                                 self.excute(element, url, Ids);
                             },
-                            deleteAll: function(element) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeDelete", "company")';
+                        deleteAll: function(element) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeDelete", "company")';
                                 var Ids = self.getCheckIds();
                                 self.excute(element, url, Ids);
                             },
-                            deleteSingle: function(element, id) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeDelete", "company")';
+                        deleteSingle: function(element, id) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeDelete", "company")';
                                 var Ids = id;
                                 self.excute(element, url, Ids);
                             },
-                            notShowSingle: function(element, id) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeNotShow", "company")';
+                        notShowSingle: function(element, id) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeNotShow", "company")';
                                 var Ids = id;
                                 self.excute(element, url, Ids);
                             },
-                            showSingle: function(element, id) {
-                                var self = Grid;
-                                var url = '@Url.Action("NoticeShow", "company")';
+                        showSingle: function(element, id) {
+                            var self = Grid;
+                            var url = '@Url.Action("NoticeShow", "company")';
                                 var Ids = id;
                                 self.excute(element, url, Ids);
                             }
-                        }
+                    }
 
-                    </script>
-                </div>
-            }
+                </script>
+            </div>
         </div>
-
     </div>
 </article>

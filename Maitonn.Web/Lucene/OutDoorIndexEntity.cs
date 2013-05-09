@@ -22,6 +22,8 @@ namespace Maitonn.Web
 
         public int Status { get; set; }
 
+        public int AuthStatus { get; set; }
+
         public string ProvinceName { get; set; }
 
         public string CityName { get; set; }
@@ -53,6 +55,8 @@ namespace Maitonn.Web
         public decimal Height { get; set; }
 
         public int TotalFaces { get; set; }
+
+
 
         public DateTime Published { get; set; }
     }

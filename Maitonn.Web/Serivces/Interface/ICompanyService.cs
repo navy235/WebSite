@@ -11,8 +11,6 @@ namespace Maitonn.Web
 
         Company SaveBasInfo(int MemberID, CompanyReg model);
 
-
-
         Company Update(CompanyReg model);
 
         Company Find(int MemberID);
@@ -37,6 +35,8 @@ namespace Maitonn.Web
 
         CompanyBanner GetCompanyBanner(int MemberID);
 
+        ServiceResult UpdateCompanyContact(int MemberID, CompanyContactInfoViewModel model);
+
         ServiceResult CreateCompanyAuthInfo(int MemberID, BizAuthModel model);
 
         ServiceResult UpdateCompanyAuthInfo(int MemberID, BizAuthModel model);
@@ -59,6 +59,8 @@ namespace Maitonn.Web
         IEnumerable<CompanyNoticeViewModel> GetCompanyNoticeList(int MemberID, CompanyNoticeStatus CompanyNoticeStatus, bool inCludeUpLevel = false);
 
         IEnumerable<CompanyMessageViewModel> GetCompanyMessageList(int MemberID, CompanyMessageStatus CompanyMessageStatus, bool inCludeUpLevel = false);
+
+        IQueryable<Company> GetAll();
 
         IQueryable<CompanyVerifyViewModel> GetVerifyList();
 

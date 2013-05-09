@@ -14,7 +14,7 @@ namespace Maitonn.Web
         public ActionResult Index(int id = 0, string returnurl = null)
         {
             ViewBag.Message = id;
-            return Content(string.Format("<script>window.top.location.href='{0}'</script>", Url.Action("Index", "Login", new { ReturnUrl = returnurl })));
+            return Redirect(Url.Action("Index", "Login", new { ReturnUrl = returnurl }));
         }
 
     }

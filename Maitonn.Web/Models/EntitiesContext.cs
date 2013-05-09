@@ -47,6 +47,10 @@ namespace Maitonn.Web
 
         public IDbSet<Media_Refresh> Media_Refresh { get; set; }
 
+        public IDbSet<AddressBook> AddressBook { get; set; }
+
+        public IDbSet<Media_Favorites> Media_Favorites { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 

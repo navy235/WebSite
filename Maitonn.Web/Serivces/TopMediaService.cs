@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Transactions;
 using Maitonn.Core;
+using System.Data.Entity;
 
 namespace Maitonn.Web
 {

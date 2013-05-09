@@ -47,10 +47,20 @@ namespace Maitonn.Web
             auctionCalendarService = _auctionCalendarService;
         }
 
+        public bool CheckMemberStatus()
+        {
+            var member = memberService.Find(CookieHelper.MemberID);
+            return member.Status >= (int)MemberStatus.CompanyAuth;
+        }
+
+
         public ActionResult Index()
         {
-            ViewBag.MenuItem = "outdoor-list";
-
+            ViewBag.MenuItem = "media-list";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
@@ -64,7 +74,11 @@ namespace Maitonn.Web
 
         public ActionResult Preverify()
         {
-            ViewBag.MenuItem = "outdoor-preverify";
+            ViewBag.MenuItem = "media-preverify";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
@@ -78,7 +92,11 @@ namespace Maitonn.Web
 
         public ActionResult VerifyFailed()
         {
-            ViewBag.MenuItem = "outdoor-verifyfailed";
+            ViewBag.MenuItem = "media-verifyfailed";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
@@ -92,7 +110,11 @@ namespace Maitonn.Web
 
         public ActionResult Delete()
         {
-            ViewBag.MenuItem = "outdoor-delete";
+            ViewBag.MenuItem = "media-delete";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
@@ -107,7 +129,11 @@ namespace Maitonn.Web
 
         public ActionResult NotShow()
         {
-            ViewBag.MenuItem = "outdoor-notshow";
+            ViewBag.MenuItem = "media-notshow";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
@@ -150,7 +176,11 @@ namespace Maitonn.Web
 
         public ActionResult Add()
         {
-            ViewBag.MenuItem = "outdoor-publish";
+            ViewBag.MenuItem = "media-publish";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ViewBag.Data_AreaAtt = areaAttService.GetSelectList();
             return View(new OutDoorViewModel());
         }
@@ -159,7 +189,11 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult Add(OutDoorViewModel model)
         {
-            ViewBag.MenuItem = "outdoor-publish";
+            ViewBag.MenuItem = "media-publish";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ServiceResult result = new ServiceResult();
             var AreaAttArray = new List<int>();
             TempData["Service_Result"] = result;
@@ -193,7 +227,11 @@ namespace Maitonn.Web
 
         public ActionResult Edit(int id)
         {
-            ViewBag.MenuItem = "outdoor-list";
+            ViewBag.MenuItem = "media-list";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             if (outDoorService.HasOutDoorByMember(id))
             {
                 OutDoorViewModel odv = outDoorService.GetOutDoorViewModel(id);
@@ -210,7 +248,11 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OutDoorViewModel model)
         {
-            ViewBag.MenuItem = "outdoor-list";
+            ViewBag.MenuItem = "media-list";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             var AreaAttArray = new List<int>();
             ServiceResult result = new ServiceResult();
             TempData["Service_Result"] = result;
@@ -234,7 +276,7 @@ namespace Maitonn.Web
                     result.AddServiceError(result.Message);
                 }
             }
-    
+
             ViewBag.Data_AreaAtt = areaAttService.GetSelectList(AreaAttArray);
             return View(model);
         }
@@ -245,7 +287,11 @@ namespace Maitonn.Web
 
         public ActionResult SetAuctionCalendar(int id)
         {
-            ViewBag.MenuItem = "outdoor-list";
+            ViewBag.MenuItem = "media-list";
+            if (!CheckMemberStatus())
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             if (outDoorService.HasOutDoorByMember(id))
             {
                 OutDoorSetAuctionCalendarViewModel model = outDoorService.GetOutDoorSetAuctionCalendarViewModel(id);
@@ -257,7 +303,7 @@ namespace Maitonn.Web
             }
 
         }
-     
+
 
         [HttpPost]
         public ActionResult AddAuctionCalendar(int id, string startTime, string endTime)

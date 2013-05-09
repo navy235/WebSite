@@ -22,12 +22,6 @@
 
             @ViewHelpers.Alert("友情提醒：",
                 CookieHelper.NickName + ",编辑的信息将重新提交到待审核,我们将在1小时候内审核您发的信息。", false, AlertType.info.ToString())
-
-            @if (ViewBag.Error != null)
-            { 
-                @ViewHelpers.Alert("错误信息：",
-                ViewBag.Error, false, AlertType.error.ToString())
-            }
             <div class="personal-form mt20">
                 @using (Html.BeginForm())
                 {

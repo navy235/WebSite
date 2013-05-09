@@ -348,7 +348,6 @@ namespace Maitonn.Web
 
         private IPagedList<CompanyProductViewModel> GetCompanyProduct(int MemberID, int page)
         {
-
             var query = outDoorService.GetOutDoorByMember(MemberID).Select(x => new CompanyProductViewModel()
               {
                   ID = x.MediaID,
@@ -366,6 +365,7 @@ namespace Maitonn.Web
               }).OrderByDescending(x => x.Addtime);
 
             const int pageSize = 10;
+
             var result = query.ToPagedList<CompanyProductViewModel>(page, pageSize);
 
             if (result.PageNumber != 1 && page > result.PageCount)
@@ -378,6 +378,7 @@ namespace Maitonn.Web
         {
 
             var query = outDoorService.GetOutDoorByMember(MemberID);
+
             if (cc != 0)
             {
                 query = query.Where(x => x.MeidaCode == cc);
@@ -385,6 +386,7 @@ namespace Maitonn.Web
             else if (c != 0)
             {
                 var pcategory = outDoorMediaCateService.Find(c);
+
                 query = query.Where(x => x.OutDoorMediaCate.PCategory.ID == c);
             }
 

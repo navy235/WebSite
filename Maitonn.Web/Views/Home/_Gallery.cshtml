@@ -1,0 +1,71 @@
+﻿@model List<HttpLinkGallery>
+@for (int i = 0; i < Model.Count; i++)
+{
+    var galleryContainer = Model[i].Gallery;
+    var galleryTabs = Model[i].Tabs;
+    <div class="main-gallery main-gallery@(i)">
+        <dl class="main-gallery-head clearfix">
+            <dt class="main-gallery-title@(i)"><a target="_blank" href="@Url.Action("index", "list", new
+                        {
+                            province = CookieHelper.Province,
+                            city = 0,
+                            mediacode = galleryContainer.ID,
+                            childmediacode = 0,
+                            formatcode = 0,
+                            ownercode = 0,
+                            periodcode = 0,
+                            page = 1
+
+                        })" >@galleryContainer.Name</a></dt>
+            <dd class="clearfix">
+                <ul class="main-gallery-sub clearfix">
+                    @for (var j = 0; j < galleryTabs.Count; j++)
+                    {
+                        var gallery = galleryTabs[j];
+                        <li class="li@(j) @(j == 0 ? "active" : "")" rel="#subType@(i + "_" + j)">@gallery.Group.Name</li>
+                    }
+                </ul>
+                <div class="main-gallery-more">
+                    <a target="_blank" href="@Url.Action("index", "list", new
+                        {
+                            province = CookieHelper.Province,
+                            city = 0,
+                            mediacode = galleryContainer.ID,
+                            childmediacode = 0,
+                            formatcode = 0,
+                            ownercode = 0,
+                            periodcode = 0,
+                            page = 1
+
+                        })">更多@(galleryContainer.Name)&nbsp;&gt;&gt;</a>
+                </div>
+            </dd>
+        </dl>
+        <div class="main-gallery-container clearfix">
+            @for (var j = 0; j < galleryTabs.Count; j++)
+            {
+                var gallery = galleryTabs[j];
+                var gallerylist = gallery.Items;
+                <div id="subType@(i + "_" + j)" class="main-gallery-tab clearfix">
+                    <div class="main-gallery-view clearfix">
+                        @foreach (var item in gallerylist)
+                        {
+                            <div class="main-gallery-item">
+                                <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="main-gallery-item-img">
+                                    <img width="150" height="150" border="0" src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
+                                    <span class="main-gallery-item-icon act-icon01"></span>
+                                </a>
+                                <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a></p>
+                                <p class="main-gallery-item-price clearfix">
+                                    @item.Province - @item.City
+                                    <span class="fs14">¥<strong class="price">@item.Price</strong>万元/年</span>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}

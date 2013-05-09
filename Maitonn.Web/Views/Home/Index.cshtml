@@ -8,6 +8,51 @@
 
 @Html.Action("city", new { province = Model.Province })
 
-@Html.Partial("_TopMenu")
+<nav class="top-menu">
+    <div class="top-menu-tab">
+        <div class="top-menu-category">
+            <h2>
+                <strong>全部户外分类</strong>
+            </h2>
+        </div>
+        <ul class="top-menu-list">
+            <li class="active"><a href="@Url.Action("index", "home", new { province = CookieHelper.Province })">首页</a></li>
+            <li><a href="@Url.Action("index", "list", new
+                    {
+                        province = CookieHelper.Province,
+                        city = 0,
+                        mediacode = 0,
+                        childmediacode = 0,
+                        formatcode = 0,
+                        ownercode = 0,
+                        periodcode = 0,
+                        page = 1
+                    })">户外资源</a></li>
+        </ul>
+    </div>
+</nav>
+
+<article class="top-hot  clearfix">
+    <div class="top-hot-left">
+        @Html.Partial("_LeftMenu", (List<HttpLinkGroup>)ViewBag.LeftMenu)
+    </div>
+    <div class="top-hot-right cleafix">
+        @Html.Partial("_SliderBox", (List<HttpLinkItem>)ViewBag.SliderBox)
+
+        @Html.Partial("_SliderTabBox", (List<HttpLinkGroup>)ViewBag.SliderTabBox)
+    </div>
+</article>
+<article class="main">
+    <div class="main-hot clearfix">
+        @Html.Partial("_ImgBlock", (List<HttpLinkGroup>)ViewBag.TopCompany)
+    </div>
+    <div class="main-hot clearfix">
+        @Html.Partial("_ImgBlock", (List<HttpLinkGroup>)ViewBag.GoodCompany)
+    </div>
+
+    @Html.Partial("_Gallery", (List<HttpLinkGroup>)ViewBag.Gallery)
+
+
+</article>
 @Html.Partial("_TopHotHome", Model.TopHot)
 @Html.Partial("_MainHome", Model.MainHot)

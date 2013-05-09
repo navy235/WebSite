@@ -13,9 +13,9 @@ namespace Maitonn.Web
     using System;
     using System.Collections.Generic;
 
-    public partial class CompanyScale : Category
+    public partial class CompanyFund : Category
     {
-        public CompanyScale()
+        public CompanyFund()
         {
             this.Company = new HashSet<Company>();
         }

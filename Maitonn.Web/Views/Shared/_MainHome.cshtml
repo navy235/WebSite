@@ -28,6 +28,7 @@
             <li class="more"><a href="/brands.html" target="_blank">更多品牌&gt;&gt;</a></li>
         </ol>
     </div>
+
     <div class="main-hot-link clearfix">
 
         @foreach (var item in Model.MainHotLinks.Items)
@@ -51,7 +52,6 @@
 
     @for (int i = 0; i < Model.MainGallery.Items.Count; i++)
     {
-
         var galleryContainer = Model.MainGallery.Items[i];
         var gallerySuggestItem = galleryContainer.SuggestItem;
         var galleryTabs = galleryContainer.Items;
@@ -73,14 +73,13 @@
             </dl>
             <div class="main-gallery-container clearfix">
                 <div class="main-gallery-item main-gallery-item-first">
-                    <a href="@Url.Action("index", "show", new  { id= gallerySuggestItem.ID})" target="_blank" class="main-gallery-item-img">
+                    <a href="@Url.Action("index", "show", new { id = gallerySuggestItem.ID })" target="_blank" class="main-gallery-item-img">
                         <img width="150" height="150" border="0" src="@gallerySuggestItem.ImgUrl" alt="@gallerySuggestItem.Name" title="@gallerySuggestItem.Name">
                         <span class="active-flag active-flag2"></span></a>
                     <p class="main-gallery-item-title">@gallerySuggestItem.Name</p>
-                    <p class="main-gallery-item-desc"><a target="_blank" title="@gallerySuggestItem.Name" href="@Url.Action("index", "show", new  { id= gallerySuggestItem.ID})">@gallerySuggestItem.Name</a></p>
+                    <p class="main-gallery-item-desc"><a target="_blank" title="@gallerySuggestItem.Name" href="@Url.Action("index", "show", new { id = gallerySuggestItem.ID })">@gallerySuggestItem.Name</a></p>
                     <p class="main-gallery-item-price">
                         @gallerySuggestItem.Province - @gallerySuggestItem.City
-                        @*<del>¥@gallerySuggestItem.Price</del>*@
                         <span class="fs14">¥<strong class="price">@gallerySuggestItem.Price</strong>万元/年</span>
                     </p>
                 </div>
@@ -94,12 +93,12 @@
                             @foreach (var item in gallerylist)
                             {
                                 <div class="main-gallery-item">
-                                    <a href="@Url.Action("index", "show", new  { id= item.ID})" target="_blank" class="main-gallery-item-img">
+                                    <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="main-gallery-item-img">
                                         <img width="150" height="150" border="0" src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
                                         <span class="main-gallery-item-icon act-icon01"></span>
                                     </a>
                                     <p class="main-gallery-item-title">@item.Name</p>
-                                    <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new  { id= item.ID})">@item.Name</a></p>
+                                    <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a></p>
                                     <p class="main-gallery-item-price clearfix">
                                         @item.Province - @item.City
                                         <span class="fs14">¥<strong class="price">@item.Price</strong>万元/年</span>
@@ -118,9 +117,9 @@
                                             <dt><em>@(k + 1)</em></dt>
                                             <dd>
                                                 <p class="main-gallery-item-desc clearfix">
-                                                    <a href="@Url.Action("index", "show", new  { id= gallerySuggestItem.ID})" target="_blank" class="aimg">
+                                                    <a href="@Url.Action("index", "show", new { id = gallerySuggestItem.ID })" target="_blank" class="aimg">
                                                         <img width="60" height="60" border="0" src="@gallerytopitem.ImgUrl"  alt="@gallerytopitem.Name" title="@gallerytopitem.Name"></a>
-                                                    <a class="main-gallery-item-atitle" target="_blank" title="@gallerytopitem.Name" href="@Url.Action("index", "show", new  { id= gallerySuggestItem.ID})">@gallerytopitem.Name</a>
+                                                    <a class="main-gallery-item-atitle" target="_blank" title="@gallerytopitem.Name" href="@Url.Action("index", "show", new { id = gallerySuggestItem.ID })">@gallerytopitem.Name</a>
                                                 </p>
                                                 <p class="main-gallery-item-price">
                                                     <strong>¥@(gallerytopitem.Price)<b>万年/年</b></strong>&nbsp;&nbsp;
@@ -137,9 +136,7 @@
 
             </div>
         </div>
-
     }
-
 </article>
 <script type="text/javascript">
     $(function() {

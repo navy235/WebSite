@@ -1,0 +1,54 @@
+﻿@model List<HttpLinkGroup>
+
+<ul class="top-hot-left-category">
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+        <li class="child@(i) @((i == (Model.Count - 1)) ? "last" : "") clearfix">
+            <h3>
+                <a href="@Url.Action("index", "list", new
+                        {
+                            province = CookieHelper.Province,
+                            city = 0,
+                            mediacode = item.Group.ID,
+                            childmediacode = 0,
+                            formatcode = 0,
+                            ownercode = 0,
+                            periodcode = 0,
+                            page = 1
+
+                        })" class="top-hot-left-icon" ></a>
+                <a class="top-hot-left-link" href="@Url.Action("index", "list", new
+                        {
+                            province = CookieHelper.Province,
+                            city = 0,
+                            mediacode = item.Group.ID,
+                            childmediacode = 0,
+                            formatcode = 0,
+                            ownercode = 0,
+                            periodcode = 0,
+                            page = 1
+                        })">@item.Category.Name</a>
+                <em style="display: none;">@item.Group.Name</em>
+            </h3>
+            <div class="top-hot-left-sub">
+                @foreach (var childItem in item.Items)
+                { 
+                    <span><a href="@Url.Action("index", "list", new
+                        {
+                            province = CookieHelper.Province,
+                            city = 0,
+                            mediacode = item.Group.ID,
+                            childmediacode = childItem.ID,
+                            formatcode = 0,
+                            ownercode = 0,
+                            periodcode = 0,
+                            page = 1
+
+                        })">@childItem.Name</a></span>
+                }
+            </div>
+        </li>
+    }
+</ul>

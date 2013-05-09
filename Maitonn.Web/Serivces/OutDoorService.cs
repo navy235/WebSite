@@ -317,16 +317,20 @@ namespace Maitonn.Web
               .Include(x => x.OutDoorMediaCate)
               .Include(x => x.OutDoorMediaCate.PCategory)
               .Include(x => x.OwnerCate)
-              .Include(x => x.CredentialsImg)
-              .Include(x => x.AreaAtt).Where(x => x.MemberID == MemberID);
+              .Include(x => x.PeriodCate)
+              .Where(x => x.MemberID == MemberID);
+              //.Include(x => x.CredentialsImg)
+              //.Include(x => x.AreaAtt)
         }
 
         public IQueryable<OutDoorListItem> GetMemberOutDoor(int MemberID, OutDoorStatus OutDoorStatus, bool includeUpLevel = false)
         {
             int OutDoorStatusValue = (int)OutDoorStatus;
+
             var query = DB_Service.Set<OutDoor>()
                 .Include(x => x.MediaImg)
                 .Where(x => x.MemberID == MemberID);
+
             if (includeUpLevel)
             {
                 query = query.Where(x => x.Status >= OutDoorStatusValue);
@@ -415,15 +419,15 @@ namespace Maitonn.Web
         public IQueryable<OutDoor> GetList(OutDoorStatus OutDoorStatus, bool includeUpLevel = false)
         {
             int OutDoorStatusValue = (int)OutDoorStatus;
+
             var query = DB_Service.Set<OutDoor>()
                .Include(x => x.MediaImg)
                .Include(x => x.Area)
                .Include(x => x.Area.PCategory)
                .Include(x => x.OutDoorMediaCate)
                .Include(x => x.OutDoorMediaCate.PCategory)
-               .Include(x => x.OwnerCate)
-               .Include(x => x.CredentialsImg)
-               .Include(x => x.AreaAtt);
+               .Include(x => x.PeriodCate);
+
             if (includeUpLevel)
             {
                 query = query.Where(x => x.Status >= OutDoorStatusValue);

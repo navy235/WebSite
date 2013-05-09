@@ -24,7 +24,18 @@ namespace Maitonn.Web
 
     public interface IIndexingService
     {
+
+        /// <summary>
+        /// 更新索引
+        /// </summary>
+        /// <param name="keys"></param>
         void UpdateIndex();
+
+        /// <summary>
+        /// 更新指定ID媒体索引
+        /// </summary>
+        /// <param name="keys"></param>
+        void UpdateIndex(List<int> keys);
     }
 
     public class LuceneIndexingService : IIndexingService
@@ -32,8 +43,11 @@ namespace Maitonn.Web
         private static readonly object IndexWriterLock = new object();
 
         private static readonly TimeSpan IndexRecreateInterval = TimeSpan.FromDays(3);
+
         private static readonly char[] IdSeparators = new[] { '.', '-' };
+
         private static IndexWriter _indexWriter;
+
         private readonly EntitiesContext _entitiesContext;
 
         public LuceneIndexingService()
@@ -64,12 +78,71 @@ namespace Maitonn.Web
             if (_entitiesContext != null)
             {
                 var OutDoors = GetOutDoors(_entitiesContext, lastWriteTime);
+
                 if (OutDoors.Count > 0)
                 {
                     AddOutDoors(OutDoors, creatingIndex: lastWriteTime == null);
                 }
             }
             UpdateLastWriteTime();
+        }
+
+        public void UpdateIndex(List<int> keys)
+        {
+            EnsureIndexWriter(false);
+
+            var context = new EntitiesContext();
+
+            List<OutDoorIndexEntity> result = new List<OutDoorIndexEntity>();
+
+            var OutDoors = context.Set<OutDoor>()
+                .Include(x => x.Area)
+                .Include(x => x.Area.PCategory)
+                .Include(x => x.OutDoorMediaCate)
+                .Include(x => x.OutDoorMediaCate.PCategory)
+                .Include(x => x.AreaAtt)
+                .Include(x => x.PeriodCate)
+                .Include(x => x.FormatCate)
+                .Include(x => x.MediaImg)
+                .Where(x => keys.Contains(x.MediaID));
+
+            foreach (var x in OutDoors.ToList())
+            {
+                OutDoorIndexEntity item = new OutDoorIndexEntity()
+                {
+                    City = x.Area.ID,
+                    FormatCode = x.FormatCode,
+                    ImgUrl = x.MediaImg.FocusImgUrl,
+                    MediaCode = x.MeidaCode,
+                    OwnerCode = x.OwnerCode,
+                    PeriodCode = x.PeriodCode,
+                    PMediaCode = x.OutDoorMediaCate.PCategory.ID,
+                    Province = x.Area.PCategory.ID,
+                    Status = x.Status,
+                    AuthStatus=x.AuthStatus,
+                    MediaID = x.MediaID,
+                    ProvinceName = x.Area.PCategory.CateName,
+                    CityName = x.Area.CateName,
+                    AreaAtt = String.Join(",", x.AreaAtt.Select(y => y.AttName)),
+                    Description = x.Description,
+                    FormatName = x.FormatCate.CateName,
+                    Hit = x.Hit,
+                    MediaCateName = x.OutDoorMediaCate.CateName,
+                    PMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
+                    OwnerCateName = x.OwnerCate.CateName,
+                    PeriodName = x.PeriodCate.CateName,
+                    Price = x.Price,
+                    Published = x.LastTime,
+                    Title = x.Name,
+                    Height = x.Height,
+                    TotalFaces = x.TotalFaces,
+                    Width = x.Wdith
+                };
+
+                result.Add(item);
+
+            }
+            AddOutDoors(result,false);
         }
 
         protected internal virtual List<OutDoorIndexEntity> GetOutDoors(UnitOfWork context, DateTime? lastIndexTime)
@@ -90,6 +163,7 @@ namespace Maitonn.Web
             {
                 OutDoors = OutDoors.Where(x => x.LastTime > lastIndexTime);
             }
+
             OutDoors = OutDoors.OrderByDescending(x => x.LastTime);
 
             foreach (var x in OutDoors.ToList())
@@ -105,6 +179,7 @@ namespace Maitonn.Web
                     PMediaCode = x.OutDoorMediaCate.PCategory.ID,
                     Province = x.Area.PCategory.ID,
                     Status = x.Status,
+                    AuthStatus=x.AuthStatus,
                     MediaID = x.MediaID,
                     ProvinceName = x.Area.PCategory.CateName,
                     CityName = x.Area.CateName,
@@ -129,6 +204,11 @@ namespace Maitonn.Web
             return result;
         }
 
+        /// <summary>
+        /// 建立索引
+        /// </summary>
+        /// <param name="OutDoors"></param>
+        /// <param name="creatingIndex"></param>
         private static void AddOutDoors(List<OutDoorIndexEntity> OutDoors, bool creatingIndex)
         {
             //如果不是第一次创建
@@ -138,12 +218,18 @@ namespace Maitonn.Web
                                        select NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaID, MediaID, MediaID, true, true);
                 _indexWriter.DeleteDocuments(OutDoorsToDelete.ToArray());
             }
+
             OutDoors.ForEach(x => AddOutDoor(x));
             //Parallel.ForEach(OutDoors, AddOutDoor);
 
             _indexWriter.Commit();
         }
 
+        /// <summary>
+        /// 添加索引
+        /// </summary>
+        /// <param name="OutDoors"></param>
+        /// <param name="creatingIndex"></param>
         private static void AddOutDoor(OutDoorIndexEntity OutDoor)
         {
             var document = new Document();
@@ -203,6 +289,7 @@ namespace Maitonn.Web
             document.Add(new NumericField(OutDoorIndexFields.PeriodCode, Field.Store.YES, true).SetIntValue(OutDoor.PeriodCode));
             document.Add(new NumericField(OutDoorIndexFields.OwnerCode, Field.Store.YES, true).SetIntValue(OutDoor.OwnerCode));
             document.Add(new NumericField(OutDoorIndexFields.Status, Field.Store.YES, true).SetIntValue(OutDoor.Status));
+            document.Add(new NumericField(OutDoorIndexFields.AuthStatus, Field.Store.YES, true).SetIntValue(OutDoor.AuthStatus));
             document.Add(new NumericField(OutDoorIndexFields.MediaID, Field.Store.YES, true).SetIntValue(OutDoor.MediaID));
             document.Add(new NumericField(OutDoorIndexFields.Hit, Field.Store.YES, true).SetIntValue(OutDoor.Hit));
             document.Add(new NumericField(OutDoorIndexFields.Published, Field.Store.YES, true).SetLongValue(OutDoor.Published.Ticks));
@@ -320,6 +407,7 @@ namespace Maitonn.Web
             // Finally return the term in entirety
             yield return term;
         }
+
 
     }
 }

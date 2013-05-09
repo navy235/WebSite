@@ -39,175 +39,62 @@ namespace Maitonn.Web
             outDoorService = _outDoorService;
         }
 
-
         public ActionResult Index()
         {
-
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-auto";
-
-            if (UserStatus < (int)MemberStatus.EmailActived)
+            ViewBag.MenuItem = "company-baseinfo";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
             {
-                return View(new CompanyReg());
+                return Redirect(Url.Action("openbiz", "register"));
             }
-            else if (UserStatus == (int)MemberStatus.EmailActived)
+            else
             {
-                return View(new CompanyReg());
-            }
-
-            else if (UserStatus == (int)MemberStatus.CompanyFailed || UserStatus == (int)MemberStatus.CompanyApply || UserStatus == (int)MemberStatus.CompanyAuth)
-            {
-                Company cpy = companyService.Find(MemberID);
-                CompanyReg cpr = new CompanyReg()
+                var company = companyService.IncludeFind(CookieHelper.MemberID);
+                var model = new CompanyBaseInfoViewModel()
                 {
-                    Address = cpy.Address,
-                    BussinessCode = cpy.BussinessCode,
-                    CityCode = cpy.CityCode,
-                    CompanyImg = cpy.CompanyImg.ImgUrls,
-                    Description = cpy.Description,
-                    Fax = cpy.Fax,
-                    FundCode = cpy.FundCode,
-                    LinkMan = cpy.LinkMan,
-                    LinManImg = cpy.LinkManImg.ImgUrls,
-                    Logo = cpy.CompanyLogoImg.FocusImgUrl,
-                    Mobile = cpy.Mobile,
-                    MSN = cpy.MSN,
-                    Name = cpy.Name,
-                    Phone = cpy.Phone,
-                    Position = cpy.Lat + "|" + cpy.Lng,
-                    QQ = cpy.QQ,
-                    ScaleCode = cpy.ScaleCode,
-                    Sex = cpy.Sex
-
+                    BussinessCode = company.BussinessCode,
+                    CityCode = company.CityCode,
+                    Description = company.Description,
+                    FundCode = company.FundCode,
+                    Name = company.Name,
+                    Logo = company.CompanyLogoImg.FocusImgUrl,
+                    CompanyImg = company.CompanyImg.ImgUrls,
+                    LinManImg = company.LinkManImg.ImgUrls,
+                    ScaleCode = company.ScaleCode
                 };
-                return View(cpr);
-            }
-            else
-            {
-                return View(new CompanyReg());
-            }
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index(CompanyReg model)
-        {
-            ViewBag.MenuItem = "company-auto";
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var memberID = Convert.ToInt32(CookieHelper.UID);
-                    if (member_ActionService.HasAction(MemberActionType.CompanyApply))
-                    {
-                        companyService.Update(model);
-                        member_ActionService.Create(MemberActionType.CompanyReApply);
-                    }
-                    else
-                    {
-                        companyService.Create(model);
-                        member_ActionService.Create(MemberActionType.CompanyApply);
-                    }
-                    memberService.SaveMemberStatus(memberID, MemberStatus.CompanyApply);
-                    return RedirectToAction("index");
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    ViewBag.Error = ex.Message;
-                    return View(model);
-                }
-            }
-            else
-            {
                 return View(model);
             }
-
-
         }
 
-
-        public ActionResult BaseInfo()
+        public ActionResult Contact()
         {
-
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-baseinfo";
-
-            if (UserStatus < (int)MemberStatus.CompanyFailed)
+            ViewBag.MenuItem = "company-contact";
+            var company = companyService.Find(CookieHelper.MemberID);
+            var model = new CompanyContactInfoViewModel()
             {
-                return View(new CompanyReg());
-            }
-            else
-            {
-                Company cpy = companyService.Find(MemberID);
-                CompanyReg cpr = new CompanyReg()
-                {
-                    Address = cpy.Address,
-                    BussinessCode = cpy.BussinessCode,
-                    CityCode = cpy.CityCode,
-                    CompanyImg = cpy.CompanyImg.ImgUrls,
-                    Description = cpy.Description,
-                    Fax = cpy.Fax,
-                    FundCode = cpy.FundCode,
-                    LinkMan = cpy.LinkMan,
-                    LinManImg = cpy.LinkManImg.ImgUrls,
-                    Logo = cpy.CompanyLogoImg.ImgUrls,
-                    Mobile = cpy.Mobile,
-                    MSN = cpy.MSN,
-                    Name = cpy.Name,
-                    Phone = cpy.Phone,
-                    Position = cpy.Lat + "|" + cpy.Lng,
-                    QQ = cpy.QQ,
-                    ScaleCode = cpy.ScaleCode,
-                    Sex = cpy.Sex
-                };
-                return View(cpr);
-            }
+                Fax = company.Fax,
+                LinkMan = company.LinkMan,
+                Mobile = company.Mobile,
+                MSN = company.MSN,
+                Phone = company.Phone,
+                QQ = company.QQ,
+                Sex = company.Sex
+            };
+            return View(model);
+
         }
-
-
-        public ActionResult Logo()
-        {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-logo";
-            if (UserStatus < (int)MemberStatus.CompanyFailed)
-            {
-                return View(new CompanyLogo());
-            }
-            else
-            {
-                var companylog = companyService.GetCompanyLogo(MemberID);
-                return View(companylog);
-            }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Logo(CompanyLogo model)
+        public ActionResult Contact(CompanyContactInfoViewModel model)
         {
-            ViewBag.MenuItem = "company-logo";
+            ViewBag.MenuItem = "company-contact";
             ServiceResult result = new ServiceResult();
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var memberID = Convert.ToInt32(CookieHelper.UID);
-                    result = companyService.SaveCompanyLogo(memberID, model);
-                    if (result.Success)
-                    {
-                        result.Message = "企业LOGO保存成功！";
-                    }
-                    else
-                    {
-                        result.Message = "企业LOGO保存失败！";
-                    }
-                    TempData["Service_Result"] = result;
+                    result = companyService.UpdateCompanyContact(CookieHelper.MemberID, model);
+                    result.Message = "联系信息保存" + (result.Success ? "成功！" : "失败！");
                 }
                 catch (Exception ex)
                 {
@@ -220,24 +107,71 @@ namespace Maitonn.Web
                 result.Message = "表单输入有误！";
                 result.AddServiceError("表单输入有误！");
             }
+            TempData["Service_Result"] = result;
+            return View(model);
+        }
+
+
+        public ActionResult Logo()
+        {
+            ViewBag.MenuItem = "shop-logo";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
+            else
+            {
+                var companylog = companyService.GetCompanyLogo(CookieHelper.MemberID);
+                return View(companylog);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logo(CompanyLogo model)
+        {
+            ViewBag.MenuItem = "shop-logo";
+            ServiceResult result = new ServiceResult();
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    result = companyService.SaveCompanyLogo(CookieHelper.MemberID, model);
+                    result.Message = "企业LOGO保存" + (result.Success ? "成功！" : "失败！");
+                }
+                catch (Exception ex)
+                {
+                    result.Message = Utilities.GetInnerMostException(ex);
+                    result.AddServiceError(result.Message);
+                }
+            }
+            else
+            {
+                result.Message = "表单输入有误！";
+                result.AddServiceError("表单输入有误！");
+            }
+            TempData["Service_Result"] = result;
             return View(model);
         }
 
 
         public ActionResult Banner()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-banner";
-            if (UserStatus < (int)MemberStatus.CompanyFailed)
+            ViewBag.MenuItem = "shop-banner";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
             {
-                return View(new CompanyBanner());
+                return Redirect(Url.Action("openbiz", "register"));
             }
             else
             {
-                var companyBanner = companyService.GetCompanyBanner(MemberID);
-
+                var companyBanner = companyService.GetCompanyBanner(CookieHelper.MemberID);
                 if (companyBanner == null)
                 {
                     companyBanner = new CompanyBanner();
@@ -250,23 +184,19 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult Banner(CompanyBanner model)
         {
-            ViewBag.MenuItem = "company-banner";
+            ViewBag.MenuItem = "shop-banner";
             ServiceResult result = new ServiceResult();
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var memberID = Convert.ToInt32(CookieHelper.UID);
-                    result = companyService.SaveCompanyBanner(memberID, model);
-                    if (result.Success)
-                    {
-                        result.Message = "企业Banner保存成功！";
-                    }
-                    else
-                    {
-                        result.Message = "企业Banner保存失败！";
-                    }
-                    TempData["Service_Result"] = result;
+                    result = companyService.SaveCompanyBanner(CookieHelper.MemberID, model);
+                    result.Message = "企业BANNER保存" + (result.Success ? "成功！" : "失败！");
                 }
                 catch (Exception ex)
                 {
@@ -279,6 +209,7 @@ namespace Maitonn.Web
                 result.Message = "表单输入有误！";
                 result.AddServiceError("表单输入有误！");
             }
+            TempData["Service_Result"] = result;
             return View(model);
         }
 
@@ -286,17 +217,15 @@ namespace Maitonn.Web
         #region 企业证书
         public ActionResult Credentials()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
-            if (UserStatus < (int)MemberStatus.CompanyFailed)
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
             {
-                return View(new List<CompanyCredentials>());
+                return Redirect(Url.Action("openbiz", "register"));
             }
             else
             {
-                var companyCredentials = companyService.GetCompanyCredentials(MemberID);
+                var companyCredentials = companyService.GetCompanyCredentials(CookieHelper.MemberID);
                 if (companyCredentials == null)
                 {
                     companyCredentials = new List<CompanyCredentials>();
@@ -308,19 +237,20 @@ namespace Maitonn.Web
         [HttpPost]
         public ActionResult DeleteCredentials(int ID)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
             ServiceResult result = new ServiceResult();
-            result = companyService.DeleteCompanyCredentials(MemberID, ID);
+            result = companyService.DeleteCompanyCredentials(CookieHelper.MemberID, ID);
             result.Message = "删除证书" + (result.Success ? "成功！" : "失败！");
             return Json(result);
         }
 
         public ActionResult AddCredentials()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View(new CompanyCredentials());
         }
 
@@ -328,17 +258,17 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult AddCredentials(CompanyCredentials model)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ServiceResult result = new ServiceResult();
             if (ModelState.IsValid)
             {
 
-                var memberID = Convert.ToInt32(CookieHelper.UID);
-                result = companyService.SaveCompanyCredentials(memberID, model);
-
+                result = companyService.SaveCompanyCredentials(CookieHelper.MemberID, model);
                 result.Message = "添加证书" + (result.Success ? "成功！" : "失败！");
                 TempData["Service_Result"] = result;
                 if (result.Success)
@@ -360,10 +290,13 @@ namespace Maitonn.Web
 
         public ActionResult EditCredentials(int ID)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
+
             var credentials = companyService.GetCompanyCredentialsSingle(ID);
             if (credentials == null)
             {
@@ -382,17 +315,16 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult EditCredentials(CompanyCredentials model)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
             ViewBag.MenuItem = "company-credentials";
             ServiceResult result = new ServiceResult();
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             if (ModelState.IsValid)
             {
-
-                var memberID = Convert.ToInt32(CookieHelper.UID);
-                result = companyService.UpdateCompanyCredentials(memberID, model);
-
+                result = companyService.UpdateCompanyCredentials(CookieHelper.MemberID, model);
                 result.Message = "编辑证书" + (result.Success ? "成功！" : "失败！");
                 TempData["Service_Result"] = result;
                 if (result.Success)
@@ -418,20 +350,24 @@ namespace Maitonn.Web
 
         public ActionResult Notice()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-notice";
+            ViewBag.MenuItem = "shop-notice";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ViewBag.CompanyNoticeStatus = UIHelper.CompanyNoticeStatusList;
             return View();
         }
 
         public ActionResult AddNotice()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-addnotice";
+            ViewBag.MenuItem = "shop-notice";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View(new AddCompanyNoticeViewModel());
         }
 
@@ -439,17 +375,16 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult AddNotice(AddCompanyNoticeViewModel model)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-addnotice";
+            ViewBag.MenuItem = "shop-notice";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ServiceResult result = new ServiceResult();
             if (ModelState.IsValid)
             {
-
-                var memberID = Convert.ToInt32(CookieHelper.UID);
-                result = companyService.AddCompanyNotice(memberID, model);
-
+                result = companyService.AddCompanyNotice(CookieHelper.MemberID, model);
                 result.Message = "添加企业公告" + (result.Success ? "成功！" : "失败！");
                 TempData["Service_Result"] = result;
                 if (result.Success)
@@ -471,10 +406,12 @@ namespace Maitonn.Web
 
         public ActionResult EditNotice(int id)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-addnotice";
+            ViewBag.MenuItem = "shop-notice";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             var notice = companyService.GetCompanyNotice(id);
             if (notice == null)
             {
@@ -493,15 +430,16 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult EditNotice(AddCompanyNoticeViewModel model)
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-addnotice";
+            ViewBag.MenuItem = "shop-notice";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             ServiceResult result = new ServiceResult();
             if (ModelState.IsValid)
             {
-                var memberID = Convert.ToInt32(CookieHelper.UID);
-                result = companyService.EditCompanyNotice(memberID, model);
+                result = companyService.EditCompanyNotice(CookieHelper.MemberID, model);
                 result.Message = "编辑企业公告" + (result.Success ? "成功！" : "失败！");
                 TempData["Service_Result"] = result;
                 if (result.Success)
@@ -523,8 +461,7 @@ namespace Maitonn.Web
 
         public ActionResult Notice_Read([DataSourceRequest] DataSourceRequest request)
         {
-            var memberID = Convert.ToInt32(CookieHelper.UID);
-            var model = companyService.GetCompanyNoticeList(memberID, CompanyNoticeStatus.NotShow, true);
+            var model = companyService.GetCompanyNoticeList(CookieHelper.MemberID, CompanyNoticeStatus.NotShow, true);
             return Json(model.ToDataSourceResult(request));
         }
 
@@ -562,18 +499,18 @@ namespace Maitonn.Web
 
         public ActionResult Message()
         {
-            int MemberID = Convert.ToInt32(CookieHelper.UID);
-            var UserStatus = Convert.ToInt32(CookieHelper.Status);
-            ViewBag.UserStatus = UserStatus;
-            ViewBag.MenuItem = "company-message";
-
+            ViewBag.MenuItem = "shop-message";
+            var member = memberService.Find(CookieHelper.MemberID);
+            if (member.Status < (int)MemberStatus.CompanyAuth)
+            {
+                return Redirect(Url.Action("openbiz", "register"));
+            }
             return View();
         }
 
         public ActionResult Message_Read([DataSourceRequest] DataSourceRequest request)
         {
-            var memberID = Convert.ToInt32(CookieHelper.UID);
-            var model = companyService.GetCompanyMessageList(memberID, CompanyMessageStatus.NotShow, true);
+            var model = companyService.GetCompanyMessageList(CookieHelper.MemberID, CompanyMessageStatus.NotShow, true);
             return Json(model.ToDataSourceResult(request));
         }
 
@@ -598,7 +535,6 @@ namespace Maitonn.Web
             {
                 member.Member_Profile = new Member_Profile();
             }
-
             return View(new CompanyMessageDetailsViewModel()
             {
                 ID = Details.ID,
@@ -610,8 +546,6 @@ namespace Maitonn.Web
                 Phone = member.Member_Profile.Phone,
                 QQ = member.Member_Profile.QQ
             });
-
-
         }
 
         #endregion
