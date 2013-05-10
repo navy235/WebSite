@@ -203,4 +203,49 @@
 
 
     }
+
+
+    public class PayTopComapnyViewModel
+    {
+        public PayTopComapnyViewModel()
+        {
+            this.Day = 1;
+            this.StartTime = DateTime.Now;
+        }
+
+        [HiddenInput(DisplayValue = false)]
+        public int ID { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public int TopID { get; set; }
+
+        [HiddenInput(DisplayValue = true)]
+        [Display(Name = "置顶名称：")]
+        public string TopName { get; set; }
+
+        [HiddenInput(DisplayValue = true)]
+        [Display(Name = "置顶单价：")]
+        public decimal Price { get; set; }
+
+        [HiddenInput(DisplayValue = true)]
+        [Display(Name = "折扣：")]
+        public decimal Discount { get; set; }
+
+        [Required(ErrorMessage = "请选择置顶省份")]
+        [Display(Name = "置顶省份：")]
+        [UIHint("SingleDropdownList")]
+        public int ProvinceCode { get; set; }
+
+        [Required(ErrorMessage = "请输入开始时间")]
+        [Display(Name = "开始时间：")]
+        [DataType(DataType.DateTime)]
+        public DateTime StartTime { get; set; }
+
+        [Display(Name = "推广天数：")]
+        [UIHint("IntegerExtension")]
+        [AdditionalMetadata("IntegerExtension", "1,30")]
+        [AdditionalMetadata("IntegerExtensionUnit", "天")]
+        public int Day { get; set; }
+
+    }
 }

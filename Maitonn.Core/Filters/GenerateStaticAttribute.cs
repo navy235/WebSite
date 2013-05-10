@@ -39,6 +39,7 @@ namespace Maitonn.Core
         private bool DetermineNoCache(ActionExecutingContext filterContext)
         {
             if (filterContext.HttpContext.Request.HttpMethod != "GET") return true;
+
             if (IsLoginNotCache)
             {
                 return CookieHelper.IsLogin;

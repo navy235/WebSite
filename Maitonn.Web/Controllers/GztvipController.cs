@@ -30,7 +30,9 @@ namespace Maitonn.Web.Controllers
         private ISliderImgService sliderImgService;
         private ITopMediaService topMediaService;
         private ITopCompanyService topCompanyService;
-
+        private IOutDoorMediaCateService outDoorMediaCateService;
+        private IOutDoorService outDoorService;
+        private ICompanyService companyService;
         public GztvipController(
             IMemberService _memberService
             , IMember_ActionService _member_ActionService
@@ -43,6 +45,9 @@ namespace Maitonn.Web.Controllers
             , ISliderImgService _sliderImgService
             , ITopMediaService _topMediaService
             , ITopCompanyService _topCompanyService
+            , IOutDoorMediaCateService _outDoorMediaCateService
+            , IOutDoorService _outDoorService
+            , ICompanyService _companyService
             )
         {
             memberService = _memberService;
@@ -56,6 +61,9 @@ namespace Maitonn.Web.Controllers
             sliderImgService = _sliderImgService;
             topMediaService = _topMediaService;
             topCompanyService = _topCompanyService;
+            outDoorMediaCateService = _outDoorMediaCateService;
+            outDoorService = _outDoorService;
+            companyService = _companyService;
         }
 
         public ActionResult Index()
@@ -294,6 +302,10 @@ namespace Maitonn.Web.Controllers
         }
 
 
+        /// <summary>
+        /// 置顶服务列表页
+        /// </summary>
+        /// <returns></returns>
         public ActionResult PayTop()
         {
             ViewBag.MenuItem = "gztvip-paytop";
@@ -353,6 +365,7 @@ namespace Maitonn.Web.Controllers
 
             return View(payTop);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TopSet(PayTopViewModel model)
@@ -430,10 +443,13 @@ namespace Maitonn.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.Server = server;
+
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
             ViewBag.VIP = vip;
 
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
             ViewBag.Money = money;
 
             PayTopMeidaViewModel topMedia = new PayTopMeidaViewModel()
@@ -458,15 +474,21 @@ namespace Maitonn.Web.Controllers
 
             return View(topMedia);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TopMedia(PayTopMeidaViewModel model)
         {
             ViewBag.MenuItem = "gztvip-paytop";
+
             ServiceResult result = new ServiceResult();
+
             var server = serverItemService.Find(model.TopID);
+
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
             var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+
             if (money < totalPrice)
             {
                 result.AddServiceError("您当前剩余广知币不足已支付。当前" + money + "个，支付需要" + totalPrice + "个");
@@ -483,6 +505,11 @@ namespace Maitonn.Web.Controllers
                 {
                     result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
                 }
+
+                if (topMediaService.GetALL().Any(x => x.MediaID.Equals(model.MediaID.Value) && x.TopEnd > DateTime.Now))
+                {
+                    result.AddServiceError("当前信息当前已经置顶。");
+                }
             }
             if (result.Success)
             {
@@ -493,22 +520,23 @@ namespace Maitonn.Web.Controllers
                     TopEnd = model.StartTime.AddDays(model.Day),
                     MemberID = CookieHelper.MemberID
                 };
-                payModel.IsQuanGuo = server.IsQuanGuo;
-                payModel.IsByCategory = server.IsByCategory;
-                payModel.IsByChildCategory = server.IsByChildCategory;
-                if (server.IsQuanGuo)
-                {
-                    payModel.ProvinceCode = (int)ProvinceName.quanguo;
-                }
-                else
-                {
-                    payModel.ProvinceCode = model.ProvinceCode;
-                }
-                payModel.CategoryCode = model.MeidaCode;
-                payModel.PCategoryCode = model.ParentMediaCode;
 
+                payModel.IsQuanGuo = server.IsQuanGuo;
+
+                payModel.IsByCategory = server.IsByCategory;
+
+                payModel.IsByChildCategory = server.IsByChildCategory;
+
+                var media = outDoorService.IncludeCategoryFind(model.MediaID.Value);
+
+                payModel.ProvinceCode = media.Area.PCategory.ID;
+
+                payModel.CategoryCode = media.MeidaCode;
+
+                payModel.PCategoryCode = media.OutDoorMediaCate.PCategory.ID;
 
                 var excuteresult = topMediaService.PayTopMedia(payModel, totalPrice);
+
                 if (!excuteresult.Success)
                 {
                     result.AddServiceError("置顶失败！");
@@ -531,10 +559,138 @@ namespace Maitonn.Web.Controllers
 
             ViewBag.VIP = vip;
 
+            ViewBag.Server = server;
+
             return View(model);
         }
 
+        public ActionResult TopCompany(int id)
+        {
 
+            ViewBag.MenuItem = "gztvip-paytop";
+
+            var server = serverItemService.Find(id);
+
+            if (server == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Server = server;
+
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            ViewBag.VIP = vip;
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
+            ViewBag.Money = money;
+
+            PayTopComapnyViewModel topComapny = new PayTopComapnyViewModel()
+            {
+                TopID = server.ID,
+                Price = server.Price,
+                TopName = server.Name
+            };
+
+            if (vip == null)
+            {
+                topComapny.Discount = 10;
+            }
+            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+            {
+                topComapny.Discount = server.VipDiscount;
+            }
+            else if (vip.VipLevel == (int)ServerType.SuperVIPServer)
+            {
+                topComapny.Discount = server.VipDiscount2;
+            }
+
+            return View(topComapny);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TopCompany(PayTopComapnyViewModel model)
+        {
+            ViewBag.MenuItem = "gztvip-paytop";
+            ServiceResult result = new ServiceResult();
+
+            var server = serverItemService.Find(model.TopID);
+
+            var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
+            var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+
+            if (money < totalPrice)
+            {
+                result.AddServiceError("您当前剩余广知币不足已支付。当前" + money + "个，支付需要" + totalPrice + "个");
+            }
+
+            ViewBag.Money = money;
+
+
+            for (var i = 1; i <= model.Day; i++)
+            {
+                var endtime = model.StartTime.AddDays(i);
+
+                var count = topCompanyService.GetALL().Count(x => x.TopEnd <= endtime && x.TopStart >= model.StartTime);
+
+                if (count >= 10)
+                {
+                    result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
+                }
+                var memberID = CookieHelper.MemberID;
+
+                if (topCompanyService.GetALL().Any(x => x.MemberID == memberID && x.TopEnd > DateTime.Now))
+                {
+                    result.AddServiceError("当前企业信息当前已经置顶。");
+                }
+
+            }
+            if (result.Success)
+            {
+                TopCompany payModel = new TopCompany()
+                {
+
+                    TopStart = model.StartTime,
+                    TopEnd = model.StartTime.AddDays(model.Day),
+                    MemberID = CookieHelper.MemberID
+                };
+
+                payModel.IsQuanGuo = server.IsQuanGuo;
+
+                var company = companyService.IncludeCategoryFind(CookieHelper.MemberID);
+
+                payModel.ProvinceCode = company.Area.PCategory.ID;
+
+                var excuteresult = topCompanyService.PayTopCompany(payModel, totalPrice);
+
+                if (!excuteresult.Success)
+                {
+                    result.AddServiceError("置顶失败！");
+                }
+
+            }
+            else
+            {
+                ViewBag.CheckErr = result;
+            }
+            result.Message = "置顶" + (result.Success ? "成功！" : "失败！");
+
+            TempData["Service_Result"] = result;
+
+            if (result.Success)
+            {
+                return RedirectToAction("OpenOK");
+            }
+            var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
+
+            ViewBag.VIP = vip;
+
+            ViewBag.Server = server;
+
+            return View(model);
+        }
 
         public ActionResult CreateOrder()
         {
@@ -552,6 +708,7 @@ namespace Maitonn.Web.Controllers
             ViewBag.PayNo = orderItem.Pay_No;
             return View();
         }
+
 
         public ActionResult UpdateOrder()
         {

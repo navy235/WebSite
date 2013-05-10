@@ -20,5 +20,7 @@ namespace Maitonn.Web
         void Delete(TopCompany model);
 
         TopCompany Find(int ID);
+
+
     }
 }

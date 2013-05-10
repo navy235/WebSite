@@ -19,6 +19,8 @@ namespace Maitonn.Web
 
         Company IncludeFindByCompanyID(int CompanyID);
 
+        Company IncludeCategoryFind(int MemberID);
+
         Company IncludeFind(int MemberID);
 
         Company IncludeFindCompanyProfile(int MemberID);

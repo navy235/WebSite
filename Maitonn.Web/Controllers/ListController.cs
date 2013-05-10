@@ -97,9 +97,13 @@ namespace Maitonn.Web
             model.Braed = GetBread(province, model.ListMenu);
 
             model.HotList = GetHotList();
+
             model.SuggestList = GetSuggestList();
+
             model.CompanyList = GetCompanyList();
+
             model.Search = GetSearch(searchTrem);
+
             model.Province = province;
 
             model.PriceListFilter = GetPriceListFilter(searchTrem);

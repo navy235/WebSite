@@ -149,7 +149,13 @@ namespace Maitonn.Web
                     combineQuery.Add(NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaID, key, key, true, true), Occur.SHOULD);
                 }
 
-                var searchResults = searcher.Search(combineQuery, filter: null, n: Keys.Count, sort: null);
+                var searchResults = searcher.Search(combineQuery, filter: null, n: Keys.Count);
+
+                if (searchResults.TotalHits == 0)
+                {
+                    searcher.Close();
+                    return new List<HttpLinkItem>();
+                }
 
                 var results = searchResults.ScoreDocs.Select(c => GetMediaItem(searcher.Doc(c.Doc)))
                     .ToList();

@@ -225,6 +225,14 @@ namespace Maitonn.Web
                 .SingleOrDefault(x => x.MemberID == MemberID);
         }
 
+        public Company IncludeCategoryFind(int MemberID)
+        {
+            return DB_Service.Set<Company>()
+                 .Include(x => x.Area)
+                 .Include(x => x.Area.PCategory)
+                 .SingleOrDefault(x => x.MemberID == MemberID);
+        }
+
         public Company IncludeFindCompanyProfile(int MemberID)
         {
             return DB_Service.Set<Company>()

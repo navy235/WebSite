@@ -1637,6 +1637,13 @@
     <Content Include="Views\Test\CreateIndex.cshtml" />
     <Content Include="Views\Test\UpdateIndex.cshtml" />
     <Content Include="Views\Test\SearchIndex.cshtml" />
+    <Content Include="Views\Home\_LeftMenu.cshtml" />
+    <Content Include="Views\Home\_SliderBox.cshtml" />
+    <Content Include="Views\Home\_SliderTabBox.cshtml" />
+    <Content Include="Views\Home\_ImgBlock.cshtml" />
+    <Content Include="Views\Home\_Gallery.cshtml" />
+    <Content Include="Views\Test\addCreditIndex.cshtml" />
+    <Content Include="Views\Gztvip\TopCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

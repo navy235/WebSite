@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Maitonn.Core;
 using System.Data.Entity;
+using Kendo.Mvc.Extensions;
 
 namespace Maitonn.Web
 {
@@ -122,12 +123,14 @@ namespace Maitonn.Web
             HttpLinkItem quanguoLink = new HttpLinkItem()
             {
                 Name = "全国",
-                Province = (int)ProvinceName.quanguo
+                ProvinceName = ProvinceName.quanguo.ToString()
             };
 
             quanguo.Items.Add(quanguoLink);
 
-            var provinceList = UIHelper.ProvinceList.OrderBy(x => x.Value).ToList();
+            result.Add(quanguo);
+
+            var provinceList = UIHelper.ProvinceList.Where(x => x.Value != "quanguo").OrderBy(x => x.Value).ToList();
 
             foreach (var item in provinceList)
             {
@@ -150,7 +153,7 @@ namespace Maitonn.Web
                 HttpLinkItem itemLink = new HttpLinkItem()
                 {
                     Name = item.Text,
-                    Province = (int)ProvinceName.quanguo
+                    ProvinceName = item.Value
                 };
                 groupItem.Items.Add(itemLink);
             }
@@ -164,7 +167,8 @@ namespace Maitonn.Web
             var result = sliderImgService.GetALL()
               .Where(x => x.EndTime > DateTime.Now)
               .Where(x => x.ProvinceCode == province || x.ProvinceCode == quanguoCode)
-              .OrderByDescending(x => x.Status).OrderByDescending(x => x.OrderIndex)
+              .OrderByDescending(x => x.Status)
+              .ThenByDescending(x => x.OrderIndex)
               .Take(take)
               .Select(x => new HttpLinkItem()
               {
@@ -177,11 +181,9 @@ namespace Maitonn.Web
             return result;
         }
 
-        public List<HttpLinkItem> GetSuggestMedia(int province, int take, int PCategoryCode = 0, int CategoryCode = 0)
+        public List<HttpLinkItem> GetSuggestMedia(bool isQuanGuo, int province, int take, int PCategoryCode = 0, int CategoryCode = 0)
         {
             List<HttpLinkItem> result = new List<HttpLinkItem>();
-
-            var quanguoCode = (int)ProvinceName.quanguo;
 
             var query = topMediaService.GetALL()
                 .Include(x => x.OutDoor)
@@ -193,9 +195,9 @@ namespace Maitonn.Web
                 .Include(x => x.OutDoor.OutDoorMediaCate.PCategory)
                 .Where(x => x.TopStart < DateTime.Now && x.TopEnd > DateTime.Now);
 
-            if (quanguoCode != province)
+            if (isQuanGuo)
             {
-                query = query.Where(x => x.ProvinceCode == province || x.ProvinceCode == quanguoCode);
+                query = query.Where(x => x.IsQuanGuo == true);
             }
             else
             {
@@ -210,15 +212,17 @@ namespace Maitonn.Web
             {
                 if (PCategoryCode != 0)
                 {
-                    query = query.Where(x => x.PCategoryCode == PCategoryCode);
+                    query = query.Where(x => x.OutDoor.OutDoorMediaCate.PCategory.ID == PCategoryCode);
                 }
             }
 
-            var searchBySql = true;
+            var searchBySql = false;
 
             if (searchBySql)
             {
-                result = query.OrderByDescending(x => x.ProvinceCode).Take(take).Select(x => new HttpLinkItem()
+                result = query.OrderByDescending(x => x.ProvinceCode)
+                    .Take(take)
+                    .Select(x => new HttpLinkItem()
                 {
                     ID = x.MediaID,
                     CategoryCode = x.OutDoor.MeidaCode,
@@ -239,15 +243,14 @@ namespace Maitonn.Web
             }
             else
             {
-
                 List<int> keys = query.OrderByDescending(x => x.ProvinceCode)
                     .Take(take).Select(x => x.MediaID)
                     .ToList();
 
-                var listQuery = keys.Select(x => Lucene.Net.Search.NumericRangeQuery.NewIntRange(OutDoorIndexFields.MediaID, x, x, true, true));
-
-
-
+                if (keys.Count > 0)
+                {
+                    result = searchService.Search(keys);
+                }
 
             }
 
@@ -260,34 +263,31 @@ namespace Maitonn.Web
 
             var quanguoCode = (int)ProvinceName.quanguo;
 
-            var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true)
-                .Include(x => x.Member)
-                .Include(x => x.Member.Member_CreditIndex);
-
+            var memberQuery = memberService.GetAll()
+                .Include(x => x.Company)
+                .Include(x => x.Member_CreditIndex);
             if (quanguoCode != province)
             {
-                query = query.Where(x => x.Area.PCategory.ID == province || x.Area.PCategory.ID == quanguoCode);
+                memberQuery = memberQuery.Where(x => x.Company.Area.PCategory.ID == province);
             }
-            else
-            {
-                query = query.Where(x => x.Area.PCategory.ID == province);
-            }
+            var memberKeys = memberQuery.OrderByDescending(x => x.Member_CreditIndex.TotalCreditIndex).Take(take).Select(x => x.MemberID).ToList();
 
-            if (CategoryCode != 0)
+            foreach (var key in memberKeys)
             {
-                query = query.Where(x => x.MeidaCode == CategoryCode);
-            }
-            else
-            {
-                if (PCategoryCode != 0)
+                var item = outDoorService.GetList(OutDoorStatus.ShowOnline, true).Where(x => x.MemberID == key);
+
+                if (CategoryCode != 0)
                 {
-                    query = query.Where(x => x.OutDoorMediaCate.PCategory.ID == PCategoryCode);
+                    item = item.Where(x => x.MeidaCode == CategoryCode);
                 }
-            }
-            result = query.OrderByDescending(x => x.Member.Member_CreditIndex)
-               .OrderByDescending(x => x.LastTime)
-               .Take(8)
-               .Select(x => new HttpLinkItem()
+                else
+                {
+                    if (PCategoryCode != 0)
+                    {
+                        item = item.Where(x => x.OutDoorMediaCate.PCategory.ID == PCategoryCode);
+                    }
+                }
+                var mediaItems = item.OrderByDescending(x => x.AddTime).Take(1).Select(x => new HttpLinkItem()
                {
                    ID = x.MediaID,
                    CategoryCode = x.MeidaCode,
@@ -306,6 +306,9 @@ namespace Maitonn.Web
 
                }).ToList();
 
+                result.AddRange(mediaItems);
+            }
+
             return result;
         }
 
@@ -317,11 +320,8 @@ namespace Maitonn.Web
 
             var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
 
+
             if (quanguoCode != province)
-            {
-                query = query.Where(x => x.Area.PCategory.ID == province || x.Area.PCategory.ID == quanguoCode);
-            }
-            else
             {
                 query = query.Where(x => x.Area.PCategory.ID == province);
             }
@@ -339,7 +339,7 @@ namespace Maitonn.Web
             }
 
             result = query.OrderByDescending(x => x.AuthStatus)
-                .OrderByDescending(x => x.LastTime)
+                .ThenByDescending(x => x.LastTime)
                 .Take(take)
                 .Select(x => new HttpLinkItem()
                 {
@@ -373,11 +373,8 @@ namespace Maitonn.Web
 
             var query = outDoorService.GetList(OutDoorStatus.ShowOnline, true);
 
+
             if (quanguoCode != province)
-            {
-                query = query.Where(x => x.Area.PCategory.ID == province || x.Area.PCategory.ID == quanguoCode);
-            }
-            else
             {
                 query = query.Where(x => x.Area.PCategory.ID == province);
             }
@@ -418,11 +415,9 @@ namespace Maitonn.Web
             return result;
         }
 
-        public List<HttpLinkItem> GetSuggestCompany(int province, int take, int PCategoryCode = 0, int CategoryCode = 0)
+        public List<HttpLinkItem> GetSuggestCompany(bool isQuanGuo, int province, int take, int PCategoryCode = 0, int CategoryCode = 0)
         {
             List<HttpLinkItem> result = new List<HttpLinkItem>();
-
-            var quanguoCode = (int)ProvinceName.quanguo;
 
             var query = topCompanyService.GetALL()
                 .Include(x => x.Company)
@@ -431,9 +426,9 @@ namespace Maitonn.Web
                 .Include(x => x.Company.Area.PCategory)
                 .Where(x => x.TopStart < DateTime.Now && x.TopEnd > DateTime.Now);
 
-            if (quanguoCode != province)
+            if (isQuanGuo)
             {
-                query = query.Where(x => x.ProvinceCode == province || x.ProvinceCode == quanguoCode);
+                query = query.Where(x => x.IsQuanGuo == true);
             }
             else
             {
@@ -448,7 +443,7 @@ namespace Maitonn.Web
             {
                 if (PCategoryCode != 0)
                 {
-                    query = query.Where(x => x.PCategoryCode == PCategoryCode);
+                    query = query.Where(x => x.Company.Area.PCategory.ID == PCategoryCode);
                 }
             }
 
@@ -482,11 +477,10 @@ namespace Maitonn.Web
             result = companyService.GetAll()
                 .Include(x => x.Creator)
                 .Include(x => x.Creator.Member_VIP)
-                .Include(x => x.Status >= status)
                 .Include(x => x.CompanyLogoImg)
                 .Include(x => x.Area)
                 .Include(x => x.Area.PCategory)
-                .Where(x => x.Creator.Member_VIP.EndTime > DateTime.Now)
+                .Where(x => x.Creator.Member_VIP.EndTime > DateTime.Now && x.Status >= status)
                 .OrderByDescending(x => x.Creator.Member_VIP.AddTime)
                 .Take(take)
                 .Select(x => new HttpLinkItem()

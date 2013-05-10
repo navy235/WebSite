@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
-@Html.Action("city", new { province = Model.Province })
+@Html.Action("city", new { province = CookieHelper.Province })
 
 <nav class="top-menu">
     <div class="top-menu-tab">
@@ -44,15 +44,14 @@
 </article>
 <article class="main">
     <div class="main-hot clearfix">
-        @Html.Partial("_ImgBlock", (List<HttpLinkGroup>)ViewBag.TopCompany)
+        @Html.Partial("_ImgBlock", (List<HttpLinkItem>)ViewBag.TopCompany)
     </div>
     <div class="main-hot clearfix">
-        @Html.Partial("_ImgBlock", (List<HttpLinkGroup>)ViewBag.GoodCompany)
+        @Html.Partial("_ImgBlock", (List<HttpLinkItem>)ViewBag.GoodCompany)
     </div>
 
-    @Html.Partial("_Gallery", (List<HttpLinkGroup>)ViewBag.Gallery)
-
+    @Html.Partial("_Gallery", (List<HttpLinkGallery>)ViewBag.Gallery)
 
 </article>
-@Html.Partial("_TopHotHome", Model.TopHot)
-@Html.Partial("_MainHome", Model.MainHot)
+@*@Html.Partial("_TopHotHome", Model.TopHot)
+@Html.Partial("_MainHome", Model.MainHot)*@

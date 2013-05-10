@@ -69,39 +69,45 @@ namespace Maitonn.Web
 
             var provinceValue = EnumHelper.GetProvinceValue(province);
 
-            var LeftMenu = sourceService.GetLeftMenu(provinceValue);
+            var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
 
-            var SliderBox = sourceService.GetSlider(provinceValue, 8);
+            ViewBag.LeftMenu = sourceService.GetLeftMenu(provinceValue);
 
-            var SliderTabBox = GetSliderTabBox(provinceValue);
+            ViewBag.SliderBox = sourceService.GetSlider(provinceValue, 8);
 
-            var TopCompany = sourceService.GetSuggestCompany(provinceValue, 10);
+            ViewBag.SliderTabBox = GetSliderTabBox(isQuanGuo, provinceValue);
 
-            var GoodCompany = sourceService.GetGoodCompany(provinceValue, 10);
+            ViewBag.TopCompany = sourceService.GetSuggestCompany(isQuanGuo, provinceValue, 10);
 
-            var Gallery = GetGallery(provinceValue);
+            ViewBag.GoodCompany = sourceService.GetGoodCompany(provinceValue, 10);
 
-            HomeViewModel model = new HomeViewModel();
+            ViewBag.Gallery = GetGallery(isQuanGuo, provinceValue);
 
-            return View(model);
+            return View();
         }
 
 
         [ChildActionOnly]
         public ActionResult City(string province = "quanguo")
         {
+
+             var provinceValue = EnumHelper.GetProvinceValue(province);
+
             if (!CookieHelper.Province.Equals(province, StringComparison.CurrentCultureIgnoreCase))
             {
                 CookieHelper.SetProvinceCookie(province);
             }
+
             ProvinceViewModel model = GetProvince(province);
+
+            ViewBag.ProvinceList = sourceService.GetProvinceList(provinceValue);
 
             return View(model);
         }
 
 
 
-        private List<HttpLinkGroup> GetSliderTabBox(int province)
+        private List<HttpLinkGroup> GetSliderTabBox(bool isQuanGuo, int province)
         {
             List<HttpLinkGroup> result = new List<HttpLinkGroup>();
 
@@ -113,7 +119,7 @@ namespace Maitonn.Web
                 }
             };
 
-            group.Items = sourceService.GetSuggestMedia(province, 8);
+            group.Items = sourceService.GetSuggestMedia(isQuanGuo, province, 8);
 
             result.Add(group);
 
@@ -155,11 +161,11 @@ namespace Maitonn.Web
         }
 
 
-        private List<HttpLinkGallery> GetGallery(int province)
+        private List<HttpLinkGallery> GetGallery(bool isQuanGuo, int province)
         {
             List<HttpLinkGallery> result = new List<HttpLinkGallery>();
 
-            var categorys = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null));
+            var categorys = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList();
 
             foreach (var category in categorys)
             {
@@ -180,7 +186,7 @@ namespace Maitonn.Web
                     }
                 };
 
-                tab.Items = sourceService.GetSuggestMedia(province, 8, category.ID);
+                tab.Items = sourceService.GetSuggestMedia(isQuanGuo, province, 8, category.ID);
 
                 galleryContainer.Tabs.Add(tab);
 

@@ -205,6 +205,12 @@ namespace Maitonn.Web
             return od;
         }
 
+        public OutDoor Find(int MediaID)
+        {
+            return DB_Service.Set<OutDoor>()
+                .SingleOrDefault(x => x.MediaID == MediaID);
+        }
+
         public OutDoor IncludeFind(int MediaID)
         {
             return DB_Service.Set<OutDoor>()
@@ -216,6 +222,17 @@ namespace Maitonn.Web
                 .Include(x => x.OwnerCate)
                 .Include(x => x.CredentialsImg)
                 .Include(x => x.AreaAtt)
+                .SingleOrDefault(x => x.MediaID == MediaID);
+        }
+
+        public OutDoor IncludeCategoryFind(int MediaID)
+        {
+            return DB_Service.Set<OutDoor>()
+                .Include(x => x.Area)
+                .Include(x => x.Area.PCategory)
+                .Include(x => x.OutDoorMediaCate)
+                .Include(x => x.OutDoorMediaCate.PCategory)
+                .Include(x => x.OwnerCate)
                 .SingleOrDefault(x => x.MediaID == MediaID);
         }
 
@@ -319,8 +336,8 @@ namespace Maitonn.Web
               .Include(x => x.OwnerCate)
               .Include(x => x.PeriodCate)
               .Where(x => x.MemberID == MemberID);
-              //.Include(x => x.CredentialsImg)
-              //.Include(x => x.AreaAtt)
+            //.Include(x => x.CredentialsImg)
+            //.Include(x => x.AreaAtt)
         }
 
         public IQueryable<OutDoorListItem> GetMemberOutDoor(int MemberID, OutDoorStatus OutDoorStatus, bool includeUpLevel = false)
@@ -439,5 +456,6 @@ namespace Maitonn.Web
             return query;
 
         }
+
     }
 }

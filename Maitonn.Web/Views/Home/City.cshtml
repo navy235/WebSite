@@ -55,23 +55,24 @@
     </div>
 </header>
 
-@{
-    var ProvinceList = EnumHelper.GetProvinceList(CookieHelper.Province);
-}
 @(Html.Kendo().Window().Name("ChangeProvince")
     .Title("切换城市")
     .Visible(false)
     .Modal(true)
-    .Draggable(true)
-    .Width(700)
-    .Height(500)
+    .Width(450)
+    .Height(650)
     .Scrollable(true)
     .Content(@<text>
 <div class="province-list">
-    @foreach (var province in ProvinceList)
+    @foreach (var group in (List<HttpLinkGroup>)ViewBag.ProvinceList)
     {
-        <div class="province-item  @(province.Selected ? "selected" : "")" >
-            @Html.ActionLink(province.Text, "index", "changeprovince", new { province = province.Value }, new { })
+        var provinces = group.Items;
+        <div class="province-item">
+            <label>@group.Group.Name：</label>
+            @foreach (var p in provinces)
+            {
+                @Html.ActionLink(p.Name, "index", "changeprovince", new { province = p.ProvinceName }, new { @class = (p.ProvinceName == CookieHelper.Province) ? "selected" : "" })
+            }
         </div>
     }
 </div>
