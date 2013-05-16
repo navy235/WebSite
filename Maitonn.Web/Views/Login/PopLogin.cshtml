@@ -5,10 +5,7 @@
 }
 
 <div class="main" style="border: none; overflow: hidden">
-    @*  <div class="sub">
-        <h6><span>登录新浪地产网</span></h6>
-    </div>*@
-    <div class="login_form min_h">
+    <div class="login_form min_h " style="margin-top: 0">
         @if (ViewBag.Message != null)
         {
             <p class="form_tips"><em class="s_icon i_point"></em>@ViewBag.Message</p>
@@ -35,8 +32,8 @@
 
             </div>
             <div class="form-field form-field-remember">
-                <input type="checkbox" name="Remember" value="true" id="Remember">
-                <label for="Remember" class="c_gray remember">记住我</label>
+                <input type="checkbox" name="Remember" value="true" id="Remember" tabindex="-1">
+                <label for="Remember" class="c_gray remember" tabindex="-1">记住我</label>
             </div>
             <div class="form-field form-field-validatecode">
                 @Html.LabelFor(x => x.Vcode, new { @class = "form-field-lable-required" })

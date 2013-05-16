@@ -230,6 +230,10 @@ namespace Maitonn.Core
         public static string GetImgUrl(string imgUrl, ImgUrlType urlType)
         {
             string url = imgUrl;
+            imgUrl = imgUrl.Replace("_small", "");
+            imgUrl = imgUrl.Replace("_120", "");
+            imgUrl = imgUrl.Replace("_430", "");
+            imgUrl = imgUrl.Replace("_800", "");
             string imgPreUrl = imgUrl.Substring(0, imgUrl.LastIndexOf('.'));
             string imgExtesion = imgUrl.Substring(imgUrl.LastIndexOf('.'));
             switch (urlType)

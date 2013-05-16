@@ -12,7 +12,7 @@ namespace Maitonn.Web
 {
     public class AjaxServiceController : Controller
     {
-        private IUnitOfWork DB_Service;
+
         private IMemberService memberService;
         private IAreaAttService areaAttService;
         private IAreaService areaService;
@@ -26,8 +26,12 @@ namespace Maitonn.Web
         private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
         private IArticleCateService articleCateService;
-        public AjaxServiceController(IUnitOfWork _DB_Service
-            , IMemberService _memberService
+        private IMember_FavoriteService member_FavoriteService;
+        private IMember_SchemeService member_SchemeService;
+        private IScheme_MediaService scheme_MediaService;
+        private IOutDoorService outDoorService;
+        public AjaxServiceController(
+            IMemberService _memberService
             , IAreaAttService _areaAttService
             , IAreaService _areaService
             , ICompanyService _companyService
@@ -40,9 +44,13 @@ namespace Maitonn.Web
             , IOwnerCateService _ownerCateService
             , IAuctionCalendarService _auctionCalendarService
             , IArticleCateService _articleCateService
+            , IMember_FavoriteService _member_FavoriteService
+            , IMember_SchemeService _member_SchemeService
+            , IOutDoorService _outDoorService
+            , IScheme_MediaService _scheme_MediaService
             )
         {
-            DB_Service = _DB_Service;
+
             areaAttService = _areaAttService;
             areaService = _areaService;
             companyService = _companyService;
@@ -56,6 +64,10 @@ namespace Maitonn.Web
             ownerCateService = _ownerCateService;
             auctionCalendarService = _auctionCalendarService;
             articleCateService = _articleCateService;
+            member_FavoriteService = _member_FavoriteService;
+            member_SchemeService = _member_SchemeService;
+            outDoorService = _outDoorService;
+            scheme_MediaService = _scheme_MediaService;
         }
 
         #region  Control
@@ -339,7 +351,6 @@ namespace Maitonn.Web
 
         #endregion
 
-
         #region Validate
 
         [SkipGzipCompressJsAndReplaceWhiteSpace]
@@ -465,6 +476,166 @@ namespace Maitonn.Web
 
         #endregion
 
+        #region Business
+        [BaseAuthorize]
+        public ActionResult CheckFavorite(int id)
+        {
+            ServiceResult result = new ServiceResult();
+            var MemberID = CookieHelper.MemberID;
+            try
+            {
+                if (member_FavoriteService.GetALL().Any(x => x.MemberID == MemberID && x.MediaID == id))
+                {
+                    result.AddServiceError("已经收藏了该媒体");
+                    result.Message = "已经收藏了该媒体";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [BaseAuthorize]
+        public ActionResult AddFavorite(int id)
+        {
+            ServiceResult result = new ServiceResult();
+            var MemberID = CookieHelper.MemberID;
+            if (!member_FavoriteService.GetALL().Any(x => x.MemberID == MemberID && x.MediaID == id))
+            {
+                try
+                {
+                    Member_Favorite m_f = new Member_Favorite()
+                    {
+                        MediaID = id,
+                        MemberID = MemberID,
+                        AddTime = DateTime.Now
+                    };
+                    member_FavoriteService.Create(m_f);
+                }
+                catch (Exception ex)
+                {
+                    result.Message = "添加收藏出错！";
+                    result.AddServiceError(Utilities.GetInnerMostException(ex));
+                }
+            }
+            else
+            {
+                result.Message = "已经收藏了该媒体";
+                result.AddServiceError("已经收藏了该媒体");
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [BaseAuthorize]
+        public ActionResult GetScheme()
+        {
+            var MemberID = CookieHelper.MemberID;
+            var renderRadioList = member_SchemeService.GetALL().Where(x => x.MemberID == MemberID);
+            return Json(Utilities.GetSelectListData(renderRadioList, x => x.ID, x => x.Name, false),
+                JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        [BaseAuthorize]
+        [HttpPost]
+        public ActionResult AddScheme(AddSchemeViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                Scheme_Media sm = new Scheme_Media();
+                sm.MediaID = model.id;
+                sm.StartTime = Convert.ToDateTime(model.startTime);
+                sm.EndTime = Convert.ToDateTime(model.endTime);
+                sm.Price = Convert.ToDecimal(model.price);
+                sm.PeriodCode = model.periodCode;
+                sm.PeriodCount = model.periodCount;
+                if (string.IsNullOrEmpty(model.schemeName) && model.schemeId != 0)
+                {
+                    sm.SchemeID = model.schemeId;
+                    if (scheme_MediaService.GetALL().Where(x => x.MediaID == model.id && x.SchemeID == model.schemeId).Any())
+                    {
+                        result.AddServiceError("该方案已经包含了此媒体");
+                        result.Message = "该方案已经包含了此媒体！";
+                    }
+                }
+                else
+                {
+                    Member_Scheme ms = new Member_Scheme()
+                    {
+                        AddTime = DateTime.Now,
+                        Name = model.schemeName,
+                        Description = model.schemeDescription,
+                        LastTime = DateTime.Now,
+                        MemberID = CookieHelper.MemberID
+                    };
+                    member_SchemeService.Create(ms);
+                    sm.SchemeID = ms.ID;
+                }
+                if (result.Success)
+                {
+                    scheme_MediaService.Create(sm);
+                    result.Message = "加入方案成功！";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Message = "加入方案失败！";
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [BaseAuthorize]
+        [HttpPost]
+        public ActionResult EditSchemeMedia(AjaxEditSchemeViewModel model)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var startTime = Convert.ToDateTime(model.startTime);
+
+                var schemeMedia = new Scheme_Media()
+                {
+                    ID = model.id,
+                    PeriodCode = model.periodCode,
+                    PeriodCount = model.periodCount,
+                    StartTime = startTime,
+                    Price = Convert.ToDecimal(model.price),
+                    EndTime = startTime.AddDays(model.periodCode * model.periodCount)
+                };
+
+                scheme_MediaService.Update(schemeMedia);
+            }
+            catch (Exception ex)
+            {
+                result.Message = "加入方案失败！";
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public ActionResult GetMediaPeriodCode(int id)
+        {
+            var outdoor = outDoorService.Find(id);
+
+            var minPeriodCode = outdoor.PeriodCode;
+
+            var renderRadioList = periodCateService.GetALL().Where(x => x.ID >= minPeriodCode);
+
+            return Json(Utilities.GetSelectListData(renderRadioList,
+                x => x.OrderIndex,
+                x => x.CateName, false), JsonRequestBehavior.AllowGet);
+        }
+
+
+        #endregion
+
         #region File
 
         public ActionResult UpLoadSave(IEnumerable<HttpPostedFileBase> attachments, string status = "upload")
@@ -489,7 +660,7 @@ namespace Maitonn.Web
             return UpLoadSave(listattachments2);
 
         }
-       
+
         public ActionResult UploadListSave3(IEnumerable<HttpPostedFileBase> listattachments3, int uploadmaxsize = 10240000)
         {
             return UpLoadSave(listattachments3);
@@ -598,5 +769,7 @@ namespace Maitonn.Web
             return data;
 
         }
+
+
     }
 }

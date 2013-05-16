@@ -18,16 +18,25 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryplug")
     <script src="~/Scripts/base.js"></script>
-    @Html.Partial("_CommonJavascript")
+    <script type="text/javascript">
+        kendo.culture("zh-CHS");
+        var ajaxUrl = {
+            check_favorite: '@Url.Action("checkFavorite", "ajaxService")',
+            add_favorite: '@Url.Action("addFavorite", "ajaxService")',
+            get_scheme: '@Url.Action("getScheme", "ajaxService")',
+            get_mediaPeriodCode: '@Url.Action("GetMediaPeriodCode", "ajaxService")',
+            add_scheme: '@Url.Action("addScheme", "ajaxService")',
+            get_schemeform: '@Url.Action("getSchemeForm", "scheme")',
+        }
+    </script>
 </head>
 <body>
     @Html.Partial("_NoScript")
+
     @Html.Partial("_TopNav")
 
     @RenderBody()
 
-    @Html.Partial("_FooterHome")
-    @Html.Partial("_DisplayMessage")
     @RenderSection("scripts", required: false)
 
     @(Html.Kendo().Window().Name("Win-PopLogin")
@@ -47,7 +56,6 @@
     </text>)
     )
     @MiniProfiler.RenderIncludes(position: RenderPosition.Right, showTrivial: false, showTimeWithChildren: false)
-
 
 </body>
 </html>

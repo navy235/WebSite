@@ -38,6 +38,7 @@ namespace Maitonn.Web
             var target = Find(model.ID);
             DB_Service.Attach<PeriodCate>(target);
             target.CateName = model.CateName;
+            target.OrderIndex = model.OrderIndex;
             target.PID = model.PID;
             DB_Service.Commit();
         }

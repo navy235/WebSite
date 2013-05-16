@@ -444,6 +444,15 @@ textarea {
   margin: 2px;
 }
 
+.table-list-info {
+  line-height: 26px;
+}
+
+.table-list-link {
+  color: #1e50a2;
+}
+
+
 .filed-auction {
   display: inline-block;
   vertical-align: middle;
@@ -609,4 +618,93 @@ textarea {
   height: auto;
   text-align: center;
   padding-top: 200px;
+}
+
+.form_tips {
+  margin-left: 60px;
+  width: 250px;
+  color: #ff6600;
+  margin-bottom: 10px;
+}
+
+.form_tips_error {
+  padding: 0 0 0px 5px;
+  border: 1px solid #d90000;
+  color: #d90000;
+}
+
+.s_icon {
+  background: url(images/mixr.gif);
+  background-repeat: no-repeat;
+  width: 18px;
+  height: 14px;
+  line-height: 14px;
+  display: inline-block;
+  display: -moz-inline-block;
+  vertical-align: middle;
+  zoom: 1;
+}
+
+.i_point {
+  background-position: -199px -193px;
+}
+
+.listview-container {
+  margin-left: -0.6em;
+  padding: 0px 0px 10px 40px;
+  margin: -0.4em -0.6em;
+}
+
+.listview-box {
+  border: 1px solid #c5c5c5;
+  padding: 10px;
+}
+
+.listview-desc {
+  margin-bottom: 10px;
+}
+
+.listview-container .k-listview {
+  border: none;
+}
+
+.listview-product {
+  line-height: 22px;
+  width: 140px;
+  display: inline-block;
+  border: 1px solid #c5c5c5;
+  padding: 10px;
+  margin: 0 5px 10px 0;
+}
+
+.listview-product-img {
+  width: 140px;
+  height: 120px;
+  display: block;
+}
+
+  .listview-product-img img {
+    width: 140px;
+    height: 120px;
+  }
+
+.listview-product-link {
+  display: block;
+  width: 140px;
+  height: 22px;
+  overflow: hidden;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.listview-price {
+  color: #BA2636;
+}
+
+  .listview-price b {
+    font-weight: bold;
+  }
+
+.k-grid .listview-product-control .k-button {
+  margin: 0;
 }

@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+<div class="goods-addscheme">
+    <p class="form_tips form_tips_error" style="display: none; margin-left: 115px"><em class="s_icon i_point"></em><span></span></p>
+    <div class="form-field">
+        <label>添加到</label>
+        <div class="radiolist">
+            <label>
+                <input type="radio" name="addtype" value="1" checked="checked" />新增方案</label>
+            <label>
+                <input type="radio" name="addtype" value="2" />已有方案</label>
+        </div>
+    </div>
+    <div class="form-field">
+        <label>方案名称</label>
+        <input type="text" class="k-textbox single-line text-box" name="schemeName" id="schemeName" />
+    </div>
+    <div class="form-field">
+        <label>方案描述</label>
+        <textarea class="k-textbox single-line text-box" id="schemeDescription" name="schemeDescription"></textarea>
+    </div>
+    <div class="form-field" style="display: none">
+        <label>已有方案</label>
+        <select name="schemeId" id="schemeId">
+        </select>
+    </div>
+    <div class="form-field form-field-period">
+        <label>预定周期</label>
+        <input type="text" name="startTime" id="startTime" />
+        <input type="text" name="number" id="number" value="1" />
+        <input type="text" name="period" id="period" value="1" />
+    </div>
+    <div class="form-field">
+        <label>预估总价</label>
+        <div class="goods-price">¥<b>0</b> 万元</div>
+        <input type="hidden" id="price" name="price" />
+    </div>
+    <div class="form-field form-field-submit">
+        <button type="button" id="btn-comfirm-scheme" class="btn btn-success">确定</button>
+        <button type="button" id="btn-cancle-scheme" class="btn btn-success">取消</button>
+    </div>
+</div>

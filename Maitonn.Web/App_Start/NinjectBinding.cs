@@ -31,6 +31,10 @@ namespace Maitonn.Web
 
             kernel.Bind<IIndexingService>().To<LuceneIndexingService>().InRequestScope();
 
+            kernel.Bind<IMember_FavoriteService>().To<Member_FavoriteService>().InRequestScope();
+
+      
+
             kernel.Bind<IDepartmentService>()
                 .To<DepartmentService>()
                 .InRequestScope();

@@ -225,6 +225,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FavoriteController.cs" />
     <Compile Include="Controllers\GztvipController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Controllers\OutDoorController.cs" />
     <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\SchemeController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ShowController.cs" />
@@ -500,6 +502,7 @@
     <Compile Include="ViewModels\CompanyViewModel.cs" />
     <Compile Include="ViewModels\DashBoardViewModel.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
+    <Compile Include="ViewModels\FavoriteViewModel.cs" />
     <Compile Include="ViewModels\GroupModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ImageBox.cs" />
@@ -508,6 +511,7 @@
     <Compile Include="ViewModels\RoleModel.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\PayVIPViewModel.cs" />
+    <Compile Include="ViewModels\SchemeViewModel.cs" />
     <Compile Include="ViewModels\ServerItemViewModel.cs" />
     <Compile Include="ViewModels\SliderImgViewModel.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
@@ -577,6 +581,7 @@
     <Content Include="Content\images\min-loading.gif" />
     <Content Include="Content\images\mixr.gif" />
     <Content Include="Content\images\personal.gif" />
+    <Content Include="Content\images\print-nav.jpg" />
     <Content Include="Content\images\productBg.png" />
     <Content Include="Content\images\productSpring.png" />
     <Content Include="Content\images\proIcons.png" />
@@ -598,6 +603,7 @@
     <Content Include="Content\images\zh-rr.jpg" />
     <Content Include="Content\images\zh-sina.jpg" />
     <Content Include="Content\images\zh-tb.jpg" />
+    <Content Include="Content\images\zoomloader.gif" />
     <Content Include="Content\jcrop\Jcrop.gif" />
     <Content Include="Content\jcrop\jquery.Jcrop.css" />
     <Content Include="Content\jcrop\jquery.Jcrop.min.css" />
@@ -1538,9 +1544,7 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Server\Index.cshtml" />
     <Content Include="Views\Server\Search.cshtml" />
-    <Content Include="Views\Show\Details.cshtml" />
     <Content Include="Views\Show\Index.cshtml" />
-    <Content Include="Views\Show\List.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Shared\_DisplayMessage.cshtml" />
     <Content Include="Views\Shared\_PersonalLeftNav.cshtml" />
@@ -1644,6 +1648,15 @@
     <Content Include="Views\Home\_Gallery.cshtml" />
     <Content Include="Views\Test\addCreditIndex.cshtml" />
     <Content Include="Views\Gztvip\TopCompany.cshtml" />
+    <Content Include="Views\Favorite\Index.cshtml" />
+    <Content Include="Views\Scheme\GetSchemeForm.cshtml" />
+    <Content Include="Views\Scheme\Index.cshtml" />
+    <Content Include="Views\Scheme\Print.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrint.cshtml" />
+    <Content Include="Views\Scheme\Add.cshtml" />
+    <Content Include="Views\Scheme\GetEditSchemeForm.cshtml" />
+    <Content Include="Views\Scheme\Edit.cshtml" />
+    <Content Include="Views\Shared\_CommonJavascript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

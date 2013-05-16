@@ -116,6 +116,35 @@
 
     <div class="nav-title ">
         <em></em>
+        <p class="nav-scheme">方案管理</p>
+        <i></i>
+    </div>
+    <ul class="menu-scheme" style="display: none;">
+        <li class="item-scheme-media ">
+            <p><a href="@Url.Action("index", "scheme")">方案列表</a></p>
+        </li>
+        <li class="item-scheme-add ">
+            <p><a href="@Url.Action("add", "scheme")">添加方案</a></p>
+        </li>
+    </ul>
+
+    <div class="nav-title ">
+        <em></em>
+        <p class="nav-favorite">收藏管理</p>
+        <i></i>
+    </div>
+    <ul class="menu-favorite" style="display: none;">
+        <li class="item-favorite-media ">
+            <p><a href="@Url.Action("index", "favorite")">媒体收藏夹</a></p>
+        </li>
+        <li class="item-favorite-company ">
+            <p><a href="@Url.Action("recive", "favorite")">企业收藏夹</a></p>
+        </li>
+    </ul>
+
+
+    <div class="nav-title ">
+        <em></em>
         <p class="nav-message">留言管理</p>
         <i></i>
     </div>

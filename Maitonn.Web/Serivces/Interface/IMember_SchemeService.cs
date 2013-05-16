@@ -18,5 +18,7 @@ namespace Maitonn.Web
         void Delete(Member_Scheme model);
 
         Member_Scheme Find(int Member_SchemeID);
+
+        ServiceResult DeleteAll(string ids);
     }
 }

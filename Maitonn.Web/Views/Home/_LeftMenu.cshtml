@@ -7,18 +7,6 @@
         var item = Model[i];
         <li class="child@(i) @((i == (Model.Count - 1)) ? "last" : "") clearfix">
             <h3>
-                <a href="@Url.Action("index", "list", new
-                        {
-                            province = CookieHelper.Province,
-                            city = 0,
-                            mediacode = item.Group.ID,
-                            childmediacode = 0,
-                            formatcode = 0,
-                            ownercode = 0,
-                            periodcode = 0,
-                            page = 1
-
-                        })" class="top-hot-left-icon" ></a>
                 <a class="top-hot-left-link" href="@Url.Action("index", "list", new
                         {
                             province = CookieHelper.Province,

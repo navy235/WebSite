@@ -65,5 +65,22 @@ namespace Maitonn.Web
             DB_Service.Commit();
         }
 
+
+
+        public ServiceResult DeleteAll(string ids)
+        {
+            ServiceResult result = new ServiceResult();
+            try
+            {
+                var IdsArray = ids.Split(',').Select(x => Convert.ToInt32(x));
+                DB_Service.Set<Member_Favorite>().Where(x => IdsArray.Contains(x.ID))
+                    .ToList().ForEach(x => Delete(x));
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                result.AddServiceError(Utilities.GetInnerMostException(ex));
+            }
+            return result;
+        }
     }
 }

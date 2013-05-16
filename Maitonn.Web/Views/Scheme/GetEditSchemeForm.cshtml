@@ -1,0 +1,30 @@
+﻿@model EditSchemeMediaViewModel
+@{
+    Layout = null;
+}
+<div class="goods-addscheme">
+    <input type="hidden" id="uprice" name="uprice" value="@(Model.Uprice / 365)" />
+    <input type="hidden" id="scheme_MediaID" name="scheme_MediaID" value="@(Model.ID)" />
+    <input type="hidden" id="schemeID" name="schemeID" value="@(Model.SchemeID)" />
+    <div class="form-field">
+        <label>媒体名称</label>
+        <div style="display: inline-block">@Model.Name</div>
+    </div>
+
+    <div class="form-field form-field-period">
+        <label>预定周期</label>
+        <input type="text" name="startTime" id="startTime" value="@Model.StartTime.ToString("yyyy-MM-dd")" />
+        <input type="text" name="number" id="number" value="@Model.PeriodCount" />
+        <input type="text" name="period" id="period" value="@Model.PeriodCode" />
+    </div>
+    <div class="form-field">
+        <label>预估总价</label>
+        <div class="goods-price">¥<b>@Model.Price</b> 万元</div>
+        <input type="hidden" id="price" name="price" value="@Model.Price" />
+
+    </div>
+    <div class="form-field form-field-submit">
+        <button type="button" id="btn-comfirm-scheme" class="btn btn-success">确定</button>
+        <button type="button" id="btn-cancle-scheme" class="btn btn-success">取消</button>
+    </div>
+</div>

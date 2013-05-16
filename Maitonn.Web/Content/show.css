@@ -804,7 +804,7 @@ a.top-head-changcity {
 }
 
 .top-hot-left-category li.last {
-  padding-bottom: 6px;
+  padding-bottom: 11px;
   padding-top: 9px;
 }
 
@@ -996,7 +996,7 @@ a.top-head-changcity {
   border-top: 0;
   position: relative;
   padding: 5px 0 1px;
-  height: 265px;
+  height: 235px;
 }
 
 .slider-tab-left-handler, .slider-tab-right-handler {
@@ -1023,11 +1023,10 @@ a.top-head-changcity {
   width: 656px;
   overflow: hidden;
   position: relative;
-  height: 265px;
+  height: 235px;
 }
 
 .slider-tab-viewbox {
-  height: 260px;
   margin-bottom: 0;
   padding: 0;
   width: 9999px;
@@ -1044,7 +1043,7 @@ a.top-head-changcity {
   padding: 5px 6px;
   margin: 0;
   width: 150px;
-  height: 245px;
+  line-height: 22px;
 }
 
 .slider-tab-item-img {
@@ -1080,7 +1079,7 @@ a.top-head-changcity {
 
 .slider-tab-item-title {
   width: 200px;
-  height: 44px;
+  height: 22px;
   line-height: 22px;
   margin-top: 15px;
   overflow: hidden;
@@ -1102,7 +1101,6 @@ a.top-head-changcity {
 
 .slider-tab-item-delete-price {
   color: #888;
-  margin-top: 5px;
 }
 
 .slider-tab-item-price {
@@ -3571,6 +3569,49 @@ goods-pack .goods-desc {
   padding-top: 2px;
 }
 
+.goods-addscheme {
+  margin: 10px 0;
+  line-height: 30px;
+}
+
+  .goods-addscheme .form-field label {
+    margin-right: 10px;
+  }
+
+  .goods-addscheme .radiolist {
+    width: 250px;
+  }
+
+    .goods-addscheme .radiolist label {
+      width: 80px;
+      text-align: left;
+    }
+
+  .goods-addscheme .form-field-submit {
+    margin-left: 115px;
+  }
+
+  .goods-addscheme .goods-price {
+    display: inline-block;
+    color: #BA2636;
+  }
+
+    .goods-addscheme .goods-price b {
+      font-weight: bold;
+    }
+
+  .goods-addscheme .k-datepicker {
+    width: 110px;
+  }
+
+  .goods-addscheme .k-numerictextbox {
+    width: 60px;
+  }
+
+  .goods-addscheme .form-field-period .k-dropdown {
+    width: 75px;
+  }
+
 
 /*************************
  *
@@ -4370,3 +4411,189 @@ goods-pack .goods-desc {
     width: 703px;
     height: 600px;
   }
+
+
+
+.print-container {
+  line-height: 22px;
+  color: #666;
+}
+
+.print-head {
+  margin: 10px 0;
+}
+
+.print-head-title {
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+  .print-head-title .print-control {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+
+  .print-head-title h1 {
+    font-weight: bold;
+    font-size: 22px;
+    display: inline;
+    margin-right: 18px;
+  }
+
+.print-head-desc {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.print-nav span {
+  width: 100%;
+  float: left;
+  height: 32px;
+  line-height: 32px;
+  color: #4c4c4c;
+  font-size: 24px;
+  font-family: "微软雅黑";
+}
+
+  .print-nav span strong {
+    margin: 0 6px;
+    font-size: 30px;
+    color: #ff9000;
+  }
+
+.print-nav {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+  .print-nav ul {
+    width: 100%;
+    margin-top: 10px;
+    float: left;
+    line-height: 43px;
+    background: url(images/print-nav.jpg) repeat;
+  }
+
+    .print-nav ul li {
+      width: 210px;
+      margin-right: 10px;
+      float: left;
+      display: inline;
+      height: 43px;
+      line-height: 43px;
+      color: #912a85;
+      font-size: 26px;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+    }
+
+      .print-nav ul li a {
+        color: #333;
+        font-size: 16px;
+        font-family: "宋体";
+        margin-left: 6px;
+      }
+
+.print-list {
+}
+
+.print-item {
+  page-break-after: always;
+  margin-top: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+  .print-item .item-title {
+    height: 44px;
+    float: left;
+    overflow: hidden;
+    width: 100%;
+  }
+
+    .print-item .item-title h3 {
+      width: 600px;
+      float: left;
+      line-height: 44px;
+      height: 44px;
+      color: #912a85;
+      font-size: 30px;
+      font-weight: bold;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+      .print-item .item-title h3 strong {
+        color: #666;
+        font-size: 14px;
+        font-family: "宋体";
+        margin-left: 10px;
+      }
+
+    .print-item .item-title span {
+      width: 35px;
+      height: 18px;
+      line-height: 18px;
+      padding-left: 5px;
+      padding-right: 15px;
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      float: right;
+      display: inline;
+      margin-right: 20px;
+      margin-top: 13px;
+      cursor: pointer;
+      text-indent: -9999px;
+    }
+
+  .print-item .item-info {
+    overflow: hidden;
+    padding: 10px;
+  }
+
+    .print-item .item-info .item-img {
+      display: block;
+      width: 360px;
+      height: 260px;
+      float: left;
+      border: 1px solid #e3e3e3;
+      padding: 1px;
+      margin-top: 5px;
+    }
+
+      .print-item .item-info .item-img img {
+        width: 358px;
+        height: 258px;
+      }
+
+    .print-item .item-info ul {
+      width: 580px;
+      float: right;
+    }
+
+      .print-item .item-info ul li {
+        width: 320px;
+        float: left;
+        line-height: 28px;
+        color: #666;
+      }
+
+        .print-item .item-info ul li.txrs {
+          width: 260px;
+          float: right;
+        }
+
+    .print-item .item-info p {
+      line-height: 24px;
+      line-height: 22px;
+      color: #666;
+      float: right;
+      width: 580px;
+      font-weight: normal;
+      padding-bottom: 0;
+    }

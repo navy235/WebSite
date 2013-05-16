@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "媒体方案列表";
+    Layout = "~/Views/Shared/_LayoutPersonal.cshtml";
+}
+<article class="personal clearfix">
+    <div class="personal-left">
+        <div class="personal-nav">
+            @Html.Partial("_PersonalLeftNav")
+        </div>
+    </div>
+    <div class="personal-right">
+        <div class="personal-right-body">
+            <div class="personal-body-title clearfix">
+                <ul class="personal-tab clearfix">
+                    <li class="selected"><a href="@Url.Action("index")"><span>方案列表</span></a></li>
+                    <li><a href="@Url.Action("add")"><span>添加方案</span></a></li>
+                </ul>
+            </div>
+            <div class="personal-form mt20">
+
+                @(Html.Kendo().Grid<Member_Scheme>()
+                    .Name("Grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(c => c.ID)
+                            .Sortable(false)
+                            .ClientTemplate("<input type='checkbox' name='ID_check' id='#=ID#_check'  class='chkbx' value='#=ID#' />")
+                            .HeaderTemplate("<div style='text-align:center'><input type='checkbox' id='checkAll' onclick='Grid.checkAll(this)' title='全选'/></div>")
+                            .Width(40).HtmlAttributes(new { style = "text-align:center" });
+                        columns.Bound(c => c.Name).Title("方案名称");
+                        columns.Bound(c => c.AddTime).Format("{0:yyyy-MM-dd}").Width(80).Title("添加时间");
+                        columns.Template(@<text></text>)
+                .ClientTemplate("<a class='k-button k-button-icontext ' href='" + Url.Action("edit", "scheme") + "/#=ID#' ><span class='k-icon k-edit'></span>编辑</a>"
+                + "<a class='k-button k-button-icontext ' href='javascript:void(0);' onclick='Grid.deleteSingle(this,\"#=ID#\");' ><span class='k-icon k-i-close'></span>删除</a>"
+                + "<a class='k-button k-button-icontext ' href='" + Url.Action("print", "scheme") + "/#=ID#'  ><span class='icon-print'></span> 打印方案</a>"
+                )
+                .Title("操作")
+                .Width(260);
+                    })
+                    .ToolBar(toolbar =>
+                    {
+                        toolbar.Custom().Text("批量删除").HtmlAttributes(new { onclick = "Grid.deleteAll(this);", href = "javascript:void(0);" });
+                    })
+                    .Pageable()
+                    .Sortable()
+                    .Scrollable()
+                    .ClientDetailTemplateId("template")
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(20)
+                        .Model(model => model.Id(c => c.ID))
+                        .Sort(sort => sort.Add(x => x.AddTime).Descending())
+                        .Read(read => read.Action("scheme_Read", "scheme"))
+                     )
+                     .HtmlAttributes(new { style = "height:500px;" })
+                    )
+
+                <script type="text/x-kendo-tmpl" id="template">
+                <div class="listview-container">
+                <div class="listview-box">
+                <div class="listview-desc">方案描述：#=Description#</div>
+                <div class="listview-price mb10 listview-totalprice" >合计总价：¥<b></b> 万元</div>
+                @(Html.Kendo().ListView<SchemeMediaViewModel>()
+                    .Name("list_" + "#=ID#")
+                    .TagName("div")
+                    .ClientTemplateId("listtemplate")
+                    .DataSource(dataSource =>
+                    {
+                        dataSource.Read(read => read.Action("SchemeMedia_Read", "scheme", new { schemeID = "#=ID#" }));
+                        dataSource.PageSize(15);
+                    })
+                    .Events(events => events.DataBound("Grid.listDataBound"))
+                    .ToClientTemplate()
+                )
+                </div>
+                </div>
+                </script>
+                <script type="text/x-kendo-tmpl" id="listtemplate">
+                <div class="listview-product">
+                    <a class="listview-product-img table-list-link" href="/media-#:MediaID#" target="_blank"><img src="#:ImgUrl#" alt="#:Name#" /></a>
+                    <a class="listview-product-link table-list-link" href="/media-#:MediaID#" target="_blank">#:Name#</a>
+                    <div class="listview-price">总价： ¥<b>#:Price#</b> 万元</div>
+                    <p>档期：#:kendo.toString(StartTime, "yyyy-MM-dd")# 至 #:kendo.toString(EndTime, "yyyy-MM-dd")#</p>
+                    <p class="listview-product-control"><a class="k-button k-button-icontext" href="javascript:void(0);" onclick="Grid.editSchemeMedia(this,#:ID#,#:MediaID#);" ><span class="k-icon k-edit"></span>编辑</a>
+                    <a class="k-button k-button-icontext" href="javascript:void(0);" onclick="Grid.deleteSchemeMedia(this,#:ID#,#:SchemeID#);" ><span class="k-icon k-i-close" ></span>删除</a></p>
+                    </div>
+                </script>
+
+                @(Html.Kendo().Window().Name("Win-scheme-edit")
+            .Title("编辑方案")
+            .Visible(false)
+            .Modal(true)
+            .Width(600)
+            .Scrollable(true)
+            .Content(@<text>
+
+                </text>
+            )
+            )
+
+                <script type="text/javascript">
+                    var Grid = {
+                        id: 'Grid',
+                        checkAll: function(element) {
+                            var self = Grid;
+                            var state = $(element).is(':checked');
+                            $('[name="ID_check"]').attr('checked', state);
+                        },
+                        getCheckIds: function() {
+                            return $.map($('[name="ID_check"]:checked'), function(item) { return $(item).val() }).join(',');
+                        },
+                        addSpinner: function(element) {
+                            var $spinner = $('<img class="ajax-working" src="@Url.Content("~/Content/images/min-loading.gif")" title="work...." />').appendTo($(element));
+                            $(element).addClass('disabled');
+                        },
+                        removeSpinner: function(element) {
+                            $(element).find('.ajax-working').remove();
+                            $(element).removeClass('disabled');
+                        },
+                        excute: function(element, url, Ids) {
+                            if ($(element).hasClass('disabled'))
+                                return false;
+                            var self = Grid;
+                            if (Ids) {
+                                self.addSpinner(element);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: { ids: Ids },
+                                    success: function(res) {
+                                        if (res) {
+                                            var grid = $("#Grid").data("kendoGrid");
+                                            grid.dataSource.read();
+                                            grid.refresh();
+                                        }
+                                    },
+                                    complete: function() {
+                                        self.removeSpinner(element);
+                                    }
+                                })
+                            } else {
+                                alert('请选择要处理的信息');
+                                return false;
+                            }
+                        },
+                        excuteScheme: function(element, url, id, schemeId) {
+                            if ($(element).hasClass('disabled'))
+                                return false;
+                            var self = Grid;
+                            var intId = parseInt(id);
+                            if (id) {
+                                self.addSpinner(element);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: { id: intId },
+                                    success: function(res) {
+                                        if (res) {
+                                            var list = $("#list_" + schemeId).data("kendoListView");
+                                            list.dataSource.read();
+                                            list.refresh();
+                                        }
+                                    },
+                                    complete: function() {
+                                        self.removeSpinner(element);
+                                    }
+                                })
+                            } else {
+                                alert('请选择要处理的信息');
+                                return false;
+                            }
+                        },
+                        deleteAll: function(element) {
+                            var self = Grid;
+                            var url = '@Url.Action("scheme_Delete", "scheme")';
+                            var Ids = self.getCheckIds();
+                            self.excute(element, url, Ids);
+                        },
+                        deleteSingle: function(element, id) {
+                            var self = Grid;
+                            var url = '@Url.Action("scheme_Delete", "scheme")';
+                            var Ids = id;
+                            self.excute(element, url, Ids);
+                        },
+                        editSchemeMedia: function(element, id, mediaId) {
+                            var self = Grid;
+                            var kwindow = $('#Win-scheme-edit').data('kendoWindow');
+                            var url = '@Url.Action("GetEditSchemeForm", "scheme")';
+                            if (!$('.goods-addscheme')[0]) {
+                                self.initForm(id, mediaId).done(function(res) {
+                                    kwindow.center().open();
+                                })
+                            } else {
+                                kwindow.center().open();
+                            }
+
+                        },
+                        initForm: function(id, mediaId) {
+                            var self = Grid;
+                            var url = '@Url.Action("GetEditSchemeForm", "scheme")';
+                            var kwindow = $('#Win-scheme-edit').data('kendoWindow');
+                            var d = $.Deferred();
+                            $.get(url, { id: id }, function(res) {
+
+                                kwindow.content(res);
+
+                                Maitonn.JHelper.getMediaPeriodCode(mediaId).done(function(res) {
+                                    $("#period").kendoDropDownList({
+                                        dataTextField: "Text",
+                                        dataValueField: "Value",
+                                        dataSource: res,
+                                        change: self.changePeriodCode
+                                    });
+
+                                    $("#period").data('kendoDropDownList').value($('#period').val());
+                                })
+
+                                $('#number').kendoNumericTextBox({
+                                    "format": "n0",
+                                    "decimals": 0,
+                                    "change": self.changePeriodCode,
+                                    "spin": self.changePeriodCode
+                                })
+
+                                $('#number').data('kendoNumericTextBox').value($('#number').val());
+
+                                $('#startTime').kendoDatePicker();
+
+                                var startTime = $('[name="startTime"]').data('kendoDatePicker');
+
+                                var today = new Date();
+
+                                startTime.min(today);
+
+                                $('#btn-comfirm-scheme').on('click', self.comfirmEditScheme)
+
+                                $('#btn-cancle-scheme').on('click', function() {
+                                    $('#Win-scheme-edit').data('kendoWindow').close();
+                                })
+
+                                d.resolve(true);
+                            })
+                            return d.promise();
+                        },
+                        comfirmEditScheme: function(e) {
+                            var kwindow = $('#Win-scheme-edit').data('kendoWindow');
+                            var data = {};
+                            data.id = $('#scheme_MediaID').val();
+                            data.startTime = $('#startTime').val();
+                            data.price = $('#price').val();
+                            data.periodCode = $('#period').val();
+                            data.periodCount = $('#number').val();
+
+                            Maitonn.JHelper.editSchemeMedia(data).done(function(res) {
+                                if (res.Success) {
+                                    kwindow.close();
+                                    var schemeId = $('#schemeID').val();
+                                    var list = $("#list_" + schemeId).data("kendoListView");
+                                    list.dataSource.read();
+                                    list.refresh();
+                                    $('.goods-addscheme').remove();
+                                } else {
+                                    Maitonn.JHelper.showErrorMessage(res.Message);
+                                }
+                            })
+                        },
+                        changePeriodCode: function() {
+                            var price = $('#uprice').val();
+                            var periodValue = $("#period").val();
+                            var numberValue = $('#number').val();
+                            var $price = $('.goods-price').find('b');
+                            $price.text((periodValue * numberValue * price).toFixed(2));
+                            $('#price').val((periodValue * numberValue * price).toFixed(2));
+                        },
+                        deleteSchemeMedia: function(element, id, schemeId) {
+                            var self = Grid;
+                            var url = '@Url.Action("SchemeMedia_Delete", "scheme")';
+                            var Ids = id;
+                            self.excuteScheme(element, url, id, schemeId);
+                        },
+                        listDataBound: function(e) {
+                            var dataSource = e.sender.dataSource;
+                            var data = dataSource.data();
+                            var totalPrice = 0;
+                            $.each(data, function(index, item) {
+                                totalPrice += item.Price;
+                            })
+                            $(e.sender.element).parents('.listview-container').find('.listview-totalprice').find('b').text(totalPrice);
+                        }
+                    }
+                    $(function() {
+                        $('#verifyContent').load(function() {
+                            $('#verifyLoading').hide();
+                            $(this).show();
+                        })
+                    })
+
+                </script>
+            </div>
+        </div>
+    </div>
+</article>

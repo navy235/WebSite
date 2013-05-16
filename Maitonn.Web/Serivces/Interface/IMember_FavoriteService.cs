@@ -18,5 +18,9 @@ namespace Maitonn.Web
         void Delete(Member_Favorite model);
 
         Member_Favorite Find(int Member_FavoriteID);
+
+        ServiceResult DeleteAll(string ids);
+
+
     }
 }
