@@ -49,22 +49,24 @@
                 var gallery = galleryTabs[j];
                 var gallerylist = gallery.Items;
                 <div id="subType@(i + "_" + j)" class="main-gallery-tab clearfix">
-                    <div class="main-gallery-view clearfix">
-                        @foreach (var item in gallerylist)
-                        {
-                            <div class="main-gallery-item">
-                                <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="main-gallery-item-img">
-                                    <img width="150" height="150" border="0" src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
-                                    <span class="main-gallery-item-icon act-icon01"></span>
-                                </a>
-                                <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a></p>
-                                <p class="main-gallery-item-price clearfix">
-                                    @item.ProvinceName - @item.CityName
-                                    <span class="fs14">¥<strong class="price">@item.Price</strong>万元/年</span>
-                                </p>
-                            </div>
-                        }
-                    </div>
+
+                    @foreach (var item in gallerylist)
+                    {
+                        <div class="main-gallery-item">
+                            <p class="main-gallery-item-company"><a href="@Url.Action("index", "shop", new { id=item.MemberID })">@item.CompanyName</a></p>
+                            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="main-gallery-item-img">
+                                <img  src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
+                            </a>
+                            <p class="main-gallery-item-desc"><a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a></p>
+                            <p class="main-gallery-item-city ">
+                                @item.ProvinceName - @item.CityName
+                            </p>
+                            <p class="main-gallery-item-price ">
+                                <strong>¥@item.Price </strong>万元/年
+                            </p>
+                        </div>
+                    }
+
                 </div>
             }
 

@@ -81,29 +81,29 @@ namespace Maitonn.Web
             return View();
         }
 
-        [HttpPost]
-        public ActionResult SearchIndex(string query)
-        {
-            ListSearchItemViewModel search = new ListSearchItemViewModel()
-            {
-                Query = query
-            };
-            SearchFilter filter = new SearchFilter()
-            {
-                PageSize = 20,
-                SearchTerm = query,
-                Skip = 0,
-                Take = 20
-            };
+        //[HttpPost]
+        //public ActionResult SearchIndex(string query)
+        //{
+        //    ListSearchItemViewModel search = new ListSearchItemViewModel()
+        //    {
+        //        Query = query
+        //    };
+        //    SearchFilter filter = new SearchFilter()
+        //    {
+        //        PageSize = 20,
+        //        SearchTerm = query,
+        //        Skip = 0,
+        //        Take = 20
+        //    };
 
-            int hitCount = 0;
+        //    int hitCount = 0;
 
-            List<ListSearchProductViewModel> list = searchService.Search(search, filter, out hitCount);
+        //    List<ListSearchProductViewModel> list = searchService.Search(search, filter, out hitCount);
 
-            ViewBag.List = list;
+        //    ViewBag.List = list;
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public ActionResult addCreditIndex()
         {

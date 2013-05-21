@@ -1,0 +1,31 @@
+﻿@model List<HttpLinkItem>
+
+<div class="nav-bread">
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+        if (i == 0)
+        {
+        <text>
+        <a class="nav-bread-home" href="@item.Url"></a>&gt;
+        @if (Model.Count == 1)
+        {
+<strong>户外资源</strong>
+        }
+        </text>
+        }
+        else
+        {
+            if (i == Model.Count - 1)
+            {
+        <strong>@item.Name</strong>
+            }
+            else
+            {
+        <text>
+        <a href="@item.Url">@item.Name</a> &gt;
+    </text>
+            }
+        }
+    }
+</div>

@@ -23,7 +23,8 @@ namespace Maitonn.Web
                        "~/Scripts/jquery.tab-1.0.js",
                        "~/Scripts/jquery.sliderbox-1.0.js",
                        "~/Scripts/jquery.hoverlist-1.0.js",
-                       "~/Scripts/jquery.jqzoom-core.js"
+                       "~/Scripts/jquery.jqzoom-core.js",
+                       "~/Scripts/jquery.marquee-1.0.js"
                        ));
 
 

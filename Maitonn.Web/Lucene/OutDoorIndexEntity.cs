@@ -6,6 +6,8 @@ namespace Maitonn.Web
     {
         public int MediaID { get; set; }
 
+        public int MemberID { get; set; }
+
         public int Province { get; set; }
 
         public int City { get; set; }
@@ -56,7 +58,11 @@ namespace Maitonn.Web
 
         public int TotalFaces { get; set; }
 
+        public int MemberStatus { get; set; }
 
+        public int MemberCreditIndex { get; set; }
+
+        public string CompanyName { get; set; }
 
         public DateTime Published { get; set; }
     }

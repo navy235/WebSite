@@ -1,205 +1,32 @@
-﻿@model ListViewModel
-@{
+﻿@{
     ViewBag.Title = "广知户外媒体网-最大的户外媒体运营平台|户外广告|户外广告网|户外广告招商|户外广告发布|户外资源发布|户外媒介发布|户外传媒平台|户外媒体代理|媒体资源运营|媒体信息运营|户外媒体信息发布|媒体资源发布平台-www.dotaeye.com";
     ViewBag.Keywords = "媒体资源,户外广告信息,户外媒介发布,户外传媒平台,户外资源发布,户外媒体信息发布,媒体资源发布平台,媒体资源运营,媒体信息运营,户外广告网,户外广告招商,户外媒体代理,户外广告发布";
     ViewBag.Description = "鹰目户外媒体网，最大的户外媒体运营平台：户外广告网、户外广告招商、户外广告发布、户外资源发布、户外媒介发布、户外传媒平台、户外媒体代理、媒体资源运营、媒体信息运营、户外媒体信息发布、媒体资源发布平台。";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    var PriceListFilter = (List<HttpLinkItem>)ViewBag.PriceListFilter;
+    var Result = (ListSource)ViewBag.Result;
 }
 @Html.Action("city", "home", new { province = CookieHelper.Province })
 
-@Html.Partial("_TopListMenuHome", Model.ListMenu)
+@Html.Partial("_TopMenu", (List<HttpLinkGroup>)ViewBag.LeftMenu)
 
-<div class="nav-bread">
-    @for (var i = 0; i < Model.Braed.Items.Count; i++)
-    {
-        var item = Model.Braed.Items[i];
-        if (i == 0)
-        {
-        <text>
-        <a class="nav-bread-home" href="@item.Url"></a>&gt;
-        @if (Model.Braed.Items.Count == 1)
-        {
-<strong>户外资源</strong>
-        }
-        </text>
-        }
-        else
-        {
-            if (i == Model.Braed.Items.Count - 1)
-            {
-        <strong>@item.Name</strong>
-            }
-            else
-            {
-        <text>
-        <a href="@item.Url">@item.Name</a> &gt;
-    </text>
-            }
-        }
-    }
+@Html.Partial("_Bread", (List<HttpLinkItem>)ViewBag.Bread)
 
-</div>
 <article class="list-wrap clearfix">
     <section class="list-left">
-        <dl class="list-left-category">
-            @for (int i = 0; i < Model.ListMenu.Items.Count; i++)
-            {
-                var item = Model.ListMenu.Items[i];
-                <dt class="clearfix">
-                    <a class="list-category@(i)" href="@item.Category.Url">@item.Category.Name</a>
-                    <span class="list-category-arrow" @(!item.Category.Selected ? "" : "style=display:none") ></span></dt>
-                <dd @(item.Category.Selected ? "" : "style=display:none")>
-                    @foreach (var childItem in item.ChildCategories)
-                    { 
-                        <span @(childItem.Selected ? "class=active" : "") ><a href="@childItem.Url">@childItem.Name</a></span>
-                    }
-                </dd>
-            }
-        </dl>
-        <script type="text/javascript">
-            $(function() {
-                $('.list-category-arrow').click(function() {
-                    $('.list-category-arrow').show();
-                    $(this).hide().parent().next().show().siblings('dd').hide();
-                })
-            })
-        </script>
-        <div class="list-gray-box">
-            <h4>@Model.HotList.Name</h4>
-            <ul class="list-gray-view">
-                @for (var i = 0; i < Model.HotList.Items.Count; i++)
-                {
-                    var item = Model.HotList.Items[i];
-                    <li class="clearfix @((i == Model.HotList.Items.Count - 1) ? "list-gray-last" : "")">
-                        <a href="/product/@(item.ID).html" target="_blank" class="list-gray-img" >
-                            <img width="100" height="100" border="0" src="@item.ImgUrl" alt="@item.Name"></a>
-                        <p class="list-gray-desc">
-                            @*  <strong class="c_ba2636">44%</strong><strong>会买：</strong>*@
-                            <a class="list-gray-title" target="_blank" title="@item.Name" href="/product/@(item.ID).html">@item.Name</a>
-                        </p>
-                        <p class="list-gray-price"><strong>¥@item.Price </strong>万元/年</p>
-                        <p class="list-gray-city">
-                            @item.Province - @item.City
-                        </p>
-                        @*  <p class="list-gray-gift">
-                            <span title="原品1瓶">赠</span>
-                        </p>*@
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="list-gray-box ">
-            <h4>@Model.SuggestList.Name</h4>
-            <ul class="list-gray-view ">
-
-                @for (var i = 0; i < Model.SuggestList.Items.Count; i++)
-                {
-                    var item = Model.SuggestList.Items[i];
-                    <li class="clearfix @((i == Model.SuggestList.Items.Count - 1) ? "list-gray-last" : "")">
-                        <a href="/product/@(item.ID).html" target="_blank" class="list-gray-img" >
-                            <img width="100" height="100" border="0" src="@item.ImgUrl" alt="@item.Name"></a>
-                        <p class="list-gray-desc">
-                            @*  <strong class="c_ba2636">44%</strong><strong>会买：</strong>*@
-                            <a class="list-gray-title" target="_blank" title="@item.Name" href="/product/@(item.ID).html">@item.Name</a>
-                        </p>
-                        <p class="list-gray-price"><strong>¥@item.Price </strong>万元/年</p>
-                        <p class="list-gray-city">
-                            @item.Province - @item.City
-                        </p>
-                        @*  <p class="list-gray-gift">
-                            <span title="原品1瓶">赠</span>
-                        </p>*@
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="list-gray-box">
-            <h4>推荐公司</h4>
-            @for (var i = 0; i < Model.CompanyList.Items.Count; i++)
-            {
-                var item = Model.CompanyList.Items[i];
-                <table align="center" cellpadding="0" cellspacing="0" border="0" width="246" class="list-gray-table">
-                    <tbody>
-                        <tr>
-                            <td class="fs14 ff_yh" align="center" width="25"><em>@(i + 1)</em></td>
-                            <td align="left" width="120"><a target="_blank" href="@item.Url">
-                                <img src="@item.ImgUrl" alt="@item.Name"  width="110" height="60" border="0"></a></td>
-                            <td align="left"><a target="_blank" href="@item.Url">@item.Name</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            }
-        </div>
+        @Html.Partial("_LeftMenu", (List<HttpLinkGroup>)ViewBag.LeftMenu)
     </section>
     <section class="list-right">
-        <div class="list-right-wrap clearfix">
-            <div class="list-right-attr clearfix">
-                @foreach (var item in Model.Search.items)
-                {
-                    var searchlist = item.ChildCategories;
-                    if (searchlist.Any())
-                    {
-                    <div class="list-right-attr-bread clearfix">
-                        <div class="list-right-attr-title">@item.Category.Name：</div>
-                        <div class="list-right-attr-all">
-                            <a hidefocus="true" target="_self" class="@(searchlist.Any(x => x.Selected == true) ? "" : "selected")"  href="@item.Category.Url">不限</a>
-                        </div>
-                        <ul class="list-right-attr-list clearfix">
-                            @foreach (var childitem in searchlist)
-                            {
-                                <li class="@(childitem.Selected ? "selected" : "")">
-                                    <span>
-                                        <a hidefocus="true"  href="@(childitem.Selected ? item.Category.Url : childitem.Url)">@childitem.Name</a>
-                                        @if (childitem.Selected)
-                                        { 
-                                        
-                                            <a hidefocus="true" class="delete"  href="@item.Category.Url">×</a>
-                                        }
-                                    </span>
-                                </li>
-                            }
-                        </ul>
-                        <span class="list-right-attr-more" style="display: none">更多</span>
-                        <span class="list-right-attr-little" style="display: none">收起</span>
-                    </div>
-                    }
-                }
-
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function() {
-
-                $.each($(".list-right-attr-list"), function(index, item) {
-                    if ($(item).height() > 58) {
-                        $(item).height(58);
-                        $(item).next(".list-right-attr-more").show();
-                    }
-                });
-
-                $(".list-right-attr-more").click(function() {
-                    $(this).siblings(".list-right-attr-list").height("auto");
-                    $(this).hide();
-                    $(this).next().show();
-                })
-
-                $(".list-right-attr-little").click(function() {
-                    $(this).siblings(".list-right-attr-list").height(58);
-                    $(this).hide();
-                    $(this).prev().show();
-                })
-            })
-
-        </script>
+        @Html.Partial("_RightSearch", (List<HttpLinkGroup>)ViewBag.Search)
         <div class="list-filter clearfix">
             <div class="list-filter-top scroll-fixed clearfix">
-                <a hidefocus="true" class="list-filter-sort list-filter-default @(Model.isSortDefault ? "selected" : "") mr10 " href="@Model.DefaultOrderUrl">默认</a>
-                <a hidefocus="true" class="list-filter-sort list-filter-up @(Model.isSortPriceAsc ? "selected" : "")" href="@Model.PriceOrderAscUrl">价格</a>
-                <a hidefocus="true" class="list-filter-sort list-filter-down @(Model.isSortPriceDesc ? "selected" : "") mr10" href="@Model.PriceOrderDescUrl">价格</a>
+                <a  class="list-filter-sort list-filter-default @(ViewBag.isSortDefault ? "selected" : "") mr10 " href="@ViewBag.DefaultOrderUrl">默认</a>
+                <a  class="list-filter-sort list-filter-up @(ViewBag.isSortPriceAsc ? "selected" : "")" href="@ViewBag.PriceOrderAscUrl">价格</a>
+                <a  class="list-filter-sort list-filter-down @(ViewBag.isSortPriceDesc ? "selected" : "") mr10" href="@ViewBag.PriceOrderDescUrl">价格</a>
                 <div class="list-filter-price">
-                    <span class="list-filter-price-text">@Model.PriceListFilter.Name</span>
+                    <span class="list-filter-price-text">@PriceListFilter.Single(x=>x.Selected.Equals(true)).Name</span>
                     <ul class="list-filter-price-list">
-                        @foreach (var item in Model.PriceListFilter.Items)
+                        @foreach (var item in PriceListFilter)
                         {
                             <li><a class="@(item.Selected ? "selected" : "")" href="@item.Url">@item.Name</a></li>
                         }
@@ -207,7 +34,7 @@
                 </div>
                 <div class="list-filter-search">
                     <span class="list-filter-search-text">关键字：</span>
-                    <input type="text" id="query" name="query" class="list-filter-search-query" value="@Model.Result.Querywords" />
+                    <input type="text" id="query" name="query" class="list-filter-search-query" value="@ViewBag.Result.Querywords" />
                     <button type="button" class="btn btn-warning" id="querybtn">
                         <i class="icon-search icon-white mr5"></i>搜索</button>
                 </div>
@@ -228,7 +55,7 @@
                         })
                     })
                 </script>
-                <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@Model.Result.TotalCount</strong>&nbsp;条</div>
+                <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@ViewBag.Result.TotalCount</strong>&nbsp;条</div>
             </div>
             <div class="list-filter-bottom clearfix">
                 <div class="list-filter-menu">
@@ -243,10 +70,10 @@
 
             @{
                 var itemIndex = 1;
-                foreach (var item in Model.Result.Items)
-                {
-               
                 
+                foreach (var item in Result.Items)
+                {
+
                 <div class="list-products-item">
                     <a class="list-products-item-img" target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" >
                         <img width="220" height="220" border="0" src="@item.ImgUrl" alt="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))">
@@ -264,10 +91,10 @@
                     <p class="list-products-item-category">
                         <a target="_blank" href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode, childmediacode = item.MediaCateCode })">@item.ParentMediaCateName - @item.MediaCateName</a>&nbsp;&nbsp;
                     </p>
-                    <a href="#Core.onCartIconClick:1661" hidefocus="true" class="list-products-item-car" title="添加到购物车"></a>
+                    <a href="#Core.onCartIconClick:1661" class="list-products-item-car" title="添加到购物车"></a>
                 </div>
                 
-                    if (itemIndex % 3 == 0 && itemIndex < Model.Result.Items.Count - 2)
+                    if (itemIndex % 3 == 0 && itemIndex < ViewBag.Result.Items.Count - 2)
                     { 
                 <div class="list-grayline"></div>
                     }
@@ -279,9 +106,9 @@
         </div>
         @Html.MaitonnPage(new PagingInfo()
            {
-               CurrentPage = Model.Result.CurrentPage,
-               ItemsPerPage = Model.Result.PageSize,
-               TotalItems = Model.Result.TotalCount,
+               CurrentPage = ViewBag.Result.CurrentPage,
+               ItemsPerPage = ViewBag.Result.PageSize,
+               TotalItems = ViewBag.Result.TotalCount,
                ShowPageBox = true
            })
     </section>

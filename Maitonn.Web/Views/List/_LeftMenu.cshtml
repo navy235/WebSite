@@ -1,0 +1,45 @@
+﻿@model List<HttpLinkGroup>
+
+<dl class="list-left-category">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var group = Model[i].Group;
+        <dt class="clearfix">
+            <a class="list-category@(i)" href="@Url.Action("index", "list", new
+                                                  {
+                                                      province = CookieHelper.Province,
+                                                      city = 0,
+                                                      mediacode = group.ID,
+                                                      childmediacode = 0,
+                                                      formatcode = 0,
+                                                      ownercode = 0,
+                                                      periodcode = 0,
+                                                      page = 1
+                                                  })">@group.Name</a>
+            <span class="list-category-arrow" @(!group.Selected ? "" : "style=display:none") ></span></dt>
+        <dd @(group.Selected ? "" : "style=display:none")>
+            @foreach (var childItem in Model[i].Items)
+            { 
+                <span @(childItem.Selected ? "class=active" : "") ><a href="@Url.Action("index", "list", new
+                                                  {
+                                                      province = CookieHelper.Province,
+                                                      city = 0,
+                                                      mediacode = group.ID,
+                                                      childmediacode = childItem.ID,
+                                                      formatcode = 0,
+                                                      ownercode = 0,
+                                                      periodcode = 0,
+                                                      page = 1
+                                                  })">@childItem.Name</a></span>
+                    }
+        </dd>
+            }
+</dl>
+<script type="text/javascript">
+    $(function() {
+        $('.list-category-arrow').click(function() {
+            $('.list-category-arrow').show();
+            $(this).hide().parent().next().show().siblings('dd').hide();
+        })
+    })
+</script>

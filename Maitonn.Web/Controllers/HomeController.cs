@@ -81,7 +81,7 @@ namespace Maitonn.Web
 
             ViewBag.GoodCompany = sourceService.GetGoodCompany(provinceValue, 10);
 
-            ViewBag.Gallery = GetGallery(isQuanGuo, provinceValue);
+            ViewBag.Gallery = GetGallery(isQuanGuo, provinceValue, 6);
 
             return View();
         }
@@ -91,7 +91,7 @@ namespace Maitonn.Web
         public ActionResult City(string province = "quanguo")
         {
 
-             var provinceValue = EnumHelper.GetProvinceValue(province);
+            var provinceValue = EnumHelper.GetProvinceValue(province);
 
             if (!CookieHelper.Province.Equals(province, StringComparison.CurrentCultureIgnoreCase))
             {
@@ -161,7 +161,7 @@ namespace Maitonn.Web
         }
 
 
-        private List<HttpLinkGallery> GetGallery(bool isQuanGuo, int province)
+        private List<HttpLinkGallery> GetGallery(bool isQuanGuo, int province, int count)
         {
             List<HttpLinkGallery> result = new List<HttpLinkGallery>();
 
@@ -186,7 +186,7 @@ namespace Maitonn.Web
                     }
                 };
 
-                tab.Items = sourceService.GetSuggestMedia(isQuanGuo, province, 8, category.ID);
+                tab.Items = sourceService.GetSuggestMedia(isQuanGuo, province, count, category.ID);
 
                 galleryContainer.Tabs.Add(tab);
 
@@ -197,7 +197,7 @@ namespace Maitonn.Web
                         Name = "优质资源"
                     }
                 };
-                tab.Items = sourceService.GetGoodMedia(province, 8, category.ID);
+                tab.Items = sourceService.GetGoodMedia(province, count, category.ID);
 
                 galleryContainer.Tabs.Add(tab);
 
@@ -208,7 +208,7 @@ namespace Maitonn.Web
                         Name = "认证资源"
                     }
                 };
-                tab.Items = sourceService.GetAuthMedia(province, 8, category.ID);
+                tab.Items = sourceService.GetAuthMedia(province, count, category.ID);
 
                 galleryContainer.Tabs.Add(tab);
 
@@ -221,7 +221,7 @@ namespace Maitonn.Web
                     }
                 };
 
-                tab.Items = sourceService.GetNewMedia(province, 8, category.ID);
+                tab.Items = sourceService.GetNewMedia(province, count, category.ID);
 
                 galleryContainer.Tabs.Add(tab);
 

@@ -1,5 +1,4 @@
-﻿@model HomeViewModel
-@{
+﻿@{
     ViewBag.Title = "广知户外媒体网-最大的户外媒体运营平台|户外广告|户外广告网|户外广告招商|户外广告发布|户外资源发布|户外媒介发布|户外传媒平台|户外媒体代理|媒体资源运营|媒体信息运营|户外媒体信息发布|媒体资源发布平台-www.dotaeye.com";
     ViewBag.Keywords = "媒体资源,户外广告信息,户外媒介发布,户外传媒平台,户外资源发布,户外媒体信息发布,媒体资源发布平台,媒体资源运营,媒体信息运营,户外广告网,户外广告招商,户外媒体代理,户外广告发布";
     ViewBag.Description = "鹰目户外媒体网，最大的户外媒体运营平台：户外广告网、户外广告招商、户外广告发布、户外资源发布、户外媒介发布、户外传媒平台、户外媒体代理、媒体资源运营、媒体信息运营、户外媒体信息发布、媒体资源发布平台。";
@@ -44,14 +43,63 @@
 </article>
 <article class="main">
     <div class="main-hot clearfix">
+        <div class="main-hot-left">
+            <div class="main-hot-left-title">
+                <div class="main-hot-scroll" id="suggest-marquee">
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                </div>
+            </div>
+        </div>
         @Html.Partial("_ImgBlock", (List<HttpLinkItem>)ViewBag.TopCompany)
     </div>
     <div class="main-hot clearfix">
+        <div class="main-hot-left">
+            <div class="main-hot-left-title">
+                <div class="main-hot-scroll" id="hot-marquee">
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                </div>
+            </div>
+        </div>
         @Html.Partial("_ImgBlock", (List<HttpLinkItem>)ViewBag.GoodCompany)
     </div>
 
     @Html.Partial("_Gallery", (List<HttpLinkGallery>)ViewBag.Gallery)
 
 </article>
+
+<script type="text/javascript">
+    $(function() {
+        $('#suggest-marquee').marquee();
+        $('#hot-marquee').marquee();
+        $('.img-block-item').each(function() {
+            $(this).hover(function() {
+                $(this).find('.description').css({ bottom: '0px' });
+            },
+         function() {
+             $(this).find('.description').css({ bottom: '-70%' });
+         });
+        });
+    })
+</script>
+
+
 @*@Html.Partial("_TopHotHome", Model.TopHot)
 @Html.Partial("_MainHome", Model.MainHot)*@

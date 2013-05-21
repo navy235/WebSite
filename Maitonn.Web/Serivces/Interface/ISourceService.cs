@@ -14,17 +14,19 @@ namespace Maitonn.Web
 
         List<HttpLinkItem> GetSlider(int province, int take);
 
-        List<HttpLinkItem> GetSuggestMedia(bool isQuanGuo,int province, int take, int PCategoryCode = 0, int CategoryCode = 0);
+        List<HttpLinkItem> GetSuggestMedia(bool isQuanGuo, int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0);
 
-        List<HttpLinkItem> GetGoodMedia(int province, int take, int PCategoryCode = 0, int CategoryCode = 0);
+        List<HttpLinkItem> GetGoodMedia(int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0);
 
-        List<HttpLinkItem> GetAuthMedia(int province, int take, int PCategoryCode = 0, int CategoryCode = 0);
+        List<HttpLinkItem> GetAuthMedia(int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0);
 
-        List<HttpLinkItem> GetNewMedia(int province, int take, int PCategoryCode = 0, int CategoryCode = 0);
+        List<HttpLinkItem> GetNewMedia(int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0);
 
-        List<HttpLinkItem> GetSuggestCompany(bool isQuanGuo, int province, int take, int PCategoryCode = 0, int CategoryCode = 0);
+        List<HttpLinkItem> GetSuggestCompany(bool isQuanGuo, int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0);
 
         List<HttpLinkItem> GetGoodCompany(int province, int take);
+
+        List<HttpLinkItem> GetRelateCompany(int province, int take, int city = 0);
 
 
     }

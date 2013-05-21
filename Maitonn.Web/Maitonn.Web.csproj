@@ -979,6 +979,7 @@
     <Content Include="Scripts\jquery.hoverlist-1.0.js" />
     <Content Include="Scripts\jquery.Jcrop.min.js" />
     <Content Include="Scripts\jquery.jqzoom-core.js" />
+    <Content Include="Scripts\jquery.marquee-1.0.js" />
     <Content Include="Scripts\jquery.slider-1.0.js" />
     <Content Include="Scripts\jquery.slider-2.0.js" />
     <Content Include="Scripts\jquery.sliderbox-1.0.js" />
@@ -1657,6 +1658,10 @@
     <Content Include="Views\Scheme\GetEditSchemeForm.cshtml" />
     <Content Include="Views\Scheme\Edit.cshtml" />
     <Content Include="Views\Shared\_CommonJavascript.cshtml" />
+    <Content Include="Views\List\_TopMenu.cshtml" />
+    <Content Include="Views\List\_Bread.cshtml" />
+    <Content Include="Views\List\_LeftMenu.cshtml" />
+    <Content Include="Views\List\_RightSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

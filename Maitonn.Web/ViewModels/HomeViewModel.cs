@@ -8,64 +8,6 @@ using PagedList.Mvc;
 
 namespace Maitonn.Web
 {
-    public class HomeViewModel
-    {
-
-        public TopHotViewModel TopHot { get; set; }
-
-        public MainHotViewModel MainHot { get; set; }
-
-        public string Province { get; set; }
-
-    }
-
-
-
-    public class ListViewModel
-    {
-        public string Province { get; set; }
-
-        public BraedViewModel Braed { get; set; }
-
-        public TopHotListMenuViewModel ListMenu { get; set; }
-
-        public ListProductViewModel HotList { get; set; }
-
-        public ListProductViewModel SuggestList { get; set; }
-
-        public ListLinksViewModel CompanyList { get; set; }
-
-        public ListSearchViewModel Search { get; set; }
-
-        public ListPageViewModel Result { get; set; }
-
-        public string DefaultOrderUrl { get; set; }
-
-        public bool isSortDefault { get; set; }
-
-        public string PriceOrderDescUrl { get; set; }
-
-        public bool isSortPriceDesc { get; set; }
-
-        public string PriceOrderAscUrl { get; set; }
-
-        public bool isSortPriceAsc { get; set; }
-
-        public PriceListFilterViewModel PriceListFilter { get; set; }
-
-    }
-
-    public class PriceListFilterViewModel
-    {
-        public PriceListFilterViewModel()
-        {
-            this.Items = new List<CategoryViewModel>();
-        }
-
-        public string Name { get; set; }
-
-        public List<CategoryViewModel> Items { get; set; }
-    }
 
 
     public class ListPageViewModel
@@ -105,14 +47,7 @@ namespace Maitonn.Web
         public int MediaID { get; set; }
 
         public CompanyShopIntroViewModel Company { get; set; }
-
-
-
-
     }
-
-
-
 
 
     public class BraedViewModel
@@ -201,6 +136,12 @@ namespace Maitonn.Web
         public int TotalFaces { get; set; }
 
         public DateTime Addtime { get; set; }
+
+        public int MemberStatus { get; set; }
+
+        public int MemberCreditIndex { get; set; }
+
+        public string CompanyName { get; set; }
     }
 
 
@@ -335,93 +276,4 @@ namespace Maitonn.Web
         public List<ProductViewModel> Items { get; set; }
     }
 
-
-    public class MainHotViewModel
-    {
-
-        public MainHotLeftLinksViewModel MainHotLeftLinks { get; set; }
-        public MainHotLeftBoxViewModel MainHotLeftBox { get; set; }
-        public MainHotRightLinksViewModel MainHotRightLinks { get; set; }
-        public MainHotLinksViewModel MainHotLinks { get; set; }
-        public MainGalleryViewModel MainGallery { get; set; }
-    }
-
-    public class MainHotLeftLinksViewModel
-    {
-        public MainHotLeftLinksViewModel()
-        {
-            this.Items = new List<CategoryViewModel>();
-        }
-        public List<CategoryViewModel> Items { get; set; }
-    }
-
-
-    public class MainHotLeftBoxViewModel
-    {
-        public MainHotLeftBoxViewModel()
-        {
-            this.Items = new List<CategoryViewModel>();
-        }
-        public List<CategoryViewModel> Items { get; set; }
-    }
-
-    public class MainHotRightLinksViewModel
-    {
-        public MainHotRightLinksViewModel()
-        {
-            this.Items = new List<CategoryViewModel>();
-        }
-        public List<CategoryViewModel> Items { get; set; }
-    }
-
-
-    public class MainHotLinksViewModel
-    {
-        public MainHotLinksViewModel()
-        {
-            this.Items = new List<CategoryListViewModel>();
-        }
-        public List<CategoryListViewModel> Items { get; set; }
-    }
-
-    public class MainGalleryViewModel
-    {
-        public MainGalleryViewModel()
-        {
-            this.Items = new List<MainGalleryContainerViewModel>();
-        }
-        public List<MainGalleryContainerViewModel> Items { get; set; }
-    }
-
-    public class MainGalleryContainerViewModel
-    {
-
-        public MainGalleryContainerViewModel()
-        {
-            this.Items = new List<MainGalleryItemViewModel>();
-        }
-        public CategoryViewModel Category { get; set; }
-
-        public ProductViewModel SuggestItem { get; set; }
-
-        public List<MainGalleryItemViewModel> Items { get; set; }
-
-    }
-
-    public class MainGalleryItemViewModel
-    {
-
-        public MainGalleryItemViewModel()
-        {
-            this.Items = new List<ProductViewModel>();
-            this.TopItems = new List<ProductViewModel>();
-        }
-
-        public string Name { get; set; }
-
-        public List<ProductViewModel> Items { get; set; }
-
-        public List<ProductViewModel> TopItems { get; set; }
-
-    }
 }

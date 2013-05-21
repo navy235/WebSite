@@ -130,7 +130,12 @@ namespace Maitonn.Core
 
         public static int MemberID
         {
-            get { return Convert.ToInt32(UID); }
+            get
+            {
+                int Uid;
+                Int32.TryParse(UID, out Uid);
+                return Uid;
+            }
         }
 
         public static string NickName
@@ -192,7 +197,8 @@ namespace Maitonn.Core
                 {
                     return false;
                 }
-                int Uid = Convert.ToInt32(uid);
+                int Uid;
+                Int32.TryParse(uid, out Uid);
                 if (Uid > 0)
                 {
                     return true;

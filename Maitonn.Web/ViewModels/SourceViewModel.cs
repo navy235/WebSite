@@ -9,6 +9,8 @@ namespace Maitonn.Web
     {
         public int ID { get; set; }
 
+        public int MemberID { get; set; }
+
         public string ImgUrl { get; set; }
 
         public string MidImgUrl { get; set; }
@@ -42,6 +44,20 @@ namespace Maitonn.Web
         public string PeriodName { get; set; }
 
         public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Mobile { get; set; }
+
+        public string Phone { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public int MemberCreditIndex { get; set; }
+
+        public int MemberStatus { get; set; }
+
+        public bool Selected { get; set; }
     }
 
     public class HttpLinkGroup
@@ -67,6 +83,19 @@ namespace Maitonn.Web
 
         public List<HttpLinkGroup> Tabs { get; set; }
 
+    }
+
+    public class ListSource
+    {
+        public List<HttpLinkItem> Items { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int CurrentPage { get; set; }
+
+        public int TotalCount { get; set; }
+
+        public string Querywords { get; set; }
     }
 
 }

@@ -58,7 +58,7 @@ namespace Maitonn.Web
         /// <param name="totalHits"> The total number of OutDoors discovered. </param>
         IQueryable<OutDoor> Search(IQueryable<OutDoor> OutDoors, SearchFilter filter, out int totalHits);
 
-        List<ListSearchProductViewModel> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits);
+        List<HttpLinkItem> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits);
 
         List<HttpLinkItem> Search(List<int> Keys);
 
@@ -108,7 +108,7 @@ namespace Maitonn.Web
                 .AsQueryable();
         }
 
-        public List<ListSearchProductViewModel> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
+        public List<HttpLinkItem> Search(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
         {
             if (searchFilter == null)
             {
@@ -198,12 +198,12 @@ namespace Maitonn.Web
             }
         }
 
-        private static List<ListSearchProductViewModel> SearchCore(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
+        private static List<HttpLinkItem> SearchCore(ListSearchItemViewModel queryParams, SearchFilter searchFilter, out int totalHits)
         {
             if (!Directory.Exists(LuceneCommon.IndexDirectory))
             {
                 totalHits = 0;
-                return new List<ListSearchProductViewModel>();
+                return new List<HttpLinkItem>();
             }
 
             SortField sortField = GetSortField(searchFilter);
@@ -219,7 +219,7 @@ namespace Maitonn.Web
                 var results = searcher.Search(query, filter: null, n: numRecords, sort: new Sort(sortField));
 
                 var keys = results.ScoreDocs.Skip(searchFilter.Skip)
-                    .Select(c => PackageFromDoc(searcher.Doc(c.Doc)))
+                    .Select(c => GetMediaItem(searcher.Doc(c.Doc)))
                     .ToList();
 
                 totalHits = results.TotalHits;
@@ -230,46 +230,11 @@ namespace Maitonn.Web
             }
         }
 
-        private static ListSearchProductViewModel PackageFromDoc(Document doc)
-        {
-            int Hit = Int32.Parse(doc.Get(OutDoorIndexFields.Hit), CultureInfo.InvariantCulture);
-            int MediaID = Int32.Parse(doc.Get(OutDoorIndexFields.MediaID), CultureInfo.InvariantCulture);
-            int Province = Int32.Parse(doc.Get(OutDoorIndexFields.Province), CultureInfo.InvariantCulture);
-            int City = Int32.Parse(doc.Get(OutDoorIndexFields.City), CultureInfo.InvariantCulture);
-            int FormatCode = Int32.Parse(doc.Get(OutDoorIndexFields.FormatCode), CultureInfo.InvariantCulture);
-            int MediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.MediaCode), CultureInfo.InvariantCulture);
-            int PMediaCode = Int32.Parse(doc.Get(OutDoorIndexFields.PMediaCode), CultureInfo.InvariantCulture);
-            decimal Price = Decimal.Parse(doc.Get(OutDoorIndexFields.Price), CultureInfo.InvariantCulture);
-            decimal Width = Decimal.Parse(doc.Get(OutDoorIndexFields.Width), CultureInfo.InvariantCulture);
-            decimal Height = Decimal.Parse(doc.Get(OutDoorIndexFields.Height), CultureInfo.InvariantCulture);
-            int TotalFaces = Int32.Parse(doc.Get(OutDoorIndexFields.TotalFaces), CultureInfo.InvariantCulture);
-            DateTime AddTime = new DateTime(Int64.Parse(doc.Get(OutDoorIndexFields.Published), CultureInfo.InvariantCulture));
-            return new ListSearchProductViewModel
-            {
-                ID = MediaID,
-                ImgUrl = doc.Get(OutDoorIndexFields.ImgUrl),
-                ProvinceCode = Province,
-                ProvinceName = doc.Get(OutDoorIndexFields.ProvinceName),
-                CityCode = City,
-                CityName = doc.Get(OutDoorIndexFields.CityName),
-                ParentMediaCateCode = PMediaCode,
-                ParentMediaCateName = doc.Get(OutDoorIndexFields.PMediaCateName),
-                MediaCateCode = MediaCode,
-                MediaCateName = doc.Get(OutDoorIndexFields.MediaCateName),
-                FormatCateName = doc.Get(OutDoorIndexFields.FormatName),
-                Name = doc.Get(OutDoorIndexFields.Title),
-                OwnerCateName = doc.Get(OutDoorIndexFields.OwnerCateName),
-                Price = Price,
-                Width = Width,
-                Height = Height,
-                TotalFaces = TotalFaces,
-                PeriodCateName = doc.Get(OutDoorIndexFields.PeriodName),
-                Addtime = AddTime
-            };
-        }
-
         private static HttpLinkItem GetMediaItem(Document doc)
         {
+            int MemberStatus = Int32.Parse(doc.Get(OutDoorIndexFields.MemberStatus), CultureInfo.InvariantCulture);
+            int MemberID = Int32.Parse(doc.Get(OutDoorIndexFields.MemberID), CultureInfo.InvariantCulture);
+            int MemberCreditIndex = Int32.Parse(doc.Get(OutDoorIndexFields.MemberCreditIndex), CultureInfo.InvariantCulture);
             int Hit = Int32.Parse(doc.Get(OutDoorIndexFields.Hit), CultureInfo.InvariantCulture);
             int MediaID = Int32.Parse(doc.Get(OutDoorIndexFields.MediaID), CultureInfo.InvariantCulture);
             int Province = Int32.Parse(doc.Get(OutDoorIndexFields.Province), CultureInfo.InvariantCulture);
@@ -296,7 +261,11 @@ namespace Maitonn.Web
                 CategoryName = doc.Get(OutDoorIndexFields.MediaCateName),
                 Name = doc.Get(OutDoorIndexFields.Title),
                 Price = Price,
-                PeriodName = doc.Get(OutDoorIndexFields.PeriodName)
+                PeriodName = doc.Get(OutDoorIndexFields.PeriodName),
+                CompanyName = doc.Get(OutDoorIndexFields.CompanyName),
+                MemberCreditIndex = MemberCreditIndex,
+                MemberStatus = MemberStatus,
+                MemberID = MemberID
             };
         }
 
@@ -307,7 +276,7 @@ namespace Maitonn.Web
                 return new MatchAllDocsQuery();
             }
 
-            var fields = new[] { "Title", "Description", "AreaAtt", "MediaCateName", "CityName", "ProvinceName", "PMediaCateName", "FormatName", "PeriodName", "OwnerCateName" };
+            var fields = new[] { "Title", "Description", "CompanyName", "AreaAtt", "MediaCateName", "CityName", "ProvinceName", "PMediaCateName", "FormatName", "PeriodName", "OwnerCateName" };
 
             var analyzer = new ChineseAnalyzer();
             //var analyzer = new StandardAnalyzer(LuceneCommon.LuceneVersion);
@@ -430,7 +399,6 @@ namespace Maitonn.Web
             var verifyStatus = NumericRangeQuery.NewIntRange(OutDoorIndexFields.Status, (int)OutDoorStatus.ShowOnline, 99, true, true);
             combineQuery.Add(verifyStatus, Occur.MUST);
             #endregion
-
 
             #region 省份查询
             if (!String.IsNullOrEmpty(queryParams.Province) && queryParams.Province != "quanguo")

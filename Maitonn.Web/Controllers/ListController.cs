@@ -30,6 +30,8 @@ namespace Maitonn.Web
         private IPeriodCateService periodCateService;
         private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
+        private ISourceService sourceService;
+        private ISearchService searchService;
         public ListController(
             IMemberService _memberService
             , IAreaAttService _areaAttService
@@ -43,6 +45,8 @@ namespace Maitonn.Web
             , IPeriodCateService _periodCateService
             , IOwnerCateService _ownerCateService
             , IAuctionCalendarService _auctionCalendarService
+            , ISourceService _sourceService
+            , ISearchService _searchService
             )
         {
 
@@ -58,6 +62,8 @@ namespace Maitonn.Web
             periodCateService = _periodCateService;
             ownerCateService = _ownerCateService;
             auctionCalendarService = _auctionCalendarService;
+            sourceService = _sourceService;
+            searchService = _searchService;
         }
 
 
@@ -73,6 +79,12 @@ namespace Maitonn.Web
             int page = 1,
             string query = null)
         {
+
+            var provinceValue = EnumHelper.GetProvinceValue(province);
+
+            var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
+
+            var LeftMenu = sourceService.GetLeftMenu(provinceValue);
 
             //搜索条件
             ListSearchItemViewModel searchTrem = new ListSearchItemViewModel()
@@ -90,24 +102,24 @@ namespace Maitonn.Web
                 Descending = descending,
                 Query = query
             };
-            ListViewModel model = new ListViewModel();
 
-            model.ListMenu = GetListMenu(searchTrem);
+            ViewBag.LeftMenu = SetLeftMenu(LeftMenu, searchTrem);
 
-            model.Braed = GetBread(province, model.ListMenu);
+            ViewBag.Bread = GetBread(LeftMenu, searchTrem);
 
-            model.HotList = GetHotList();
+            ViewBag.SuggestList = sourceService.GetSuggestMedia(isQuanGuo, provinceValue, 5, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            model.SuggestList = GetSuggestList();
+            ViewBag.HotList = sourceService.GetGoodMedia(provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            model.CompanyList = GetCompanyList();
+            ViewBag.SuggestCompanyList = sourceService.GetSuggestCompany(isQuanGuo, provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            model.Search = GetSearch(searchTrem);
+            ViewBag.RelateCompany = sourceService.GetRelateCompany(provinceValue, 5, searchTrem.City);
 
-            model.Province = province;
+            ViewBag.Search = GetSearch(searchTrem);
 
-            model.PriceListFilter = GetPriceListFilter(searchTrem);
-            model.DefaultOrderUrl = Url.Action("index", new
+            ViewBag.PriceListFilter = GetPriceListFilter(searchTrem);
+
+            ViewBag.DefaultOrderUrl = Url.Action("index", new
             {
                 province = searchTrem.Province,
                 city = searchTrem.City,
@@ -120,9 +132,10 @@ namespace Maitonn.Web
                 order = 0,
                 descending = 0,
                 page = searchTrem.Page,
+
             });
 
-            model.PriceOrderAscUrl = Url.Action("index", new
+            ViewBag.PriceOrderAscUrl = Url.Action("index", new
             {
                 province = searchTrem.Province,
                 city = searchTrem.City,
@@ -137,7 +150,7 @@ namespace Maitonn.Web
                 page = searchTrem.Page
             });
 
-            model.PriceOrderDescUrl = Url.Action("index", new
+            ViewBag.PriceOrderDescUrl = Url.Action("index", new
             {
                 province = searchTrem.Province,
                 city = searchTrem.City,
@@ -151,46 +164,58 @@ namespace Maitonn.Web
                 descending = (int)SortDirection.Descending,
                 page = searchTrem.Page
             });
-            model.Result = GetResult(searchTrem);
+
+            ViewBag.Result = GetResult(searchTrem);
 
             if (searchTrem.Order == 0)
             {
-                model.isSortDefault = true;
+                ViewBag.isSortDefault = true;
             }
             else if (searchTrem.Order == (int)SortProperty.Price)
             {
                 if (searchTrem.Descending == (int)SortDirection.Descending)
                 {
-                    model.isSortPriceDesc = true;
+                    ViewBag.isSortPriceDesc = true;
                 }
                 else
                 {
-                    model.isSortPriceAsc = true;
+                    ViewBag.isSortPriceAsc = true;
                 }
             }
 
-            return View(model);
+            return View();
         }
 
-        private PriceListFilterViewModel GetPriceListFilter(ListSearchItemViewModel searchTrem)
+        private List<HttpLinkGroup> SetLeftMenu(List<HttpLinkGroup> list, ListSearchItemViewModel search)
         {
-            PriceListFilterViewModel model = new PriceListFilterViewModel();
+            foreach (var item in list)
+            {
+                item.Group.Selected = item.Group.CategoryCode == search.MediaCode;
+                foreach (var childItem in item.Items)
+                {
+                    childItem.Selected = childItem.CategoryCode == search.ChildMediaCode;
+                }
+            }
+            return list;
+        }
 
-            model.Name = UIHelper.PriceList.Single(x => x.Value == searchTrem.Price.ToString()).Text;
+        private List<HttpLinkItem> GetPriceListFilter(ListSearchItemViewModel search)
+        {
+            List<HttpLinkItem> result = new List<HttpLinkItem>();
 
-            model.Items = UIHelper.PriceList.Select(x => new CategoryViewModel()
+            result = UIHelper.PriceList.Select(x => new HttpLinkItem()
             {
                 Name = x.Text,
-                Selected = x.Value == searchTrem.Price.ToString(),
+                Selected = x.Value == search.Price.ToString(),
                 Url = Url.Action("index", new
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    formatcode = searchTrem.FormatCode,
-                    ownercode = searchTrem.OwnerCode,
-                    periodcode = searchTrem.PeriodCode,
+                    province = search.Province,
+                    city = search.City,
+                    mediacode = search.MediaCode,
+                    childmediacode = search.ChildMediaCode,
+                    formatcode = search.FormatCode,
+                    ownercode = search.OwnerCode,
+                    periodcode = search.PeriodCode,
                     price = Convert.ToInt32(x.Value),
                     order = 0,
                     descending = 0,
@@ -199,7 +224,7 @@ namespace Maitonn.Web
 
             }).ToList();
 
-            return model;
+            return result;
         }
 
         private SearchFilter GetSearchFilter(string q, int sortOrder, int descending, int page, int pageSize)
@@ -218,25 +243,22 @@ namespace Maitonn.Web
             return searchFilter;
         }
 
-        private ListPageViewModel GetResult(ListSearchItemViewModel searchTrem)
+        private ListSource GetResult(ListSearchItemViewModel search)
         {
             const int PageSize = 15;
-            var model = new ListPageViewModel();
-            var query = new List<ListSearchProductViewModel>();
-            LuceneSearchService Service = new LuceneSearchService();
-            var searchFilter = GetSearchFilter(searchTrem.Query, searchTrem.Order, searchTrem.Descending, searchTrem.Page, PageSize);
+            var model = new ListSource();
+            var query = new List<HttpLinkItem>();
+            var searchFilter = GetSearchFilter(search.Query, search.Order, search.Descending, search.Page, PageSize);
             int totalHits;
             using (MiniProfiler.Current.Step("LuceneSearch"))
             {
-                query = Service.Search(searchTrem, searchFilter, out totalHits);
+                query = searchService.Search(search, searchFilter, out totalHits);
             }
             model.Items = query;
-
             model.TotalCount = totalHits;
-            model.CurrentPage = searchTrem.Page;
+            model.CurrentPage = search.Page;
             model.PageSize = PageSize;
-            model.Querywords = string.IsNullOrEmpty(searchTrem.Query) ? "" : searchTrem.Query;
-
+            model.Querywords = string.IsNullOrEmpty(search.Query) ? "" : search.Query;
             return model;
         }
 
@@ -247,133 +269,54 @@ namespace Maitonn.Web
             {
                 CookieHelper.SetProvinceCookie(province);
             }
-            TopHotListMenuViewModel model = GetMenu(province);
+            var provinceValue = EnumHelper.GetProvinceValue(province);
+            List<HttpLinkGroup> model = sourceService.GetLeftMenu(provinceValue);
             return View(model);
         }
 
-        private TopHotListMenuViewModel GetMenu(string province)
+        private List<HttpLinkItem> GetBread(List<HttpLinkGroup> menu, ListSearchItemViewModel search)
         {
-            TopHotListMenuViewModel model = new TopHotListMenuViewModel();
+            List<HttpLinkItem> model = new List<HttpLinkItem>();
 
-            var category = outDoorMediaCateService.IncludeGetALL().ToList();
-
-            foreach (var item in category)
-            {
-                CategoryListViewModel clvm = new CategoryListViewModel();
-
-                //父类导航
-                CategoryViewModel cvm = new CategoryViewModel()
-                {
-                    CID = item.ID.ToString(),
-                    Name = item.CateName,
-                    Url = Url.Action("index", new
-                    {
-                        province = province,
-                        mediacode = item.ID
-                    })
-                };
-                clvm.Category = cvm;
-                //子类导航
-                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Select(x => new CategoryViewModel
-                {
-                    CID = x.ID.ToString(),
-                    Name = x.CateName,
-
-                    Url = Url.Action("index", new
-                    {
-                        province = province,
-
-                        mediacode = item.ID,
-                        childmediacode = x.ID
-                    })
-                }).ToList();
-                clvm.ChildCategories = ChildCategories;
-                model.Items.Add(clvm);
-            }
-            return model;
-
-        }
-
-
-        /// <summary>
-        /// 获取左边导航链接
-        /// </summary>
-        /// <param name="searchTrem">搜索条件集合</param>
-        /// <returns></returns>
-        private TopHotListMenuViewModel GetListMenu(ListSearchItemViewModel searchTrem)
-        {
-            TopHotListMenuViewModel model = new TopHotListMenuViewModel();
-
-            var category = outDoorMediaCateService.IncludeGetALL().ToList();
-
-            foreach (var item in category)
-            {
-                CategoryListViewModel clvm = new CategoryListViewModel();
-
-                //父类导航
-                CategoryViewModel cvm = new CategoryViewModel()
-                {
-                    CID = item.ID.ToString(),
-                    Name = item.CateName,
-                    Url = Url.Action("index", new
-                    {
-                        province = searchTrem.Province,
-                        city = searchTrem.City,
-                        mediacode = item.ID
-                    }),
-                    Selected = searchTrem.MediaCode == item.ID
-                };
-
-                clvm.Category = cvm;
-
-
-                //子类导航
-                List<CategoryViewModel> ChildCategories = item.ChildCategoies.Select(x => new CategoryViewModel
-                {
-                    CID = x.ID.ToString(),
-                    Name = x.CateName,
-                    Selected = x.ID == searchTrem.ChildMediaCode,
-                    Url = Url.Action("index", new
-                    {
-                        province = searchTrem.Province,
-                        city = searchTrem.City,
-                        mediacode = item.ID,
-                        childmediacode = x.ID
-                    })
-                }).ToList();
-                clvm.ChildCategories = ChildCategories;
-                clvm.Category.Selected = clvm.Category.Selected ?
-                    clvm.Category.Selected :
-                    ChildCategories.Any(x => x.Selected == true);
-                model.Items.Add(clvm);
-            }
-            return model;
-        }
-
-
-        private BraedViewModel GetBread(string province, TopHotListMenuViewModel listmenu)
-        {
-            BraedViewModel model = new BraedViewModel();
-
-            CategoryViewModel home = new CategoryViewModel()
+            HttpLinkItem home = new HttpLinkItem()
             {
                 Url = Url.Action("index", "home", new
                 {
-                    province = province
+                    province = search.Province
                 })
             };
-            model.Items.Add(home);
-            foreach (var item in listmenu.Items)
-            {
-                if (item.Category.Selected)
-                {
-                    model.Items.Add(item.Category);
+            model.Add(home);
 
-                    foreach (var childitem in item.ChildCategories)
+            foreach (var item in menu)
+            {
+                if (item.Group.Selected)
+                {
+                    model.Add(new HttpLinkItem()
+                    {
+                        Name = item.Group.Name,
+                        Url = Url.Action("index", "list", new
+                        {
+                            province = search.Province,
+                            city = search.City,
+                            mediacode = item.Group.CategoryCode
+                        })
+                    });
+
+                    foreach (var childitem in item.Items)
                     {
                         if (childitem.Selected)
                         {
-                            model.Items.Add(childitem);
+                            model.Add(new HttpLinkItem()
+                            {
+                                Name = childitem.Name,
+                                Url = Url.Action("index", "list", new
+                                {
+                                    province = search.Province,
+                                    city = search.City,
+                                    mediacode = item.Group.CategoryCode,
+                                    childmediacode = childitem.CategoryCode
+                                })
+                            });
                         }
                     }
                 }
@@ -381,313 +324,261 @@ namespace Maitonn.Web
             return model;
         }
 
-        private ListProductViewModel GetHotList()
-        {
-            ListProductViewModel model = new ListProductViewModel();
-            model.Name = "热门资源";
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(8).ToList();
-            model.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            return model;
-        }
-
-        private ListProductViewModel GetSuggestList()
-        {
-            ListProductViewModel model = new ListProductViewModel();
-            model.Name = "推荐资源";
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(6).ToList();
-            model.Items = product.Select(x => new ProductViewModel()
-            {
-                ID = x.MediaID,
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Price = x.Price,
-                City = x.City,
-                Province = x.Province
-            }).ToList();
-            return model;
-        }
-
-        private ListLinksViewModel GetCompanyList()
-        {
-            ListLinksViewModel model = new ListLinksViewModel();
-            var product = outDoorService.GetVerifyList(OutDoorStatus.ShowOnline, true).Take(5).ToList();
-            model.Items = product.Select(x => new CategoryViewModel()
-            {
-                CID = x.MediaID.ToString(),
-                ImgUrl = x.FocusImg,
-                Name = x.Name,
-                Url = Url.Action("index", "list", new { mediacode = x.MediaCode })
-            }).ToList();
-            return model;
-        }
 
         /// <summary>
         /// 获取搜索条件列表
         /// </summary>
         /// <param name="searchTrem"></param>
         /// <returns></returns>
-        private ListSearchViewModel GetSearch(ListSearchItemViewModel searchTrem)
+        private List<HttpLinkGroup> GetSearch(ListSearchItemViewModel search)
         {
-            ListSearchViewModel model = new ListSearchViewModel();
 
-            CategoryListViewModel clvm = new CategoryListViewModel();
+            List<HttpLinkGroup> result = new List<HttpLinkGroup>();
 
-            var provinceid = EnumHelper.GetProvinceValue(searchTrem.Province);
+            var provinceValue = EnumHelper.GetProvinceValue(search.Province);
 
-            if (provinceid != 35)
+            #region CityGroup
+
+            if (provinceValue != (int)ProvinceName.quanguo)
             {
-                clvm.Category = new CategoryViewModel()
+                HttpLinkGroup cityGroup = new HttpLinkGroup()
                 {
-                    Name = "城市",
-                    Url = Url.Action("index", new
+                    Group = new HttpLinkItem()
                     {
-                        province = searchTrem.Province,
-                        city = 0,
-                        mediacode = searchTrem.MediaCode,
-                        childmediacode = searchTrem.ChildMediaCode,
-                        formatcode = searchTrem.FormatCode,
-                        ownercode = searchTrem.OwnerCode,
-                        periodcode = searchTrem.PeriodCode
-                    })
+                        Name = "城市",
+                        Url = Url.Action("index", new
+                          {
+                              province = search.Province,
+                              city = 0,
+                              mediacode = search.MediaCode,
+                              childmediacode = search.ChildMediaCode,
+                              formatcode = search.FormatCode,
+                              ownercode = search.OwnerCode,
+                              periodcode = search.PeriodCode
+                          })
+                    }
                 };
-                clvm.ChildCategories = areaService.GetALL().Where(x => x.PID == provinceid).ToList().Select(x => new CategoryViewModel
+                cityGroup.Items = areaService.GetALL().Where(x => x.PID == provinceValue).ToList().Select(x => new HttpLinkItem()
                 {
-                    CID = x.ID.ToString(),
+                    ID = x.ID,
                     Name = x.CateName,
                     Url = Url.Action("index", new
                     {
-                        province = searchTrem.Province,
+                        province = search.Province,
                         city = x.ID,
-                        mediacode = searchTrem.MediaCode,
-                        childmediacode = searchTrem.ChildMediaCode,
-                        formatcode = searchTrem.FormatCode,
-                        ownercode = searchTrem.OwnerCode,
-                        periodcode = searchTrem.PeriodCode
+                        mediacode = search.MediaCode,
+                        childmediacode = search.ChildMediaCode,
+                        formatcode = search.FormatCode,
+                        ownercode = search.OwnerCode,
+                        periodcode = search.PeriodCode
 
                     }),
-                    Selected = x.ID == searchTrem.City
+                    Selected = x.ID == search.City
                 }).ToList();
-                model.items.Add(clvm);
+                result.Add(cityGroup);
             }
 
-            //if (!string.IsNullOrEmpty(searchTrem.City))
-            //{
-            //    var citycode = searchTrem.City.Substring(0, 3);
+            #endregion
 
-            //    clvm = new CategoryListViewModel();
-            //    clvm.Category = new CategoryViewModel()
-            //    {
-            //        Name = "城市",
-            //        Url = Url.Action("index", new
-            //        {
-            //            city = citycode,
-            //            mediacode = searchTrem.MediaCode,
-            //            formatcode = searchTrem.FormatCode,
-            //            ownercode = searchTrem.OwnerCode,
-            //            periodcode = searchTrem.PeriodCode
-            //        })
-            //    };
+            #region MediaCode
 
-            //    clvm.ChildCategories = areaService.GetALL().Where(x => x.PID.Equals(citycode, StringComparison.CurrentCultureIgnoreCase)).ToList().Select(x => new CategoryViewModel
-            //    {
-            //          CID = x.ID.ToString(),
-            //        Name = x.CateName,
-            //        Selected = string.IsNullOrEmpty(searchTrem.City) ? false : searchTrem.City.Equals(x.ID, StringComparison.CurrentCultureIgnoreCase),
-            //        Url = Url.Action("index", new
-            //        {
-            //            city = x.ID,
-            //            mediacode = searchTrem.MediaCode,
-            //            formatcode = searchTrem.FormatCode,
-            //            ownercode = searchTrem.OwnerCode,
-            //            periodcode = searchTrem.PeriodCode
-
-            //        })
-            //    }).ToList();
-
-            //    model.items.Add(clvm);
-
-            //}
-
-            //clvm = new CategoryListViewModel();
-
-            //clvm.Category = new CategoryViewModel()
-            //{
-            //    Name = "类别",
-            //    Url = Url.Action("index", new
-            //    {
-            //        city = searchTrem.City,
-            //        mediacode = searchTrem.MediaCode,
-            //        formatcode = searchTrem.FormatCode,
-            //        ownercode = searchTrem.OwnerCode,
-            //        periodcode = searchTrem.PeriodCode
-            //    })
-            //};
-            //clvm.ChildCategories = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new CategoryViewModel
-            //{
-            //      CID = x.ID.ToString(),
-            //    Name = x.CateName,
-            //    Url = Url.Action("index", new
-            //    {
-            //        city = searchTrem.City,
-            //        mediacode = x.ID,
-            //        formatcode = searchTrem.FormatCode,
-            //        ownercode = searchTrem.OwnerCode,
-            //        periodcode = searchTrem.PeriodCode
-
-            //    }),
-            //    Selected = string.IsNullOrEmpty(searchTrem.MediaCode) ? false : searchTrem.MediaCode.StartsWith(x.ID, StringComparison.CurrentCultureIgnoreCase)
-            //}).ToList();
-
-            //model.items.Add(clvm);
-
-
-            //if (!string.IsNullOrEmpty(searchTrem.MediaCode))
-            //{
-            //    var mediacode = searchTrem.MediaCode.Substring(0, 3);
-            //    clvm = new CategoryListViewModel();
-            //    clvm.Category = new CategoryViewModel()
-            //    {
-            //        Name = "子类",
-            //        Url = Url.Action("index", new
-            //        {
-            //            city = searchTrem.City,
-            //            mediacode = mediacode,
-            //            formatcode = searchTrem.FormatCode,
-            //            ownercode = searchTrem.OwnerCode,
-            //            periodcode = searchTrem.PeriodCode
-            //        })
-            //    };
-
-            //    clvm.ChildCategories = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(mediacode, StringComparison.CurrentCultureIgnoreCase)).ToList().Select(x => new CategoryViewModel
-            //    {
-            //          CID = x.ID.ToString(),
-            //        Name = x.CateName,
-            //        Url = Url.Action("index", new
-            //        {
-            //            city = searchTrem.City,
-            //            mediacode = x.ID,
-            //            formatcode = searchTrem.FormatCode,
-            //            ownercode = searchTrem.OwnerCode,
-            //            periodcode = searchTrem.PeriodCode
-
-            //        }),
-            //        Selected = string.IsNullOrEmpty(searchTrem.MediaCode) ? false : searchTrem.MediaCode.Equals(x.ID, StringComparison.CurrentCultureIgnoreCase)
-            //    }).ToList();
-            //    model.items.Add(clvm);
-            //}
-
-            clvm = new CategoryListViewModel();
-            clvm.Category = new CategoryViewModel()
+            HttpLinkGroup categoryGroup = new HttpLinkGroup()
             {
-                Name = "表现形式",
-                Url = Url.Action("index", new
+                Group = new HttpLinkItem()
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    ownercode = searchTrem.OwnerCode,
-                    periodcode = searchTrem.PeriodCode
-                })
+                    Name = "媒体类别",
+                    Url = Url.Action("index", new
+                    {
+                        city = search.City,
+                        mediacode = search.MediaCode,
+                        formatcode = search.FormatCode,
+                        ownercode = search.OwnerCode,
+                        periodcode = search.PeriodCode
+                    })
+                }
             };
-            clvm.ChildCategories = formatCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new CategoryViewModel
+            categoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
             {
-                CID = x.ID.ToString(),
+                ID = x.ID,
                 Name = x.CateName,
                 Url = Url.Action("index", new
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
+                    city = search.City,
+                    mediacode = x.ID,
+                    formatcode = search.FormatCode,
+                    ownercode = search.OwnerCode,
+                    periodcode = search.PeriodCode
+
+                }),
+                Selected = search.MediaCode == x.ID
+
+            }).ToList();
+
+            result.Add(categoryGroup);
+
+            #endregion
+
+            #region ChildMediaCode
+            if (search.MediaCode != 0)
+            {
+                HttpLinkGroup childCategoryGroup = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "媒体子类别",
+                        Url = Url.Action("index", new
+                        {
+                            city = search.City,
+                            mediacode = search.MediaCode,
+                            childmediacode = search.ChildMediaCode,
+                            formatcode = search.FormatCode,
+                            ownercode = search.OwnerCode,
+                            periodcode = search.PeriodCode
+                        })
+                    }
+                };
+
+                childCategoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID == search.MediaCode).ToList().Select(x => new HttpLinkItem()
+                {
+                    ID = x.ID,
+                    Name = x.CateName,
+                    Url = Url.Action("index", new
+                    {
+                        city = search.City,
+                        mediacode = search.MediaCode,
+                        childmediacode = x.ID,
+                        formatcode = search.FormatCode,
+                        ownercode = search.OwnerCode,
+                        periodcode = search.PeriodCode
+
+                    }),
+                    Selected = search.ChildMediaCode == x.ID
+
+                }).ToList();
+
+                result.Add(childCategoryGroup);
+            }
+            #endregion
+
+            #region FormatCode
+            HttpLinkGroup formatGroup = new HttpLinkGroup()
+            {
+                Group = new HttpLinkItem()
+                {
+                    Name = "表现形式",
+                    Url = Url.Action("index", new
+                     {
+                         province = search.Province,
+                         city = search.City,
+                         mediacode = search.MediaCode,
+                         childmediacode = search.ChildMediaCode,
+                         ownercode = search.OwnerCode,
+                         periodcode = search.PeriodCode
+                     })
+                }
+            };
+            formatGroup.Items = formatCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
+            {
+                ID = x.ID,
+                Name = x.CateName,
+                Url = Url.Action("index", new
+                {
+                    city = search.City,
+                    mediacode = search.MediaCode,
+                    childmediacode = search.ChildMediaCode,
                     formatcode = x.ID,
-                    ownercode = searchTrem.OwnerCode,
-                    periodcode = searchTrem.PeriodCode
+                    ownercode = search.OwnerCode,
+                    periodcode = search.PeriodCode
 
                 }),
-                Selected = searchTrem.FormatCode == 0 ? false : searchTrem.FormatCode == x.ID
+                Selected = search.FormatCode == x.ID
+
             }).ToList();
-            model.items.Add(clvm);
 
-            clvm = new CategoryListViewModel();
-            clvm.Category = new CategoryViewModel()
+            result.Add(formatGroup);
+
+            #endregion
+
+            #region OwnerCode
+            HttpLinkGroup ownerGroup = new HttpLinkGroup()
             {
-                Name = "代理类型",
-                Url = Url.Action("index", new
+                Group = new HttpLinkItem()
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    formatcode = searchTrem.FormatCode,
-                    periodcode = searchTrem.PeriodCode
-                })
-
+                    Name = "表现形式",
+                    Url = Url.Action("index", new
+                    {
+                        province = search.Province,
+                        city = search.City,
+                        mediacode = search.MediaCode,
+                        childmediacode = search.ChildMediaCode,
+                        formatcode = search.FormatCode,
+                        periodcode = search.PeriodCode
+                    })
+                }
             };
-            clvm.ChildCategories = ownerCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new CategoryViewModel
+            ownerGroup.Items = ownerCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
             {
-                CID = x.ID.ToString(),
+                ID = x.ID,
                 Name = x.CateName,
                 Url = Url.Action("index", new
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    formatcode = searchTrem.FormatCode,
+                    city = search.City,
+                    mediacode = search.MediaCode,
+                    childmediacode = search.ChildMediaCode,
+                    formatcode = search.FormatCode,
                     ownercode = x.ID,
-                    periodcode = searchTrem.PeriodCode
+                    periodcode = search.PeriodCode
 
                 }),
-                Selected = searchTrem.OwnerCode == 0 ? false : searchTrem.OwnerCode == x.ID
+                Selected = search.OwnerCode == x.ID
+
             }).ToList();
 
-            model.items.Add(clvm);
+            result.Add(ownerGroup);
 
+            #endregion
 
-            clvm = new CategoryListViewModel();
-            clvm.Category = new CategoryViewModel()
+            #region PeriodCode
+            HttpLinkGroup periodGroup = new HttpLinkGroup()
             {
-                Name = "购买周期",
-                Url = Url.Action("index", new
+                Group = new HttpLinkItem()
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    formatcode = searchTrem.FormatCode,
-                    ownercode = searchTrem.OwnerCode
-                })
+                    Name = "表现形式",
+                    Url = Url.Action("index", new
+                    {
+                        province = search.Province,
+                        city = search.City,
+                        mediacode = search.MediaCode,
+                        childmediacode = search.ChildMediaCode,
+                        formatcode = search.FormatCode,
+                        ownercode = search.OwnerCode
+                    })
+                }
             };
-            clvm.ChildCategories = periodCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new CategoryViewModel
+            periodGroup.Items = periodCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
             {
-                CID = x.ID.ToString(),
+                ID = x.ID,
                 Name = x.CateName,
                 Url = Url.Action("index", new
                 {
-                    province = searchTrem.Province,
-                    city = searchTrem.City,
-                    mediacode = searchTrem.MediaCode,
-                    childmediacode = searchTrem.ChildMediaCode,
-                    formatcode = searchTrem.FormatCode,
-                    ownercode = searchTrem.OwnerCode,
+                    city = search.City,
+                    mediacode = search.MediaCode,
+                    childmediacode = search.ChildMediaCode,
+                    formatcode = search.FormatCode,
+                    ownercode = search.OwnerCode,
                     periodcode = x.ID
 
                 }),
-                Selected = searchTrem.PeriodCode == 0 ? false : searchTrem.PeriodCode == x.ID
+                Selected = search.PeriodCode == x.ID
+
             }).ToList();
 
-            model.items.Add(clvm);
+            result.Add(periodGroup);
 
-            return model;
+            #endregion
+
+            return result;
+
         }
 
     }

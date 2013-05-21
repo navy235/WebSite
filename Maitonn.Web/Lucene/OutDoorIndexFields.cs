@@ -9,6 +9,8 @@ namespace Maitonn.Web
     {
         public const string MediaID = "MediaID";
 
+        public const string MemberID = "MemberID";
+
         public const string Province = "Province";
 
         public const string City = "City";
@@ -58,6 +60,12 @@ namespace Maitonn.Web
         public const string Height = "Height";
 
         public const string TotalFaces = "TotalFaces";
+
+        public const string CompanyName = "CompanyName";
+
+        public const string MemberStatus = "MemberStatus";
+
+        public const string MemberCreditIndex = "MemberCreditIndex";
 
         public const string Published = "Published";
 

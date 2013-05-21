@@ -18,13 +18,15 @@
                         @foreach (var product in Model[i].Items)
                         {
                             <div class="slider-tab-item">
+                                <p class="slider-tab-item-company">
+                                    <a target="_blank" title="@product.CompanyName" href="@Url.Action("index", "shop", new { id = product.MemberID })">@product.CompanyName
+                                    </a>
+                                </p>
                                 <a href="@Url.Action("index", "show", new { id = product.ID })" target="_blank" class="slider-tab-item-img" >
                                     <img width="150" height="150" border="0" src="@product.ImgUrl" alt="@product.Name">
-                                    <span class="slider-tab-item-img-icon icon0"></span>
                                 </a>
                                 <p class="slider-tab-item-title">
                                     <a target="_blank" title="@product.Name" href="@Url.Action("index", "show", new { id = product.ID })">@product.Name
-                                        @*&nbsp;<span class="c_ba2636">赠红色经典礼盒一个</span>*@
                                     </a>
                                 </p>
                                 <p class="slider-tab-item-delete-price">
@@ -32,7 +34,6 @@
                                 </p>
                                 <p class="slider-tab-item-price">
                                     <strong>¥@product.Price </strong>万元/年
-                                    @*  <span title="红色经典礼盒一个">赠</span>*@
                                 </p>
                             </div>
                         }
