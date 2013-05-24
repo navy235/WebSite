@@ -71,19 +71,101 @@ namespace Maitonn.Web
 
             var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
 
-            ViewBag.LeftMenu = sourceService.GetLeftMenu(provinceValue);
+            ViewBag.LeftMenu = GetLeftMenu(provinceValue);
 
-            ViewBag.SliderBox = sourceService.GetSlider(provinceValue, 8);
+            ViewBag.SliderBox = GetSlider(provinceValue, 8);
 
-            ViewBag.SliderTabBox = GetSliderTabBox(isQuanGuo, provinceValue);
+            ViewBag.SliderTabBox = GetSliderTabBox(provinceValue);
 
-            ViewBag.TopCompany = sourceService.GetSuggestCompany(isQuanGuo, provinceValue, 10);
+            ViewBag.TopCompany = GetSuggestCompany(provinceValue, 10);
 
-            ViewBag.GoodCompany = sourceService.GetGoodCompany(provinceValue, 10);
+            ViewBag.GoodCompany = GetGoodCompany(provinceValue, 10);
 
-            ViewBag.Gallery = GetGallery(isQuanGuo, provinceValue, 6);
+            ViewBag.Gallery = GetGallery(provinceValue, 6);
 
             return View();
+        }
+
+
+        private List<HttpLinkGroup> GetLeftMenu(int province)
+        {
+            List<HttpLinkGroup> result = new List<HttpLinkGroup>();
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "sourceService");
+            cacheDic.Add(CacheService.ServiceMethod, "GetLeftMenu");
+            cacheDic.Add("province", province.ToString());
+            if (CacheService.Exists(cacheDic))
+            {
+                result = CacheService.Get<List<HttpLinkGroup>>(cacheDic);
+            }
+            else
+            {
+                result = sourceService.GetLeftMenu(province);
+                CacheService.Add<List<HttpLinkGroup>>(result, cacheDic, 60);
+            }
+            return result;
+
+        }
+
+        private List<HttpLinkItem> GetSlider(int province, int take)
+        {
+            List<HttpLinkItem> result = new List<HttpLinkItem>();
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "sourceService");
+            cacheDic.Add(CacheService.ServiceMethod, "GetSlider");
+            cacheDic.Add("province", province.ToString());
+            cacheDic.Add("take", take.ToString());
+            if (CacheService.Exists(cacheDic))
+            {
+                result = CacheService.Get<List<HttpLinkItem>>(cacheDic);
+            }
+            else
+            {
+                result = sourceService.GetSlider(province, take);
+                CacheService.Add<List<HttpLinkItem>>(result, cacheDic, 60);
+            }
+            return result;
+
+        }
+
+        private List<HttpLinkItem> GetSuggestCompany(int province, int take)
+        {
+            List<HttpLinkItem> result = new List<HttpLinkItem>();
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "sourceService");
+            cacheDic.Add(CacheService.ServiceMethod, "GetSuggestCompany");
+            cacheDic.Add("province", province.ToString());
+            cacheDic.Add("take", take.ToString());
+            if (CacheService.Exists(cacheDic))
+            {
+                result = CacheService.Get<List<HttpLinkItem>>(cacheDic);
+            }
+            else
+            {
+                result = sourceService.GetSuggestCompany(province, take);
+                CacheService.Add<List<HttpLinkItem>>(result, cacheDic, 60);
+            }
+            return result;
+        }
+
+        private List<HttpLinkItem> GetGoodCompany(int province, int take)
+        {
+            List<HttpLinkItem> result = new List<HttpLinkItem>();
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "sourceService");
+            cacheDic.Add(CacheService.ServiceMethod, "GetGoodCompany");
+            cacheDic.Add("province", province.ToString());
+            cacheDic.Add("take", take.ToString());
+            if (CacheService.Exists(cacheDic))
+            {
+                result = CacheService.Get<List<HttpLinkItem>>(cacheDic);
+            }
+            else
+            {
+                result = sourceService.GetGoodCompany(province, take);
+                CacheService.Add<List<HttpLinkItem>>(result, cacheDic, 60);
+            }
+            return result;
         }
 
 
@@ -107,78 +189,24 @@ namespace Maitonn.Web
 
 
 
-        private List<HttpLinkGroup> GetSliderTabBox(bool isQuanGuo, int province)
+        private List<HttpLinkGroup> GetSliderTabBox(int province)
         {
+
+            bool isQuanGuo = province == (int)ProvinceName.quanguo;
+
             List<HttpLinkGroup> result = new List<HttpLinkGroup>();
 
-            HttpLinkGroup group = new HttpLinkGroup()
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "HomeController");
+            cacheDic.Add(CacheService.ServiceMethod, "GetSliderTabBox");
+            cacheDic.Add("province", province.ToString());
+            if (CacheService.Exists(cacheDic))
             {
-                Group = new HttpLinkItem()
-                {
-                    Name = "推荐资源"
-                }
-            };
-
-            group.Items = sourceService.GetSuggestMedia(isQuanGuo, province, 8);
-
-            result.Add(group);
-
-            group = new HttpLinkGroup()
+                result = CacheService.Get<List<HttpLinkGroup>>(cacheDic);
+            }
+            else
             {
-                Group = new HttpLinkItem()
-                {
-                    Name = "优质资源"
-                }
-            };
-            group.Items = sourceService.GetGoodMedia(province, 8);
-
-            result.Add(group);
-
-            group = new HttpLinkGroup()
-            {
-                Group = new HttpLinkItem()
-                {
-                    Name = "认证资源"
-                }
-            };
-            group.Items = sourceService.GetAuthMedia(province, 8);
-
-            result.Add(group);
-
-
-            group = new HttpLinkGroup()
-            {
-                Group = new HttpLinkItem()
-                {
-                    Name = "最新资源"
-                }
-            };
-            group.Items = sourceService.GetNewMedia(province, 8);
-
-            result.Add(group);
-
-            return result;
-        }
-
-
-        private List<HttpLinkGallery> GetGallery(bool isQuanGuo, int province, int count)
-        {
-            List<HttpLinkGallery> result = new List<HttpLinkGallery>();
-
-            var categorys = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList();
-
-            foreach (var category in categorys)
-            {
-                HttpLinkGallery galleryContainer = new HttpLinkGallery()
-                {
-                    Gallery = new HttpLinkItem()
-                    {
-                        ID = category.ID,
-                        Name = category.CateName
-                    }
-                };
-
-                HttpLinkGroup tab = new HttpLinkGroup()
+                HttpLinkGroup group = new HttpLinkGroup()
                 {
                     Group = new HttpLinkItem()
                     {
@@ -186,50 +214,137 @@ namespace Maitonn.Web
                     }
                 };
 
-                tab.Items = sourceService.GetSuggestMedia(isQuanGuo, province, count, category.ID);
+                group.Items = sourceService.GetSuggestMedia(province, 8);
 
-                galleryContainer.Tabs.Add(tab);
+                result.Add(group);
 
-                tab = new HttpLinkGroup()
+                group = new HttpLinkGroup()
                 {
                     Group = new HttpLinkItem()
                     {
                         Name = "优质资源"
                     }
                 };
-                tab.Items = sourceService.GetGoodMedia(province, count, category.ID);
+                group.Items = sourceService.GetGoodMedia(province, 8);
 
-                galleryContainer.Tabs.Add(tab);
+                result.Add(group);
 
-                tab = new HttpLinkGroup()
+                group = new HttpLinkGroup()
                 {
                     Group = new HttpLinkItem()
                     {
                         Name = "认证资源"
                     }
                 };
-                tab.Items = sourceService.GetAuthMedia(province, count, category.ID);
+                group.Items = sourceService.GetAuthMedia(province, 8);
 
-                galleryContainer.Tabs.Add(tab);
+                result.Add(group);
 
 
-                tab = new HttpLinkGroup()
+                group = new HttpLinkGroup()
                 {
                     Group = new HttpLinkItem()
                     {
                         Name = "最新资源"
                     }
                 };
+                group.Items = sourceService.GetNewMedia(province, 8);
 
-                tab.Items = sourceService.GetNewMedia(province, count, category.ID);
+                result.Add(group);
 
-                galleryContainer.Tabs.Add(tab);
-
-                result.Add(galleryContainer);
+                CacheService.Add<List<HttpLinkGroup>>(result, cacheDic, 60);
             }
-
             return result;
         }
+
+
+        private List<HttpLinkGallery> GetGallery(int province, int take)
+        {
+            bool isQuanGuo = province == (int)ProvinceName.quanguo;
+
+            List<HttpLinkGallery> result = new List<HttpLinkGallery>();
+
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "HomeController");
+            cacheDic.Add(CacheService.ServiceMethod, "GetGallery");
+            cacheDic.Add("province", province.ToString());
+            cacheDic.Add("take", take.ToString());
+
+            if (CacheService.Exists(cacheDic))
+            {
+                result = CacheService.Get<List<HttpLinkGallery>>(cacheDic);
+            }
+            else
+            {
+
+                var categorys = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList();
+
+                foreach (var category in categorys)
+                {
+                    HttpLinkGallery galleryContainer = new HttpLinkGallery()
+                    {
+                        Gallery = new HttpLinkItem()
+                        {
+                            ID = category.ID,
+                            Name = category.CateName
+                        }
+                    };
+
+                    HttpLinkGroup tab = new HttpLinkGroup()
+                    {
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "推荐资源"
+                        }
+                    };
+
+                    tab.Items = sourceService.GetSuggestMedia(province, take, 0, category.ID);
+
+                    galleryContainer.Tabs.Add(tab);
+
+                    tab = new HttpLinkGroup()
+                    {
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "优质资源"
+                        }
+                    };
+                    tab.Items = sourceService.GetGoodMedia(province, take, 0, category.ID);
+
+                    galleryContainer.Tabs.Add(tab);
+
+                    tab = new HttpLinkGroup()
+                    {
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "认证资源"
+                        }
+                    };
+                    tab.Items = sourceService.GetAuthMedia(province, take, 0, category.ID);
+
+                    galleryContainer.Tabs.Add(tab);
+
+
+                    tab = new HttpLinkGroup()
+                    {
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "最新资源"
+                        }
+                    };
+
+                    tab.Items = sourceService.GetNewMedia(province, take, 0, category.ID);
+
+                    galleryContainer.Tabs.Add(tab);
+
+                    result.Add(galleryContainer);
+                }
+
+                CacheService.Add<List<HttpLinkGallery>>(result, cacheDic, 60);
+            }
+            return result;
+        }
+
 
         private ProvinceViewModel GetProvince(string province)
         {
@@ -244,6 +359,7 @@ namespace Maitonn.Web
                   })
             };
         }
+
     }
 
 }

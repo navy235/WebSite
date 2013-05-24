@@ -58,6 +58,20 @@ namespace Maitonn.Web
         public int MemberStatus { get; set; }
 
         public bool Selected { get; set; }
+
+        public decimal Width { get; set; }
+
+        public decimal Height { get; set; }
+
+        public int TotalFaces { get; set; }
+
+        public DateTime AddTime { get; set; }
+
+        public string FormatCateName { get; set; }
+
+        public string PeriodCateName { get; set; }
+
+
     }
 
     public class HttpLinkGroup
@@ -96,6 +110,15 @@ namespace Maitonn.Web
         public int TotalCount { get; set; }
 
         public string Querywords { get; set; }
+    }
+
+    public class ListSort
+    {
+        public bool SortDefault { get; set; }
+
+        public bool SortPriceDesc { get; set; }
+
+        public bool SortPriceAsc { get; set; }
     }
 
 }

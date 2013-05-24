@@ -265,7 +265,14 @@ namespace Maitonn.Web
                 CompanyName = doc.Get(OutDoorIndexFields.CompanyName),
                 MemberCreditIndex = MemberCreditIndex,
                 MemberStatus = MemberStatus,
-                MemberID = MemberID
+                MemberID = MemberID,
+                AddTime = AddTime,
+                Height = Height,
+                Width = Width,
+                TotalFaces = TotalFaces,
+                Description = doc.Get(OutDoorIndexFields.Description),
+                FormatCateName = doc.Get(OutDoorIndexFields.FormatName),
+                PeriodCateName = doc.Get(OutDoorIndexFields.PeriodName),
             };
         }
 

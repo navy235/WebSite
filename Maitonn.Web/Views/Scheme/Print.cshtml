@@ -50,9 +50,9 @@
                                 <li><strong>媒体规格：</strong>@(item.Wdith)米*@(item.Height)米*@(item.TotalFaces)面=@((item.Wdith * item.Height * item.TotalFaces).ToString("F2"))平方米</li>
                                 <li class="txrs"><strong>投放档期：</strong>@item.StartTime.ToString("yyyy-MM-dd") 至 @item.EndTime.ToString("yyyy-MM-dd")</li>
                                 <li><strong>所属公司：</strong><a href="@Url.Action("index", "shop", new { id = item.MemberID })" target="_blank">@item.CompanyName</a></li>
-                                <li class="txrs"><strong>联系方式：</strong>电话：@item.Phone  手机：@item.Mobile</li>
                             </ul>
-                            <p><strong>媒体描述:</strong>&nbsp;@item.Description</p>
+                            <p><strong>联系方式：</strong>电话：@item.Phone  手机：@item.Mobile</p>
+                            <p><strong>媒体描述：</strong>@item.Description</p>
                         </div>
                     </div>
                 }

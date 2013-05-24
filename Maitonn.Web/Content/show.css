@@ -2092,30 +2092,30 @@ a.top-head-changcity {
     height: 60px;
   }
 
-.list-right {
-  float: left;
-  width: 710px;
+.list-search {
+  overflow: hidden;
 }
 
-.list-right-wrap {
+.list-search-wrap {
   padding: 0;
   border: #e6e6e6 1px solid;
   margin-bottom: 10px;
   background-color: #f5f5f5;
+  overflow: hidden;
 }
 
-.list-right-attr {
+.list-search-attr {
   padding: 5px 10px;
   background-color: #fff;
 }
 
-.list-right-attr-bread {
+.list-search-attr-bread {
   border-bottom: #f5f5f5 1px solid;
   padding: 10px 0 5px;
   position: relative;
 }
 
-.list-right-attr-title {
+.list-search-attr-title {
   float: left;
   width: 80px;
   text-align: right;
@@ -2123,29 +2123,29 @@ a.top-head-changcity {
   color: #666;
 }
 
-.list-right-attr-all {
+.list-search-attr-all {
   width: 50px;
   padding: 0 0 0 5px;
   float: left;
 }
 
-  .list-right-attr-all a,
-  .list-right-attr-all a:visited,
-  .list-right-attr-all a:hover,
-  .list-right-attr-all a:active {
+  .list-search-attr-all a,
+  .list-search-attr-all a:visited,
+  .list-search-attr-all a:hover,
+  .list-search-attr-all a:active {
     height: 24px;
     line-height: 24px;
   }
 
-  .list-right-attr-all .selected:link,
-  .list-right-attr-all .selected:visited,
-  .list-right-attr-all .selected:hover,
-  .list-right-attr-all .selected:active {
+  .list-search-attr-all .selected:link,
+  .list-search-attr-all .selected:visited,
+  .list-search-attr-all .selected:hover,
+  .list-search-attr-all .selected:active {
     color: #fff;
     text-decoration: none;
   }
 
-  .list-right-attr-all a.selected {
+  .list-search-attr-all a.selected {
     display: inline-block;
     background-color: #f60;
     height: 24px;
@@ -2154,38 +2154,38 @@ a.top-head-changcity {
     padding: 0 8px;
   }
 
-.list-right-attr-list {
+.list-search-attr-list {
   float: left;
-  width: 540px;
+  width: 830px;
   overflow: hidden;
   background-color: #fff;
 }
 
-  .list-right-attr-list li {
+  .list-search-attr-list li {
     float: left;
     height: 24px;
     line-height: 1;
     margin: 0 0 5px 0;
-    width: 180px;
+    width: 130px;
   }
 
-    .list-right-attr-list li span {
+    .list-search-attr-list li span {
       display: inline-block;
       padding: 4px 5px 0 0;
       line-height: 1;
       height: 20px;
     }
 
-    .list-right-attr-list li.selected span {
+    .list-search-attr-list li.selected span {
       background-color: #f60;
     }
 
-    .list-right-attr-list li.selected a {
+    .list-search-attr-list li.selected a {
       color: #fff;
       text-decoration: none;
     }
 
-    .list-right-attr-list li a {
+    .list-search-attr-list li a {
       display: inline-block;
       height: 16px;
       line-height: 16px;
@@ -2194,7 +2194,7 @@ a.top-head-changcity {
       padding: 0 7px 0 8px;
     }
 
-    .list-right-attr-list li .delete {
+    .list-search-attr-list li .delete {
       font-size: 14px;
       font-family: '宋体';
       display: none;
@@ -2205,7 +2205,7 @@ a.top-head-changcity {
       padding: 0;
     }
 
-    .list-right-attr-list li.selected .delete {
+    .list-search-attr-list li.selected .delete {
       display: inline-block;
       height: 16px;
       line-height: 16px;
@@ -2213,7 +2213,7 @@ a.top-head-changcity {
       text-align: center;
     }
 
-.list-right-attr-more, .list-right-attr-little {
+.list-search-attr-more, .list-search-attr-little {
   position: absolute;
   background: url(images/productBg.png) -105px 3px no-repeat;
   padding: 0 15px 0 0;
@@ -2222,8 +2222,18 @@ a.top-head-changcity {
   top: 10px;
 }
 
-.list-right-attr-little {
+.list-search-attr-little {
   background-position: -106px -16px;
+}
+
+.list-result {
+  width: 710px;
+  float: left;
+}
+
+.list-right {
+  width: 270px;
+  float: right;
 }
 
 .list-filter {
@@ -2476,107 +2486,90 @@ a.top-head-changcity {
   margin-bottom: 20px;
 }
 
-.list-products-item {
-  float: left;
-  margin: 9px 0;
-  border: 1px solid #fff;
-  position: relative;
-  width: 200px;
-  padding: 10px 17px;
-  height: 335px;
+.products-item {
+  line-height: 24px;
+  padding: 6px;
+  margin: 4px;
+  border-top: dashed 1px #fff;
+  border-bottom: dashed 1px #C4C4C4;
+  overflow: hidden;
 }
 
-  .list-products-item-hover, .list-products-item:hover {
-    border-color: #d90000;
+  .products-item li {
+    float: left;
+    display: block;
   }
 
-.list-products-item-img {
-  display: block;
-  background: url(images/loading.gif) center center no-repeat;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
+.products-img {
+  width: 100px;
+  margin-top: 5px;
   text-align: center;
 }
 
-  .list-products-item-img img {
-    width: 200px;
-    height: 200px;
-    background: url(images/errPro.png) 50% 50% no-repeat;
+  .products-img img {
+    width: 96px;
+    height: 96px;
+    border: 1px solid #CECECE;
+    overflow: hidden;
+    padding: 1px;
   }
 
-.list-products-item .list-products-item-icon {
-  background: url(images/actTags.png) 0 0 no-repeat;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 10px;
-  right: 17px;
+
+.products-details {
+  width: 460px;
+  padding-left: 10px;
 }
 
-.list-products-item .list-products-item-icon1 {
-  background-position: 0 -60px;
+  .products-details h3 {
+    height: 22px;
+    line-height: 22px;
+    overflow: hidden;
+    float: left;
+    width: 240px;
+  }
+
+  .products-details a {
+    color: #003399;
+  }
+
+  .products-details p.products-desc {
+    line-height: 22px;
+    height: 66px;
+    color: #666;
+    width: 100%;
+    overflow: hidden;
+  }
+
+.products-info {
 }
 
-.list-products-item-desc {
-  width: 200px;
-  height: 44px;
-  line-height: 22px;
-  margin-top: 15px;
-  overflow: hidden;
+.products-city {
+  float: left;
+  color: #999;
+  margin-right: 10px;
+}
+
+.products-company {
+  float: left;
+}
+
+.products-price {
+  width: 115px;
+  padding-top: 20px;
+  line-height: 26px;
+  color: #333;
+  text-align: center;
   word-break: break-all;
-  word-wrap: break-word;
 }
 
-.list-products-item-price {
-  color: #ba2636;
-  margin-top: 7px;
-  margin-bottom: 3px;
-  font-family: verdana;
-}
-
-  .list-products-item-price del {
-    color: #888;
+  .products-price span {
+    font: bold 12px/18px Verdana, Arial, Helvetica, sans-serif;
   }
 
-  .list-products-item-price strong {
-    color: #ba2636;
-  }
-
-.list-products-item-comment {
-  margin-bottom: 8px;
-}
-
-  .list-products-item-comment label {
-    background: url(images/actTags.png) -60px 0 no-repeat;
-    width: 20px;
-    line-height: 18px;
-    height: 18px;
-    display: inline-block;
-    text-align: center;
-    color: #6f3211;
-    margin-left: 3px;
-  }
-
-.list-products-item-title {
-  color: #666;
-  overflow: hidden;
-}
-
-.list-products-item-category {
-  margin-top: 8px;
-}
-
-.list-products-item-car {
-  position: absolute;
-  background: url(images/productBg.png) 0 0 no-repeat;
-  width: 45px;
-  height: 27px;
-  cursor: pointer;
-  background-position: 0 -106px;
-  outline: 0;
-  right: 20px;
-  bottom: 5px;
+.products-contact {
+  width: 85px;
+  height: 26px;
+  padding-left: 10px;
 }
 
 .gray-line {
@@ -2768,10 +2761,6 @@ a.top-head-changcity {
 }
 
 
-
-
-
-
 .details-scroll-btn {
   display: inline-block;
   width: 72px;
@@ -2779,6 +2768,7 @@ a.top-head-changcity {
   left: 0;
   top: 0;
   position: absolute;
+  z-index: 11;
 }
 
   .details-scroll-btn b,
@@ -2802,18 +2792,26 @@ a.top-head-changcity {
     height: 17px;
   }
 
+  .details-scroll-btn .down {
+    background-position: 0 -376px;
+  }
+
+
 .details-scroll-btn-disabled b {
   background-position: 0 -112px;
   cursor: default;
 }
 
+.details-scroll-btn-disabled .down {
+  background-position: 0 -354px;
+}
+
+
 .details-scroll-up {
-  background-position: 0 -112px;
   cursor: pointer;
 }
 
 .details-scroll-down {
-  background-position: 0 -354px;
   cursor: pointer;
   top: 413px;
 }
@@ -3081,6 +3079,63 @@ a.top-head-changcity {
     padding-left: 15px;
   }
 
+    .gray-box h4 .more {
+      float: right;
+      margin-right: 10px;
+      _display: inline;
+      padding-right: 14px;
+      background: url(images/companysprites.png) no-repeat;
+      background-position: right -128px;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+.gary-loadding {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.gray-list {
+  padding: 10px;
+}
+
+  .gray-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #cccccc;
+  }
+
+    .gray-list li.last {
+      margin-bottom: 0px;
+      padding-bottom: 10px;
+      border-bottom: 0;
+    }
+
+    .gray-list li a {
+      float: left;
+    }
+
+      .gray-list li a img {
+        width: 56px;
+        height: 56px;
+        border: 1px solid #cccccc;
+        padding: 1px;
+      }
+
+  .gray-list p {
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    width: 170px;
+    padding-left: 10px;
+    word-wrap: break-word;
+    word-break: normal;
+  }
+
+  .gray-list .item-category {
+    color: #666;
+  }
 
 .gray-view {
   margin: 5px 0 5px 8px;
@@ -3583,7 +3638,13 @@ goods-pack .goods-desc {
     text-align: left;
   }
 
-.zxBot span {
+  .goods-feedback-commbox .zxError {
+    padding: 3px 0 5px;
+    text-align: left;
+  }
+
+.zxBot span,
+.zxError span {
   float: right;
   padding-right: 73px;
 }
@@ -3593,10 +3654,20 @@ goods-pack .goods-desc {
   color: #333;
 }
 
-  .goods-feedback-commbox .zxBot label input {
-    margin: 0 3px 0 0;
-    vertical-align: text-bottom;
-  }
+.goods-feedback-commbox .zxError label {
+  width: 265px;
+  color: #333;
+}
+
+.goods-feedback-commbox .zxBot label input {
+  margin: 0 3px 0 0;
+  vertical-align: text-bottom;
+}
+
+.goods-feedback-commbox .zxError label input {
+  margin: 0 3px 0 0;
+  vertical-align: text-bottom;
+}
 
 .goods-feedback-commbox .txtTips {
   color: #888;

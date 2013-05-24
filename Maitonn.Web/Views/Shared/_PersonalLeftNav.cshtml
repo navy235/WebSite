@@ -46,7 +46,7 @@
         </div>
         <ul class="menu-company" style="display: none;">
             <li class="item-company-baseinfo">
-                <p><a href="@Url.Action("baseinfo", "company")">基本信息</a></p>
+                <p><a href="@Url.Action("index", "company")">基本信息</a></p>
             </li>
             <li class="item-company-contact">
                 <p><a href="@Url.Action("contact", "company")">联系方式</a></p>
@@ -62,7 +62,7 @@
         </div>
         <ul class="menu-shop" style="display: none;">
             <li class="item-shop-logo ">
-                <p><a href="@Url.Action("index", "shop", new { id = CookieHelper.MemberID })">商铺首页</a></p>
+                <p><a href="@Url.Action("index", "shop", new { id = CookieHelper.MemberID })" target="_blank">商铺首页</a></p>
             </li>
             <li class="item-shop-logo ">
                 <p><a href="@Url.Action("logo", "company")">企业LOGO</a></p>

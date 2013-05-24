@@ -31,15 +31,22 @@
 
     var @name={
         id:'@name',
-        binding:function(imgurl){
+        binding:function(imgurl,upload){
             var _imgurl='@(String.IsNullOrEmpty(Model) ? orgUrl : Model)';
+            var _firstUpload=@(String.IsNullOrEmpty(Model) ? "true" : "false");
+            if(upload){
+                _firstUpload=false;
+            }
             if(imgurl){
                 _imgurl=imgurl;
             }
             var imgId='@(name + "_img")';
             var id='@name';
             $("#"+imgId).attr("src", _imgurl);
-            $("#"+id).val(_imgurl);
+            if(!_firstUpload){
+                $("#"+id).val(_imgurl);
+            }
+
         },
         onError:function(e){
         
@@ -54,8 +61,9 @@
             var self=@name;
             var resData = e.response;
             if (resData.err === ''&&resData.status==='upload') {
-                self.binding(resData.imgurl);
+                self.binding(resData.imgurl,true);
                 self.hideUploadSuccess();
+                $('#'+self.id).parents('form:first').validate().element('#'+self.id);
             }
             else {
                 if(resData.err===''&&resData.status==='remove'){
@@ -90,8 +98,8 @@
                 return info;
             }).join(", ");
         }
-    }
+    };
     $(function(){
-        @(name + ".binding();")
-    })
+    @(name + ".binding();")
+})
 </script>

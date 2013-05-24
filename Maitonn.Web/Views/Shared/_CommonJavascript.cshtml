@@ -1,6 +1,7 @@
 ﻿<script type="text/javascript">
     kendo.culture("zh-CHS");
     var ajaxUrl = {
+        baseUrl: '@Url.Action("index", "home")',
         check_favorite: '@Url.Action("checkFavorite", "ajaxService")',
         add_favorite: '@Url.Action("addFavorite", "ajaxService")',
         get_scheme: '@Url.Action("getScheme", "ajaxService")',
@@ -8,5 +9,6 @@
         add_scheme: '@Url.Action("addScheme", "ajaxService")',
         get_schemeform: '@Url.Action("getSchemeForm", "scheme")',
         edit_schemeMedia: '@Url.Action("EditSchemeMedia", "ajaxService")'
+
     }
 </script>

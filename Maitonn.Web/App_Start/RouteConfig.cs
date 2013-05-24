@@ -52,7 +52,7 @@ namespace Maitonn.Web
 
             routes.MapRoute(
                name: "list",
-               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{price}-{order}-p_{page}",
+               url: "{province}/list-{city}-{mediacode}-{childmediacode}-{formatcode}-{ownercode}-{periodcode}-{price}-{order}-{descending}-p_{page}",
                defaults: new
                {
                    controller = "List",

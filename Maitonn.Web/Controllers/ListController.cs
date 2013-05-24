@@ -84,7 +84,7 @@ namespace Maitonn.Web
 
             var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
 
-            var LeftMenu = sourceService.GetLeftMenu(provinceValue);
+            var LeftMenu = GetLeftMenu(provinceValue);
 
             //搜索条件
             ListSearchItemViewModel searchTrem = new ListSearchItemViewModel()
@@ -107,13 +107,13 @@ namespace Maitonn.Web
 
             ViewBag.Bread = GetBread(LeftMenu, searchTrem);
 
-            ViewBag.SuggestList = sourceService.GetSuggestMedia(isQuanGuo, provinceValue, 5, searchTrem.MediaCode, searchTrem.ChildMediaCode);
+            //ViewBag.SuggestList = sourceService.GetSuggestMedia(provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            ViewBag.HotList = sourceService.GetGoodMedia(provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
+            //ViewBag.HotList = sourceService.GetGoodMedia(provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            ViewBag.SuggestCompanyList = sourceService.GetSuggestCompany(isQuanGuo, provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
+            //ViewBag.SuggestCompanyList = sourceService.GetSuggestCompany(provinceValue, 5, searchTrem.City, searchTrem.MediaCode, searchTrem.ChildMediaCode);
 
-            ViewBag.RelateCompany = sourceService.GetRelateCompany(provinceValue, 5, searchTrem.City);
+            //ViewBag.RelateCompany = sourceService.GetRelateCompany(provinceValue, 5, searchTrem.City);
 
             ViewBag.Search = GetSearch(searchTrem);
 
@@ -167,33 +167,62 @@ namespace Maitonn.Web
 
             ViewBag.Result = GetResult(searchTrem);
 
-            if (searchTrem.Order == 0)
+            ViewBag.Sort = GetSort(searchTrem);
+
+            ViewBag.Query = searchTrem;
+
+            return View();
+        }
+
+        private List<HttpLinkGroup> GetLeftMenu(int province)
+        {
+            List<HttpLinkGroup> result = new List<HttpLinkGroup>();
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "sourceService");
+            cacheDic.Add(CacheService.ServiceMethod, "GetLeftMenu");
+            cacheDic.Add("province", province.ToString());
+            if (CacheService.Exists(cacheDic))
             {
-                ViewBag.isSortDefault = true;
+                result = CacheService.Get<List<HttpLinkGroup>>(cacheDic);
             }
-            else if (searchTrem.Order == (int)SortProperty.Price)
+            else
             {
-                if (searchTrem.Descending == (int)SortDirection.Descending)
+                result = sourceService.GetLeftMenu(province);
+                CacheService.Add<List<HttpLinkGroup>>(result, cacheDic, 60);
+            }
+            return result;
+        }
+
+        private ListSort GetSort(ListSearchItemViewModel search)
+        {
+            ListSort result = new ListSort();
+            if (search.Order == 0)
+            {
+                result.SortDefault = true;
+            }
+            else if (search.Order == (int)SortProperty.Price)
+            {
+                if (search.Descending == (int)SortDirection.Descending)
                 {
-                    ViewBag.isSortPriceDesc = true;
+                    result.SortPriceDesc = true;
                 }
                 else
                 {
-                    ViewBag.isSortPriceAsc = true;
+                    result.SortPriceAsc = true;
                 }
             }
-
-            return View();
+            return result;
         }
 
         private List<HttpLinkGroup> SetLeftMenu(List<HttpLinkGroup> list, ListSearchItemViewModel search)
         {
             foreach (var item in list)
             {
-                item.Group.Selected = item.Group.CategoryCode == search.MediaCode;
+                item.Group.Selected = item.Group.ID == search.MediaCode;
+
                 foreach (var childItem in item.Items)
                 {
-                    childItem.Selected = childItem.CategoryCode == search.ChildMediaCode;
+                    childItem.Selected = childItem.ID == search.ChildMediaCode;
                 }
             }
             return list;
@@ -243,16 +272,54 @@ namespace Maitonn.Web
             return searchFilter;
         }
 
+        private Dictionary<string, string> CreateSearchDic(string MethodName, ListSearchItemViewModel search)
+        {
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
+            cacheDic.Add(CacheService.ServiceName, "ListController");
+            cacheDic.Add(CacheService.ServiceMethod, MethodName);
+            cacheDic.Add("Province", search.Province);
+            cacheDic.Add("City", search.City.ToString());
+            cacheDic.Add("MediaCode", search.MediaCode.ToString());
+            cacheDic.Add("ChildMediaCode", search.ChildMediaCode.ToString());
+            cacheDic.Add("FormatCode", search.FormatCode.ToString());
+            cacheDic.Add("OwnerCode", search.OwnerCode.ToString());
+            cacheDic.Add("PeriodCode", search.PeriodCode.ToString());
+            cacheDic.Add("Order", search.Order.ToString());
+            cacheDic.Add("Descending", search.Descending.ToString());
+            cacheDic.Add("AuthStatus", search.AuthStatus.ToString());
+            cacheDic.Add("Price", search.Price.ToString());
+            cacheDic.Add("Page", search.Page.ToString());
+            return cacheDic;
+        }
+
         private ListSource GetResult(ListSearchItemViewModel search)
         {
             const int PageSize = 15;
             var model = new ListSource();
             var query = new List<HttpLinkItem>();
-            var searchFilter = GetSearchFilter(search.Query, search.Order, search.Descending, search.Page, PageSize);
             int totalHits;
-            using (MiniProfiler.Current.Step("LuceneSearch"))
+            Dictionary<string, string> cacheDic = CreateSearchDic("ResultList", search);
+            Dictionary<string, string> countDic = CreateSearchDic("ResultCount", search);
+            if (string.IsNullOrWhiteSpace(search.Query)
+                && CacheService.Exists(cacheDic)
+                && CacheService.Exists(countDic))
             {
-                query = searchService.Search(search, searchFilter, out totalHits);
+                query = CacheService.Get<List<HttpLinkItem>>(cacheDic);
+                totalHits = CacheService.GetInt32Value(countDic);
+            }
+            else
+            {
+                var searchFilter = GetSearchFilter(search.Query, search.Order, search.Descending, search.Page, PageSize);
+
+                using (MiniProfiler.Current.Step("LuceneSearch"))
+                {
+                    query = searchService.Search(search, searchFilter, out totalHits);
+                }
+                if (string.IsNullOrWhiteSpace(search.Query))
+                {
+                    CacheService.Add<List<HttpLinkItem>>(query, cacheDic, 10);
+                    CacheService.AddInt32Value(totalHits, countDic, 10);
+                }
             }
             model.Items = query;
             model.TotalCount = totalHits;
@@ -298,7 +365,7 @@ namespace Maitonn.Web
                         {
                             province = search.Province,
                             city = search.City,
-                            mediacode = item.Group.CategoryCode
+                            mediacode = item.Group.ID
                         })
                     });
 
@@ -313,8 +380,8 @@ namespace Maitonn.Web
                                 {
                                     province = search.Province,
                                     city = search.City,
-                                    mediacode = item.Group.CategoryCode,
-                                    childmediacode = childitem.CategoryCode
+                                    mediacode = item.Group.ID,
+                                    childmediacode = childitem.ID
                                 })
                             });
                         }
@@ -335,215 +402,220 @@ namespace Maitonn.Web
 
             List<HttpLinkGroup> result = new List<HttpLinkGroup>();
 
-            var provinceValue = EnumHelper.GetProvinceValue(search.Province);
+            Dictionary<string, string> cacheDic = new Dictionary<string, string>();
 
-            #region CityGroup
+            cacheDic.Add(CacheService.ServiceName, "ListController");
+            cacheDic.Add(CacheService.ServiceMethod, "GetSearch");
+            cacheDic.Add("Province", search.Province);
+            cacheDic.Add("City", search.City.ToString());
+            cacheDic.Add("MediaCode", search.MediaCode.ToString());
+            cacheDic.Add("ChildMediaCode", search.ChildMediaCode.ToString());
+            cacheDic.Add("FormatCode", search.FormatCode.ToString());
+            cacheDic.Add("OwnerCode", search.OwnerCode.ToString());
+            cacheDic.Add("PeriodCode", search.PeriodCode.ToString());
 
-            if (provinceValue != (int)ProvinceName.quanguo)
+            if (CacheService.Exists(cacheDic))
             {
-                HttpLinkGroup cityGroup = new HttpLinkGroup()
-                {
-                    Group = new HttpLinkItem()
-                    {
-                        Name = "城市",
-                        Url = Url.Action("index", new
-                          {
-                              province = search.Province,
-                              city = 0,
-                              mediacode = search.MediaCode,
-                              childmediacode = search.ChildMediaCode,
-                              formatcode = search.FormatCode,
-                              ownercode = search.OwnerCode,
-                              periodcode = search.PeriodCode
-                          })
-                    }
-                };
-                cityGroup.Items = areaService.GetALL().Where(x => x.PID == provinceValue).ToList().Select(x => new HttpLinkItem()
-                {
-                    ID = x.ID,
-                    Name = x.CateName,
-                    Url = Url.Action("index", new
-                    {
-                        province = search.Province,
-                        city = x.ID,
-                        mediacode = search.MediaCode,
-                        childmediacode = search.ChildMediaCode,
-                        formatcode = search.FormatCode,
-                        ownercode = search.OwnerCode,
-                        periodcode = search.PeriodCode
-
-                    }),
-                    Selected = x.ID == search.City
-                }).ToList();
-                result.Add(cityGroup);
+                result = CacheService.Get<List<HttpLinkGroup>>(cacheDic);
             }
-
-            #endregion
-
-            #region MediaCode
-
-            HttpLinkGroup categoryGroup = new HttpLinkGroup()
+            else
             {
-                Group = new HttpLinkItem()
+                var provinceValue = EnumHelper.GetProvinceValue(search.Province);
+
+                #region CityGroup
+
+                if (provinceValue != (int)ProvinceName.quanguo)
                 {
-                    Name = "媒体类别",
-                    Url = Url.Action("index", new
+                    HttpLinkGroup cityGroup = new HttpLinkGroup()
                     {
-                        city = search.City,
-                        mediacode = search.MediaCode,
-                        formatcode = search.FormatCode,
-                        ownercode = search.OwnerCode,
-                        periodcode = search.PeriodCode
-                    })
-                }
-            };
-            categoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
-            {
-                ID = x.ID,
-                Name = x.CateName,
-                Url = Url.Action("index", new
-                {
-                    city = search.City,
-                    mediacode = x.ID,
-                    formatcode = search.FormatCode,
-                    ownercode = search.OwnerCode,
-                    periodcode = search.PeriodCode
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "城市",
+                            Url = Url.Action("index", new
+                              {
+                                  province = search.Province,
+                                  city = 0,
+                                  mediacode = search.MediaCode,
+                                  childmediacode = search.ChildMediaCode,
+                                  formatcode = search.FormatCode,
+                                  ownercode = search.OwnerCode,
+                                  periodcode = search.PeriodCode
+                              })
 
-                }),
-                Selected = search.MediaCode == x.ID
-
-            }).ToList();
-
-            result.Add(categoryGroup);
-
-            #endregion
-
-            #region ChildMediaCode
-            if (search.MediaCode != 0)
-            {
-                HttpLinkGroup childCategoryGroup = new HttpLinkGroup()
-                {
-                    Group = new HttpLinkItem()
+                        }
+                    };
+                    cityGroup.Items = areaService.GetALL().Where(x => x.PID == provinceValue).ToList().Select(x => new HttpLinkItem()
                     {
-                        Name = "媒体子类别",
+                        ID = x.ID,
+                        Name = x.CateName,
                         Url = Url.Action("index", new
                         {
-                            city = search.City,
+                            province = search.Province,
+                            city = x.ID,
                             mediacode = search.MediaCode,
                             childmediacode = search.ChildMediaCode,
+                            formatcode = search.FormatCode,
+                            ownercode = search.OwnerCode,
+                            periodcode = search.PeriodCode
+
+                        }),
+                        Selected = x.ID == search.City
+                    }).ToList();
+
+                    result.Add(cityGroup);
+                }
+
+                #endregion
+
+                #region MediaCode
+
+                HttpLinkGroup categoryGroup = new HttpLinkGroup()
+                {
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "媒体类别",
+                        Url = Url.Action("index", new
+                        {
+                            province = search.Province,
+                            city = search.City,
+                            mediacode = 0,
+                            childmediacode = 0,
                             formatcode = search.FormatCode,
                             ownercode = search.OwnerCode,
                             periodcode = search.PeriodCode
                         })
                     }
                 };
-
-                childCategoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID == search.MediaCode).ToList().Select(x => new HttpLinkItem()
+                categoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
                 {
                     ID = x.ID,
                     Name = x.CateName,
                     Url = Url.Action("index", new
                     {
+                        province = search.Province,
                         city = search.City,
-                        mediacode = search.MediaCode,
-                        childmediacode = x.ID,
+                        mediacode = x.ID,
+                        childmediacode = 0,
                         formatcode = search.FormatCode,
                         ownercode = search.OwnerCode,
                         periodcode = search.PeriodCode
 
                     }),
-                    Selected = search.ChildMediaCode == x.ID
+                    Selected = search.MediaCode == x.ID
 
                 }).ToList();
 
-                result.Add(childCategoryGroup);
-            }
-            #endregion
+                result.Add(categoryGroup);
 
-            #region FormatCode
-            HttpLinkGroup formatGroup = new HttpLinkGroup()
-            {
-                Group = new HttpLinkItem()
+                #endregion
+
+                #region ChildMediaCode
+                if (search.MediaCode != 0)
                 {
-                    Name = "表现形式",
-                    Url = Url.Action("index", new
-                     {
-                         province = search.Province,
-                         city = search.City,
-                         mediacode = search.MediaCode,
-                         childmediacode = search.ChildMediaCode,
-                         ownercode = search.OwnerCode,
-                         periodcode = search.PeriodCode
-                     })
+                    HttpLinkGroup childCategoryGroup = new HttpLinkGroup()
+                    {
+                        Group = new HttpLinkItem()
+                        {
+                            Name = "媒体子类别",
+                            Url = Url.Action("index", new
+                            {
+                                province = search.Province,
+                                city = search.City,
+                                mediacode = search.MediaCode,
+                                childmediacode = 0,
+                                formatcode = search.FormatCode,
+                                ownercode = search.OwnerCode,
+                                periodcode = search.PeriodCode
+                            })
+                        }
+                    };
+
+                    childCategoryGroup.Items = outDoorMediaCateService.GetALL().Where(x => x.PID == search.MediaCode).ToList().Select(x => new HttpLinkItem()
+                    {
+                        ID = x.ID,
+                        Name = x.CateName,
+                        Url = Url.Action("index", new
+                        {
+                            province = search.Province,
+                            city = search.City,
+                            mediacode = search.MediaCode,
+                            childmediacode = x.ID,
+                            formatcode = search.FormatCode,
+                            ownercode = search.OwnerCode,
+                            periodcode = search.PeriodCode
+
+                        }),
+                        Selected = search.ChildMediaCode == x.ID
+
+                    }).ToList();
+
+                    result.Add(childCategoryGroup);
                 }
-            };
-            formatGroup.Items = formatCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
-            {
-                ID = x.ID,
-                Name = x.CateName,
-                Url = Url.Action("index", new
+                #endregion
+
+                #region FormatCode
+                HttpLinkGroup formatGroup = new HttpLinkGroup()
                 {
-                    city = search.City,
-                    mediacode = search.MediaCode,
-                    childmediacode = search.ChildMediaCode,
-                    formatcode = x.ID,
-                    ownercode = search.OwnerCode,
-                    periodcode = search.PeriodCode
-
-                }),
-                Selected = search.FormatCode == x.ID
-
-            }).ToList();
-
-            result.Add(formatGroup);
-
-            #endregion
-
-            #region OwnerCode
-            HttpLinkGroup ownerGroup = new HttpLinkGroup()
-            {
-                Group = new HttpLinkItem()
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "表现形式",
+                        Url = Url.Action("index", new
+                         {
+                             province = search.Province,
+                             city = search.City,
+                             mediacode = search.MediaCode,
+                             childmediacode = search.ChildMediaCode,
+                             formatcode = 0,
+                             ownercode = search.OwnerCode,
+                             periodcode = search.PeriodCode
+                         })
+                    }
+                };
+                formatGroup.Items = formatCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
                 {
-                    Name = "表现形式",
+                    ID = x.ID,
+                    Name = x.CateName,
                     Url = Url.Action("index", new
                     {
                         province = search.Province,
                         city = search.City,
                         mediacode = search.MediaCode,
                         childmediacode = search.ChildMediaCode,
-                        formatcode = search.FormatCode,
+                        formatcode = x.ID,
+                        ownercode = search.OwnerCode,
                         periodcode = search.PeriodCode
-                    })
-                }
-            };
-            ownerGroup.Items = ownerCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
-            {
-                ID = x.ID,
-                Name = x.CateName,
-                Url = Url.Action("index", new
+
+                    }),
+                    Selected = search.FormatCode == x.ID
+
+                }).ToList();
+
+                result.Add(formatGroup);
+
+                #endregion
+
+                #region OwnerCode
+                HttpLinkGroup ownerGroup = new HttpLinkGroup()
                 {
-                    city = search.City,
-                    mediacode = search.MediaCode,
-                    childmediacode = search.ChildMediaCode,
-                    formatcode = search.FormatCode,
-                    ownercode = x.ID,
-                    periodcode = search.PeriodCode
-
-                }),
-                Selected = search.OwnerCode == x.ID
-
-            }).ToList();
-
-            result.Add(ownerGroup);
-
-            #endregion
-
-            #region PeriodCode
-            HttpLinkGroup periodGroup = new HttpLinkGroup()
-            {
-                Group = new HttpLinkItem()
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "代理类型",
+                        Url = Url.Action("index", new
+                        {
+                            province = search.Province,
+                            city = search.City,
+                            mediacode = search.MediaCode,
+                            childmediacode = search.ChildMediaCode,
+                            formatcode = search.FormatCode,
+                            ownercode = 0,
+                            periodcode = search.PeriodCode
+                        })
+                    }
+                };
+                ownerGroup.Items = ownerCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
                 {
-                    Name = "表现形式",
+                    ID = x.ID,
+                    Name = x.CateName,
                     Url = Url.Action("index", new
                     {
                         province = search.Province,
@@ -551,35 +623,63 @@ namespace Maitonn.Web
                         mediacode = search.MediaCode,
                         childmediacode = search.ChildMediaCode,
                         formatcode = search.FormatCode,
-                        ownercode = search.OwnerCode
-                    })
-                }
-            };
-            periodGroup.Items = periodCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
-            {
-                ID = x.ID,
-                Name = x.CateName,
-                Url = Url.Action("index", new
+                        ownercode = x.ID,
+                        periodcode = search.PeriodCode
+
+                    }),
+                    Selected = search.OwnerCode == x.ID
+
+                }).ToList();
+
+                result.Add(ownerGroup);
+
+                #endregion
+
+                #region PeriodCode
+                HttpLinkGroup periodGroup = new HttpLinkGroup()
                 {
-                    city = search.City,
-                    mediacode = search.MediaCode,
-                    childmediacode = search.ChildMediaCode,
-                    formatcode = search.FormatCode,
-                    ownercode = search.OwnerCode,
-                    periodcode = x.ID
+                    Group = new HttpLinkItem()
+                    {
+                        Name = "投放周期",
+                        Url = Url.Action("index", new
+                        {
+                            province = search.Province,
+                            city = search.City,
+                            mediacode = search.MediaCode,
+                            childmediacode = search.ChildMediaCode,
+                            formatcode = search.FormatCode,
+                            ownercode = search.OwnerCode
+                        })
+                    }
+                };
+                periodGroup.Items = periodCateService.GetALL().Where(x => x.PID.Equals(null)).ToList().Select(x => new HttpLinkItem()
+                {
+                    ID = x.ID,
+                    Name = x.CateName,
+                    Url = Url.Action("index", new
+                    {
+                        province = search.Province,
+                        city = search.City,
+                        mediacode = search.MediaCode,
+                        childmediacode = search.ChildMediaCode,
+                        formatcode = search.FormatCode,
+                        ownercode = search.OwnerCode,
+                        periodcode = x.ID
 
-                }),
-                Selected = search.PeriodCode == x.ID
+                    }),
+                    Selected = search.PeriodCode == x.ID
 
-            }).ToList();
+                }).ToList();
 
-            result.Add(periodGroup);
+                result.Add(periodGroup);
 
-            #endregion
+                #endregion
+
+                CacheService.Add<List<HttpLinkGroup>>(result, cacheDic, 180);
+            }
 
             return result;
 
         }
-
     }
 }

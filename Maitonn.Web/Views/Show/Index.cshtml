@@ -1,60 +1,32 @@
-﻿@model ShowViewModel
+﻿@model OutDoor
 @{
-    ViewBag.Title = "网易保健品-有态度的保健品商城,进口保健食品,国内可信赖品牌";
+    ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    var Company = (CompanyShopIntroViewModel)ViewBag.Company;
 }
 @Html.Action("city", "home", new { province = CookieHelper.Province })
 
-@Html.Partial("_DetailsNav", Model.ListMenu)
+@Html.Partial("_TopMenu", (List<HttpLinkGroup>)ViewBag.LeftMenu)
 
-<div class="nav-bread">
+@Html.Partial("_Bread", (List<HttpLinkItem>)ViewBag.Bread)
 
-    @for (var i = 0; i < Model.Braed.Items.Count; i++)
-    {
-        var item = Model.Braed.Items[i];
-        if (i == 0)
-        {
-        <text>
-        <a class="nav-bread-home" href="@item.Url"></a>&gt;
-        @if (Model.Braed.Items.Count == 1)
-        {
-<strong>户外资源</strong>
-        }
-        </text>
-        }
-        else
-        {
-            if (i == Model.Braed.Items.Count - 1)
-            {
-        <strong>@item.Name</strong>
-            }
-            else
-            {
-        <text>
-        <a href="@item.Url">@item.Name</a> &gt;
-    </text>
-            }
-        }
-    }
 
-</div>
 <article class="details-wrap">
     <div class="details-info-wrap">
 
         <div class="clearfix details-box">
             <a href="javascript:;" id="litimgUp" class="details-scroll-btn details-scroll-up"><b class="up"></b></a>
-            <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down"><b class="down"></b></a>
+            <a href="javascript:;" id="litimgDown" class="details-scroll-btn   details-scroll-down "><b class="down"></b></a>
             <div class=" details-info-show">
-                <a href="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="jqzoom" rel='gal1'>
-                    <img src="@UIHelper.GetImgUrl(Model.Item.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" width="430" height="430" >
+                <a href="@UIHelper.GetImgUrl(Model.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img800)" class="jqzoom" rel='gal1'>
+                    <img src="@UIHelper.GetImgUrl(Model.MediaImg.ImgUrls.Split(',')[0], ImgUrlType.Img430)" width="430" height="430" >
                 </a>
             </div>
             <div class="details-info-box">
                 <ul id="thumblist" class="details-info-list">
-
-                    @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
+                    @for (var i = 0; i < Model.MediaImg.ImgUrls.Split(',').Length; i++)
                     {
-                        var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
+                        var imgurl = Model.MediaImg.ImgUrls.Split(',')[i];
                         <li class="@(i == 0 ? "zoomThumbActive" : "")">
                             <a href="javascript:;" rel="{gallery:'gal1', smallimage:'@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img430)',largeimage:'@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)'}">
                                 <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img120)"></a></li>
@@ -62,8 +34,6 @@
 
                 </ul>
             </div>
-
-
         </div>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -76,17 +46,42 @@
                     zoomWidth:430,
                     zoomHeight:430
                 });
+                if($('#thumblist').children('li').length<6){
+                    $('.details-scroll-btn').addClass('details-scroll-btn-disabled');
+                }
+                var currentIndex=0;
+                $('.details-scroll-btn').click(function(){
+                    if($(this).hasClass('details-scroll-btn-disabled')){
+                        return false;
+                    }else{
+                        var maxShowLength=5;
+                        var totalLength=@Model.MediaImg.ImgUrls.Split(',').Length;
+                        var marginTop=parseInt($('#thumblist').css('marginTop'));
+                        var itemHeight=$('#thumblist').children('li').eq(0).outerHeight(true);
+                        if($(this).hasClass('details-scroll-up')){
+                            if(currentIndex+maxShowLength<totalLength){
+                                currentIndex++;
+                                $('#thumblist').css('marginTop',(marginTop-itemHeight)+'px');
+                            }
+                        }else{
+                            if(marginTop!=0){
+                                currentIndex--;
+                                $('#thumblist').css('marginTop',(marginTop+itemHeight)+'px');
+                            }
+                        }
+                    }
+                })
             });
         </script>
         <dl class="details-info-content">
-            <dt>@Model.Item.Name - @(Model.Item.Wdith)米*@(Model.Item.Height)米*@(Model.Item.TotalFaces)面</dt>
-            <dd>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span class="details-info-item details-info-price">@Model.Item.Area.PCategory.CateName - @Model.Item.Area.CateName</span></dd>
-            <dd>售&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="details-info-item details-info-price-current"><strong>¥<b>@Model.Item.Price</b> 万元/年</strong></span></dd>
-            <dd>媒体类型：<span class="details-info-item">@Model.Item.OutDoorMediaCate.PCategory.CateName - @Model.Item.OutDoorMediaCate.CateName</span></dd>
-            <dd>最短投放：<span class="details-info-item">@Model.Item.PeriodCate.CateName</span></dd>
-            <dd>媒体形式：<span class="details-info-item">@Model.Item.FormatCate.CateName</span></dd>
-            <dd>区域属性：<span class="details-info-item">@String.Join(",", Model.Item.AreaAtt.Select(x => x.AttName))</span></dd>
-            <dd>代理类型：<span class="details-info-item">@Model.Item.OwnerCate.CateName</span> </dd>
+            <dt>@Model.Name - @(Model.Wdith)米*@(Model.Height)米*@(Model.TotalFaces)面</dt>
+            <dd>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span class="details-info-item details-info-price">@Model.Area.PCategory.CateName - @Model.Area.CateName</span></dd>
+            <dd>售&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：<span class="details-info-item details-info-price-current"><strong>¥<b>@Model.Price</b> 万元/年</strong></span></dd>
+            <dd>媒体类型：<span class="details-info-item">@Model.OutDoorMediaCate.PCategory.CateName - @Model.OutDoorMediaCate.CateName</span></dd>
+            <dd>最短投放：<span class="details-info-item">@Model.PeriodCate.CateName</span></dd>
+            <dd>媒体形式：<span class="details-info-item">@Model.FormatCate.CateName</span></dd>
+            <dd>区域属性：<span class="details-info-item">@String.Join(",", Model.AreaAtt.Select(x => x.AttName))</span></dd>
+            <dd>代理类型：<span class="details-info-item">@Model.OwnerCate.CateName</span> </dd>
             <dd>媒体档期：</dd>
             <dd>
                 @Html.Partial("_DisplayAuctionCalendar", new ShowOutDoorSetAuctionCalendarViewModel() { MediaID = Model.MediaID, AuctionCalendar = Model.MediaID })
@@ -98,12 +93,12 @@
             <div class="gray-box">
                 <h4>媒体主信息</h4>
                 <div class="gray-company">
-                    <a href="@Url.Action("index", "shop", new { id = Model.Company.MemberID })" class="gray-company-pic">
-                        <img src="@Model.Company.Logo" width="130" height="110" alt="@Model.Company.Name"></a>
+                    <a href="@Url.Action("index", "shop", new { id = Company.MemberID })" class="gray-company-pic">
+                        <img src="@Company.Logo" width="130" height="110" alt="@Company.Name"></a>
                     <ul>
-                        <li><a href="@Url.Action("index", "shop", new { id = Model.Company.MemberID })" class="btn btn-danger">
+                        <li><a href="@Url.Action("index", "shop", new { id = Company.MemberID })" class="btn btn-danger">
                             <i class="icon-home icon-white"></i>&nbsp;&nbsp;公司首页</a></li>
-                        <li><a href="@Url.Action("contact", "shop", new { id = Model.Company.MemberID })" class="btn btn-danger">
+                        <li><a href="@Url.Action("contact", "shop", new { id = Company.MemberID })" class="btn btn-danger">
                             <i class="icon-globe icon-white"></i>&nbsp;&nbsp;联系方式</a></li>
                         <li><a href="javascript:;" class="btn btn-danger btn-feedback">
                             <i class="icon-envelope icon-white"></i>&nbsp;&nbsp;留言咨询</a></li>
@@ -112,12 +107,38 @@
 
                 </div>
                 <ul class="gray-company-list">
-                    <li class="name">公司名称：<span>@Model.Company.Name</span></li>
-                    <li class="type">所在城市：<span>@Model.Company.Province - @Model.Company.City </span></li>
-                    <li class="reg">企业规模：<span>@Model.Company.ScaleName</span></li>
-                    <li class="update noLine">注册资金：<span>@Model.Company.FundName</span></li>
+                    <li class="name">公司名称：<span> <a href="@Url.Action("index", "shop", new { id = Company.MemberID })" ">@Company.Name</a></span></li>
+                    <li class="type">所在城市：<span>@Company.Province - @Company.City </span></li>
                 </ul>
             </div>
+
+            <div class="gray-box mt15">
+                <h4><span class="c_red">@Model.Area.PCategory.CateName - @Model.Area.CateName</span> 相关户外信息</h4>
+                <div class="gray-list ajax-content" data-url="@Url.Action("getrelateMedia", "ajaxcontent", new { province = Model.Area.PCategory.ID, city = Model.CityCode })">
+                    <div class="gary-loadding">
+                        <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="gray-box mt15">
+                <h4><span class="c_red">推荐</span> 户外信息</h4>
+                <div class="gray-list ajax-content" data-url="@Url.Action("getsuggestMedia", "ajaxcontent", new { province = Model.Area.PCategory.ID })">
+                    <div class="gary-loadding">
+                        <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="gray-box mt15">
+                <h4><span class="c_red">媒体主</span> 其他户外信息   <a class="more" href="@Url.Action("source", "shop", new { id = Model.MemberID })">更多</a></h4>
+                <div class="gray-list ajax-content" data-url="@Url.Action("getMemberMedia", "ajaxcontent", new { id = Model.MemberID })">
+                    <div class="gary-loadding">
+                        <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="details-right">
             <div class="details-nav">
@@ -132,34 +153,34 @@
             </div>
             <div class="goods" id="goods-details">
                 <ul class="goods-params">
-                    <li class="">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span>@Model.Item.Area.PCategory.CateName - @Model.Item.Area.CateName</span></li>
-                    <li class="">媒体类型：<span>@Model.Item.OutDoorMediaCate.PCategory.CateName - @Model.Item.OutDoorMediaCate.CateName</span></li>
-                    <li class="goods-params-long">具体位置：<span>@Model.Item.Location</span></li>
-                    <li class="">最短投放：<span>@Model.Item.PeriodCate.CateName</span></li>
-                    <li class="">媒体形式：<span>@Model.Item.FormatCate.CateName</span></li>
-                    <li class="goods-params-long">区域属性：<span>@String.Join(",", Model.Item.AreaAtt.Select(x => x.AttName))</span></li>
-                    <li class="goods-params-long">媒体规格：<span>@(Model.Item.Wdith)米*@(Model.Item.Height)米*@(Model.Item.TotalFaces)面=@((Model.Item.Wdith * Model.Item.Height * Model.Item.TotalFaces).ToString("F2"))平方米</span></li>
-                    <li class="">代理类型：<span>@Model.Item.OwnerCate.CateName</span></li>
-                    <li class="">代理截至：<span>@Model.Item.Deadline.ToString("yyyy-MM-dd")</span></li>
-                    @if (Model.Item.HasLight)
+                    <li class="">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：<span>@Model.Area.PCategory.CateName - @Model.Area.CateName</span></li>
+                    <li class="">媒体类型：<span>@Model.OutDoorMediaCate.PCategory.CateName - @Model.OutDoorMediaCate.CateName</span></li>
+                    <li class="goods-params-long">具体位置：<span>@Model.Location</span></li>
+                    <li class="">最短投放：<span>@Model.PeriodCate.CateName</span></li>
+                    <li class="">媒体形式：<span>@Model.FormatCate.CateName</span></li>
+                    <li class="goods-params-long">区域属性：<span>@String.Join(",", Model.AreaAtt.Select(x => x.AttName))</span></li>
+                    <li class="goods-params-long">媒体规格：<span>@(Model.Wdith)米*@(Model.Height)米*@(Model.TotalFaces)面=@((Model.Wdith * Model.Height * Model.TotalFaces).ToString("F2"))平方米</span></li>
+                    <li class="">代理类型：<span>@Model.OwnerCate.CateName</span></li>
+                    <li class="">代理截至：<span>@Model.Deadline.ToString("yyyy-MM-dd")</span></li>
+                    @if (Model.HasLight)
                     {
                         <li class="">照明情况：<span>
-                            @UIHelper.GetTime(Model.Item.LightStrat)-@UIHelper.GetTime(Model.Item.LightEnd)
+                            @UIHelper.GetTime(Model.LightStrat)-@UIHelper.GetTime(Model.LightEnd)
                         </span></li>
                     }
                     else
                     {
                         <li class="">照明情况：<span>无</span></li>
                     }
-                    <li class="">日车流量：<span>@Model.Item.TrafficAuto 万辆</span></li>
-                    <li class="">日人流量：<span>@Model.Item.TrafficAuto 万人</span></li>
-                    <li class="goods-params-long">具体描述：<span>@Model.Item.Description</span></li>
+                    <li class="">日车流量：<span>@Model.TrafficAuto 万辆</span></li>
+                    <li class="">日人流量：<span>@Model.TrafficAuto 万人</span></li>
+                    <li class="goods-params-long">具体描述：<span>@Model.Description</span></li>
                 </ul>
                 <h3 class="goods-head goods-intro">商品介绍</h3>
 
-                @for (var i = 0; i < Model.Item.MediaImg.ImgUrls.Split(',').Length; i++)
+                @for (var i = 0; i < Model.MediaImg.ImgUrls.Split(',').Length; i++)
                 {
-                    var imgurl = Model.Item.MediaImg.ImgUrls.Split(',')[i];
+                    var imgurl = Model.MediaImg.ImgUrls.Split(',')[i];
                     <div class="tc">
                         <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)" />
                     </div>
@@ -170,16 +191,16 @@
                 <div class="goods-position-container">
                     @Html.Partial("_DisplayMap", new ShowOutDoorMapViewModel()
                {
-                   MediaID = Model.Item.MediaID,
-                   Position = Model.Item.Lat + "|" + Model.Item.Lng
+                   MediaID = Model.MediaID,
+                   Position = Model.Lat + "|" + Model.Lng
                })
                 </div>
             </div>
             <div class="goods-credentials" id="goods-credentials">
                 <h3 class="goods-head goods-comment">相关证书</h3>
-                @for (var i = 0; i < Model.Item.CredentialsImg.ImgUrls.Split(',').Length; i++)
+                @for (var i = 0; i < Model.CredentialsImg.ImgUrls.Split(',').Length; i++)
                 {
-                    var imgurl = Model.Item.CredentialsImg.ImgUrls.Split(',')[i];
+                    var imgurl = Model.CredentialsImg.ImgUrls.Split(',')[i];
                     <div class="tc">
                         <img src="@UIHelper.GetImgUrl(imgurl, ImgUrlType.Img800)" />
                     </div>
@@ -207,7 +228,7 @@
             </div>
 
             @(Html.Kendo().Window().Name("Win-feedback")
-            .Title("留言咨询-" + Model.Company.Name)
+            .Title("留言咨询-" + Company.Name)
             .Visible(false)
             .Modal(true)
             .Width(700)
@@ -217,8 +238,8 @@
             <div class="goods-feedback-comment">
                 <div class="goods-feedback-box zxDetail">
                     <dl name="tips_1" style="display: block;">
-                        <dd>@(Model.Company.Description.Length > 120 ? Model.Company.Description.Substring(0, 120) + "..." : Model.Company.Description)[<a href="@Url.Action("intro", "shop", new { id = Model.Company.MemberID })" class="z_f2">详细</a>]</dd>
-                        <dd class="c_ba2636">联系地址：@Model.Company.Addresss</dd>
+                        <dd>@(Company.Description.Length > 120 ? Company.Description.Substring(0, 120) + "..." : Company.Description)[<a href="@Url.Action("intro", "shop", new { id = Company.MemberID })" class="z_f2">详细</a>]</dd>
+                        <dd class="c_ba2636">联系地址：@Company.Addresss</dd>
                     </dl>
                 </div>
                 <div class="goods-feedback-product ">
@@ -226,10 +247,10 @@
                         <tbody>
                             <tr>
                                 <td width="90" align="center"><a href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">
-                                    <img src="@Model.Item.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Item.Name" title="@Model.Item.Name"></a></td>
-                                <td width="240" align="left" title="@Model.Item.Name"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Item.Name
+                                    <img src="@Model.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Name" title="@Model.Name"></a></td>
+                                <td width="240" align="left" title="@Model.Name"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Name
                                 </a></td>
-                                <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Item.Price 万元/年</strong></td>
+                                <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Price 万元/年</strong></td>
                                 <td align="left"></td>
                             </tr>
                         </tbody>
@@ -247,7 +268,10 @@
                                 <td>
                                     <textarea id="input-feedback" name="input-feedback" class="commentText"></textarea>
                                     <p class="txtTips zxBot">
-                                        <span>10-300字之间，您还可以输入<strong class="c_4b8400 availWrite">300</strong>个字</span>
+                                        <span>10-300字之间，您还可以输入<strong class="c_red availWrite"> 300 </strong>个字</span>
+                                    </p>
+                                    <p class="txtTips zxError c_red" style="display: none;">
+                                        <span>您多写了<strong class="c_red errorWrite"> 0 </strong>个字，精简一下吧！</span>
                                     </p>
                                 </td>
                             </tr>
@@ -311,10 +335,10 @@
                     <tbody>
                         <tr>
                             <td width="90" align="center"><a href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">
-                                <img src="@Model.Item.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Item.Name" title="@Model.Item.Name"></a></td>
-                            <td width="240" align="left" title="@Model.Item.Name"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Item.Name
+                                <img src="@Model.MediaImg.FocusImgUrl" width="70" height="70" alt="@Model.Name" title="@Model.Name"></a></td>
+                            <td width="240" align="left" title="@Model.Name"><a class="aC333" href="@Url.Action("index", "show", new { id = Model.MediaID })" target="_blank">@Model.Name
                             </a></td>
-                            <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Item.Price 万元/年</strong></td>
+                            <td width="190" align="center">价格：<strong class="c_ba2636">¥@Model.Price 万元/年</strong></td>
                             <td align="left"></td>
                         </tr>
                     </tbody>
@@ -341,8 +365,16 @@
                         var kendoWindow = $('#Win-feedback').data('kendoWindow');
                         kendoWindow.center().open();
                     })
-                    $('#input-feedback').keydown(function(e) {
-                        $(this).next().find('.availWrite').text(300-$(this).val().length);
+                    $('#input-feedback').keyup(function(e) {
+                        if($(this).val().length>300){
+                            $('.zxBot').hide();
+                            $('.zxError').show();
+                            $('.zxError').find('.errorWrite').text($(this).val().length-300);
+                        }else{
+                            $('.zxError').hide();
+                            $('.zxBot').show();
+                            $(this).next().find('.availWrite').text(300-$(this).val().length);
+                        }
                     })
                     $('#submit-feedback').click(function() {
 
@@ -352,8 +384,8 @@
                                     alert('请输入10~300个字');
                                     return false;
                                 } 
-                                var id=@Model.Company.MemberID,
-                                          name='@Model.Item.Name',
+                                var id=@Company.MemberID,
+                                          name='@Model.Name',
                                     content=$('#input-feedback').val();
                                 $.ajax({
                                     type:'POST',
@@ -409,7 +441,7 @@
                         Maitonn.JHelper.checkLogin().done(function(isLogin){
                             if(isLogin){
                                 var mediaId='@Model.MediaID';
-                                var price=@(Model.Item.Price / 365);
+                                var price=@(Model.Price / 365);
                                 var kwindow=$('#Win-scheme').data('kendoWindow');
                                 if(!$('.goods-addscheme')[0]){
                                     Maitonn.JHelper.getSchemeForm().done(function(html){
@@ -577,9 +609,6 @@
                     }
                 })
             </script>
-
-
-
         </div>
     </div>
 </article>

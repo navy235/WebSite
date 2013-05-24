@@ -220,6 +220,7 @@
     <Compile Include="Controllers\Admin\ServerItemController.cs" />
     <Compile Include="Controllers\Admin\SliderImgController.cs" />
     <Compile Include="Controllers\Admin\MoneyTypeSettingController.cs" />
+    <Compile Include="Controllers\AjaxContentController.cs" />
     <Compile Include="Controllers\AjaxServiceController.cs" />
     <Compile Include="Controllers\ChangeProvinceController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -1590,7 +1591,6 @@
     <Content Include="Views\Shop\_Message.cshtml" />
     <Content Include="Views\Company\Message.cshtml" />
     <Content Include="Views\Company\MessageDetails.cshtml" />
-    <Content Include="Views\Shared\_DetailsNav.cshtml" />
     <Content Include="Views\Shared\_DetailsMain.cshtml" />
     <Content Include="Views\Show\_DisplayAuctionCalendar.cshtml" />
     <Content Include="Views\Show\_DisplayMap.cshtml" />
@@ -1662,6 +1662,10 @@
     <Content Include="Views\List\_Bread.cshtml" />
     <Content Include="Views\List\_LeftMenu.cshtml" />
     <Content Include="Views\List\_RightSearch.cshtml" />
+    <Content Include="Views\Show\_TopMenu.cshtml" />
+    <Content Include="Views\Show\_Bread.cshtml" />
+    <Content Include="Views\AjaxContent\MediaItem.cshtml" />
+    <Content Include="Views\AjaxContent\CompanyItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

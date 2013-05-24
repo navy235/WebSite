@@ -74,6 +74,7 @@
     <Compile Include="Attribute\TimeQuantumAttribute.cs" />
     <Compile Include="Attribute\ValueGreaterThanAttribute.cs" />
     <Compile Include="BadWords\BadWordValidator.cs" />
+    <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Checking\CheckHelper.cs" />
     <Compile Include="Cookie\CookieHelper.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />

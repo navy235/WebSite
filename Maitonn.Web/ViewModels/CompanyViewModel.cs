@@ -395,6 +395,10 @@ namespace Maitonn.Web
 
         public int SourceCount { get; set; }
 
+        public string Mobile { get; set; }
+
+        public string Phone { get; set; }
+
         public List<CompanyCategoryViewModel> CompanyCategory { get; set; }
 
         public List<CompanyLinksViewModel> CompanyLinks { get; set; }

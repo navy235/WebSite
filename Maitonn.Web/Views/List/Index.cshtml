@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     var PriceListFilter = (List<HttpLinkItem>)ViewBag.PriceListFilter;
     var Result = (ListSource)ViewBag.Result;
+    var Sort = (ListSort)ViewBag.Sort;
+    var Query = (ListSearchItemViewModel)ViewBag.Query;
 }
 @Html.Action("city", "home", new { province = CookieHelper.Province })
 
@@ -12,104 +14,132 @@
 
 @Html.Partial("_Bread", (List<HttpLinkItem>)ViewBag.Bread)
 
-<article class="list-wrap clearfix">
-    <section class="list-left">
-        @Html.Partial("_LeftMenu", (List<HttpLinkGroup>)ViewBag.LeftMenu)
-    </section>
-    <section class="list-right">
+<article class="list-wrap ">
+    <section class="list-search ">
+
         @Html.Partial("_RightSearch", (List<HttpLinkGroup>)ViewBag.Search)
-        <div class="list-filter clearfix">
-            <div class="list-filter-top scroll-fixed clearfix">
-                <a  class="list-filter-sort list-filter-default @(ViewBag.isSortDefault ? "selected" : "") mr10 " href="@ViewBag.DefaultOrderUrl">默认</a>
-                <a  class="list-filter-sort list-filter-up @(ViewBag.isSortPriceAsc ? "selected" : "")" href="@ViewBag.PriceOrderAscUrl">价格</a>
-                <a  class="list-filter-sort list-filter-down @(ViewBag.isSortPriceDesc ? "selected" : "") mr10" href="@ViewBag.PriceOrderDescUrl">价格</a>
-                <div class="list-filter-price">
-                    <span class="list-filter-price-text">@PriceListFilter.Single(x=>x.Selected.Equals(true)).Name</span>
-                    <ul class="list-filter-price-list">
-                        @foreach (var item in PriceListFilter)
+        <div class="clearfix">
+            <div class="list-result">
+                <div class="list-filter clearfix">
+                    <div class="list-filter-top scroll-fixed clearfix">
+                        <a  class="list-filter-sort list-filter-default @(Sort.SortDefault ? "selected" : "") mr10 " href="@ViewBag.DefaultOrderUrl">默认</a>
+                        <a  class="list-filter-sort list-filter-up @(Sort.SortPriceAsc ? "selected" : "")" href="@ViewBag.PriceOrderAscUrl">价格</a>
+                        <a  class="list-filter-sort list-filter-down @(Sort.SortPriceDesc ? "selected" : "") mr10" href="@ViewBag.PriceOrderDescUrl">价格</a>
+                        <div class="list-filter-price">
+                            <span class="list-filter-price-text">@PriceListFilter.Single(x => x.Selected.Equals(true)).Name</span>
+                            <ul class="list-filter-price-list">
+                                @foreach (var item in PriceListFilter)
+                                {
+                                    <li><a class="@(item.Selected ? "selected" : "")" href="@item.Url">@item.Name</a></li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="list-filter-search">
+                            <span class="list-filter-search-text">关键字：</span>
+                            <input type="text" id="query" name="query" class="list-filter-search-query" value="@ViewBag.Result.Querywords" />
+                            <button type="button" class="btn btn-warning" id="querybtn">
+                                <i class="icon-search icon-white mr5"></i>搜索</button>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#querybtn").click(function() {
+                                    window.location.href = window.location.origin + window.location.pathname.replace(/p_(\d+)/, 'p_1') + "?query=" + encodeURIComponent($("#query").val());
+                                });
+                                $('#query').keydown(function(e) {
+                                    if (e.keyCode == 13) {
+                                        $("#querybtn").click();
+                                    }
+                                });
+                                $('.list-filter-price').hover(function() {
+                                    $(this).children("ul").show();
+                                }, function() {
+                                    $(this).children("ul").hide();
+                                })
+                            })
+                        </script>
+                        <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@ViewBag.Result.TotalCount</strong>&nbsp;条</div>
+                    </div>
+                    <div class="list-filter-bottom clearfix">
+                        <div class="list-filter-menu">
+                            <label>
+                                <input type="checkbox" v0="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-1.html" v1="http://baojian.163.com/products/1-11-0-0-0-0-0-0-1-0-1.html">证书认证</label>
+                            <label class="ml10">
+                                <input type="checkbox" v0="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-1.html" v1="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-1-1.html">广知通会员</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-products clearfix">
+                    @{
+
+                        foreach (var item in Result.Items)
                         {
-                            <li><a class="@(item.Selected ? "selected" : "")" href="@item.Url">@item.Name</a></li>
+
+                        <div class="products-item">
+                            <ul>
+                                <li class="products-img">
+                                    <img alt="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" src="@item.ImgUrl" width="80" height="80" >
+                                </li>
+                                <li class="products-details">
+                                    <h3><a target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" >
+                                        <strong>@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))</strong>
+                                    </a>
+                                    </h3>
+                                    <div class="products-city">[@item.PCategoryName - @item.CategoryName]</div>
+                                    <div class="products-city">[@(item.FormatCateName)]</div>
+
+                                    <div class="clearfix"></div>
+                                    <p class="products-desc">@item.Description</p>
+                                    <div class="products-info clearfix">
+
+                                        <div class="products-city">[@item.ProvinceName - @item.CityName]</div>
+                                        <div class="products-company">
+                                            <a href="@Url.Action("index", "shop", new { id = item.MemberID })"  title="@item.CompanyName" target="_blank"><span>@item.CompanyName</span></a>&nbsp;
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="products-price">
+                                    <span class="c_red"><b>¥@item.Price 万元/年</b></span><br>
+                                    <span><b>最短投放：@(item.PeriodCateName)</b></span><br>
+                                    <a href="@Url.Action("contact", "shop", new { id = item.MemberID })" title="@item.CompanyName" target="_blank" >联系方式</a>
+                                </li>
+                            </ul>
+                        </div>
+    
                         }
-                    </ul>
-                </div>
-                <div class="list-filter-search">
-                    <span class="list-filter-search-text">关键字：</span>
-                    <input type="text" id="query" name="query" class="list-filter-search-query" value="@ViewBag.Result.Querywords" />
-                    <button type="button" class="btn btn-warning" id="querybtn">
-                        <i class="icon-search icon-white mr5"></i>搜索</button>
-                </div>
-                <script type="text/javascript">
-                    $(function() {
-                        $("#querybtn").click(function() {
-                            window.location.href = window.location.origin + window.location.pathname.replace(/p_(\d+)/, 'p_1') + "?query=" + encodeURIComponent($("#query").val());
-                        });
-                        $('#query').keydown(function(e) {
-                            if (e.keyCode == 13) {
-                                $("#querybtn").click();
-                            }
-                        });
-                        $('.list-filter-price').hover(function() {
-                            $(this).children("ul").show();
-                        }, function() {
-                            $(this).children("ul").hide();
-                        })
-                    })
-                </script>
-                <div class="list-filter-page-number">共&nbsp;<strong class="c_ba2636">@ViewBag.Result.TotalCount</strong>&nbsp;条</div>
-            </div>
-            <div class="list-filter-bottom clearfix">
-                <div class="list-filter-menu">
-                    <label>
-                        <input type="checkbox" v0="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-1.html" v1="http://baojian.163.com/products/1-11-0-0-0-0-0-0-1-0-1.html">证书认证</label>
-                    <label class="ml10">
-                        <input type="checkbox" v0="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-0-1.html" v1="http://baojian.163.com/products/1-11-0-0-0-0-0-0-0-1-1.html">广知通会员</label>
-                </div>
-            </div>
-        </div>
-        <div class="list-products clearfix">
-
-            @{
-                var itemIndex = 1;
-                
-                foreach (var item in Result.Items)
-                {
-
-                <div class="list-products-item">
-                    <a class="list-products-item-img" target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" >
-                        <img width="220" height="220" border="0" src="@item.ImgUrl" alt="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))">
-                        <span class="actNewIcon actIcon01"></span>
-                    </a>
-                    <p class="list-products-item-desc"><a target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" title="@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))">@(item.Name + (item.Width + "米*" + item.Height + "米*" + item.TotalFaces + "面"))</a></p>
-                    <p class="list-products-item-price">
-                        <strong class="fs14">¥@item.Price 万元/年</strong>
-                        <span class="pull-right" style="float: right;">最短投放：@(item.PeriodCateName)</span>
-                    </p>
-                    <p class="list-products-item-title">
-                        <span class="pull-left">@item.ProvinceName - @item.CityName</span>
-                        <span class="pull-right">形式：@(item.FormatCateName)</span>
-                    </p>
-                    <p class="list-products-item-category">
-                        <a target="_blank" href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode, childmediacode = item.MediaCateCode })">@item.ParentMediaCateName - @item.MediaCateName</a>&nbsp;&nbsp;
-                    </p>
-                    <a href="#Core.onCartIconClick:1661" class="list-products-item-car" title="添加到购物车"></a>
-                </div>
-                
-                    if (itemIndex % 3 == 0 && itemIndex < ViewBag.Result.Items.Count - 2)
-                    { 
-                <div class="list-grayline"></div>
                     }
 
-                    itemIndex++;
-                }
-            }
-
-        </div>
-        @Html.MaitonnPage(new PagingInfo()
+                </div>
+                @Html.MaitonnPage(new PagingInfo()
            {
                CurrentPage = ViewBag.Result.CurrentPage,
                ItemsPerPage = ViewBag.Result.PageSize,
                TotalItems = ViewBag.Result.TotalCount,
                ShowPageBox = true
            })
+            </div>
+
+            <div class="list-right">
+                <div class="gray-box ">
+                    <h4>推荐户外企业公司</h4>
+                    <div class="gray-list ajax-content" data-url="@Url.Action("getsuggestCompany", "ajaxcontent", new { province = Query.Province })">
+                        <div class="gary-loadding">
+                            <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gray-box mt15">
+                    <h4>优质户外企业公司</h4>
+                    <div class="gray-list ajax-content" data-url="@Url.Action("getgoodCompany", "ajaxcontent", new { province = Query.Province })">
+                        <div class="gary-loadding">
+                            <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </section>
+
 </article>

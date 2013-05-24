@@ -1,0 +1,20 @@
+﻿@model List<HttpLinkItem>
+
+<ul>
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+        <li class="clearfix @((i == Model.Count - 1) ? "last" : "")">
+            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank"  >
+                <img src="@item.ImgUrl" alt="@item.Name"></a>
+
+            <p class="item-desc">
+                <a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a>
+            </p>
+            <p class="item-category">
+                @item.ProvinceName-@item.CityName
+            </p>
+@*            <p class="item-price c_red"><strong>¥@item.Price</strong> 万元/年</p>*@
+        </li>
+    }
+</ul>
