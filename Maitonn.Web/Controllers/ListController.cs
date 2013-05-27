@@ -80,7 +80,13 @@ namespace Maitonn.Web
             string query = null)
         {
 
+            if (!province.Equals(ProvinceName.quanguo.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                CookieHelper.SetProvinceCookie(province);
+            }
+
             var provinceValue = EnumHelper.GetProvinceValue(province);
+
 
             var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
 

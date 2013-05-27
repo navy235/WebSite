@@ -9,12 +9,12 @@
                 <img src="@item.ImgUrl" alt="@item.Name"></a>
 
             <p class="item-desc">
-                <a target="_blank" title="@item.Name" href="@Url.Action("index", "show", new { id = item.ID })">@item.Name</a>
+                <a target="_blank" title="@item.Name" href="@Url.Action("index", "shop", new { id = item.ID })">@item.Name</a>
             </p>
             <p class="item-category">
                 @item.ProvinceName-@item.CityName
             </p>
-@*            <p class="item-price c_red"><strong>¥@item.Price</strong> 万元/年</p>*@
+            @*            <p class="item-price c_red"><strong>¥@item.Price</strong> 万元/年</p>*@
         </li>
     }
 </ul>

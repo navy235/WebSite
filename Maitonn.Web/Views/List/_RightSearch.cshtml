@@ -35,13 +35,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
-        $.each($(".list-search-attr-list"), function(index, item) {
+    $(function () {
+        $.each($(".list-search-attr-list"), function (index, item) {
             var hasSelected = $(item).find('.selected').length > 0;
             if (hasSelected && $(item).height() > 58) {
                 var selectItem = $(item).find('.selected');
                 var top = selectItem.offset().top - $(item).offset().top;
-                if (top <= 58) {
+                if (top < 58) {
                     $(item).height(58);
                     $(item).siblings(".list-search-attr-more").show();
                 } else {
@@ -53,13 +53,13 @@
             }
         });
 
-        $(".list-search-attr-more").click(function() {
+        $(".list-search-attr-more").click(function () {
             $(this).siblings(".list-search-attr-list").height("auto");
             $(this).hide();
             $(this).next().show();
         })
 
-        $(".list-search-attr-little").click(function() {
+        $(".list-search-attr-little").click(function () {
             $(this).siblings(".list-search-attr-list").height(58);
             $(this).hide();
             $(this).prev().show();

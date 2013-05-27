@@ -64,24 +64,33 @@
 
                     @foreach (var server in (List<ServerItem>)ViewBag.Servers)
                     {
-                        <div class="list-products-item">
-                            <a class="list-products-item-img" target="_blank" href="@server.HelpUrl" title="查看权益介绍">
-                                <img width="220" height="220" border="0" src="@server.ImgUrl" alt="查看权益介绍" title="查看权益介绍">
-                                <span class="actNewIcon actIcon01"></span>
-                            </a>
-                            <p class="list-products-item-desc"><a target="_blank" href="@server.HelpUrl" title="查看权益介绍">@server.Name</a></p>
-                            <p class="list-products-item-price">
-                                <strong class="fs14">¥@server.Price 元</strong>
-                                <span class="pull-right" style="float: right;">权益：@server.Month 个月</span>
-                            </p>
-                            <p class="list-products-item-title">
-                                <span class="pull-left">赠广知币:@server.GiftMoney 个</span>
-                                <span class="pull-right">赠送权益：@server.GiftMonth 个月</span>
-                            </p>
-                            <p class="list-products-item-category">
-                                <a target="_blank" href="@server.HelpUrl">查看权益介绍</a>&nbsp;&nbsp;
-                            </p>
-                            <a href="@Url.Action("open", new { id = server.ID })" class="list-products-item-car" title="立即开通"></a>
+                        <div class="products-item">
+                            <ul>
+                                <li class="products-img">
+                                    <img alt="@server.Name" title="@server.Name" src="@server.ImgUrl" >
+                                </li>
+                                <li class="products-details">
+                                    <h3>
+                                        <a target="_blank" href="@Url.Action("open", new { id = server.ID })" title="查看详细权益介绍">
+                                            <strong>@server.Name</strong>
+                                        </a>
+                                    </h3>
+                                    <div class="clearfix"></div>
+                                    <p class="products-desc">@server.Description</p>
+                                    <div class="products-info clearfix">
+                                        <div class="products-city">赠广知币：<b class="c_red">@server.GiftMoney </b>个</div>
+                                        <div class="products-city">赠送权益：<b class="c_red">@server.GiftMonth </b>个月</div>
+                                        <div class="products-company">
+                                            <a href="@server.HelpUrl" title="查看详细权益介绍" target="_blank"><span>查看详细权益介绍</span></a>&nbsp;
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="products-price">
+                                    <span class="c_red"><b>¥@server.Price 元</b></span><br>
+
+                                    <a class='k-button k-button-icontext ' href='@Url.Action("open", new { id = server.ID })'  ><span class='k-icon k-i-custom'></span>立即开通</a>
+                                </li>
+                            </ul>
                         </div>
                     }
                 </div>

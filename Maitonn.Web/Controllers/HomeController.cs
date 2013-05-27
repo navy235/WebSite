@@ -67,6 +67,11 @@ namespace Maitonn.Web
         public ActionResult Index(string province = "quanguo")
         {
 
+            if (!province.Equals(ProvinceName.quanguo.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                CookieHelper.SetProvinceCookie(province);
+            }
+
             var provinceValue = EnumHelper.GetProvinceValue(province);
 
             var isQuanGuo = provinceValue == (int)ProvinceName.quanguo;
