@@ -1,0 +1,46 @@
+﻿<div class="server-status">
+    @if (ViewBag.VIP != null)
+    {
+        var VIP = (Member_VIP)ViewBag.VIP;
+                    
+        <table width="100%" class="alert alert-info">
+            <tbody>
+                <tr>
+                    <td width="33%">当前版本：<span class="c_red">@UIHelper.ServerTypeList.Single(x => x.Value == VIP.VipLevel.ToString()).Text</span></td>
+                    <td width="33%">到期日期：<span class="c_red">@VIP.EndTime.ToString("yyyy-MM-dd")</span></td>
+                    <td>剩余天数：<span class="c_red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, VIP.EndTime)</span></td>
+                </tr>
+                <tr>
+                    <td width="33%">目前广知币：<span class="c_red"><em class="s_icon s_icon_money"></em>  @ViewBag.Money</span></td>
+
+                    @if (VIP.EndTime.CompareTo(DateTime.Now) < 0)
+                    {
+                        <td colspan="2">当前权益已到期 <a href="@Url.Action("open")">立即续费</a>  广知通会员充值广知币有额外赠送</td>
+                    }
+                    else
+                    {
+                        <td colspan="2">&nbsp;</td>
+                    }
+
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table width="100%" class="alert alert-info">
+            <tbody>
+                <tr>
+                    <td width="33%">会员属性：<span class="c_red">普通会员</span></td>
+                    <td width="33%">目前广知币：<span class="c_red"><em class="s_icon s_icon_money"></em>  @ViewBag.Money</span></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">广知通会员充值广知币有额外赠送，等权益 &nbsp;&nbsp;&nbsp;<a  href="@Url.Action("index", "help", new { id = 7 })">查看权益</a>&nbsp;&nbsp;&nbsp;<a href="@Url.Action("open")">立即开通广知通</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    }
+</div>

@@ -1,0 +1,65 @@
+@model  string
+
+@{
+    string name = ViewData.TemplateInfo.GetFullHtmlFieldId(null);
+    string TopTimeDays = ViewData.ModelMetadata.AdditionalValues["TopTimeDays"].ToString();
+    var listData = (List<CustomSelectListItem>)ViewData["Data_" + name];
+}
+<div class="form-toptimes">
+    @for (var i = 0; i < listData.Count(); i++)
+    {
+        var item = listData[i];
+        <a class="form-toptimes-span @(item.Disabled ? "disabled" : "")" href="javascript:void(0);">
+            <input type="checkbox"  class="form-toptimes-check" name="@(name + "_check")" id="@(name + "_check" + i)"  value="@item.Value"/>
+            <label class="form-toptimes-label" for="@(name + "_check" + i)">
+                @item.Text
+            </label>
+        </a>
+    }
+    @Html.TextBoxFor(m => m, new { tabindex = -1, @class = "k-valid-text" })
+</div>
+
+<script type="text/javascript">
+    var @name={
+        id:'@name',
+        init:function(){
+            var self=@name;
+            $('.form-toptimes-check').bind('click',self.checkValue)
+        },
+        value:function(){
+            var self=@name;
+            var values=$.map($('.form-toptimes-check'),function(item){
+                if($(item).prop('checked')){
+                    return $(item).val();
+                }
+            }).join(',');
+            $('#'+self.id).val(values);
+            $('#'+self.id).parents('form:first').validate().element('#'+self.id);
+            return values;
+        },
+        getValue:function(){
+            var self=@name;
+            var values=$.map($('.form-toptimes-check'),function(item){
+                if($(item).prop('checked')){
+                    return $(item).val();
+                }
+            }).join(',');
+            return values;
+        },
+        checkValue:function(e){
+            var self=@name,
+                target=$(e.currentTarget),
+                parent=target.parents('.form-toptimes-span');
+            if(parent.hasClass('disabled')){
+                return false;
+            }else{
+                parent.toggleClass('selected');
+                self.value();
+            }
+        }
+    }
+        $(function(){
+            @(name + ".init();")
+        })
+
+</script>

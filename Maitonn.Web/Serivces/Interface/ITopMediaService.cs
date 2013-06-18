@@ -7,7 +7,7 @@ namespace Maitonn.Web
 {
     public interface ITopMediaService
     {
-        ServiceResult PayTopMedia(TopMedia model, int price);
+        ServiceResult PayTopMedia(List<TopMedia> model, int price);
 
         IQueryable<TopMedia> GetALL();
 
@@ -20,6 +20,8 @@ namespace Maitonn.Web
         void Delete(TopMedia model);
 
         TopMedia Find(int ID);
+
+        List<TopLimitModel> GetTopSourceLimit(int day);
     }
 
 }

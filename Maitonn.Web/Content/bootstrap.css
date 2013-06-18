@@ -1075,10 +1075,14 @@ input[type="submit"].btn {
   border-radius: 4px;*/
 }
 
-  .alert a:hover, .alert a:link, .alert a:visited {
+  .alert a {
     color: #00c;
-    text-decoration: underline;
   }
+
+    .alert a:hover {
+      color: #00c;
+      text-decoration: underline;
+    }
 
 
   .alert,
@@ -1149,7 +1153,7 @@ input[type="submit"].btn {
   margin: 2px 0 2px 5px;
   padding: 6px;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
   .alert .image img {
@@ -1163,6 +1167,10 @@ input[type="submit"].btn {
   padding: 10px 6px 10px 6px;
   display: inline-block;
 }
+
+  .alert .text ul li {
+    padding: 2px 0;
+  }
 
   .alert .text span {
     margin: 0;

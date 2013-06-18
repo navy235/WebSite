@@ -7,7 +7,9 @@ namespace Maitonn.Web
 {
     public interface ITopCompanyService
     {
-        ServiceResult PayTopCompany(TopCompany model, int price);
+        List<TopLimitModel> GetTopSourceLimit(int day);
+
+        ServiceResult PayTopCompany(List<TopCompany> model, int price);
 
         IQueryable<TopCompany> GetALL();
 

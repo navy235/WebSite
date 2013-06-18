@@ -53,11 +53,7 @@
 
     public class PayTopViewModel
     {
-        public PayTopViewModel()
-        {
-            this.Day = 1;
-            this.StartTime = DateTime.Now;
-        }
+
 
         [HiddenInput(DisplayValue = false)]
         public int ID { get; set; }
@@ -109,17 +105,14 @@
         public string LinkUrl { get; set; }
 
 
-        [Required(ErrorMessage = "请输入开始时间")]
-        [Display(Name = "开始时间：")]
+
+
+        [Required(ErrorMessage = "请选择置顶日期")]
+        [Display(Name = "置顶时间：")]
         [DataType(DataType.DateTime)]
-        public DateTime StartTime { get; set; }
-
-
-        [Display(Name = "推广天数：")]
-        [UIHint("IntegerExtension")]
-        [AdditionalMetadata("IntegerExtension", "1,30")]
-        [AdditionalMetadata("IntegerExtensionUnit", "天")]
-        public int Day { get; set; }
+        [UIHint("TopTime")]
+        [AdditionalMetadata("TopTimeDays", "30")]
+        public string TopTime { get; set; }
 
 
 
@@ -128,11 +121,7 @@
 
     public class PayTopMeidaViewModel
     {
-        public PayTopMeidaViewModel()
-        {
-            this.Day = 1;
-            this.StartTime = DateTime.Now;
-        }
+
 
         [HiddenInput(DisplayValue = false)]
         public int ID { get; set; }
@@ -188,17 +177,12 @@
         public int MeidaCode { get; set; }
 
 
-        [Required(ErrorMessage = "请输入开始时间")]
-        [Display(Name = "开始时间：")]
+        [Required(ErrorMessage = "请选择置顶日期")]
+        [Display(Name = "置顶时间：")]
         [DataType(DataType.DateTime)]
-        public DateTime StartTime { get; set; }
-
-
-        [Display(Name = "推广天数：")]
-        [UIHint("IntegerExtension")]
-        [AdditionalMetadata("IntegerExtension", "1,30")]
-        [AdditionalMetadata("IntegerExtensionUnit", "天")]
-        public int Day { get; set; }
+        [UIHint("TopTime")]
+        [AdditionalMetadata("TopTimeDays", "30")]
+        public string TopTime { get; set; }
 
 
 
@@ -209,8 +193,7 @@
     {
         public PayTopComapnyViewModel()
         {
-            this.Day = 1;
-            this.StartTime = DateTime.Now;
+
         }
 
         [HiddenInput(DisplayValue = false)]
@@ -236,16 +219,21 @@
         [UIHint("SingleDropdownList")]
         public int ProvinceCode { get; set; }
 
-        [Required(ErrorMessage = "请输入开始时间")]
-        [Display(Name = "开始时间：")]
+        [Required(ErrorMessage = "请选择置顶日期")]
+        [Display(Name = "置顶时间：")]
         [DataType(DataType.DateTime)]
-        public DateTime StartTime { get; set; }
+        [UIHint("TopTime")]
+        [AdditionalMetadata("TopTimeDays", "30")]
+        public string TopTime { get; set; }
 
-        [Display(Name = "推广天数：")]
-        [UIHint("IntegerExtension")]
-        [AdditionalMetadata("IntegerExtension", "1,30")]
-        [AdditionalMetadata("IntegerExtensionUnit", "天")]
-        public int Day { get; set; }
 
+    }
+
+
+    public class TopLimitModel
+    {
+        public int Count { get; set; }
+
+        public string Time { get; set; }
     }
 }

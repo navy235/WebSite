@@ -39,12 +39,8 @@ namespace Maitonn.Web
         [Display(Name = "添加日期")]
         public DateTime AddTime { get; set; }
 
-
-        [Display(Name = "开始日期")]
-        public DateTime StartTime { get; set; }
-
-        [Display(Name = "结束日期")]
-        public DateTime EndTime { get; set; }
+        [Display(Name = "置顶日期")]
+        public DateTime TopTime { get; set; }
 
         [Display(Name = "省份")]
         public int ProvinceCode { get; set; }

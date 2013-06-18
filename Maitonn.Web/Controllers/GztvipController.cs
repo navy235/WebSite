@@ -329,18 +329,24 @@ namespace Maitonn.Web.Controllers
         {
 
             ViewBag.MenuItem = "gztvip-paytop";
+
             var serverType = (int)ServerType.TopServer;
+
             var server = serverItemService.GetALL().Where(x => x.EndTime > DateTime.Now && x.ServerType == serverType && x.ID == id).FirstOrDefault();
+
             if (server == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.Server = server;
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
-            ViewBag.VIP = vip;
 
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
+
+            ViewBag.Server = server;
+
+            ViewBag.VIP = vip;
+
             ViewBag.Money = money;
 
             PayTopViewModel payTop = new PayTopViewModel()
@@ -354,7 +360,7 @@ namespace Maitonn.Web.Controllers
             {
                 payTop.Discount = 10;
             }
-            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+            else if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
             {
                 payTop.Discount = server.VipDiscount;
             }
@@ -362,6 +368,63 @@ namespace Maitonn.Web.Controllers
             {
                 payTop.Discount = server.VipDiscount2;
             }
+
+            #region  GetTopMediaSource
+
+            List<TopLimitModel> topLimit = sliderImgService.GetTopSourceLimit(30);
+
+            List<CustomSelectListItem> select = new List<CustomSelectListItem>();
+
+            var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
+
+            for (var i = 0; i < 30; i++)
+            {
+
+                var day = startTime.AddDays(i);
+
+                var dayString = day.ToString("yyyy-MM-dd");
+
+                if (topLimit.Any(x => x.Time.Equals(dayString)))
+                {
+                    var limit = topLimit.Single(x => x.Time.Equals(dayString));
+
+                    var limitStr = Convert.ToDateTime(limit.Time).ToString("MM-dd");
+
+                    if (limit.Count >= 8)
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Disabled = true,
+                            Text = limitStr + " (已售)",
+                            Value = limit.Time
+                        });
+                    }
+                    else
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Text = limitStr,
+                            Value = limit.Time
+                        });
+                    }
+                }
+                else
+                {
+                    select.Add(new CustomSelectListItem()
+                    {
+                        Text = day.ToString("MM-dd"),
+                        Value = dayString
+                    });
+                }
+            }
+
+            ViewBag.Data_TopTime = select;
+
+
+            #endregion
+
+
+
 
             return View(payTop);
         }
@@ -371,41 +434,66 @@ namespace Maitonn.Web.Controllers
         public ActionResult TopSet(PayTopViewModel model)
         {
             ViewBag.MenuItem = "gztvip-paytop";
+
             ServiceResult result = new ServiceResult();
+
             var server = serverItemService.Find(model.TopID);
+
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
-            var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+
+            var dayCount = model.TopTime.Split(',').Length;
+
+            var totalPrice = Convert.ToInt32((server.Price * dayCount * model.Discount / 10));
+
             if (money < totalPrice)
             {
                 result.AddServiceError("您当前剩余广知币不足已支付。当前" + money + "个，支付需要" + totalPrice + "个");
             }
+
             ViewBag.Money = money;
 
-            for (var i = 1; i <= model.Day; i++)
+            List<TopLimitModel> topLimit = sliderImgService.GetTopSourceLimit(30);
+
+            for (var i = 0; i < model.TopTime.Split(',').Length; i++)
             {
-                var endtime = model.StartTime.AddDays(i);
-                var count = sliderImgService.GetALL().Count(x => x.EndTime <= endtime && x.StartTime >= model.StartTime);
-                if (count >= 3)
+                var topitem = model.TopTime.Split(',')[i];
+
+                if (topLimit.Any(x => x.Time.Equals(topLimit)))
                 {
-                    result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
+                    var limit = topLimit.Single(x => x.Time.Equals(topLimit));
+
+                    if (limit.Count >= 8)
+                    {
+                        result.AddServiceError(topitem + "的置顶已达到最大数，请选择其他日期。");
+                    }
                 }
             }
+
             if (result.Success)
             {
-                SliderImg payModel = new SliderImg()
+
+                List<SliderImg> payModel = new List<SliderImg>();
+                for (var i = 0; i < model.TopTime.Split(',').Length; i++)
                 {
-                    MemberID = CookieHelper.MemberID,
-                    AddTime = DateTime.Now,
-                    StartTime = model.StartTime,
-                    EndTime = model.StartTime.AddDays(model.Day),
-                    ImgUrl = model.ImgUrl,
-                    LinkUrl = model.LinkUrl,
-                    ProvinceCode = (int)ProvinceName.quanguo,
-                    Status = (int)SliderImgStatus.User,
-                    Title = model.Name
-                };
+                    var topTime = Convert.ToDateTime(model.TopTime.Split(',')[i]);
+
+                    SliderImg payItem = new SliderImg()
+                    {
+                        MemberID = CookieHelper.MemberID,
+                        AddTime = DateTime.Now,
+                        TopTime = topTime,
+                        ImgUrl = model.ImgUrl,
+                        LinkUrl = model.LinkUrl,
+                        ProvinceCode = (int)ProvinceName.quanguo,
+                        Status = (int)SliderImgStatus.User,
+                        Title = model.Name
+                    };
+
+                    payModel.Add(payItem);
+                }
 
                 var excuteresult = sliderImgService.PayTopSliderImg(payModel, totalPrice);
+
                 if (!excuteresult.Success)
                 {
                     result.AddServiceError("置顶失败！");
@@ -414,8 +502,61 @@ namespace Maitonn.Web.Controllers
             }
             else
             {
+                #region  GetTopMediaSource
+
+                List<CustomSelectListItem> select = new List<CustomSelectListItem>();
+
+                var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
+
+                for (var i = 0; i < 30; i++)
+                {
+
+                    var day = startTime.AddDays(i);
+
+                    var dayString = day.ToString("yyyy-MM-dd");
+
+                    if (topLimit.Any(x => x.Time.Equals(dayString)))
+                    {
+                        var limit = topLimit.Single(x => x.Time.Equals(dayString));
+
+                        var limitStr = Convert.ToDateTime(limit.Time).ToString("MM-dd");
+
+                        if (limit.Count >= 8)
+                        {
+                            select.Add(new CustomSelectListItem()
+                            {
+                                Disabled = true,
+                                Text = limitStr + " (已售)",
+                                Value = limit.Time
+                            });
+                        }
+                        else
+                        {
+                            select.Add(new CustomSelectListItem()
+                            {
+                                Text = limitStr,
+                                Value = limit.Time
+                            });
+                        }
+                    }
+                    else
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Text = day.ToString("MM-dd"),
+                            Value = dayString
+                        });
+                    }
+                }
+
+                ViewBag.Data_TopTime = select;
+
+
+                #endregion
+
                 ViewBag.CheckErr = result;
             }
+
             result.Message = "置顶" + (result.Success ? "成功！" : "失败！");
 
             TempData["Service_Result"] = result;
@@ -424,6 +565,7 @@ namespace Maitonn.Web.Controllers
             {
                 return RedirectToAction("OpenOK");
             }
+
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
 
             ViewBag.VIP = vip;
@@ -442,6 +584,7 @@ namespace Maitonn.Web.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.Server = server;
 
             var vip = member_VIPService.GetMemberVIP(CookieHelper.MemberID, true);
@@ -463,7 +606,7 @@ namespace Maitonn.Web.Controllers
             {
                 topMedia.Discount = 10;
             }
-            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+            else if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
             {
                 topMedia.Discount = server.VipDiscount;
             }
@@ -471,6 +614,61 @@ namespace Maitonn.Web.Controllers
             {
                 topMedia.Discount = server.VipDiscount2;
             }
+
+            #region  GetTopMediaSource
+
+            List<TopLimitModel> topLimit = topMediaService.GetTopSourceLimit(30);
+
+            List<CustomSelectListItem> select = new List<CustomSelectListItem>();
+
+            var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
+
+            for (var i = 0; i < 30; i++)
+            {
+
+                var day = startTime.AddDays(i);
+
+                var dayString = day.ToString("yyyy-MM-dd");
+
+                if (topLimit.Any(x => x.Time.Equals(dayString)))
+                {
+                    var limit = topLimit.Single(x => x.Time.Equals(dayString));
+
+                    var limitStr = Convert.ToDateTime(limit.Time).ToString("MM-dd");
+
+                    if (limit.Count >= 8)
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Disabled = true,
+                            Text = limitStr + " (已售)",
+                            Value = limit.Time
+                        });
+                    }
+                    else
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Text = limitStr,
+                            Value = limit.Time
+                        });
+                    }
+                }
+                else
+                {
+                    select.Add(new CustomSelectListItem()
+                    {
+                        Text = day.ToString("MM-dd"),
+                        Value = dayString
+                    });
+                }
+            }
+
+            ViewBag.Data_TopTime = select;
+
+            #endregion
+
+
 
             return View(topMedia);
         }
@@ -487,7 +685,9 @@ namespace Maitonn.Web.Controllers
 
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
 
-            var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+            var dayCount = model.TopTime.Split(',').Length;
+
+            var totalPrice = Convert.ToInt32((server.Price * dayCount * model.Discount / 10));
 
             if (money < totalPrice)
             {
@@ -495,45 +695,58 @@ namespace Maitonn.Web.Controllers
             }
             ViewBag.Money = money;
 
-            for (var i = 1; i <= model.Day; i++)
+            List<TopLimitModel> topLimit = topMediaService.GetTopSourceLimit(30);
+
+            for (var i = 0; i < model.TopTime.Split(',').Length; i++)
             {
-                var endtime = model.StartTime.AddDays(i);
+                var topitem = model.TopTime.Split(',')[i];
 
-                var count = topMediaService.GetALL().Count(x => x.TopEnd <= endtime && x.TopStart >= model.StartTime);
-
-                if (count >= 3)
+                if (topLimit.Any(x => x.Time.Equals(topLimit)))
                 {
-                    result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
-                }
+                    var limit = topLimit.Single(x => x.Time.Equals(topLimit));
 
-                if (topMediaService.GetALL().Any(x => x.MediaID.Equals(model.MediaID.Value) && x.TopEnd > DateTime.Now))
-                {
-                    result.AddServiceError("当前信息当前已经置顶。");
+                    if (limit.Count >= 8)
+                    {
+                        result.AddServiceError(topitem + "的置顶已达到最大数，请选择其他日期。");
+                    }
                 }
             }
+
             if (result.Success)
             {
-                TopMedia payModel = new TopMedia()
-                {
-                    MediaID = model.MediaID.Value,
-                    TopStart = model.StartTime,
-                    TopEnd = model.StartTime.AddDays(model.Day),
-                    MemberID = CookieHelper.MemberID
-                };
 
-                payModel.IsQuanGuo = server.IsQuanGuo;
-
-                payModel.IsByCategory = server.IsByCategory;
-
-                payModel.IsByChildCategory = server.IsByChildCategory;
+                List<TopMedia> payModel = new List<TopMedia>();
 
                 var media = outDoorService.IncludeCategoryFind(model.MediaID.Value);
 
-                payModel.ProvinceCode = media.Area.PCategory.ID;
+                for (var i = 0; i < model.TopTime.Split(',').Length; i++)
+                {
+                    var topTime = Convert.ToDateTime(model.TopTime.Split(',')[i]);
 
-                payModel.CategoryCode = media.MeidaCode;
 
-                payModel.PCategoryCode = media.OutDoorMediaCate.PCategory.ID;
+                    TopMedia payItem = new TopMedia()
+                    {
+                        MediaID = model.MediaID.Value,
+                        TopTime = topTime,
+                        MemberID = CookieHelper.MemberID
+                    };
+
+                    payItem.IsQuanGuo = server.IsQuanGuo;
+
+                    payItem.IsByCategory = server.IsByCategory;
+
+                    payItem.IsByChildCategory = server.IsByChildCategory;
+
+
+                    payItem.ProvinceCode = media.Area.PCategory.ID;
+
+                    payItem.CategoryCode = media.MeidaCode;
+
+                    payItem.PCategoryCode = media.OutDoorMediaCate.PCategory.ID;
+
+
+                    payModel.Add(payItem);
+                }
 
                 var excuteresult = topMediaService.PayTopMedia(payModel, totalPrice);
 
@@ -596,7 +809,7 @@ namespace Maitonn.Web.Controllers
             {
                 topComapny.Discount = 10;
             }
-            if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
+            else if (vip.VipLevel == (int)ServerType.NomarlVIPServer)
             {
                 topComapny.Discount = server.VipDiscount;
             }
@@ -604,6 +817,61 @@ namespace Maitonn.Web.Controllers
             {
                 topComapny.Discount = server.VipDiscount2;
             }
+
+            #region  GetTopMediaSource
+
+
+            List<TopLimitModel> topLimit = topCompanyService.GetTopSourceLimit(30);
+
+            List<CustomSelectListItem> select = new List<CustomSelectListItem>();
+
+            var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
+
+            for (var i = 0; i < 30; i++)
+            {
+
+                var day = startTime.AddDays(i);
+
+                var dayString = day.ToString("yyyy-MM-dd");
+
+                if (topLimit.Any(x => x.Time.Equals(dayString)))
+                {
+                    var limit = topLimit.Single(x => x.Time.Equals(dayString));
+
+                    var limitStr = Convert.ToDateTime(limit.Time).ToString("MM-dd");
+
+                    if (limit.Count >= 8)
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Disabled = true,
+                            Text = limitStr + " (已售)",
+                            Value = limit.Time
+                        });
+                    }
+                    else
+                    {
+                        select.Add(new CustomSelectListItem()
+                        {
+                            Text = limitStr,
+                            Value = limit.Time
+                        });
+                    }
+                }
+                else
+                {
+                    select.Add(new CustomSelectListItem()
+                    {
+                        Text = day.ToString("MM-dd"),
+                        Value = dayString
+                    });
+                }
+            }
+
+            ViewBag.Data_TopTime = select;
+
+            #endregion
+
 
             return View(topComapny);
         }
@@ -613,55 +881,63 @@ namespace Maitonn.Web.Controllers
         public ActionResult TopCompany(PayTopComapnyViewModel model)
         {
             ViewBag.MenuItem = "gztvip-paytop";
+
             ServiceResult result = new ServiceResult();
 
             var server = serverItemService.Find(model.TopID);
 
             var money = member_MoneyService.GetMemberMoney(CookieHelper.MemberID);
 
-            var totalPrice = Convert.ToInt32((server.Price * model.Day * model.Discount / 10));
+            var dayCount = model.TopTime.Split(',').Length;
+
+            var totalPrice = Convert.ToInt32((server.Price * dayCount * model.Discount / 10));
 
             if (money < totalPrice)
             {
                 result.AddServiceError("您当前剩余广知币不足已支付。当前" + money + "个，支付需要" + totalPrice + "个");
             }
-
             ViewBag.Money = money;
 
+            List<TopLimitModel> topLimit = topCompanyService.GetTopSourceLimit(30);
 
-            for (var i = 1; i <= model.Day; i++)
+            for (var i = 0; i < model.TopTime.Split(',').Length; i++)
             {
-                var endtime = model.StartTime.AddDays(i);
+                var topitem = model.TopTime.Split(',')[i];
 
-                var count = topCompanyService.GetALL().Count(x => x.TopEnd <= endtime && x.TopStart >= model.StartTime);
-
-                if (count >= 10)
+                if (topLimit.Any(x => x.Time.Equals(topLimit)))
                 {
-                    result.AddServiceError(endtime.AddDays(-1).ToString("yyyy-MM-dd") + "的置顶已达到最大数，请选择其他日期。");
-                }
-                var memberID = CookieHelper.MemberID;
+                    var limit = topLimit.Single(x => x.Time.Equals(topLimit));
 
-                if (topCompanyService.GetALL().Any(x => x.MemberID == memberID && x.TopEnd > DateTime.Now))
-                {
-                    result.AddServiceError("当前企业信息当前已经置顶。");
+                    if (limit.Count >= 8)
+                    {
+                        result.AddServiceError(topitem + "的置顶已达到最大数，请选择其他日期。");
+                    }
                 }
-
             }
+
             if (result.Success)
             {
-                TopCompany payModel = new TopCompany()
-                {
 
-                    TopStart = model.StartTime,
-                    TopEnd = model.StartTime.AddDays(model.Day),
-                    MemberID = CookieHelper.MemberID
-                };
-
-                payModel.IsQuanGuo = server.IsQuanGuo;
+                List<TopCompany> payModel = new List<TopCompany>();
 
                 var company = companyService.IncludeCategoryFind(CookieHelper.MemberID);
 
-                payModel.ProvinceCode = company.Area.PCategory.ID;
+                for (var i = 0; i < model.TopTime.Split(',').Length; i++)
+                {
+                    var topTime = Convert.ToDateTime(model.TopTime.Split(',')[i]);
+
+                    TopCompany payItem = new TopCompany()
+                    {
+                        TopTime = topTime,
+                        MemberID = CookieHelper.MemberID
+                    };
+
+                    payItem.IsQuanGuo = server.IsQuanGuo;
+
+                    payItem.ProvinceCode = company.Area.PCategory.ID;
+
+                    payModel.Add(payItem);
+                }
 
                 var excuteresult = topCompanyService.PayTopCompany(payModel, totalPrice);
 

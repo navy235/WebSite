@@ -12,26 +12,25 @@
     </div>
     <div class="personal-right">
         <div class="personal-right-body">
-            <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
-            </div>
+
             <div class="server-status">
                 @if (Model != null)
                 {
                     <table width="100%" class="alert alert-info">
                         <tbody>
                             <tr>
-                                <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString()).Text</span>
+                                <td width="33%">当前版本：<span class="c_red">@UIHelper.ServerTypeList.Single(x => x.Value == Model.VipLevel.ToString()).Text</span>
                                     @if (Model.EndTime.CompareTo(DateTime.Now) < 0)
                                     { 
                                         <span>（已过期）</span>
                                     }
+
                                 </td>
-                                <td width="33%">到期日期：<span class="red">@Model.EndTime.ToString("yyyy-MM-dd")</span></td>
-                                <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, Model.EndTime)</span></td>
+                                <td width="33%">到期日期：<span class="c_red">@Model.EndTime.ToString("yyyy-MM-dd")</span></td>
+                                <td>剩余天数：<span class="c_red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, Model.EndTime)</span></td>
                             </tr>
                             <tr>
-                                <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
+                                <td width="33%">目前广知币：<span class="c_red"> <em class="s_icon s_icon_money"></em>@ViewBag.Money</span></td>
 
                                 @if (Model.EndTime.CompareTo(DateTime.Now) > 0)
                                 {
@@ -45,10 +44,6 @@
                             </tr>
                         </tbody>
                     </table>
-                }
-                else
-                {
-                    @ViewHelpers.Alert("友情提示：", CookieHelper.NickName + ",您好！您还没有开通任何广知通产品。", false, AlertType.info.ToString())
                 }
 
             </div>

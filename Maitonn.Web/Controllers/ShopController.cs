@@ -368,8 +368,8 @@ namespace Maitonn.Web
 
             var result = query.ToPagedList<CompanyProductViewModel>(page, pageSize);
 
-            if (result.PageNumber != 1 && page > result.PageCount)
-                return null;
+            //if (result.PageNumber != 1 && page > result.PageCount)
+            //    return null;
 
             return result;
         }

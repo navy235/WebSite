@@ -22,9 +22,7 @@ namespace Maitonn.Web
 
         public int MemberID { get; set; }
 
-        public System.DateTime TopStart { get; set; }
-
-        public System.DateTime TopEnd { get; set; }
+        public System.DateTime TopTime { get; set; }
 
         public bool IsQuanGuo { get; set; }
 

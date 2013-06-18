@@ -8,7 +8,9 @@ namespace Maitonn.Web
     public interface ISliderImgService
     {
 
-        ServiceResult PayTopSliderImg(SliderImg model, int price);
+        List<TopLimitModel> GetTopSourceLimit(int day);
+
+        ServiceResult PayTopSliderImg(List<SliderImg> model, int price);
 
         IQueryable<SliderImg> GetALL();
 

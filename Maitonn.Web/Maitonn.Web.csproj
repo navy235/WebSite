@@ -344,6 +344,14 @@
     <Compile Include="Migrations\201305090337419_AddOutDoorAuthStatus.Designer.cs">
       <DependentUpon>201305090337419_AddOutDoorAuthStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201306090857256_AlterTopBase.cs" />
+    <Compile Include="Migrations\201306090857256_AlterTopBase.Designer.cs">
+      <DependentUpon>201306090857256_AlterTopBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201306140919019_AleterSliderImgScheme.cs" />
+    <Compile Include="Migrations\201306140919019_AleterSliderImgScheme.Designer.cs">
+      <DependentUpon>201306140919019_AleterSliderImgScheme.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AddressBook.cs" />
     <Compile Include="Models\Area.cs" />
@@ -501,6 +509,7 @@
     <Compile Include="ViewModels\AccountModel.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\CompanyViewModel.cs" />
+    <Compile Include="ViewModels\CustomSelectListItem.cs" />
     <Compile Include="ViewModels\DashBoardViewModel.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
     <Compile Include="ViewModels\FavoriteViewModel.cs" />
@@ -1666,6 +1675,8 @@
     <Content Include="Views\Show\_Bread.cshtml" />
     <Content Include="Views\AjaxContent\MediaItem.cshtml" />
     <Content Include="Views\AjaxContent\CompanyItem.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TopTime.cshtml" />
+    <Content Include="Views\Gztvip\_VipStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1747,6 +1758,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201305090337419_AddOutDoorAuthStatus.resx">
       <DependentUpon>201305090337419_AddOutDoorAuthStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201306090857256_AlterTopBase.resx">
+      <DependentUpon>201306090857256_AlterTopBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201306140919019_AleterSliderImgScheme.resx">
+      <DependentUpon>201306140919019_AleterSliderImgScheme.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

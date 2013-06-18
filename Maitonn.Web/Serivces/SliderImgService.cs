@@ -47,8 +47,7 @@ namespace Maitonn.Web
             target.OrderIndex = model.OrderIndex;
             target.ProvinceCode = model.ProvinceCode;
             target.Status = model.Status;
-            target.AddTime = DateTime.Now;
-            target.EndTime = model.EndTime;
+            target.TopTime = model.TopTime;
             target.LinkUrl = model.LinkUrl;
             DB_Service.Commit();
         }
@@ -66,15 +65,17 @@ namespace Maitonn.Web
             DB_Service.Commit();
         }
 
-        public ServiceResult PayTopSliderImg(SliderImg model, int price)
+        public ServiceResult PayTopSliderImg(List<SliderImg> model, int price)
         {
             ServiceResult result = new ServiceResult();
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    Create(model);
-                    Member_MoneyService.AddMoney(model.MemberID, -price, "0701", null, model.ID);
+                    model.ForEach(x => Create(x));
+
+                    Member_MoneyService.AddMoney(model[0].MemberID, -price, "0701");
+
                     scope.Complete();
                 }
             }
@@ -82,6 +83,26 @@ namespace Maitonn.Web
             {
                 result.AddServiceError(Utilities.GetInnerMostException(ex));
             }
+            return result;
+        }
+
+        public List<TopLimitModel> GetTopSourceLimit(int day)
+        {
+            List<TopLimitModel> result = new List<TopLimitModel>();
+
+            var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            startTime = startTime.AddDays(1);
+
+            var endTime = startTime.AddDays(day).AddSeconds(-1);
+
+
+            var sql = @"select count(0) Count,REPLACE(CONVERT(char(10),toptime,120),N'-0','-') Time from [SliderImg]
+  
+                       group by toptime";
+
+            result = DB_Service.SqlQuery<TopLimitModel>(sql).ToList();
+
             return result;
         }
     }

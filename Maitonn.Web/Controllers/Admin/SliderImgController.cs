@@ -107,20 +107,27 @@ namespace Maitonn.Web
             {
                 try
                 {
-                    SliderImg item = new SliderImg()
+
+                    for (var i = 0; i < model.Day; i++)
                     {
-                        AddTime = DateTime.Now,
-                        StartTime=model.StartTime,
-                        EndTime = model.StartTime.AddDays(model.Day),
-                        ImgUrl = model.ImgUrl,
-                        LinkUrl = model.LinkUrl,
-                        MemberID = CookieHelper.MemberID,
-                        Status = model.SliderImgStatus,
-                        ProvinceCode = model.ProvinceCode,
-                        OrderIndex = model.OrderIndex,
-                        Title = model.Name
-                    };
-                    SliderImgService.Create(item);
+                        var topTime = model.StartTime.AddDays(i);
+                        SliderImg item = new SliderImg()
+                        {
+                            AddTime = DateTime.Now,
+                            TopTime = topTime,
+                            ImgUrl = model.ImgUrl,
+                            LinkUrl = model.LinkUrl,
+                            MemberID = CookieHelper.MemberID,
+                            Status = model.SliderImgStatus,
+                            ProvinceCode = model.ProvinceCode,
+                            OrderIndex = model.OrderIndex,
+                            Title = model.Name
+                        };
+                        SliderImgService.Create(item);
+
+                    }
+
+
 
                     return RedirectToAction("index");
                 }
@@ -140,18 +147,20 @@ namespace Maitonn.Web
         public ActionResult Edit(int id)
         {
             var item = SliderImgService.Find(id);
-            var model = new SliderImgViewModel()
-            {
-                StartTime = item.StartTime,
-                Day=Convert.ToInt32((item.EndTime-item.StartTime).TotalDays),
-                ImgUrl = item.ImgUrl,
-                LinkUrl = item.LinkUrl,
-                OrderIndex = item.OrderIndex,
-                ProvinceCode = item.ProvinceCode,
-                Name = item.Title,
-                SliderImgStatus = item.Status,
-                ID = item.ID
-            };
+
+            var model = new SliderImgViewModel();
+
+            //{
+            //    StartTime = item.TopTime,
+            //    Day = Convert.ToInt32((item.EndTime - item.StartTime).TotalDays),
+            //    ImgUrl = item.ImgUrl,
+            //    LinkUrl = item.LinkUrl,
+            //    OrderIndex = item.OrderIndex,
+            //    ProvinceCode = item.ProvinceCode,
+            //    Name = item.Title,
+            //    SliderImgStatus = item.Status,
+            //    ID = item.ID
+            //};
             return View(model);
         }
 
@@ -159,38 +168,37 @@ namespace Maitonn.Web
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SliderImgViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    SliderImg item = new SliderImg()
-                    {
-                        ID = model.ID,
-                        StartTime = model.StartTime,
-                        EndTime = model.StartTime.AddDays(model.Day),
-                        ImgUrl = model.ImgUrl,
-                        LinkUrl = model.LinkUrl,
-                        MemberID = CookieHelper.MemberID,
-                        Status = model.SliderImgStatus,
-                        ProvinceCode = model.ProvinceCode,
-                        OrderIndex = model.OrderIndex,
-                        Title = model.Name
-                    };
+            //if (ModelState.IsValid)
+            //{
+            //    //try
+            //    //{
+            //    //    SliderImg item = new SliderImg()
+            //    //    {
+            //    //        ID = model.ID,
+            //    //        StartTime = model.StartTime,
+            //    //        EndTime = model.StartTime.AddDays(model.Day),
+            //    //        ImgUrl = model.ImgUrl,
+            //    //        LinkUrl = model.LinkUrl,
+            //    //        MemberID = CookieHelper.MemberID,
+            //    //        Status = model.SliderImgStatus,
+            //    //        ProvinceCode = model.ProvinceCode,
+            //    //        OrderIndex = model.OrderIndex,
+            //    //        Title = model.Name
+            //    //    };
 
-                    SliderImgService.Update(item);
+            //    //    SliderImgService.Update(item);
 
-                    return RedirectToAction("index");
-                }
-                catch (Exception ex)
-                {
-                    return View(model);
-                }
-
-            }
-            else
-            {
-                return View(model);
-            }
+            //    //    return RedirectToAction("index");
+            //    //}
+            //    //catch (Exception ex)
+            //    //{
+            //    //    return View(model);
+            //    //}
+            //}
+            //else
+            //{
+            return View(model);
+            //}
         }
 
 

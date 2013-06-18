@@ -164,12 +164,22 @@ namespace Maitonn.Web
         {
             var quanguoCode = (int)ProvinceName.quanguo;
 
+            var todayStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            var todayEnd = todayStart.AddDays(1).AddSeconds(-1);
+
             var result = sliderImgService.GetALL()
-              .Where(x => x.EndTime > DateTime.Now)
+
+              .Where(x => x.TopTime <= todayEnd && x.TopTime >= todayStart)
+
               .Where(x => x.ProvinceCode == province || x.ProvinceCode == quanguoCode)
+
               .OrderByDescending(x => x.Status)
+
               .ThenByDescending(x => x.OrderIndex)
+
               .Take(take)
+
               .Select(x => new HttpLinkItem()
               {
                   Url = x.LinkUrl,
@@ -181,11 +191,14 @@ namespace Maitonn.Web
             return result;
         }
 
-        public List<HttpLinkItem> GetSuggestMedia( int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0)
+        public List<HttpLinkItem> GetSuggestMedia(int province, int take, int city = 0, int PCategoryCode = 0, int CategoryCode = 0)
         {
             bool isQuanGuo = province == (int)ProvinceName.quanguo;
 
             List<HttpLinkItem> result = new List<HttpLinkItem>();
+
+            var todayStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var todayEnd = todayStart.AddDays(1).AddSeconds(-1);
 
             var query = topMediaService.GetALL()
                 .Include(x => x.OutDoor)
@@ -196,7 +209,7 @@ namespace Maitonn.Web
                 .Include(x => x.OutDoor.OutDoorMediaCate)
                 .Include(x => x.OutDoor.OutDoorMediaCate.PCategory)
                 .Include(x => x.OutDoor.Member.SelfCompany)
-                .Where(x => x.TopStart < DateTime.Now && x.TopEnd > DateTime.Now);
+                .Where(x => x.TopTime <= todayEnd && x.TopTime >= todayStart);
 
             if (isQuanGuo)
             {
@@ -509,12 +522,15 @@ namespace Maitonn.Web
 
             List<HttpLinkItem> result = new List<HttpLinkItem>();
 
+            var todayStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var todayEnd = todayStart.AddDays(1).AddSeconds(-1);
+
             var query = topCompanyService.GetALL()
                 .Include(x => x.Company)
                 .Include(x => x.Company.CompanyLogoImg)
                 .Include(x => x.Company.Area)
                 .Include(x => x.Company.Area.PCategory)
-                .Where(x => x.TopStart < DateTime.Now && x.TopEnd > DateTime.Now);
+                .Where(x => x.TopTime <= todayEnd && x.TopTime >= todayStart);
 
             if (isQuanGuo)
             {

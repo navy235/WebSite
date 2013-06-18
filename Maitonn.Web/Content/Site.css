@@ -177,6 +177,55 @@ textarea {
       top: -3px;
     }
 
+  .form-field .form-toptimes {
+    display: inline-block;
+    width: 350px;
+    vertical-align: middle;
+  }
+
+  .form-field .form-toptimes-span {
+    display: inline-block;
+    text-align: left;
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff;
+    vertical-align: middle;
+    border: 1px solid #e2e1e3;
+    margin: 0 5px 5px 0;
+  }
+
+    .form-field .form-toptimes-span:hover,
+    .form-field .form-toptimes-span.selected {
+      border: 2px solid #df0001;
+      margin: -1px 4px 4px -1px;
+    }
+
+
+
+
+    .form-field .form-toptimes-span input {
+      display: none;
+    }
+
+    .form-field .form-toptimes-span label {
+      display: inline-block;
+      background-color: #fff;
+      white-space: nowrap;
+      padding: 0 6px;
+      text-align: center;
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+      width: 35px;
+    }
+
+    .form-field .form-toptimes-span.disabled label {
+      color: gray;
+      width: 70px;
+    }
+
+
+
   .form-field textarea {
     font-size: 1em;
     height: 125px;
@@ -317,6 +366,24 @@ textarea {
   display: none;
 }
 
+.form-field-pay {
+  display: inline-block;
+  vertical-align: top;
+}
+
+  .form-field-pay label {
+    text-align: left;
+  }
+
+    .form-field-pay label.other {
+      width: 50px;
+    }
+
+  .form-field-pay .desc {
+  }
+
+
+
 .form a.cancel {
   font-size: 1.25em;
 }
@@ -452,6 +519,26 @@ textarea {
   color: #1e50a2;
 }
 
+
+.form-field-totalprice {
+  color: red;
+  font-weight: 900;
+}
+
+.form-field.form-field-strong .form-field-strong-normal {
+  font-weight: normal;
+  color: #000;
+}
+
+.form-field.form-field-strong label {
+  font-weight: normal;
+  color: #000;
+}
+
+.form-field.form-field-strong {
+  font-weight: 900;
+  color: red;
+}
 
 .filed-auction {
   display: inline-block;
@@ -707,4 +794,13 @@ textarea {
 
 .k-grid .listview-product-control .k-button {
   margin: 0;
+}
+
+
+.s_icon_money {
+  background-position: -288px -98px;
+}
+
+.s_icon_dot {
+  background-position: -140px -268px;
 }

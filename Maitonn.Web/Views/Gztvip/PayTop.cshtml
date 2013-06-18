@@ -11,56 +11,8 @@
     </div>
     <div class="personal-right">
         <div class="personal-right-body">
-            <div class="personal-body-title clearfix">
-                <h5>@ViewBag.Title</h5>
-            </div>
-            <div class="server-status">
-                @if (ViewBag.VIP != null)
-                {
-                    var VIP = (Member_VIP)ViewBag.VIP;
-                    
-                    <table width="100%" class="alert alert-info">
-                        <tbody>
-                            <tr>
-                                <td width="33%">当前版本：<span class="red">@UIHelper.ServerTypeList.Single(x => x.Value == VIP.VipLevel.ToString()).Text</span></td>
-                                <td width="33%">到期日期：<span class="red">@VIP.EndTime.ToString("yyyy-MM-dd")</span></td>
-                                <td>剩余天数：<span class="red">@UIHelper.DateDiff(DateDiffType.Day, DateTime.Now, VIP.EndTime)</span></td>
-                            </tr>
-                            <tr>
-                                <td>目前广知币：<span class="red">@ViewBag.Money</span></td>
+            @Html.Partial("_VipStatus")
 
-                                @if (VIP.EndTime.CompareTo(DateTime.Now) < 0)
-                                {
-                                    <td colspan="2">当前权益已到期<a href="@Url.Action("open")">立即续费</a> 广知通会员充值广知币有额外赠送</td>
-                                }
-                                else
-                                {
-                                    <td colspan="2">&nbsp;</td>
-                                }
-
-                            </tr>
-                        </tbody>
-                    </table>
-                }
-                else
-                {
-                    <table width="100%" class="alert alert-info">
-                        <tbody>
-                            <tr>
-                                <td width="33%">会员属性：<span class="red">普通会员</span></td>
-                                <td width="33%">目前广知币：<span class="red">@ViewBag.Money</span></td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">广知通会员充值广知币有额外赠送，等权益<a  href="@Url.Action("index", "help", new { id = 7 })">查看权益</a><a href="@Url.Action("open")">立即开通广知通</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                }
-
-            </div>
             @if (ViewBag.Servers != null)
             {
                 <div class="personal-body-title clearfix">
@@ -69,6 +21,23 @@
                 <div class="list-products clearfix">
                     @foreach (var server in (List<ServerItem>)ViewBag.Servers)
                     {
+
+                        var openUrl = string.Empty;
+                        if (server.TopType == (int)TopType.Media)
+                        {
+                            openUrl = Url.Action("topmedia", new { id = server.ID });
+                        }
+                        if (server.TopType == (int)TopType.SliderImg)
+                        {
+                            openUrl = Url.Action("topset", new { id = server.ID });
+
+                        }
+                        if (server.TopType == (int)TopType.Company)
+                        {
+                            openUrl = Url.Action("topcompany", new { id = server.ID });
+
+                        }
+                        
                         
                         <div class="products-item">
                             <ul>
@@ -77,7 +46,7 @@
                                 </li>
                                 <li class="products-details">
                                     <h3>
-                                        <a target="_blank" href="@Url.Action("open", new { id = server.ID })" title="查看详细介绍">
+                                        <a target="_blank" href="@openUrl" title="查看详细介绍">
                                             <strong>@server.Name</strong>
                                         </a>
                                     </h3>
@@ -93,18 +62,7 @@
                                 </li>
                                 <li class="products-price">
                                     <span class="c_red"><b>¥@server.Price 元/天</b></span><br>
-                                    @if (server.TopType == (int)TopType.Media)
-                                    { 
-                                        <a class='k-button k-button-icontext ' href='@Url.Action("topmedia", new { id = server.ID })'  ><span class='k-icon k-i-custom'></span>立即开通</a>
-                                    }
-                                    @if (server.TopType == (int)TopType.SliderImg)
-                                    { 
-                                        <a class='k-button k-button-icontext ' href='@Url.Action("topset", new { id = server.ID })'  ><span class='k-icon k-i-custom'></span>立即开通</a>
-                                    }
-                                    @if (server.TopType == (int)TopType.Company)
-                                    { 
-                                        <a class='k-button k-button-icontext ' href='@Url.Action("topcompany", new { id = server.ID })'  ><span class='k-icon k-i-custom'></span>立即开通</a>
-                                    }
+                                    <a class='k-button k-button-icontext ' href='@openUrl'  ><span class='k-icon k-i-custom'></span>立即开通</a>
 
                                 </li>
                             </ul>
