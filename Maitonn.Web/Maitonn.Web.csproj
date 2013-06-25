@@ -980,6 +980,7 @@
     <Content Include="Content\company.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Code\ViewHelpers.cshtml" />
+    <None Include="Properties\PublishProfiles\dotaeye.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\base.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />

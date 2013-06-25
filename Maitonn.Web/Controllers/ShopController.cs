@@ -25,7 +25,7 @@ namespace Maitonn.Web
         private ICompanyFundService companyFundService;
         private ICompanyScaleService companyScaleService;
         private IPeriodCateService periodCateService;
-        private IOwnerCateService ownerCateService;
+        private IOwnerCateService ownerCateService; 
         private IAuctionCalendarService auctionCalendarService;
         public ShopController(
             IMemberService _memberService

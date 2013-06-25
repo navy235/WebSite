@@ -53,8 +53,8 @@
             <div class="register-tips clearfix">
                 <em class="top-tips-success"></em>
                 <div class="pull-left">
-                    <h4>@CookieHelper.NickName ,您的企业认证资料将在1~2个工作日内审核完成。 <span>审核成功将获得<em class="s_icon s_icon_money"></em><b class="c_red">+2</b> 个地产币， <a href="@Url.Action("index", "help", new { id = 4 })">什么是广知币?</a></span></h4>
-                    开通广知通，立即获赠<span style="color: red; font-weight: 800;"> 100-10000 </span>个地产币，<a href="http://zst.dichan.com/vip/payNewZst.aspx" target="_blank" class="s_submit"><span>立即开通</span></a><br>
+                    <h4>@CookieHelper.NickName ,您的企业认证资料将在1~2个工作日内审核完成。 <span>审核成功将获得<em class="s_icon s_icon_money"></em><b class="c_red">+2</b> 个广知币， <a href="@Url.Action("index", "help", new { id = 4 })">什么是广知币?</a></span></h4>
+                    开通广知通，立即获赠<span style="color: red; font-weight: 800;"> 100-10000 </span>个广知币，<a href="http://zst.dichan.com/vip/payNewZst.aspx" target="_blank" class="s_submit"><span>立即开通</span></a><br>
                     您还可以进入 <a href="http://my.dichan.com/"><span>“我的广知网”</span></a> 查看所有应用。
                 </div>
             </div>
@@ -64,92 +64,70 @@
         <div class="register-ok">
             <div class="clearfix">
                 <div class="mb10 clearfix">
-                    <em class="s_icon s_icon_dot"></em><em class="iblock">审核通过后，您将开通以下功能：</em>
+                    <em class="s_icon s_icon_dot"></em><em class="iblock">您已开通以下功能：</em>
                 </div>
                 <ul class="list_icon">
-                    <li class="bder action"><a href="http://news.dichan.sina.com.cn/" target="_blank"><span class="icon a1" title="地产资讯"></span>
+                    <!-- 招聘功能 -->
+
+                    <!-- 商务功能 -->
+
+                    <!-- 基本功能 -->
+                    <li class="bder action"><a href="@Url.Action("index", "list")" target="_blank"><span class="icon a1" title="户外资源"></span>
                         <div>
-                            <h3>地产资讯</h3>
+                            <h3>户外资源</h3>
                             <p>
-                                每天数百条专业要闻<br>
+                                每天数百条户外资源信息<br>
                                 动态、政策、资讯
                             </p>
                         </div>
                     </a></li>
-                    <li class="bder action"><a href="http://shequ.dichan.com" target="_blank"><span class="icon a2" title="地产社区"></span>
+                    <li class="bder action"><a href="@Url.Action("recive", "favorite")" target="_blank"><span class="icon a7" title="媒体通讯录"></span>
                         <div>
-                            <h3>地产社区</h3>
+                            <h3>媒体通讯录</h3>
                             <p>
-                                找到身边的地产人<br>
-                                拓展行业人脉
-                            </p>
-                        </div>
-                    </a></li>
-                    <li class="bder action"><a href="http://daka.dichan.com" target="_blank"><span class="icon a7" title="打卡赚币"></span>
-                        <div>
-                            <h3>打卡赚币</h3>
-                            <p>
-                                收获地产币的不二选择<br>
+                                收获广知币的不二选择<br>
                                 每天打卡，轻松赚币
                             </p>
                         </div>
                     </a></li>
-                    <li class="bder action"><a href="http://data.dichan.com/DataWareHouse.html" target="_blank">
-                        <span class="icon a3" title="数据仓库"></span>
+                    <li class="bder action"><a href="@Url.Action("index", "scheme")" target="_blank"><span class="icon a2" title="方案制作"></span>
                         <div>
-                            <h3>数据仓库</h3>
+                            <h3>方案制作</h3>
                             <p>
-                                每日精准市场数据<br>
-                                实时发布 值得拥有
+                                随时随地快捷方案制作<br>
+                                轻松一键打印方案
                             </p>
                         </div>
                     </a></li>
-                    <li class="bder action"><a href="http://xiazai.dichan.com/" target="_blank"><span class="icon a5" title="资源下载"></span>
+                    <li class="bder action"><a href="@Url.Action("index", "favorite")" target="_blank"><span class="icon a7" title="收藏媒体"></span>
                         <div>
-                            <h3>资源下载</h3>
+                            <h3>收藏媒体</h3>
                             <p>
-                                下载80万份报告资料<br>
-                                上传资源收获地产币
+                                丰富的媒体收藏夹<br>
+                                让你的电子商务更加便捷
                             </p>
                         </div>
                     </a></li>
-                </ul>
-                <div class="mb10 clearfix">
-                    <em class="s_icon s_icon_dot"></em><em class="iblock">您还可以开通以下功能：</em>
-                </div>
-                <ul class="list_icon">
-
-                    <li class="bder close"><a href="/RegBiz" target="_blank"><span class="icon a8" title="工程采购"></span>
-                        <div>
-                            <h3>
-                                <b>工程采购</b><em>« 开通</em></h3>
-                            <p>
-                                面对竞争，把握商机<br>
-                                让商务营销更高效
-                            </p>
-                        </div>
-                    </a></li>
-
                 </ul>
                 <div class="mb10 clearfix">
                     <em class="s_icon s_icon_dot"></em><em class="iblock">热门产品推荐：</em>
                 </div>
                 <ul class="list_icon">
 
-                    <li class="bder action"><a href="http://zst.dichan.com/" target="_blank"><span class="icon a10" title="知识通"></span>
+                    <li class="bder action"><a href="@Url.Action("index", "help", new { id = 3 })" target="_blank"><span class="icon a10" title="广知通"></span>
                         <div>
                             <h3>
-                                <b>知识通</b><em>详情</em></h3>
+                                <b>广知通</b><em>详情</em></h3>
                             <p>
-                                体验房商知识通<br>
+                                体验广知通<br>
                                 优质资源一网打尽
                             </p>
                         </div>
                     </a></li>
                 </ul>
             </div>
-            <div class=" mt20 mb20">
-                <a href="http://dichan.sina.com.cn/" style="margin-right: 60px">» 返回广知网首页
+            <div class="mt20 mb20">
+                <a href="@Url.Action("index", "home")" style="margin-right: 60px">» 返回广知网首页
                 </a>
             </div>
         </div>

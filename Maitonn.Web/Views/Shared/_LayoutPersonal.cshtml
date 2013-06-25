@@ -24,7 +24,7 @@
     @Html.Action("menu", "list", new { province = CookieHelper.Province })
     @Html.Partial("_BreadHome")
     @RenderBody()
-    @Html.Partial("_Footer")
+    @Html.Partial("_FooterHome")
     @Html.Partial("_DisplayMessage")
     @RenderSection("scripts", required: false)
     @MiniProfiler.RenderIncludes(position: RenderPosition.Left, showTrivial: false, showTimeWithChildren: false)

@@ -93,7 +93,7 @@ namespace Maitonn.Web
             var jobs = new IJob[]
             {
                 new WorkItemCleanupJob(TimeSpan.FromDays(1), () => new EntitiesContext(), timeout: TimeSpan.FromDays(4)),
-                new LuceneIndexingJob(TimeSpan.FromMinutes(10), timeout: TimeSpan.FromMinutes(2))
+                new LuceneIndexingJob(TimeSpan.FromMinutes(10),() => new EntitiesContext(), timeout: TimeSpan.FromMinutes(2))
             };
 
             var coordinator = new WebFarmJobCoordinator(new EntityWorkItemRepository(() => new EntitiesContext()));

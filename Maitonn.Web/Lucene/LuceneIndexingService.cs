@@ -51,14 +51,14 @@ namespace Maitonn.Web
         private readonly EntitiesContext _entitiesContext;
 
         public LuceneIndexingService()
-            : this(new EntitiesContext())
         {
+
         }
 
-        [Inject]
-        public LuceneIndexingService(IUnitOfWork entitiesContext)
+
+        public LuceneIndexingService(Func<DbContext> contextFuc)
         {
-            _entitiesContext = (EntitiesContext)entitiesContext;
+            _entitiesContext = (EntitiesContext)contextFuc();
         }
 
         public void UpdateIndex()
@@ -171,9 +171,9 @@ namespace Maitonn.Web
                 .Include(x => x.Member.Member_CreditIndex)
                 .Include(x => x.Member.SelfCompany);
 
-            if (lastIndexTime != null)
+            if (lastIndexTime.HasValue)
             {
-                query = query.Where(x => x.LastTime > lastIndexTime);
+                query = query.Where(x => x.LastTime > lastIndexTime.Value);
             }
 
             foreach (var x in query.ToList())
