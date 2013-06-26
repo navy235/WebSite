@@ -13,10 +13,12 @@ namespace Maitonn.Web
 
         private readonly IUnitOfWork DB_Service;
         private readonly IMemberService memberService;
+
         private readonly IMember_CreditIndexService member_CreditIndexService;
         public CompanyService(IUnitOfWork DB_Service
            , IMemberService memberService
            , IMember_CreditIndexService member_CreditIndexService)
+
         {
             this.DB_Service = DB_Service;
             this.memberService = memberService;
@@ -327,6 +329,7 @@ namespace Maitonn.Web
                 else if (CompanyStatus == CompanyStatus.CompanyAuth)
                 {
                     memberService.ChangeStatus(MemberIDs, MemberStatus.CompanyAuth);
+
                     foreach (var id in IdsArray)
                     {
                         member_CreditIndexService.AddCreditIndex(id, 3, "001");

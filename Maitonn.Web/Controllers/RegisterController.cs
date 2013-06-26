@@ -237,7 +237,7 @@ namespace Maitonn.Web
                     {
                         Address = model.Address,
                         BussinessCode = model.BussinessCode,
-                        CityCode = model.BussinessCode,
+                        CityCode = model.CityCode,
                         Description = model.Description,
                         FundCode = model.FundCode,
                         LinkMan = model.LinkMan,
@@ -473,7 +473,7 @@ namespace Maitonn.Web
                                 {
                                     Address = model.Address,
                                     BussinessCode = model.BussinessCode,
-                                    CityCode = model.BussinessCode,
+                                    CityCode = model.CityCode,
                                     Description = model.Description,
                                     FundCode = model.FundCode,
                                     LinkMan = model.LinkMan,
@@ -495,7 +495,7 @@ namespace Maitonn.Web
                                 {
                                     Address = model.Address,
                                     BussinessCode = model.BussinessCode,
-                                    CityCode = model.BussinessCode,
+                                    CityCode = model.CityCode,
                                     Description = model.Description,
                                     FundCode = model.FundCode,
                                     LinkMan = model.LinkMan,
