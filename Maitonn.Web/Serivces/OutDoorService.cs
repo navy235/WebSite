@@ -38,8 +38,8 @@ namespace Maitonn.Web
             od.HasLight = model.HasLight;
             od.LastIP = HttpHelper.IP;
             od.LastTime = DateTime.Now;
-            od.Lat = Convert.ToDecimal(model.Position.Split('|')[0]);
-            od.Lng = Convert.ToDecimal(model.Position.Split('|')[1]);
+            od.Lat = Convert.ToDouble(model.Position.Split('|')[0]);
+            od.Lng = Convert.ToDouble(model.Position.Split('|')[1]);
             od.Location = model.Location;
             od.MemberID = MemberID;
             od.MeidaCode = model.MeidaCode;
@@ -127,8 +127,8 @@ namespace Maitonn.Web
             od.HasLight = model.HasLight;
             od.LastIP = HttpHelper.IP;
             od.LastTime = DateTime.Now;
-            od.Lat = Convert.ToDecimal(model.Position.Split('|')[0]);
-            od.Lng = Convert.ToDecimal(model.Position.Split('|')[1]);
+            od.Lat = Convert.ToDouble(model.Position.Split('|')[0]);
+            od.Lng = Convert.ToDouble(model.Position.Split('|')[1]);
             od.Location = model.Location;
             od.MemberID = MemberID;
             od.Name = model.Name;

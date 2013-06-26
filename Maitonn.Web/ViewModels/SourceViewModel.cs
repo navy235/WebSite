@@ -63,6 +63,10 @@ namespace Maitonn.Web
 
         public decimal Height { get; set; }
 
+        public double Lat { get; set; }
+
+        public double Lng { get; set; }
+
         public int TotalFaces { get; set; }
 
         public DateTime AddTime { get; set; }

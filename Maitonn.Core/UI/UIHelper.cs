@@ -283,6 +283,18 @@ namespace Maitonn.Core
 
         }
 
+        public static string GetCityName()
+        {
+            if (CookieHelper.Province.Equals(ProvinceName.quanguo.ToString()))
+            {
+                return "北京";
+            }
+            else
+            {
+                return UIHelper.ProvinceList.Single(x => x.Value.Equals(CookieHelper.Province, StringComparison.CurrentCultureIgnoreCase)).Text;
+            }
+        }
+
 
     }
 }

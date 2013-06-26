@@ -62,6 +62,8 @@ namespace Maitonn.Web
 
         List<HttpLinkItem> Search(List<int> Keys);
 
+
+
     }
 
     public class LuceneSearchService : ISearchService
@@ -245,6 +247,8 @@ namespace Maitonn.Web
             decimal Price = Decimal.Parse(doc.Get(OutDoorIndexFields.Price), CultureInfo.InvariantCulture);
             decimal Width = Decimal.Parse(doc.Get(OutDoorIndexFields.Width), CultureInfo.InvariantCulture);
             decimal Height = Decimal.Parse(doc.Get(OutDoorIndexFields.Height), CultureInfo.InvariantCulture);
+            double Lng = double.Parse(doc.Get(OutDoorIndexFields.Lng), CultureInfo.InvariantCulture);
+            double Lat = double.Parse(doc.Get(OutDoorIndexFields.Lat), CultureInfo.InvariantCulture);
             int TotalFaces = Int32.Parse(doc.Get(OutDoorIndexFields.TotalFaces), CultureInfo.InvariantCulture);
             DateTime AddTime = new DateTime(Int64.Parse(doc.Get(OutDoorIndexFields.Published), CultureInfo.InvariantCulture));
             return new HttpLinkItem
@@ -269,6 +273,8 @@ namespace Maitonn.Web
                 AddTime = AddTime,
                 Height = Height,
                 Width = Width,
+                Lat = Lat,
+                Lng = Lng,
                 TotalFaces = TotalFaces,
                 Description = doc.Get(OutDoorIndexFields.Description),
                 FormatCateName = doc.Get(OutDoorIndexFields.FormatName),
@@ -431,6 +437,17 @@ namespace Maitonn.Web
                 combineQuery.Add(authStatusQuery, Occur.MUST);
             }
             #endregion
+
+            #region 经纬度搜索
+            if (queryParams.MinX != 0)
+            {
+                var latQuery = NumericRangeQuery.NewDoubleRange(OutDoorIndexFields.Lat, queryParams.MinX, queryParams.MaxX, true, true);
+                var lngQuery = NumericRangeQuery.NewDoubleRange(OutDoorIndexFields.Lng, queryParams.MinY, queryParams.MaxY, true, true);
+                combineQuery.Add(latQuery, Occur.MUST);
+                combineQuery.Add(lngQuery, Occur.MUST);
+            }
+            #endregion
+
 
             #region 媒体类别查询
             if (queryParams.MediaCode != 0)

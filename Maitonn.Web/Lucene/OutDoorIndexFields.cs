@@ -53,6 +53,10 @@ namespace Maitonn.Web
 
         public const string Hit = "Hit";
 
+        public const string Lat = "Lat";
+
+        public const string Lng = "Lng";
+
         public const string Price = "Price";
 
         public const string Width = "Width";

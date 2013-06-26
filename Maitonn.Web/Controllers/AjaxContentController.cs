@@ -33,6 +33,7 @@ namespace Maitonn.Web
         private IAuctionCalendarService auctionCalendarService;
         private ISliderImgService sliderImgService;
         private ISourceService sourceService;
+        private ISearchService searchService;
         public AjaxContentController(
             IMemberService _memberService
             , IAreaAttService _areaAttService
@@ -48,6 +49,7 @@ namespace Maitonn.Web
             , IAuctionCalendarService _auctionCalendarService
             , ISliderImgService _sliderImgService
             , ISourceService _sourceService
+            , ISearchService _searchService
             )
         {
 
@@ -65,6 +67,7 @@ namespace Maitonn.Web
             auctionCalendarService = _auctionCalendarService;
             sliderImgService = _sliderImgService;
             sourceService = _sourceService;
+            searchService = _searchService;
         }
 
         public ActionResult GetrelateMedia(int province = 0, int city = 0)
@@ -184,6 +187,74 @@ namespace Maitonn.Web
             }
 
             return PartialView("CompanyItem", model);
+        }
+
+
+        public ActionResult GetSearchArea(float minX, float minY, float maxX, float maxY, int page = 1, int category = 0, int childcategory = 0)
+        {
+
+            var model = new ListSource();
+
+            var result = new List<HttpLinkItem>();
+
+            ListSearchItemViewModel query = new ListSearchItemViewModel();
+
+            query.MinX = minX;
+            query.MinY = minY;
+            query.MaxX = maxX;
+            query.MaxY = maxY;
+            if (category != 0)
+            {
+                query.MediaCode = category;
+                if (childcategory != 0)
+                {
+                    query.ChildMediaCode = childcategory;
+                }
+            }
+
+            var pageSize = 10;
+
+            int totalHits = 0;
+
+            SearchFilter sf = new SearchFilter();
+
+            sf.PageSize = pageSize;
+
+            sf.Skip = (page - 1) * pageSize;
+
+            sf.Take = pageSize;
+
+            sf.SortProperty = SortProperty.Published;
+
+            sf.SortDirection = SortDirection.Descending;
+
+            result = searchService.Search(query, sf, out totalHits);
+
+            model.Items = result;
+
+            model.TotalCount = totalHits;
+
+            model.CurrentPage = page;
+
+            model.PageSize = pageSize;
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        private SearchFilter GetSearchFilter(string q, int sortOrder, int descending, int page, int pageSize)
+        {
+            var searchFilter = new SearchFilter
+            {
+                PageSize = pageSize,
+                SearchTerm = q,
+                Skip = (page - 1) * pageSize, // pages are 1-based. 
+                Take = pageSize
+            };
+            searchFilter.SortProperty = (SortProperty)sortOrder;
+
+            searchFilter.SortDirection = (SortDirection)descending;
+
+            return searchFilter;
         }
     }
 }

@@ -62,6 +62,10 @@ namespace Maitonn.Web
 
         public int MemberCreditIndex { get; set; }
 
+        public double Lat { get; set; }
+
+        public double Lng { get; set; }
+
         public string CompanyName { get; set; }
 
         public DateTime Published { get; set; }

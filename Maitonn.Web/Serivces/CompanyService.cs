@@ -13,11 +13,14 @@ namespace Maitonn.Web
 
         private readonly IUnitOfWork DB_Service;
         private readonly IMemberService memberService;
-        public CompanyService(IUnitOfWork DB_Service,
-            IMemberService memberService)
+        private readonly IMember_CreditIndexService member_CreditIndexService;
+        public CompanyService(IUnitOfWork DB_Service
+           , IMemberService memberService
+           , IMember_CreditIndexService member_CreditIndexService)
         {
             this.DB_Service = DB_Service;
             this.memberService = memberService;
+            this.member_CreditIndexService = member_CreditIndexService;
 
         }
 
@@ -324,6 +327,11 @@ namespace Maitonn.Web
                 else if (CompanyStatus == CompanyStatus.CompanyAuth)
                 {
                     memberService.ChangeStatus(MemberIDs, MemberStatus.CompanyAuth);
+                    foreach (var id in IdsArray)
+                    {
+                        member_CreditIndexService.AddCreditIndex(id, 3, "001");
+                    }
+
                 }
             }
             catch (DbEntityValidationException ex)

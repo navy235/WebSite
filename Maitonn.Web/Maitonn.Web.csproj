@@ -232,6 +232,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\OutDoorController.cs" />
     <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
@@ -351,6 +352,10 @@
     <Compile Include="Migrations\201306140919019_AleterSliderImgScheme.cs" />
     <Compile Include="Migrations\201306140919019_AleterSliderImgScheme.Designer.cs">
       <DependentUpon>201306140919019_AleterSliderImgScheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201306260630553_AlterPosition.cs" />
+    <Compile Include="Migrations\201306260630553_AlterPosition.Designer.cs">
+      <DependentUpon>201306260630553_AlterPosition.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AddressBook.cs" />
@@ -588,6 +593,7 @@
     <Content Include="Content\images\logo.gif" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\companybg.png" />
+    <Content Include="Content\images\mapmarker.png" />
     <Content Include="Content\images\min-loading.gif" />
     <Content Include="Content\images\mixr.gif" />
     <Content Include="Content\images\personal.gif" />
@@ -1678,6 +1684,9 @@
     <Content Include="Views\AjaxContent\CompanyItem.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TopTime.cshtml" />
     <Content Include="Views\Gztvip\_VipStatus.cshtml" />
+    <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutMap.cshtml" />
+    <Content Include="Views\AjaxContent\MapSearchItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1766,6 +1775,9 @@
     <EmbeddedResource Include="Migrations\201306140919019_AleterSliderImgScheme.resx">
       <DependentUpon>201306140919019_AleterSliderImgScheme.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201306260630553_AlterPosition.resx">
+      <DependentUpon>201306260630553_AlterPosition.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1788,7 +1800,7 @@
           <IISUrl>http://localhost:18200/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://www.dotaeye.com</CustomServerUrl>
+          <CustomServerUrl>http://www.adzhi.com</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

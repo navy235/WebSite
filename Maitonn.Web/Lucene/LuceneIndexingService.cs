@@ -141,7 +141,9 @@ namespace Maitonn.Web
                     TotalFaces = x.TotalFaces,
                     Width = x.Wdith,
                     CompanyName = x.Member.SelfCompany.Name,
-                    MemberCreditIndex = x.Member.Member_CreditIndex.TotalCreditIndex,
+                    Lat = x.Lat,
+                    Lng = x.Lng,
+                    MemberCreditIndex = x.Member.Member_CreditIndex == null ? 0 : x.Member.Member_CreditIndex.TotalCreditIndex,
                     MemberStatus = x.Member.Status,
                     MemberID = x.MemberID
 
@@ -154,8 +156,13 @@ namespace Maitonn.Web
             AddOutDoors(result, false);
         }
 
-        protected internal virtual List<OutDoorIndexEntity> GetOutDoors(UnitOfWork context, DateTime? lastIndexTime)
+        protected internal virtual List<OutDoorIndexEntity> GetOutDoors(EntitiesContext context, DateTime? lastIndexTime)
         {
+
+            if (context == null)
+            {
+                context = new EntitiesContext();
+            }
             List<OutDoorIndexEntity> result = new List<OutDoorIndexEntity>();
 
             var query = context.Set<OutDoor>()
@@ -178,40 +185,43 @@ namespace Maitonn.Web
 
             foreach (var x in query.ToList())
             {
-                OutDoorIndexEntity item = new OutDoorIndexEntity()
-                {
-                    City = x.Area.ID,
-                    FormatCode = x.FormatCode,
-                    ImgUrl = x.MediaImg.FocusImgUrl,
-                    MediaCode = x.MeidaCode,
-                    OwnerCode = x.OwnerCode,
-                    PeriodCode = x.PeriodCode,
-                    PMediaCode = x.OutDoorMediaCate.PCategory.ID,
-                    Province = x.Area.PCategory.ID,
-                    Status = x.Status,
-                    AuthStatus = x.AuthStatus,
-                    MediaID = x.MediaID,
-                    ProvinceName = x.Area.PCategory.CateName,
-                    CityName = x.Area.CateName,
-                    AreaAtt = String.Join(",", x.AreaAtt.Select(y => y.AttName)),
-                    Description = x.Description,
-                    FormatName = x.FormatCate.CateName,
-                    Hit = x.Hit,
-                    MediaCateName = x.OutDoorMediaCate.CateName,
-                    PMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
-                    OwnerCateName = x.OwnerCate.CateName,
-                    PeriodName = x.PeriodCate.CateName,
-                    Price = x.Price,
-                    Published = x.LastTime,
-                    Title = x.Name,
-                    Height = x.Height,
-                    TotalFaces = x.TotalFaces,
-                    Width = x.Wdith,
-                    CompanyName = x.Member.SelfCompany.Name,
-                    MemberCreditIndex = x.Member.Member_CreditIndex.TotalCreditIndex,
-                    MemberStatus = x.Member.Status,
-                    MemberID = x.MemberID
-                };
+                OutDoorIndexEntity item = new OutDoorIndexEntity();
+
+
+                item.City = x.Area.ID;
+                item.FormatCode = x.FormatCode;
+                item.ImgUrl = x.MediaImg.FocusImgUrl;
+                item.MediaCode = x.MeidaCode;
+                item.OwnerCode = x.OwnerCode;
+                item.PeriodCode = x.PeriodCode;
+                item.PMediaCode = x.OutDoorMediaCate.PCategory.ID;
+                item.Province = x.Area.PCategory.ID;
+                item.Status = x.Status;
+                item.AuthStatus = x.AuthStatus;
+                item.MediaID = x.MediaID;
+                item.ProvinceName = x.Area.PCategory.CateName;
+                item.CityName = x.Area.CateName;
+                item.AreaAtt = String.Join(",", x.AreaAtt.Select(y => y.AttName));
+                item.Description = x.Description;
+                item.FormatName = x.FormatCate.CateName;
+                item.Hit = x.Hit;
+                item.MediaCateName = x.OutDoorMediaCate.CateName;
+                item.PMediaCateName = x.OutDoorMediaCate.PCategory.CateName;
+                item.OwnerCateName = x.OwnerCate.CateName;
+                item.PeriodName = x.PeriodCate.CateName;
+                item.Price = x.Price;
+                item.Published = x.LastTime;
+                item.Title = x.Name;
+                item.Height = x.Height;
+                item.TotalFaces = x.TotalFaces;
+                item.Width = x.Wdith;
+                item.CompanyName = x.Member.SelfCompany.Name;
+                item.Lat = x.Lat;
+                item.Lng = x.Lng;
+                item.MemberCreditIndex = x.Member.Member_CreditIndex == null ? 0 : x.Member.Member_CreditIndex.TotalCreditIndex;
+
+                item.MemberStatus = x.Member.Status;
+                item.MemberID = x.MemberID;
 
                 result.Add(item);
 
@@ -315,6 +325,10 @@ namespace Maitonn.Web
             document.Add(new NumericField(OutDoorIndexFields.Published, Field.Store.YES, true).SetLongValue(OutDoor.Published.Ticks));
 
             document.Add(new NumericField(OutDoorIndexFields.MemberStatus, Field.Store.YES, true).SetIntValue(OutDoor.MemberStatus));
+
+            document.Add(new NumericField(OutDoorIndexFields.Lat, Field.Store.YES, true).SetDoubleValue(OutDoor.Lat));
+
+            document.Add(new NumericField(OutDoorIndexFields.Lng, Field.Store.YES, true).SetDoubleValue(OutDoor.Lng));
 
             document.Add(new NumericField(OutDoorIndexFields.MemberCreditIndex, Field.Store.YES, true).SetIntValue(OutDoor.MemberCreditIndex));
 

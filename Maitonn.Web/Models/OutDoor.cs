@@ -32,12 +32,12 @@ namespace Maitonn.Web
 
         [Required(ErrorMessage = "请在地图上标注具体坐标")]
         [Display(Name = "具体坐标")]
-        public decimal Lng { get; set; }
+        public double Lng { get; set; }
 
 
         [Required(ErrorMessage = "请在地图上标注具体坐标")]
         [Display(Name = "具体坐标")]
-        public decimal Lat { get; set; }
+        public double Lat { get; set; }
 
 
         [Display(Name = "具体坐标")]
