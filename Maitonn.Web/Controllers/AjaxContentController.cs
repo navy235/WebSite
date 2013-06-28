@@ -190,7 +190,7 @@ namespace Maitonn.Web
         }
 
 
-        public ActionResult GetSearchArea(float minX, float minY, float maxX, float maxY, int page = 1, int category = 0, int childcategory = 0)
+        public ActionResult GetSearchArea(float minX, float minY, float maxX, float maxY, int page = 1, int category = 0, int childcategory = 0, int price = 0)
         {
 
             var model = new ListSource();
@@ -211,6 +211,11 @@ namespace Maitonn.Web
                     query.ChildMediaCode = childcategory;
                 }
             }
+            if (price != 0)
+            {
+                query.Price = price;
+            }
+
 
             var pageSize = 10;
 

@@ -25,9 +25,9 @@
                         <a  class="list-filter-sort list-filter-default @(Sort.SortDefault ? "selected" : "") mr10 " href="@ViewBag.DefaultOrderUrl">默认</a>
                         <a  class="list-filter-sort list-filter-up @(Sort.SortPriceAsc ? "selected" : "")" href="@ViewBag.PriceOrderAscUrl">价格</a>
                         <a  class="list-filter-sort list-filter-down @(Sort.SortPriceDesc ? "selected" : "") mr10" href="@ViewBag.PriceOrderDescUrl">价格</a>
-                        <div class="list-filter-price">
-                            <span class="list-filter-price-text">@PriceListFilter.Single(x => x.Selected.Equals(true)).Name</span>
-                            <ul class="list-filter-price-list">
+                        <div class="list-dropdown">
+                            <span class="list-dropdown-title">@PriceListFilter.Single(x => x.Selected.Equals(true)).Name</span>
+                            <ul class="list-dropdown-list">
                                 @foreach (var item in PriceListFilter)
                                 {
                                     <li><a class="@(item.Selected ? "selected" : "")" href="@item.Url">@item.Name</a></li>
@@ -51,7 +51,7 @@
                                         $("#querybtn").click();
                                     }
                                 });
-                                $('.list-filter-price').hover(function() {
+                                $('.list-dropdown').hover(function() {
                                     $(this).children("ul").show();
                                 }, function() {
                                     $(this).children("ul").hide();

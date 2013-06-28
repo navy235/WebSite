@@ -48,6 +48,8 @@ namespace Maitonn.Web
 
         public string ImgUrl { get; set; }
 
+        public string VideoUrl { get; set; }
+
         public int Hit { get; set; }
 
         public decimal Price { get; set; }

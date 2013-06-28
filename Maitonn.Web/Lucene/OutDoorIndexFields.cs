@@ -51,6 +51,8 @@ namespace Maitonn.Web
 
         public const string ImgUrl = "ImgUrl";
 
+        public const string VideoUrl = "VideoUrl";
+
         public const string Hit = "Hit";
 
         public const string Lat = "Lat";

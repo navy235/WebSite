@@ -1,6 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "广知网媒体地图搜索";
     Layout = "~/Views/Shared/_LayoutMap.cshtml";
+    var categoryList = (List<SelectListItem>)ViewBag.categoryList;
+    var priceList = (List<SelectListItem>)ViewBag.priceList;
+    
 }
 <style type="text/css">
     .map-container {
@@ -47,7 +50,7 @@
         position: absolute;
         top: 17px;
         z-index: 83;
-        left: 260px;
+        left: 240px;
     }
 
         .map-search .search-text {
@@ -72,6 +75,15 @@
             -webkit-text-size-adjust: none;
             cursor: pointer;
         }
+
+    .map-header-filter {
+        color: #333;
+        position: absolute;
+        top: 17px;
+        z-index: 83;
+        left: 720px;
+        padding: 8px 0;
+    }
 
     .map-content {
         position: absolute;
@@ -136,6 +148,10 @@
         display: none;
     }
 
+    li.map-list-item {
+        padding-left: 10px;
+    }
+
     .map-list-item-hover {
         background: #f2d7d7;
         cursor: pointer;
@@ -145,6 +161,23 @@
     .map-loadding {
         display: none;
     }
+
+    .search-text-gray {
+        color: #999;
+    }
+
+    .list-num {
+        font-weight: bold;
+        height: 16px;
+        line-height: 16px;
+        padding: 15px 0 17px 20px;
+        border-bottom: 1px dashed #cccccc;
+    }
+
+        .list-num strong {
+            color: #f60;
+            font-size: 14px;
+        }
 </style>
 <div class="map-container">
     <div class="map-header">
@@ -153,9 +186,44 @@
                 <a href="/" title="">广知网</a>
             </div>
             <div class="map-search">
-                <input class="search-text" id="search-text" type="text" value="三面翻">
-                <input class="search-button" id="search-button" type="button" value="">
+                <input class="search-text search-text-gray" id="search-text" type="text" value="请输入搜索的具体位置">
+                <input class="search-button" id="search-button" type="button">
                 <ul class="top-head-suggest" style="display: none;"></ul>
+            </div>
+            <div class="map-header-filter">
+
+
+                <div class="list-dropdown" id="list-dropdown-parent">
+                    <span class="list-dropdown-title">@categoryList.Single(x => x.Selected.Equals(true)).Text</span>
+                    <ul class="list-dropdown-list">
+                        @foreach (var item in categoryList)
+                        {
+                            <li><a class="@(item.Selected ? "selected" : "")" data-id="@item.Value">@item.Text</a></li>
+                        }
+                    </ul>
+                    <input type="hidden" id="mediaCode" value="@categoryList.Single(x => x.Selected.Equals(true)).Value" />
+                </div>
+
+
+                <div class="list-dropdown disabled " id="list-dropdown-child">
+                    <span class="list-dropdown-title">媒体子分类</span>
+                    <ul class="list-dropdown-list" style="display: none;">
+                    </ul>
+                    <input type="hidden" id="childMediaCode" value="0" />
+                </div>
+
+                <div class="list-dropdown" id="list-dropdown-price">
+                    <span class="list-dropdown-title">@priceList.Single(x => x.Selected.Equals(true)).Text</span>
+                    <ul class="list-dropdown-list">
+                        @foreach (var item in priceList)
+                        {
+                            <li><a class="@(item.Selected ? "selected" : "")" data-id="@item.Value">@item.Text</a></li>
+                        }
+
+                    </ul>
+                    <input type="hidden" id="priceCode" value="@priceList.Single(x => x.Selected.Equals(true)).Value" />
+                </div>
+
             </div>
         </div>
     </div>
@@ -163,53 +231,7 @@
         <div class="map-left">
             <div class="map-filter">
                 <span>筛选条件：<span id="map-filter-condition">媒体类型不限，价格不限</span></span>
-                <a href="javascript:void(0)" class="map-filter-btn">更改</a>
-                <div class="map-filter-selectbox">
-                    <dl class="clearfix">
-                        <dt class="price-icon">售价</dt>
-                        <dd id="filter-price-boxer">
-                            <span id="l_priceLi_0"><a href="javascript:void(0)" paramid="0" class="select-on">不限</a></span>
-                            <span id="l_priceLi_2"><a href="javascript:;" paramid="2">50万以下</a></span>
-                            <span id="l_priceLi_3"><a href="javascript:;" paramid="3">50-80万</a></span>
-                            <span id="l_priceLi_4"><a href="javascript:;" paramid="4">80-100万</a></span>
-                            <span id="l_priceLi_5"><a href="javascript:;" paramid="5">100-120万</a></span>
-                            <span id="l_priceLi_6"><a href="javascript:;" paramid="6">120-150万</a></span>
-                            <span id="l_priceLi_7"><a href="javascript:;" paramid="7" class="">150-200万</a></span>
-                            <span id="l_priceLi_8"><a href="javascript:;" paramid="8">200-250万</a></span>
-                            <span id="l_priceLi_9"><a href="javascript:;" paramid="9">250-300万</a></span>
-                            <span id="l_priceLi_10"><a href="javascript:;" paramid="10">300-500万</a></span>
-                            <span id="l_priceLi_11"><a href="javascript:;" paramid="11">500-1000万</a></span>
-                            <span id="l_priceLi_12"><a href="javascript:;" paramid="12">1000万以上</a></span>
-                        </dd>
-
-                        <dt class="area-icon">面积</dt>
-                        <dd id="filter-range-boxer">
-                            <span id="l_rangeLi_0"><a href="javascript:void(0)" paramid="0">不限</a></span>
-                            <span id="l_rangeLi_2"><a href="javascript:;" paramid="2" class="select-on">50平米以下</a></span>
-                            <span id="l_rangeLi_3"><a href="javascript:;" paramid="3">50-70平米</a></span>
-                            <span id="l_rangeLi_4"><a href="javascript:;" paramid="4">70-90平米</a></span>
-                            <span id="l_rangeLi_5"><a href="javascript:;" paramid="5">90-110平米</a></span>
-                            <span id="l_rangeLi_6"><a href="javascript:;" paramid="6">110-130平米</a></span>
-                            <span id="l_rangeLi_7"><a href="javascript:;" paramid="7">130-150平米</a></span>
-                            <span id="l_rangeLi_8"><a href="javascript:;" paramid="8">150-200平米</a></span>
-                            <span id="l_rangeLi_9"><a href="javascript:;" paramid="9">200-300平米</a></span>
-                            <span id="l_rangeLi_10"><a href="javascript:;" paramid="10">300-500平米</a></span>
-                            <span id="l_rangeLi_11"><a href="javascript:;" paramid="11">500平米以上</a></span>
-                        </dd>
-
-                        <dt class="model-icon">房型</dt>
-                        <dd class="model-list" id="filter-model-boxer">
-                            <span id="l_modelLi_0"><a href="javascript:void(0)" paramid="0" class="select-on">不限</a></span>
-                            <span id="l_modelLi_2"><a href="javascript:;" paramid="2">一室</a></span>
-                            <span id="l_modelLi_4"><a href="javascript:;" paramid="4">二室</a></span>
-                            <span id="l_modelLi_10"><a href="javascript:;" paramid="10">三室</a></span>
-                            <span id="l_modelLi_11"><a href="javascript:;" paramid="11">四室</a></span>
-                            <span id="l_modelLi_12"><a href="javascript:;" paramid="12">五室</a></span>
-                            <span id="l_modelLi_13"><a href="javascript:;" paramid="13">五室以上</a></span>
-                        </dd>
-                    </dl>
-                    <div class="select-btm" id="btn-hide-fiter-box"><a href="javascript:void(0)" id="" class="close-list">收起选择</a></div>
-                </div>
+                @*  <a href="javascript:void(0)" class="map-filter-btn">更改</a>*@
             </div>
             <div class="map-list gray-list">
             </div>
@@ -221,17 +243,30 @@
     </div>
 </div>
 
+@(Html.Kendo().Window().Name("Win-mapvideo")
+    .Title("路段视频")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(false)
+    .Width(510)
+    .Height(430)
+    .Scrollable(true)
+
+    )
+
 @section scripts{
     <script type="text/javascript">
         var MapSearch = {
             init: function() {
-                var self = this;
+                var self = this,
+                    videowindow = $('#Win-mapvideo').data('kendoWindow');
                 self.map = new BMap.Map("map-control");            // 创建Map实例
                 self.map.centerAndZoom("@UIHelper.GetCityName()", 15);
                 self.map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
                 self.map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
                 self.map.addControl(new BMap.OverviewMapControl());
                 self.map.enableScrollWheelZoom();
+                self.localSearch = new BMap.LocalSearch(self.map, self.searchOptions),
                 self.map.addEventListener("dblclick", function() {
                     self.searchArea();
                 });
@@ -245,19 +280,231 @@
                     self.searchArea();
                 });
 
+                $('#search-button').on('click', $.proxy(self.searchKeywords, self));
+
+                $('#search-text').on('focus', self.keywordsSet)
+
+                $('#search-text').on('focusout', self.keywordsFocusOut)
+
+                $('#search-text').on('keydown', self.keywordsSet)
+
+                self.initSelectCategory();
             },
+
+
+
             load: function(path, callback) {
                 var script = document.createElement("script");
                 script.src = "http://api.map.baidu.com/api?v=1.3&callback=MapSearch.init";
                 document.body.appendChild(script);
             },
-            searchArea: function() {
+
+            initSelectCategory: function() {
+
+                var self = this;
+
+                $('.list-dropdown').hover(function() {
+                    if (!$(this).hasClass('disabled')) {
+                        $(this).children("ul").show();
+                    }
+                }, function() {
+                    if (!$(this).hasClass('disabled')) {
+                        $(this).children("ul").hide();
+                    }
+                })
+
+                $('.list-dropdown').on('click', 'a', function(e) {
+                    var target = $(e.currentTarget),
+                        container = target.parents('.list-dropdown'),
+                        child = $('#list-dropdown-child'),
+                        dataid = target.data('id'),
+                        title = target.html(),
+                        list = container.children('ul'),
+                        input = container.find('input[type="hidden"]'),
+                        listtile = container.find('.list-dropdown-title'),
+                        containerId = container.attr('id');
+
+                    container.find('a').removeClass('selected');
+
+                    target.addClass('selected');
+
+                    input.val(dataid);
+
+                    listtile.html(title);
+
+                    list.hide();
+
+                    if (containerId == 'list-dropdown-parent') {
+                        if (dataid == 0) {
+                            child.addClass('disabled');
+                            child.find('.list-dropdown-title').html('媒体子分类');
+                            child.find('input[type="hidden"]').val(0);
+                        } else {
+                            $.get('@Url.Action("meidacode", "ajaxservice")', { key: 'parent', pid: dataid })
+                            .done(function(list) {
+                                var html = '<li><a data-id="0" class="selected">媒体子分类</a></li>';;
+                                for (var i = 0; i < list.length; i++) {
+                                    html += '<li><a data-id="' + list[i].Value + '">' + list[i].Text + '</a></li>';
+                                }
+                                child.removeClass('disabled').children('ul').html(html);
+
+                            })
+                        }
+                    }
+                    self.updateFilter();
+                    self.searchArea();
+                })
+
+            },
+
+            updateFilter: function() {
+
                 var self = this,
+
+                    condition = '',
+
+                    filter = $('#map-filter-condition'),
+
+                    category = $('#list-dropdown-parent'),
+
+                    childcategory = $('#list-dropdown-child'),
+
+                    price = $('#list-dropdown-price');
+
+                if (category.find('input[type="hidden"]').val() != 0) {
+
+                    condition += '媒体类型 ' + category.find('.list-dropdown-title').html();
+
+                    if (childcategory.find('input[type="hidden"]').val() != 0) {
+
+                        condition += '-' + childcategory.find('.list-dropdown-title').html();
+                    }
+                }
+                else {
+                    condition = '媒体类型不限'
+                }
+                condition += '，';
+
+                if (price.find('input[type="hidden"]').val() != 0) {
+
+                    condition += '价格 ' + price.find('.list-dropdown-title').html();
+                } else {
+                    condition += '价格不限'
+                }
+
+                filter.html(condition);
+
+            },
+
+            showVideo: function(obj) {
+
+                var videowindow = $('#Win-mapvideo').data('kendoWindow');
+
+                var target = $(obj);
+
+                var title = target.data('title');
+
+                var url = target.data('url');
+
+                var videoUrl = '<embed src="' + url + '"+allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"></embed>';
+
+                videowindow.content(videoUrl);
+
+                videowindow.open().center();
+
+                videowindow.title(title + '-路段视频');
+
+            },
+
+
+
+            keywordsSet: function(e) {
+                var target = $(e.currentTarget);
+                if (target.val() === '请输入搜索的具体位置') {
+                    target.val('');
+                    target.removeClass('search-text-gray')
+                }
+                if (e.keyCode && e.keyCode === 13) {
+                    $("#search-button").click();
+                    return false;
+                }
+
+            },
+
+            keywordsFocusOut: function(e) {
+                var target = $(e.currentTarget);
+                if (target.val() === '') {
+                    target.val('请输入搜索的具体位置')
+                    target.addClass('search-text-gray')
+                }
+            },
+
+            searchKeywords: function() {
+                var self = this;
+                var keywordInput = $('#search-text');
+                var keywords = keywordInput.val();
+                if (keywords === '') {
+                    keywordInput.val('请输入搜索的具体位置')
+                    keywordInput.addClass('search-text-gray')
+                    return false;
+                } else if (keywords === '请输入搜索的具体位置') {
+                    keywordInput.focus();
+                    return false;
+
+                } else {
+
+                    self.localSearch.search(keywords);
+                }
+
+            },
+
+            searchOptions: {
+                onSearchComplete: function(results) {
+                    var self = MapSearch;
+                    if (self.localSearch.getStatus() == BMAP_STATUS_SUCCESS) {
+                        var s = [];
+                        self.map.clearOverlays();
+                        for (var i = 0; i < results.getCurrentNumPois() ; i++) {
+                            if (i == 0) {
+                                self.map.setCenter(results.getPoi(i).point);
+                                break;
+                            }
+                        }
+                        self.searchArea();
+                    }
+                    else {
+                        alert('没有搜索到该地！');
+                    }
+                }
+            },
+            pageSearchArea: function(e) {
+
+                var self = this,
+
+                    target = $(e.currentTarget),
+
+                    page = parseInt(target.data('page'), 10);
+
+                self.searchArea(page);
+            },
+
+            searchArea: function(page) {
+                var self = this,
+                    mediaCode = $('#mediaCode').val(),
+                    childMediaCode = $('#childMediaCode').val(),
+                    priceCode = $('#priceCode').val(),
                     areas = self.getSearchArea();
+                if (page) {
+                    areas.page = page;
+                }
+                areas.category = parseInt(mediaCode, 10);
+                areas.childcategory = parseInt(childMediaCode, 10);
+                areas.price = parseInt(priceCode, 10);
                 self.showBusy();
                 self.getSearchResult(areas).done(function(data) {
                     self.renderList(data);
                     self.renderMarker(data);
+                    self.renderPage(data);
                 })
             },
 
@@ -293,8 +540,9 @@
                 };
             },
             renderList: function(data) {
-                var html = '<ul>',
+                var html = '<div class="list-num">右侧地图中找到户外信息<strong id="prop-found">' + data.TotalCount + '</strong>条</div>' + '<ul>',
                     showUrl = 'media',
+
                     items = data.Items;
                 for (var i = 0; i < items.length; i++) {
                     var item = items[i];
@@ -310,6 +558,7 @@
                     html += itemHtml;
                 }
                 html += '</ul>';
+
                 $('.map-list').html(html);
 
                 $('.map-list-item').on('mouseenter', function() {
@@ -322,11 +571,76 @@
                     var marker = $(this).data('marker');
                     marker.closeInfoWindow();
                 })
-
             },
 
             renderPage: function(data) {
 
+                var self = this,
+                    container = $('<div/>').addClass('list-page-split'),
+                    leftqujian = false,
+                    rightqujian = false,
+                    totalPages = Math.ceil(data.TotalCount / data.PageSize),
+                    prepage,
+                    nextpage;
+
+                data.TotalPages = totalPages;
+
+                if (data.TotalCount == 0) {
+                    return;
+                }
+
+                if (data.CurrentPage == 1) {
+                    prepage = $('<span/>');
+                } else {
+                    prepage = $('<a/>').attr('data-page', data.CurrentPage - 1);
+                }
+                prepage.addClass('prev');
+                prepage.html('<i></i>上一页');
+                container.append(prepage);
+
+                for (var i = 1; i <= data.TotalPages; i++) {
+                    if (data.CurrentPage - i >= 2 && i > 1) {
+                        if (!leftqujian) {
+                            var dotted = $('<span/>').html('...').addClass('dotted');
+                            container.append(dotted);
+                            leftqujian = true;
+                        }
+                    }
+                    else if (i - data.CurrentPage >= 2 && i < data.TotalPages) {
+                        if (!rightqujian) {
+                            var dotted = $('<span/>').html('...').addClass('dotted');
+                            container.append(dotted);
+                            rightqujian = true;
+                        }
+                    }
+                    else {
+                        if (i == data.CurrentPage) {
+                            var currentPagebtn = $('<span/>').html(i).addClass('dotted');
+                            container.append(currentPagebtn);
+                        }
+                        else {
+                            var tag = $('<a/>').html(i).attr('data-page', i);
+                            container.append(tag);
+                        }
+                    }
+                }
+
+                if (data.CurrentPage == data.TotalPages) {
+                    nextpage = $('<span/>');
+                }
+                else {
+                    nextpage = $('<a/>').attr('data-page', data.CurrentPage + 1);
+                }
+
+                nextpage.addClass('next');
+
+                nextpage.html('<i></i>下一页');
+
+                container.append(nextpage);
+
+                $('.map-list').append(container);
+
+                $('.list-page-split').on('click', 'a', $.proxy(self.pageSearchArea, self))
             },
 
             renderMarker: function(data) {
@@ -338,6 +652,9 @@
                     self.addMarker(item);
                 }
             },
+
+
+
             addMarker: function(item) {
 
                 var self = this;
@@ -369,16 +686,20 @@
                 var imgurl = "<a target='_blank' href='media-" + item.ID + "'  style=' margin-top:5px;' ><img src='" + item.ImgUrl + "' style='width:100%;' /></a><div style=' margin-top:5px;text-align:right;'>价格:<strong class='c_red'>" + item.Price + "</strong> 万元/年 </div>";
 
 
-
-                var content = '<div style="margin:0;line-height:20px;padding:2px;width:350px;">' +
+                var content = '<div style="margin:0;line-height:20px;padding:2px;width:350px; color:gray;">' +
 
                     '<img src="' + item.ImgUrl + '" alt="" style="float:right;zoom:1;overflow:hidden;width:100px;height:100px;margin-left:3px;"/>' +
 
                     '公司：<a target="_blank" href="biz/' + item.MemberID + '">' + item.CompanyName + '</a><br/>媒体描述：' + (item.Description.length > 50 ? item.Description.substr(0, 50) + '...' : item.Description) + '<br/>' +
 
-                    '价格：<strong class="c_red">' + item.Price + '</strong> 万元/年' +
+                    '价格：<strong class="c_red">' + item.Price + '</strong> 万元/年  <br/>';
 
-                    '</div>';
+                if (item.VideoUrl !== '') {
+
+                    content += '路段视频：<a class="map-view-video c_red" data-url="' + item.VideoUrl + '" data-title="' + item.Name + '" style="cursor:pointer" onclick="MapSearch.showVideo(this);">路段视频</a>';
+                }
+
+                content += '</div>';
 
                 var infoWindow = new BMap.InfoWindow(content, infoOpts);  // 创建信息窗口对象   
 

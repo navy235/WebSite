@@ -50,6 +50,8 @@ namespace Maitonn.Web
         [MaxLength(50)]
         public string LightEnd { get; set; }
 
+        [MaxLength(250)]
+        public string VideoUrl { get; set; }
 
         public decimal Wdith { get; set; }
 

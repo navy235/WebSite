@@ -55,6 +55,7 @@ namespace Maitonn.Web
 
             od.TrafficAuto = model.TrafficAuto;
             od.TrafficPerson = model.TrafficPerson;
+            od.VideoUrl = model.VideoUrl;
             od.Unapprovedlog = string.Empty;
 
 
@@ -142,6 +143,7 @@ namespace Maitonn.Web
 
             od.TrafficAuto = model.TrafficAuto;
             od.TrafficPerson = model.TrafficPerson;
+            od.VideoUrl = model.VideoUrl;
             od.Unapprovedlog = string.Empty;
 
 
@@ -272,6 +274,7 @@ namespace Maitonn.Web
             odv.FormatCode = od.FormatCode;
             odv.Location = od.Location;
             odv.MediaImg = od.MediaImg.ImgUrls;
+            odv.VideoUrl = od.VideoUrl;
             odv.MeidaCode = od.MeidaCode;
             odv.Name = od.Name;
             odv.OwnerCode = od.OwnerCode;
@@ -303,6 +306,7 @@ namespace Maitonn.Web
             odv.Description = od.Description;
             //odv.EndTime = DateTime.Now;
             //odv.StartTime = DateTime.Now;
+            odv.VideoUrl = od.VideoUrl;
             odv.TrafficAuto = od.TrafficAuto;
             odv.TrafficPerson = od.TrafficPerson;
             odv.FormatCode = od.FormatCode;

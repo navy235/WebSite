@@ -2319,7 +2319,11 @@ a.top-head-changcity {
     background-position: -154px -356px;
   }
 
-.list-filter-price {
+
+
+
+
+.list-dropdown {
   background: url(images/productBg.png)no-repeat;
   background-position: -115px -179px;
   height: 30px;
@@ -2334,7 +2338,11 @@ a.top-head-changcity {
   z-index: 21;
 }
 
-.list-filter-price-text {
+  .list-dropdown.disabled {
+    color: gray;
+  }
+
+.list-dropdown-title {
   display: inline-block;
   height: 30px;
   text-align: center;
@@ -2343,7 +2351,7 @@ a.top-head-changcity {
   line-height: 30px;
 }
 
-.list-filter-price-list {
+.list-dropdown-list {
   position: absolute;
   display: none;
   background-color: #fff;
@@ -2357,29 +2365,32 @@ a.top-head-changcity {
   zoom: 1;
 }
 
-  .list-filter-price-list li {
+  .list-dropdown-list li {
     z-index: 33;
   }
 
-  .list-filter-price-list li {
+  .list-dropdown-list li {
     height: 28px;
     line-height: 28px;
     background-color: #fff;
     zoom: 1;
   }
 
-    .list-filter-price-list li a {
+    .list-dropdown-list li a {
       display: block;
       color: #333;
       padding: 0 0 0 10px;
       background-color: #fff;
     }
 
-      .list-filter-price-list li a:hover,
-      .list-filter-price-list li a.selected {
+      .list-dropdown-list li a:hover,
+      .list-dropdown-list li a.selected {
         background-color: #f60;
         color: #fff;
       }
+
+
+
 
 .list-filter-search {
   float: left;
@@ -2598,14 +2609,15 @@ a.top-head-changcity {
   .list-page-split span,
   .list-page-split em {
     display: inline-block;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     text-align: center;
     margin-right: 4px;
-    line-height: 28px;
+    line-height: 24px;
     border: #bcbcbc 1px solid;
     color: #333;
     vertical-align: middle;
+    cursor: pointer;
   }
 
     .list-page-split a:visited,
@@ -2648,8 +2660,7 @@ a.top-head-changcity {
     border-color: transparent #bcbcbc transparent transparent;
     margin: 0;
     left: 15px;
-    top: 9px;
-    top: 7px 9;
+    top: 6px;
   }
 
   .list-page-split .prev i,
@@ -2669,7 +2680,7 @@ a.top-head-changcity {
     border-color: transparent transparent transparent #bcbcbc;
     border-width: 6px 0 6px 6px;
     right: 13px;
-    top: 9px;
+    top: 6px;
   }
 
   .list-page-split a.next i {

@@ -279,6 +279,7 @@ namespace Maitonn.Web
                 Description = doc.Get(OutDoorIndexFields.Description),
                 FormatCateName = doc.Get(OutDoorIndexFields.FormatName),
                 PeriodCateName = doc.Get(OutDoorIndexFields.PeriodName),
+                VideoUrl = doc.Get(OutDoorIndexFields.VideoUrl)
             };
         }
 

@@ -13,6 +13,8 @@ namespace Maitonn.Web
 
         public string ImgUrl { get; set; }
 
+        public string VideoUrl { get; set; }
+
         public string MidImgUrl { get; set; }
 
         public string SmallImgUrl { get; set; }

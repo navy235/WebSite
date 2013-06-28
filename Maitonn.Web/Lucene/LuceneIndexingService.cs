@@ -115,7 +115,7 @@ namespace Maitonn.Web
                 {
                     City = x.Area.ID,
                     FormatCode = x.FormatCode,
-                    ImgUrl = x.MediaImg.FocusImgUrl,
+                    ImgUrl = x.MediaImg == null ? string.Empty : x.MediaImg.FocusImgUrl,
                     MediaCode = x.MeidaCode,
                     OwnerCode = x.OwnerCode,
                     PeriodCode = x.PeriodCode,
@@ -134,6 +134,7 @@ namespace Maitonn.Web
                     PMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
                     OwnerCateName = x.OwnerCate.CateName,
                     PeriodName = x.PeriodCate.CateName,
+                    VideoUrl = x.VideoUrl,
                     Price = x.Price,
                     Published = x.LastTime,
                     Title = x.Name,
@@ -190,7 +191,7 @@ namespace Maitonn.Web
 
                 item.City = x.Area.ID;
                 item.FormatCode = x.FormatCode;
-                item.ImgUrl = x.MediaImg.FocusImgUrl;
+                item.ImgUrl = x.MediaImg == null ? string.Empty : x.MediaImg.FocusImgUrl;
                 item.MediaCode = x.MeidaCode;
                 item.OwnerCode = x.OwnerCode;
                 item.PeriodCode = x.PeriodCode;
@@ -219,7 +220,7 @@ namespace Maitonn.Web
                 item.Lat = x.Lat;
                 item.Lng = x.Lng;
                 item.MemberCreditIndex = x.Member.Member_CreditIndex == null ? 0 : x.Member.Member_CreditIndex.TotalCreditIndex;
-
+                item.VideoUrl = x.VideoUrl;
                 item.MemberStatus = x.Member.Status;
                 item.MemberID = x.MemberID;
 
@@ -306,6 +307,8 @@ namespace Maitonn.Web
             field = new Field(OutDoorIndexFields.ImgUrl, OutDoor.ImgUrl, Field.Store.YES, Field.Index.NOT_ANALYZED);
             document.Add(field);
 
+            field = new Field(OutDoorIndexFields.VideoUrl, string.IsNullOrEmpty(OutDoor.VideoUrl) ? string.Empty : OutDoor.VideoUrl, Field.Store.YES, Field.Index.NOT_ANALYZED);
+            document.Add(field);
 
             document.Add(new NumericField(OutDoorIndexFields.Price, Field.Store.YES, true).SetDoubleValue(Convert.ToDouble(OutDoor.Price)));
             document.Add(new NumericField(OutDoorIndexFields.Width, Field.Store.YES, true).SetDoubleValue(Convert.ToDouble(OutDoor.Width)));

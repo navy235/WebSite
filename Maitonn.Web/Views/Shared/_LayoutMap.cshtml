@@ -3,17 +3,28 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-touch-fullscreen" content="YES">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="HandheldFriendly" content="true">
+    <meta http-equiv="x-rim-auto-match" content="none">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="keywords" content="@ViewBag.Keywords" />
     <meta name="description" content="@ViewBag.Descriptions" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-
+    @Styles.Render("~/Content/kendo/2012.3.1114/css")
     @Scripts.Render("~/bundles/modernizr")
     <!--This bundle was moved by the Kendo UI VS Extensions for compatibility reasons-->
     <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/cultures/kendo.culture.zh-CHS.min.js")"></script>
     <script src="~/Scripts/base.js"></script>
-
+    @Html.Partial("_CommonJavascript")
 </head>
 <body>
     @Html.Partial("_NoScript")

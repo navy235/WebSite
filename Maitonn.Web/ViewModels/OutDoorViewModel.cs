@@ -118,6 +118,9 @@ namespace Maitonn.Web
         public string Area { get; set; }
 
 
+
+
+
         [Required(ErrorMessage = "请输入日交通车流量")]
         [Display(Name = "日交通车流量", Order = 14)]
         [UIHint("IntegerExtension")]
@@ -131,6 +134,14 @@ namespace Maitonn.Web
         [AdditionalMetadata("IntegerExtension", "0,200")]
         [AdditionalMetadata("IntegerExtensionUnit", "万人/天")]
         public int TrafficPerson { get; set; }
+
+
+
+        [Display(Name = "媒体视频", Order = 16)]
+        [RegularExpression(@"^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$", ErrorMessage = "输入视频地址格式不正确.")]
+        [HintLabel("视频地址为优酷的flash播放地址，详细请看帮助")]
+        public string VideoUrl { get; set; }
+
 
         //[Required(ErrorMessage = "请输入开始时间")]
         //[Display(Name = "开始时间", Order = 16)]
