@@ -343,7 +343,7 @@ namespace Maitonn.Web
                 CookieHelper.SetProvinceCookie(province);
             }
             var provinceValue = EnumHelper.GetProvinceValue(province);
-            List<HttpLinkGroup> model = sourceService.GetLeftMenu(provinceValue);
+            List<HttpLinkGroup> model = GetLeftMenu(provinceValue);
             return View(model);
         }
 

@@ -9,7 +9,7 @@
     @Styles.Render("~/Content/login")
     @Scripts.Render("~/bundles/modernizr")
     <!--This bundle was moved by the Kendo UI VS Extensions for compatibility reasons-->
-    <script src="@Url.Content("~/Scripts/kendo/2012.3.1114/jquery.min.js")"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-1.9.1.min.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("topscripts", required: false)
 
@@ -21,7 +21,7 @@
             <div class="fr">
                 <a href="@Url.Action("index", "home")" target="_blank" class="rightlogo mt5 mr10" title="广知网">广知网首页</a>
                 <span class="cut fr mt5"></span>
-              
+
                 <div class="clearfix"></div>
                 <div class="mt10 c_gray fr">如遇注册问题请拨打 400-606-6969  提示拨号请依次选择“0”、 “7”。</div>
             </div>

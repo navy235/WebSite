@@ -26,6 +26,8 @@
           setTimeout(marquee, 10);
         }
       }
+
+      oMarquee.innerHTML += oMarquee.innerHTML;
       setTimeout(marquee, ps.intervel);
     }
   })

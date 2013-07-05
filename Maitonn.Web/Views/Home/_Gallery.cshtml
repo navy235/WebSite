@@ -48,12 +48,12 @@
             {
                 var gallery = galleryTabs[j];
                 var gallerylist = gallery.Items;
-                <div id="subType@(i + "_" + j)" class="main-gallery-tab clearfix">
+                <div id="subType@(i + "_" + j)" class="main-gallery-tab clearfix" style="display:@(j == 0 ? "block" : "none")">
 
                     @foreach (var item in gallerylist)
                     {
                         <div class="main-gallery-item">
-                            <p class="main-gallery-item-company"><a href="@Url.Action("index", "shop", new { id=item.MemberID })">@item.CompanyName</a></p>
+                            <p class="main-gallery-item-company"><a href="@Url.Action("index", "shop", new { id = item.MemberID })">@item.CompanyName</a></p>
                             <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="main-gallery-item-img">
                                 <img  src="@item.ImgUrl" alt="@item.Name" title="@item.Name">
                             </a>

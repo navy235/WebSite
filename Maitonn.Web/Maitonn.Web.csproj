@@ -233,6 +233,7 @@
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MapController.cs" />
+    <Compile Include="Controllers\NotSupportController.cs" />
     <Compile Include="Controllers\OutDoorController.cs" />
     <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
@@ -452,11 +453,13 @@
     <Content Include="Content\EmailTemplate\reg.htm" />
     <Content Include="Content\EmailTemplate\bizactiveemail.htm" />
     <Content Include="Content\Html\gztHelp.html" />
+    <Content Include="Content\iehack.css" />
     <Content Include="Content\images\activityFlags.png" />
     <Content Include="Content\images\actTags.png" />
     <Content Include="Content\images\bind-email.jpg" />
     <Content Include="Content\images\bind-mobile.jpg" />
     <Content Include="Content\images\btn.gif" />
+    <Content Include="Content\images\chrome.gif" />
     <Content Include="Content\images\companybtn.png" />
     <Content Include="Content\images\companysprites.png" />
     <Content Include="Content\images\company\2012313113027638.JPG" />
@@ -468,6 +471,7 @@
     <Content Include="Content\images\error_16.png" />
     <Content Include="Content\images\errPro.png" />
     <Content Include="Content\images\feature.png" />
+    <Content Include="Content\images\firefox.gif" />
     <Content Include="Content\images\footTxt.png" />
     <Content Include="Content\images\formloading.gif" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
@@ -482,6 +486,7 @@
     <Content Include="Content\images\icon\info.png" />
     <Content Include="Content\images\icon\success.png" />
     <Content Include="Content\images\icon\warning.png" />
+    <Content Include="Content\images\ie.gif" />
     <Content Include="Content\images\index-footer.gif" />
     <Content Include="Content\images\index-header.gif" />
     <Content Include="Content\images\indexIcon.png" />
@@ -500,6 +505,7 @@
     <Content Include="Content\images\mapmarker.png" />
     <Content Include="Content\images\min-loading.gif" />
     <Content Include="Content\images\mixr.gif" />
+    <Content Include="Content\images\opera.gif" />
     <Content Include="Content\images\personal.gif" />
     <Content Include="Content\images\print-nav.jpg" />
     <Content Include="Content\images\productBg.png" />
@@ -508,6 +514,7 @@
     <Content Include="Content\images\proInfoBg.jpg" />
     <Content Include="Content\images\proInfoLine.png" />
     <Content Include="Content\images\proRpt_x.png" />
+    <Content Include="Content\images\safari.gif" />
     <Content Include="Content\images\serviceImg.png" />
     <Content Include="Content\images\slider\1.jpg" />
     <Content Include="Content\images\slider\2.jpg" />
@@ -895,6 +902,7 @@
     <Content Include="Scripts\base.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
     <Content Include="Scripts\jquery.hoverlist-1.0.js" />
@@ -1591,6 +1599,7 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMap.cshtml" />
     <Content Include="Views\AjaxContent\MapSearchItem.cshtml" />
+    <Content Include="Views\NotSupport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

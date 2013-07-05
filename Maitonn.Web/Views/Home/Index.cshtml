@@ -27,6 +27,7 @@
                         periodcode = 0,
                         page = 1
                     })">户外资源</a></li>
+            <li><a href="@Url.Action("index", "map")">地图搜索</a></li>
         </ul>
     </div>
 </nav>
@@ -46,35 +47,18 @@
         <div class="main-hot-left">
             <div class="main-hot-left-title">
                 <div class="main-hot-scroll" id="suggest-marquee">
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    @Html.Partial("_Marquee", (List<HttpLinkItem>)ViewBag.TopCompany)
                 </div>
             </div>
         </div>
+
         @Html.Partial("_ImgBlock", (List<HttpLinkItem>)ViewBag.TopCompany)
     </div>
     <div class="main-hot clearfix">
         <div class="main-hot-left">
-            <div class="main-hot-left-title">
+            <div class="main-hot-left-title main-hot-company">
                 <div class="main-hot-scroll" id="hot-marquee">
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
-                    <p class="marquee-item">阿萨德发射基地发射开绿灯飞机近入公司！</p>
+                    @Html.Partial("_Marquee", (List<HttpLinkItem>)ViewBag.GoodCompany)
                 </div>
             </div>
         </div>

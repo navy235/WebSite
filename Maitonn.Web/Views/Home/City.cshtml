@@ -33,7 +33,7 @@
                 
             }
 
-            <input class="search-text" id="search-text" type="text" value="三面翻">
+            <input class="search-text   search-text-gray" id="search-text" type="text" value="请输入搜索的关键字">
             <input class="search-button" id="search-button" type="button" value="">
             <ul class="top-head-suggest" style="display: none;"></ul>
             <div class="top-head-hot-keys">
@@ -48,13 +48,51 @@
         <script type="text/javascript">
             $(function() {
                 $("#search-button").click(function() {
-                    window.location.href = "@baseUrl?query=" + encodeURIComponent($("#search-text").val());
-                });
-                $('#search-text').keydown(function(e) {
-                    if (e.keyCode == 13) {
-                        $("#search-button").click();
+                    var self = this;
+                    var keywordInput = $('#search-text');
+                    var keywords = keywordInput.val();
+                    if (keywords === '') {
+                        keywordInput.val('请输入搜索的具体位置')
+                        keywordInput.addClass('search-text-gray')
+                        return false;
+                    } else if (keywords === '请输入搜索的具体位置') {
+                        keywordInput.focus();
+                        return false;
+                    } else {
+                        window.location.href = "@baseUrl?query=" + encodeURIComponent($("#search-text").val());
                     }
                 });
+                $('#search-text').keydown(function(e) {
+                    var target = $(e.currentTarget);
+                    if (target.val() === '请输入搜索的关键字') {
+                        target.val('');
+                        target.removeClass('search-text-gray')
+                    }
+                    if (e.keyCode && e.keyCode === 13) {
+                        $("#search-button").click();
+                        return false;
+                    }
+                });
+
+                $('#search-text').focusin(function(e) {
+                    var target = $(e.currentTarget);
+                    if (target.val() === '请输入搜索的关键字') {
+                        target.val('');
+                        target.removeClass('search-text-gray')
+                    }
+                    if (e.keyCode && e.keyCode === 13) {
+                        $("#search-button").click();
+                        return false;
+                    }
+                });
+
+                $('#search-text').focusout(function(e) {
+                    var target = $(e.currentTarget);
+                    if (target.val() === '') {
+                        target.val('请输入搜索的关键字')
+                        target.addClass('search-text-gray')
+                    }
+                })
             })
         </script>
     </div>
