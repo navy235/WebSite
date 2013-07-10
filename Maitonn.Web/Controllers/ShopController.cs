@@ -11,6 +11,8 @@ using PagedList;
 using Maitonn.Core;
 namespace Maitonn.Web
 {
+
+
     public class ShopController : Controller
     {
 
@@ -25,7 +27,7 @@ namespace Maitonn.Web
         private ICompanyFundService companyFundService;
         private ICompanyScaleService companyScaleService;
         private IPeriodCateService periodCateService;
-        private IOwnerCateService ownerCateService; 
+        private IOwnerCateService ownerCateService;
         private IAuctionCalendarService auctionCalendarService;
         public ShopController(
             IMemberService _memberService
@@ -59,7 +61,7 @@ namespace Maitonn.Web
             auctionCalendarService = _auctionCalendarService;
         }
 
-
+        [GenerateStatic]
         public ActionResult Index(int id, int page = 1)
         {
 
@@ -82,6 +84,7 @@ namespace Maitonn.Web
             return View(model);
         }
 
+        [GenerateStatic]
         public ActionResult Source(int id, int page = 1, int c = 0, int cc = 0)
         {
             CompanyShopSourceViewModel model = new CompanyShopSourceViewModel();
@@ -113,7 +116,7 @@ namespace Maitonn.Web
 
             return View(model);
         }
-
+        [GenerateStatic]
         public ActionResult Intro(int id)
         {
             CompanyShopIntroViewModel model = new CompanyShopIntroViewModel();
@@ -132,15 +135,15 @@ namespace Maitonn.Web
             model.CompanyCategory = GetCompanyCategory(id);
             model.ScaleName = company.CompanyScale.CateName;
             model.BussinessName = company.CompanyBussiness.CateName;
-            model.FundName=company.CompanyFund.CateName;
-            model.City=company.Area.CateName;
+            model.FundName = company.CompanyFund.CateName;
+            model.City = company.Area.CateName;
             model.Province = company.Area.PCategory.CateName;
-            
+
 
             return View(model);
         }
 
-
+        [GenerateStatic]
         public ActionResult Notice(int id, int page = 1)
         {
             CompanyShopNoticeViewModel model = new CompanyShopNoticeViewModel();
@@ -160,7 +163,7 @@ namespace Maitonn.Web
             model.SourceCount = model.CompanyNotice.TotalItemCount;
             return View(model);
         }
-
+        [GenerateStatic]
         public ActionResult ViewNotice(int id, int noticeId)
         {
             CompanyShopViewNoticeViewModel model = new CompanyShopViewNoticeViewModel();
@@ -193,7 +196,7 @@ namespace Maitonn.Web
             return View(model);
         }
 
-
+        [GenerateStatic]
         public ActionResult Contact(int id)
         {
 
@@ -225,7 +228,7 @@ namespace Maitonn.Web
             return View(model);
 
         }
-
+        [GenerateStatic]
         public ActionResult Credentials(int id, int page = 1)
         {
             CompanyShopCredentialsViewModel model = new CompanyShopCredentialsViewModel();
@@ -348,7 +351,9 @@ namespace Maitonn.Web
 
         private IPagedList<CompanyProductViewModel> GetCompanyProduct(int MemberID, int page)
         {
-            var query = outDoorService.GetOutDoorByMember(MemberID).Select(x => new CompanyProductViewModel()
+            var stateValue = (int)OutDoorStatus.ShowOnline;
+
+            var query = outDoorService.GetOutDoorByMember(MemberID).Where(x => x.Status >= stateValue).Select(x => new CompanyProductViewModel()
               {
                   ID = x.MediaID,
                   Description = x.Description,
@@ -357,7 +362,15 @@ namespace Maitonn.Web
                   ParentMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
                   MediaCateCode = x.OutDoorMediaCate.ID,
                   MediaCateName = x.OutDoorMediaCate.CateName,
+                  Province = x.Area.PCategory.ID,
+                  ProvinceName = x.Area.PCategory.CateName,
+                  City = x.Area.ID,
+                  CityName = x.Area.CateName,
+                  Format = x.FormatCate.ID,
+                  FormatName = x.FormatCate.CateName,
                   Name = x.Name,
+                  PeriodCateName = x.PeriodCate.CateName,
+                  Period = x.PeriodCate.ID,
                   OwnerCateName = x.OwnerCate.CateName,
                   Price = x.Price,
                   Addtime = x.LastTime
@@ -377,7 +390,9 @@ namespace Maitonn.Web
         private IPagedList<CompanyProductViewModel> GetCompanyProduct(int MemberID, int page, int c, int cc)
         {
 
-            var query = outDoorService.GetOutDoorByMember(MemberID);
+            var stateValue = (int)OutDoorStatus.ShowOnline;
+
+            var query = outDoorService.GetOutDoorByMember(MemberID).Where(x => x.Status >= stateValue);
 
             if (cc != 0)
             {
@@ -399,10 +414,19 @@ namespace Maitonn.Web
                  ParentMediaCateName = x.OutDoorMediaCate.PCategory.CateName,
                  MediaCateCode = x.OutDoorMediaCate.ID,
                  MediaCateName = x.OutDoorMediaCate.CateName,
+                 Province = x.Area.PCategory.ID,
+                 ProvinceName = x.Area.PCategory.CateName,
+                 City = x.Area.ID,
+                 CityName = x.Area.CateName,
+                 Format = x.FormatCate.ID,
+                 FormatName = x.FormatCate.CateName,
                  Name = x.Name,
                  OwnerCateName = x.OwnerCate.CateName,
+                 PeriodCateName = x.PeriodCate.CateName,
+                 Period = x.PeriodCate.ID,
                  Price = x.Price,
                  Addtime = x.LastTime
+
              }).OrderByDescending(x => x.Addtime);
 
             const int pageSize = 10;

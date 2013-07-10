@@ -17,6 +17,7 @@ using System.Threading;
 
 namespace Maitonn.Web
 {
+    [SkipGzipCompressJsAndReplaceWhiteSpace]
     public class AjaxContentController : Controller
     {
         private IMemberService memberService;
@@ -70,6 +71,9 @@ namespace Maitonn.Web
             searchService = _searchService;
         }
 
+
+
+        [GenerateStatic]
         public ActionResult GetrelateMedia(int province = 0, int city = 0)
         {
 
@@ -96,7 +100,7 @@ namespace Maitonn.Web
 
             return PartialView("MediaItem", model);
         }
-
+        [GenerateStatic]
         public ActionResult GetSuggestMedia(int province = 0)
         {
 
@@ -122,7 +126,7 @@ namespace Maitonn.Web
 
             return PartialView("MediaItem", model);
         }
-
+        [GenerateStatic]
         public ActionResult GetMemberMedia(int id = 0)
         {
             var model = outDoorService.GetList(OutDoorStatus.ShowOnline, includeUpLevel: true).Where(x => x.MemberID == id)
@@ -140,7 +144,7 @@ namespace Maitonn.Web
 
             return PartialView("MediaItem", model);
         }
-
+        [GenerateStatic]
         public ActionResult GetSuggestCompany(string province = "quanguo")
         {
             var provinceValue = EnumHelper.GetProvinceValue(province);
@@ -164,7 +168,7 @@ namespace Maitonn.Web
 
             return PartialView("CompanyItem", model);
         }
-
+        [GenerateStatic]
         public ActionResult GetGoodCompany(string province = "quanguo")
         {
             var provinceValue = EnumHelper.GetProvinceValue(province);

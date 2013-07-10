@@ -55,43 +55,50 @@
                 </div>
                 <div class="title-right">共<a href="@Url.Action("source", new { id = Model.MemberID })" target="_blank"> <strong class="c_red">@Model.SourceCount</strong> </a>个</div>
             </div>
-            <div class="source-list">
+            <div class="list-products clearfix">
+                @{
+                    foreach (var item in Model.CompanyProduct)
+                    {
+                    <div class="products-item">
+                        <ul>
+                            <li class="products-img">
+                                <img alt="@item.Name" title="@item.Name" src="@item.ImgUrl" width="80" height="80" >
+                            </li>
+                            <li class="products-details">
+                                <h3><a target="_blank" href="@Url.Action("index", "show", new { id = item.ID })" title="@item.Name" >
+                                    <strong>@item.Name</strong>
+                                </a>
+                                </h3>
+                                <div class="products-city">[@item.ParentMediaCateName - @item.MediaCateName]</div>
+                                <div class="products-city">[@(item.FormatName)]</div>
 
-                @foreach (var item in Model.CompanyProduct)
-                { 
-                    <div class="source-item clearfix">
-                        <div class="item-img">
-                            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank">
-                                <img src="@item.ImgUrl" title="@item.Name"></a>
-                        </div>
-                        <div class="item-title">
-                            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank" class="item-name">
-                                <span>@item.Name</span>
-                            </a>
+                                <div class="clearfix"></div>
+                                <p class="products-desc">@item.Description</p>
+                                <div class="products-info clearfix">
 
-                            <span class="item-time">@item.Addtime.ToString("yyyy-MM-dd")</span>
-                        </div>
-                        <div class="item-desc">
-                            @(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)
-                            [<a href="@Url.Action("index", "show", new { id = item.ID })" class="c_red" target="_blank">详细</a>]<br>
-                        </div>
-                        <div class="item-category">
-                            <a href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode })" target="_blank" class="category-main"><span>@item.ParentMediaCateName</span></a>
-                            <a href="@Url.Action("index", "list", new { province = CookieHelper.Province, mediacode = item.ParentMediaCateCode, childmediacode = item.MediaCateCode })" target="_blank" class="category-child">@item.MediaCateName</a>　@item.OwnerCateName
-                            价格：<span class="z_fzk">@item.Price 万元/年</span>
-                        </div>
+                                    <div class="products-city">[@item.ProvinceName - @item.CityName]</div>
+
+                                </div>
+                            </li>
+                            <li class="products-price">
+                                <span class="c_red"><b>¥@item.Price 万元/年</b></span><br>
+                                <span><b>最短投放：@(item.PeriodCateName)</b></span><br>
+                            </li>
+                        </ul>
                     </div>
+    
+                    }
                 }
-                @Html.MaitonnPage(new PagingInfo()
+
+            </div>
+            @Html.MaitonnPage(new PagingInfo()
            {
                CurrentPage = Model.CompanyProduct.PageNumber,
                TotalItems = Model.CompanyProduct.TotalItemCount,
                ItemsPerPage = Model.CompanyProduct.PageSize
            })
-
-                @*  @Html.PagedListPager(Model.CompanyProduct, page => Url.Action("source", new { page = page, c = ViewBag.Category, cc = ViewBag.ChildCategory }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
-            </div>
         </div>
+
     </div>
     <div class="company-right">
         <div class="company-category company-box">
@@ -116,35 +123,14 @@
             </div>
         </div>
         <span class="separate-line"></span>
-        <div class="company-box">
+        <div class="gray-box company-box">
             <div class="box-title">
-                <h2>其他相关资源</h2>
+                <h2>该公司其他户外信息</h2>
             </div>
-            <div class="box-content">
-                <ul>
-                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
-                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
-                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
-                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
-                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
-                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
-                </ul>
-            </div>
-        </div>
-        <span class="separate-line"></span>
-        <div class="company-box">
-            <div class="box-title">
-                <h2>浏览该资源的还浏览过</h2>
-            </div>
-            <div class="box-content">
-                <ul>
-                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
-                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
-                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
-                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
-                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
-                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
-                </ul>
+            <div class="gray-list ajax-content" data-url="@Url.Action("getMemberMedia", "ajaxcontent", new { id = Model.MemberID })">
+                <div class="gary-loadding">
+                    <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                </div>
             </div>
         </div>
     </div>

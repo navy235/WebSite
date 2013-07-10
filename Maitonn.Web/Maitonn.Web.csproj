@@ -1357,6 +1357,7 @@
     <Content Include="Scripts\smooth\smooth.js" />
     <Content Include="Scripts\smooth\smooth.menu.js" />
     <Content Include="Scripts\smooth\smooth.table.js" />
+    <Content Include="Scripts\support.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1600,6 +1601,9 @@
     <Content Include="Views\Shared\_LayoutMap.cshtml" />
     <Content Include="Views\AjaxContent\MapSearchItem.cshtml" />
     <Content Include="Views\NotSupport\Index.cshtml" />
+    <Content Include="Views\Shared\_CommonSupport.cshtml" />
+    <Content Include="Views\Home\_Marquee.cshtml" />
+    <Content Include="Views\Shared\_CommonFooterJavascript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

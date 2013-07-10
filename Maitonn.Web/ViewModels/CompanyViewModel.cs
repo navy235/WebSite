@@ -640,6 +640,22 @@ namespace Maitonn.Web
 
         public string Url { get; set; }
 
+        public string ProvinceName { get; set; }
+
+        public int Province { get; set; }
+
+        public string CityName { get; set; }
+
+        public int City { get; set; }
+
+        public string FormatName { get; set; }
+
+        public int Format { get; set; }
+
+        public string PeriodCateName { get; set; }
+
+        public int Period { get; set; }
+
         public string ParentMediaCateName { get; set; }
 
         public int ParentMediaCateCode { get; set; }

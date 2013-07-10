@@ -39,7 +39,7 @@ namespace Maitonn.Core
                     response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
                 }
             }
-            filterContext.HttpContext.Response.Filter = new BundleAndMinifyResponseFilter(filterContext.HttpContext.Response.Filter);
+            //filterContext.HttpContext.Response.Filter = new BundleAndMinifyResponseFilter(filterContext.HttpContext.Response.Filter);
             filterContext.HttpContext.Response.Filter = new StringFilterStream(filterContext.HttpContext.Response.Filter);
         }
         private class StringFilterStream : Stream

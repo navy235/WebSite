@@ -339,6 +339,7 @@ namespace Maitonn.Web
               .Include(x => x.OutDoorMediaCate.PCategory)
               .Include(x => x.OwnerCate)
               .Include(x => x.PeriodCate)
+              .Include(x => x.FormatCate)
               .Where(x => x.MemberID == MemberID);
             //.Include(x => x.CredentialsImg)
             //.Include(x => x.AreaAtt)

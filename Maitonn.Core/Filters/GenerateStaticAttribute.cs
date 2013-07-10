@@ -13,7 +13,7 @@ namespace Maitonn.Core
 {
     public class GenerateStaticAttribute : ActionFilterAttribute
     {
-        public GenerateStaticAttribute(int duration = 60, bool childActionNotByParams = false, bool isLoginNotCache = true)
+        public GenerateStaticAttribute(int duration = 60, bool childActionNotByParams = false, bool isLoginNotCache = false)
         {
             Duration = duration;
             ChildActionNotByParams = childActionNotByParams;
@@ -58,7 +58,7 @@ namespace Maitonn.Core
         private bool isOutDuration()
         {
             var lastTime = File.GetLastWriteTimeUtc(_staticFileName);
-            return DateTime.UtcNow.CompareTo(lastTime.AddSeconds(Duration)) > 0;
+            return DateTime.UtcNow.CompareTo(lastTime.AddMinutes(Duration)) > 0;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -118,12 +118,24 @@ namespace Maitonn.Core
             {
                 Directory.CreateDirectory(fileDirectory);
             }
-            keyBuilder.Append(fileDirectory);
+
+            var controller = filterContext.RouteData.Values["controller"].ToString();
+            var action = filterContext.RouteData.Values["action"].ToString();
+
+            var dirPath = Path.Combine(fileDirectory, controller, action);
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            keyBuilder.Append(dirPath);
+
+            keyBuilder.Append("\\");
 
             if (ChildActionNotByParams && filterContext.IsChildAction)
             {
-                var controller = filterContext.RouteData.Values["controller"].ToString();
-                var action = filterContext.RouteData.Values["action"].ToString();
+
                 keyBuilder.AppendFormat("{0}_{1}_", action, controller);
             }
             else

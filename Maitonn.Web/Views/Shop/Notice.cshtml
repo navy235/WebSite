@@ -113,39 +113,17 @@
                         </ul>
                     </div>
                 }
-
             </div>
         </div>
         <span class="separate-line"></span>
-        <div class="company-box">
+        <div class="gray-box company-box">
             <div class="box-title">
-                <h2>其他相关资源</h2>
+                <h2>该公司其他户外信息</h2>
             </div>
-            <div class="box-content">
-                <ul>
-                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
-                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
-                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
-                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
-                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
-                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
-                </ul>
-            </div>
-        </div>
-        <span class="separate-line"></span>
-        <div class="company-box">
-            <div class="box-title">
-                <h2>浏览该资源的还浏览过</h2>
-            </div>
-            <div class="box-content">
-                <ul>
-                    <li><a href="#">聊城东阿县公交车车体广告</a></li>
-                    <li><a href="#">聊城市东阿县商业街路口三面翻广告</a></li>
-                    <li><a href="#">聊城市东阿县县社楼顶户外大牌</a></li>
-                    <li><a href="#">聊城东阿县前进街曙光街楼顶三面翻</a></li>
-                    <li><a href="#">聊城市城区高端小区道闸广告</a></li>
-                    <li><a href="#">聊城市东阿县福寿大街路灯杆灯箱道</a></li>
-                </ul>
+            <div class="gray-list ajax-content" data-url="@Url.Action("getMemberMedia", "ajaxcontent", new { id = Model.MemberID })">
+                <div class="gary-loadding">
+                    <img src="@Url.Content("~/Content/images/min-loading.gif")" />
+                </div>
             </div>
         </div>
     </div>

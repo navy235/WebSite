@@ -5,7 +5,7 @@
     {
         var item = Model[i];
         <li class="clearfix @((i == Model.Count - 1) ? "last" : "")">
-            <a href="@Url.Action("index", "show", new { id = item.ID })" target="_blank"  >
+            <a href="@Url.Action("index", "shop", new { id = item.ID })" target="_blank"  >
                 <img src="@item.ImgUrl" alt="@item.Name"></a>
 
             <p class="item-desc">

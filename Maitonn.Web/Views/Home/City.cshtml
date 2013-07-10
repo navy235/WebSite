@@ -52,10 +52,10 @@
                     var keywordInput = $('#search-text');
                     var keywords = keywordInput.val();
                     if (keywords === '') {
-                        keywordInput.val('请输入搜索的具体位置')
+                        keywordInput.val('请输入搜索的关键字')
                         keywordInput.addClass('search-text-gray')
                         return false;
-                    } else if (keywords === '请输入搜索的具体位置') {
+                    } else if (keywords === '请输入搜索的关键字') {
                         keywordInput.focus();
                         return false;
                     } else {

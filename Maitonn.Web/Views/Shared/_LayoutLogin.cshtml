@@ -1,4 +1,4 @@
-ï»¿@using StackExchange.Profiling
+@using StackExchange.Profiling
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,18 +12,18 @@
     <script type="text/javascript" src="~/Scripts/jquery-1.9.1.min.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("topscripts", required: false)
-
+        @Html.Partial("_CommonSupport")
 </head>
 <body>
     <div class="container">
         <div class="header" class="w800">
-            <a href="@Url.Action("index", "home")" target="_blank" class="leftlogo" title="å¹¿çŸ¥ç½‘"><em>å¹¿çŸ¥ç½‘</em></a>
+            <a href="@Url.Action("index", "home")" target="_blank" class="leftlogo" title="¹ãÖªÍø"><em>¹ãÖªÍø</em></a>
             <div class="fr">
-                <a href="@Url.Action("index", "home")" target="_blank" class="rightlogo mt5 mr10" title="å¹¿çŸ¥ç½‘">å¹¿çŸ¥ç½‘é¦–é¡µ</a>
+                <a href="@Url.Action("index", "home")" target="_blank" class="rightlogo mt5 mr10" title="¹ãÖªÍø">¹ãÖªÍøÊ×Ò³</a>
                 <span class="cut fr mt5"></span>
 
                 <div class="clearfix"></div>
-                <div class="mt10 c_gray fr">å¦‚é‡æ³¨å†Œé—®é¢˜è¯·æ‹¨æ‰“ 400-606-6969  æç¤ºæ‹¨å·è¯·ä¾æ¬¡é€‰æ‹©â€œ0â€ã€ â€œ7â€ã€‚</div>
+                <div class="mt10 c_gray fr">ÈçÓö×¢²áÎÊÌâÇë²¦´ò 400-606-6969  ÌáÊ¾²¦ºÅÇëÒÀ´ÎÑ¡Ôñ¡°0¡±¡¢ ¡°7¡±¡£</div>
             </div>
         </div>
         <div class="clearfix">
@@ -35,9 +35,9 @@
         </div>
     </div>
     <div class="footer">
-        <a target="_blank" href="#">å¹¿çŸ¥ç½‘</a>â”Š<a target="_blank" href="#">ç½‘ç«™å¸®åŠ©</a>â”Š<a target="_blank" href="#">ä¼šå‘˜æ³¨å†Œ</a>â”Š<a target="_blank" href="#">ç½‘ç«™åœ°å›¾</a>â”Š<a target="_blank" href="#">è”ç³»æˆ‘ä»¬</a>â”Š<a target="_blank" href="#">å¹¿å‘Šç½‘å€å¯¼èˆª</a>â”Š<a target="_blank" href="#">ç½‘ç«™å¾‹å¸ˆ</a>â”Š<a target="_blank" href="#">æ„è§åé¦ˆ</a><br>
+        <a target="_blank" href="#">¹ãÖªÍø</a>©®<a target="_blank" href="#">ÍøÕ¾°ïÖú</a>©®<a target="_blank" href="#">»áÔ±×¢²á</a>©®<a target="_blank" href="#">ÍøÕ¾µØÍ¼</a>©®<a target="_blank" href="#">ÁªÏµÎÒÃÇ</a>©®<a target="_blank" href="#">¹ã¸æÍøÖ·µ¼º½</a>©®<a target="_blank" href="#">ÍøÕ¾ÂÉÊ¦</a>©®<a target="_blank" href="#">Òâ¼û·´À¡</a><br>
         Copyright @@ 1996-2012 Dotaeye Corporation, All Rights Reserved<br>
-        å¹¿çŸ¥ç½‘æŠ€æœ¯æ”¯æŒå®¢æœæœåŠ¡çƒ­çº¿ï¼š400-606-6969
+        ¹ãÖªÍø¼¼ÊõÖ§³Ö¿Í·ş·şÎñÈÈÏß£º400-606-6969
     </div>
     @RenderSection("scripts", required: false)
 

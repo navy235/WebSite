@@ -1,0 +1,10 @@
+﻿<script type="text/javascript">
+    $(function() {
+        $(".ajax-content").each(function(index, item) {
+            var url = $(item).data("url");
+            if (url && url.length > 0) {
+                $(item).load(url);
+            }
+        });
+    })
+</script>

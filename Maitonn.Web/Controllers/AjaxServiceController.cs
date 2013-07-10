@@ -10,6 +10,8 @@ using System.Drawing.Drawing2D;
 using Maitonn.Core;
 namespace Maitonn.Web
 {
+
+    [SkipGzipCompressJsAndReplaceWhiteSpace]
     public class AjaxServiceController : Controller
     {
 
@@ -69,6 +71,22 @@ namespace Maitonn.Web
             outDoorService = _outDoorService;
             scheme_MediaService = _scheme_MediaService;
         }
+
+        #region login
+        [AjaxOnly]
+        public ActionResult isLogin()
+        {
+            return Json(
+                new
+                {
+                    Login = CookieHelper.IsLogin,
+                    NickName = CookieHelper.NickName
+                }, JsonRequestBehavior.AllowGet
+              );
+        }
+        #endregion
+
+
 
         #region  Control
 

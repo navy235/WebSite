@@ -115,6 +115,15 @@ a.company-bread-home {
   overflow: hidden;
 }
 
+  .company-box.gray-box {
+    border: none;
+  }
+
+    .company-box.gray-box .gray-list {
+      padding: 0;
+    }
+
+
   .company-box .box-title {
     height: 31px;
     line-height: 31px;
