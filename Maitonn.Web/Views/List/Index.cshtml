@@ -37,7 +37,7 @@
 
                         <div class="list-filter-search">
                             <span class="list-filter-search-text">关键字：</span>
-                            <input type="text" id="query" name="query" class="list-filter-search-query" value="@ViewBag.Result.Querywords" />
+                            <input type="text" id="query" name="query" class="list-filter-search-query" value="@ViewBag.Result.Querywords" maxlength="20" />
                             <button type="button" class="btn btn-warning" id="querybtn">
                                 <i class="icon-search icon-white mr5"></i>搜索</button>
                         </div>
@@ -49,6 +49,10 @@
                                 $('#query').keydown(function(e) {
                                     if (e.keyCode == 13) {
                                         $("#querybtn").click();
+                                    } else {
+                                        if ($(this).val().length > 20) {
+                                            return false;
+                                        }
                                     }
                                 });
                                 $('.list-dropdown').hover(function() {

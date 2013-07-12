@@ -2,17 +2,53 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Lucene测试</h2>
+
+<script type="text/javascript">
+    var b = 123;
+
+    var test = {
+        self: this,
+        name: 'test',
+        change: function() {
+            var sorry = 'sorry,你好三个人';
+            alert(this.name + sorry);
+        }
+    };
+    $(function() {
+        $('#alert').html('hello compressed' + b)
+        if (b == 123) {
+            $('#alert').click($.proxy(test.change, test));
+        }
+    })
+</script>
+
+<style type="text/css">
+    #alert {
+        border: 1px solid #852525;
+        background: #2b94c2;
+        padding: 10px;
+        color: #fff;
+    }
+</style>
+
+<h2>Index</h2>
 
 
-@Html.ActionLink("建立索引", "createindex")<br />
+<p id="alert"></p>
 
-@Html.ActionLink("指定更新索引", "updateindex")<br />
+<script type="text/javascript">
+    var c = 123;
+    $(function() {
+        $('#alert1').html('hello compressed' + c)
+    })
+</script>
 
-@Html.ActionLink("测试搜索", "searchindex")<br />
-
-@Html.ActionLink("添加荣誉值", "addCreditIndex")<br />
-
-
-
-
+<p id="alert1"></p>
+<style type="text/css">
+    #alert1 {
+        border: 1px solid #852525;
+        background: #2b94c2;
+        padding: 10px;
+        color: #fff;
+    }
+</style>

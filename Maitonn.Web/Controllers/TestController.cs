@@ -42,6 +42,12 @@ namespace Maitonn.Web
             member_CreditIndexService = _member_CreditIndexService;
         }
 
+        //[Gzip]
+        [MinFify]
+        [ClearWhiteSpace]
+
+
+        //[GenerateStatic]
         public ActionResult Index()
         {
             return View();

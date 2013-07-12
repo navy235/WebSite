@@ -10,14 +10,10 @@ using BundlingAndMinifyingInlineCssJs.ResponseFilters;
 
 namespace Maitonn.Core
 {
-    public class GzipCompressJsAndReplaceWhiteSpaceAttribute : ActionFilterAttribute
+    public class GzipAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(SkipGzipCompressJsAndReplaceWhiteSpaceAttribute), false).Any())
-            {
-                return;
-            }
 
             HttpRequestBase request = filterContext.HttpContext.Request;
             HttpResponseBase response = filterContext.HttpContext.Response;
@@ -39,8 +35,7 @@ namespace Maitonn.Core
                     response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
                 }
             }
-            response.Filter = new MinifyResponseFilter(filterContext.HttpContext.Response.Filter);
-            response.Filter = new StringFilterStream(filterContext.HttpContext.Response.Filter);
         }
+
     }
 }

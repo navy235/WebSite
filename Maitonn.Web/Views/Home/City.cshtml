@@ -33,7 +33,7 @@
                 
             }
 
-            <input class="search-text   search-text-gray" id="search-text" type="text" value="请输入搜索的关键字">
+            <input class="search-text   search-text-gray" id="search-text" type="text" value="请输入搜索的关键字" maxlength="20">
             <input class="search-button" id="search-button" type="button" value="">
             <ul class="top-head-suggest" style="display: none;"></ul>
             <div class="top-head-hot-keys">
@@ -71,6 +71,10 @@
                     if (e.keyCode && e.keyCode === 13) {
                         $("#search-button").click();
                         return false;
+                    } else {
+                        if ($(target).val().length > 20) {
+                            return false;
+                        }
                     }
                 });
 

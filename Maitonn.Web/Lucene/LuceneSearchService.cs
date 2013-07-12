@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Globalization;
+using PanGu;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
@@ -12,6 +13,7 @@ using Lucene.Net.Search.Function;
 using Lucene.Net.China;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Tokenattributes;
+using Lucene.Net.Analysis.PanGu;
 using Maitonn.Core;
 using PagedList;
 using PagedList.Mvc;
@@ -292,7 +294,7 @@ namespace Maitonn.Web
 
             var fields = new[] { "Title", "Description", "CompanyName", "AreaAtt", "MediaCateName", "CityName", "ProvinceName", "PMediaCateName", "FormatName", "PeriodName", "OwnerCateName" };
 
-            var analyzer = new ChineseAnalyzer();
+            var analyzer = new PanGuAnalyzer();
             //var analyzer = new StandardAnalyzer(LuceneCommon.LuceneVersion);
             var queryParser = new MultiFieldQueryParser(LuceneCommon.LuceneVersion, fields, analyzer);
 
@@ -365,7 +367,7 @@ namespace Maitonn.Web
                     OutDoorIndexFields.PeriodName,
                     OutDoorIndexFields.OwnerCateName
                 };
-                var analyzer = new ChineseAnalyzer();
+                var analyzer = new PanGuAnalyzer();
                 //var analyzer = new StandardAnalyzer(LuceneCommon.LuceneVersion);
                 var queryParser = new MultiFieldQueryParser(LuceneCommon.LuceneVersion, fields, analyzer);
 
@@ -511,7 +513,7 @@ namespace Maitonn.Web
         private static IEnumerable<string> GetSearchTerms(string searchTerm)
         {
             List<string> result = new List<string>();
-            var analyzer = new ChineseAnalyzer();
+            var analyzer = new PanGuAnalyzer();
             StringReader sr = new StringReader(searchTerm);
             TokenStream stream = analyzer.TokenStream(null, sr);
             bool hasnext = stream.IncrementToken();

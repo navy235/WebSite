@@ -8,6 +8,7 @@ using System.Linq;
 using System.Configuration;
 using System.Threading.Tasks;
 using WebBackgrounder;
+using PanGu;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -15,9 +16,11 @@ using Lucene.Net.Store;
 using Lucene.Net.China;
 using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
+using Lucene.Net.Analysis.PanGu;
 using Ninject;
 using Directory = System.IO.Directory;
 using Maitonn.Core;
+
 
 namespace Maitonn.Web
 {
@@ -361,7 +364,8 @@ namespace Maitonn.Web
                 Directory.CreateDirectory(LuceneCommon.IndexDirectory);
             }
 
-            var analyzer = new ChineseAnalyzer();
+            //var analyzer = new ChineseAnalyzer();
+            var analyzer = new PanGuAnalyzer();
             var directoryInfo = new DirectoryInfo(LuceneCommon.IndexDirectory);
             var directory = new SimpleFSDirectory(directoryInfo);
             _indexWriter = new IndexWriter(directory, analyzer, create: creatingIndex, mfl: IndexWriter.MaxFieldLength.UNLIMITED);

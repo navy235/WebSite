@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Lucene.Net.Analysis.PanGu</id>
+    <version>2.4.1</version>
+    <title>盘古搜索</title>
+    <authors>jimliu</authors>
+    <owners>jimliu</owners>
+    <projectUrl>https://github.com/JimLiu/Lucene.Net.Analysis.PanGu</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>盘古分词(http://pangusegment.codeplex.com/ )，由于老版本不支持最新Lucene.Net 3.0.3，对其进行了升级，可以支持最新的Lucene.Net 3.0.3。可以直接NuGet安装。</description>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <dependencies>
+      <dependency id="Lucene.Net" version="3.0.3" />
+      <dependency id="SharpZipLib" version="0.86.0" />
+    </dependencies>
+  </metadata>
+</package>
