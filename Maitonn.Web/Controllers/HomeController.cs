@@ -65,7 +65,6 @@ namespace Maitonn.Web
         }
 
         [MinFify]
-        [ClearWhiteSpace]
         public ActionResult Index(string province = "quanguo")
         {
 
@@ -177,8 +176,6 @@ namespace Maitonn.Web
 
 
         [ChildActionOnly]
-        [MinFify]
-        [ClearWhiteSpace]
         public ActionResult City(string province = "quanguo")
         {
 

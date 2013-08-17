@@ -14,6 +14,8 @@ namespace Maitonn.Core
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (filterContext.IsChildAction)
+                return;
             filterContext.HttpContext.Response.Filter = new MinifyResponseFilter(filterContext.HttpContext.Response.Filter);
         }
 
