@@ -52,6 +52,10 @@
     <Reference Include="Kendo.Mvc">
       <HintPath>Binaries\Kendo.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
@@ -459,7 +463,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\EmailTemplate\activeemail.htm" />
     <Content Include="Content\EmailTemplate\getpwd.htm" />
-    <Content Include="Content\EmailTemplate\reg.htm" />
     <Content Include="Content\EmailTemplate\bizactiveemail.htm" />
     <Content Include="Content\Html\gztHelp.html" />
     <Content Include="Content\iehack.css" />

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "城市信息管理";
 }
 
@@ -24,6 +23,7 @@
     .Groupable()
     .Scrollable()
     .Filterable()
+
     .DataSource(dataSource => dataSource
         .Ajax()
         .Batch(true)

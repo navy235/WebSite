@@ -23,6 +23,7 @@ namespace Maitonn.Web
                 .Replace("{uid}", MemberID.ToString())
                 .Replace("{time}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Replace("{email}", Email);
+            ReplaceSysinfo(em.Content);
             return em;
         }
 
@@ -38,6 +39,7 @@ namespace Maitonn.Web
                 .Replace("{uid}", MemberID.ToString())
                 .Replace("{time}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Replace("{email}", Email);
+            ReplaceSysinfo(em.Content);
             return em;
         }
 
@@ -53,7 +55,15 @@ namespace Maitonn.Web
                 .Replace("{uid}", MemberID.ToString())
                 .Replace("{time}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Replace("{email}", Email);
+            ReplaceSysinfo(em.Content);
             return em;
+        }
+
+        private void ReplaceSysinfo(string content)
+        {
+            var domainStr = "{domain}";
+            var domainUrl = ConfigSetting.DomainUrl;
+            content = content.Replace(domainStr, domainUrl);
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Maitonn.Web
 
         public static string ActiveEmailTimeDiffHour { get; set; }
 
+        public static string DomainUrl { get; set; }
+
         static ConfigSetting()
         {
             Default_AvtarUrl = ConfigurationManager.AppSettings["Default_AvtarUrl"];
@@ -30,6 +32,7 @@ namespace Maitonn.Web
             ResetPasswordTimeDiffHour = ConfigurationManager.AppSettings["ResetPasswordTimeDiffHour"];
             GetBindEmailTimeDiffMin = ConfigurationManager.AppSettings["GetBindEmailTimeDiffMin"];
             ActiveEmailTimeDiffHour = ConfigurationManager.AppSettings["ActiveEmailTimeDiffHour"];
+            DomainUrl = ConfigurationManager.AppSettings["LocalDomain"];
         }
     }
 }
