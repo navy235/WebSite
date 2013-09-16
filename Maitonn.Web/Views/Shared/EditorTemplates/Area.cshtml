@@ -13,11 +13,13 @@
 <div class="form-areas">
     ¿í£º@(Html.Kendo().NumericTextBox().Name(name + "_width")
     .Value(width)
+    .Min(0)
     .Events(x => x.Spin(name + ".widthChange")
                  .Change(name + ".widthChange"))
     .HtmlAttributes(new { style = "width:55px" }))m *
 ¸ß£º@(Html.Kendo().NumericTextBox().Name(name + "_height")
  .Value(height)
+     .Min(0)
     .Events(x => x.Spin(name + ".widthChange")
                  .Change(name + ".widthChange"))
 .HtmlAttributes(new { style = "width:55px" }))m *

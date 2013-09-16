@@ -30,18 +30,54 @@ namespace Maitonn.Core
             var thisValue = (string)value;
             if (thisValue.IndexOf('|') > 0)
             {
-                var values = thisValue.Split('|').Select(x => Convert.ToSingle(x));
-                if (values.Count() < 3)
+                var values = thisValue.Split('|');
+                var IsRegular = Convert.ToBoolean(values[0]);
+                if (IsRegular)
                 {
-                    var message = FormatErrorMessage(validationContext.DisplayName);
-                    return new ValidationResult(message);
-                }
-                else
-                {
-                    if (!values.All(x => x > 0))
+                    if (values.Length < 4)
                     {
                         var message = FormatErrorMessage(validationContext.DisplayName);
                         return new ValidationResult(message);
+                    }
+                    else
+                    {
+
+                        var isCheck = true;
+                        for (var i = 1; i < values.Length; i++)
+                        {
+                            if (Convert.ToSingle(values[i]) <= 0 || string.IsNullOrEmpty(values[i]))
+                            {
+                                isCheck = false;
+                            }
+                        }
+                        if (!isCheck)
+                        {
+                            var message = FormatErrorMessage(validationContext.DisplayName);
+                            return new ValidationResult(message);
+                        }
+                    }
+                }
+                else
+                {
+                    if (values.Length < 2 || values.Length % 2 == 0)
+                    {
+                       
+                    }
+                    else
+                    {
+                        var isCheck = true;
+                        for (var i = 1; i < values.Length; i++)
+                        {
+                            if (Convert.ToSingle(values[i]) <= 0 || string.IsNullOrEmpty(values[i]))
+                            {
+                                isCheck = false;
+                            }
+                        }
+                        if (!isCheck)
+                        {
+                            var message = FormatErrorMessage(validationContext.DisplayName);
+                            return new ValidationResult(message);
+                        }
                     }
                 }
             }

@@ -350,8 +350,6 @@ namespace Maitonn.Web
 
     public class LogOnModel
     {
-
-
         [Required(ErrorMessage = "请输入电子邮箱")]
         [Display(Name = "登录名：")]
         [RegularExpression(@"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "输入的电子邮箱格式不正确.")]

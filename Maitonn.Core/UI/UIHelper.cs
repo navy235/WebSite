@@ -33,6 +33,10 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> SliderImgStatusList { get; set; }
 
+        public static List<SelectListItem> MessageTypeList { get; set; }
+
+     
+
         static UIHelper()
         {
             singleStone = new UIHelper();
@@ -47,6 +51,8 @@ namespace Maitonn.Core
             InitServerTypeList();
             InitTopTypeList();
             InitSliderImgStatusList();
+            InitMessageTypeList();
+  
 
         }
         private static void InitSexList()
@@ -184,6 +190,17 @@ namespace Maitonn.Core
             SliderImgStatusList.Add(new SelectListItem() { Text = "系统置顶", Value = ((int)SliderImgStatus.System).ToString() });
         }
 
+
+        private static void InitMessageTypeList()
+        {
+            MessageTypeList = new List<SelectListItem>();
+
+            MessageTypeList.Add(new SelectListItem() { Text = "系统消息", Value = ((int)MessageType.System).ToString() });
+            MessageTypeList.Add(new SelectListItem() { Text = "用户消息", Value = ((int)MessageType.Member).ToString() });
+            MessageTypeList.Add(new SelectListItem() { Text = "消息回复", Value = ((int)MessageType.Reply).ToString() });
+        }
+
+      
 
         public static string GetTime(string timeValue)
         {

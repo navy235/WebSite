@@ -91,6 +91,7 @@ namespace Maitonn.Web
             return company;
 
         }
+
         public Company SaveBasInfo(int MemberID, CompanyReg model)
         {
             Company company = new Company();

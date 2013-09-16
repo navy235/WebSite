@@ -213,7 +213,7 @@ namespace Maitonn.Core
                 gfx.Dispose();
                 if (true)
                 {
-                    Resize(GetImgCutpath(imgPath), GetImgCutpath(imgPath, width), targetwidth);
+                    Resize(GetImgCutpath(imgPath), GetImgCutpath(imgPath, targetwidth), targetwidth);
                 }
                 success = true;
             }

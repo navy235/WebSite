@@ -215,6 +215,19 @@ namespace Maitonn.Core
         Show = 1
     }
 
+    public enum MessageStatus
+    {
+        Delete = 0,
+        Show = 1
+    }
+
+    public enum MessageType
+    {
+        System = 0,
+        Member = 1,
+        Reply = 2
+    }
+
     public enum Pay_State
     {
         Applying,
