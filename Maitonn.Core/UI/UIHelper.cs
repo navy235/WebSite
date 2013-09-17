@@ -27,6 +27,8 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> PriceList { get; set; }
 
+        public static List<SelectListItem> DeadLineMonthList { get; set; }
+
         public static List<SelectListItem> ServerTypeList { get; set; }
 
         public static List<SelectListItem> TopTypeList { get; set; }
@@ -35,7 +37,7 @@ namespace Maitonn.Core
 
         public static List<SelectListItem> MessageTypeList { get; set; }
 
-     
+
 
         static UIHelper()
         {
@@ -48,11 +50,12 @@ namespace Maitonn.Core
             InitProvinceList();
             InitTimeList();
             InitPriceList();
+            InitDeadLineMonthList();
             InitServerTypeList();
             InitTopTypeList();
             InitSliderImgStatusList();
             InitMessageTypeList();
-  
+
 
         }
         private static void InitSexList()
@@ -165,6 +168,25 @@ namespace Maitonn.Core
             PriceList.Add(new SelectListItem() { Text = "200万元以上", Value = ((int)PriceListType.PriceMax).ToString() });
         }
 
+
+        private static void InitDeadLineMonthList()
+        {
+            DeadLineMonthList = new List<SelectListItem>();
+            DeadLineMonthList.Add(new SelectListItem() { Text = "档期不限", Value = ((int)DeadLineMonth.Default).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "一月", Value = ((int)DeadLineMonth.Month1).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "二月", Value = ((int)DeadLineMonth.Month2).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "三月", Value = ((int)DeadLineMonth.Month3).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "四月", Value = ((int)DeadLineMonth.Month4).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "五月", Value = ((int)DeadLineMonth.Month5).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "六月", Value = ((int)DeadLineMonth.Month6).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "七月", Value = ((int)DeadLineMonth.Month7).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "八月", Value = ((int)DeadLineMonth.Month8).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "九月", Value = ((int)DeadLineMonth.Month9).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "十月", Value = ((int)DeadLineMonth.Month10).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "十一月", Value = ((int)DeadLineMonth.Month11).ToString() });
+            DeadLineMonthList.Add(new SelectListItem() { Text = "十二月", Value = ((int)DeadLineMonth.Month12).ToString() });
+        }
+
         private static void InitServerTypeList()
         {
             ServerTypeList = new List<SelectListItem>();
@@ -200,7 +222,7 @@ namespace Maitonn.Core
             MessageTypeList.Add(new SelectListItem() { Text = "消息回复", Value = ((int)MessageType.Reply).ToString() });
         }
 
-      
+
 
         public static string GetTime(string timeValue)
         {
