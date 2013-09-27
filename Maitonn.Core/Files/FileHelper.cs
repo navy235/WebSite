@@ -191,7 +191,9 @@ namespace Maitonn.Core
             bool success = false;
             try
             {
-                Image image = Image.FromFile(imgPath);
+                Crop(imgPath, 300);
+                string imgfilePath = GetImgCutpath(imgPath, 300);
+                Image image = Image.FromFile(imgfilePath);
                 Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
                 bmp.SetResolution(80, 60);
                 Graphics gfx = Graphics.FromImage(bmp);
@@ -213,7 +215,7 @@ namespace Maitonn.Core
                 gfx.Dispose();
                 if (true)
                 {
-                    Resize(GetImgCutpath(imgPath), GetImgCutpath(imgPath, targetwidth), targetwidth);
+                    Resize(GetImgCutpath(imgfilePath), GetImgCutpath(imgPath, targetwidth), targetwidth);
                 }
                 success = true;
             }
@@ -229,6 +231,7 @@ namespace Maitonn.Core
             bool success = false;
             try
             {
+
                 Image image = Image.FromFile(imgPath);
                 int width = image.Width;
                 int height = image.Height;
